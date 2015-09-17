@@ -1,9 +1,12 @@
 package com.project.logic;
 
+import java.util.ArrayList;
+
 public abstract class GameLogic implements PlayerListener {
 
 	protected Game game;
 	protected Player currentPlayer;
+	protected ArrayList<PlayerEvent> removeOptions = new ArrayList<PlayerEvent>(); 
 	
 	public GameLogic(Game game) {
 		this.game = game;
@@ -11,7 +14,8 @@ public abstract class GameLogic implements PlayerListener {
 
 	public abstract void loop();
 
-	public void checkForLines() {
+	public boolean checkForLines() {
+		boolean hasLine = false;
 		int[][] grid = game.getBoard().getGrid();
 
 		int lineStartX = -1, lineStartY = -1, lineEndX = -1, lineEndY = -1;
@@ -32,6 +36,8 @@ public abstract class GameLogic implements PlayerListener {
 					lineEndY = j;
 					lineStartX = i;
 					lineStartY = j - 3;
+					hasLine = true;
+					removeOptions.add(new PlayerEvent(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY), checkPlayer(prevValue)));
 				}
 			}
 			counter = 0;
@@ -51,6 +57,9 @@ public abstract class GameLogic implements PlayerListener {
 					lineEndY = j;
 					lineStartX = i - 3;
 					lineStartY = j;
+				
+					hasLine = true;					
+					removeOptions.add(new PlayerEvent(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY), checkPlayer(prevValue)));
 				}
 			}
 			counter = 1;
@@ -70,6 +79,9 @@ public abstract class GameLogic implements PlayerListener {
 					lineEndY = j + i;
 					lineStartX = i - 3;
 					lineStartY = j - 3 + i;
+
+					hasLine = true;
+					removeOptions.add(new PlayerEvent(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY), checkPlayer(prevValue)));
 				}
 			}
 			counter = 0;
@@ -88,13 +100,17 @@ public abstract class GameLogic implements PlayerListener {
 					lineEndY = j;
 					lineStartX = i - 3 + j;
 					lineStartY = j - 3;
+					
+					hasLine = true;
+					removeOptions.add(new PlayerEvent(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY), checkPlayer(prevValue)));
 				}
 			}
 			counter = 0;
 			prevValue = -1;
 		}
 
-		System.out.println(new Point(lineStartX, lineStartY) + " " + new Point(lineEndX, lineEndY));
+//		System.out.println(new Point(lineStartX, lineStartY) + " " + new Point(lineEndX, lineEndY));
+		return hasLine;
 	}
 
 	public void eventPerformed(PlayerEvent e) {
@@ -107,6 +123,12 @@ public abstract class GameLogic implements PlayerListener {
 		}else{
 			currentPlayer = game.getPlayerOne();
 		}
+	}
+	
+	
+	private Player checkPlayer(int stoneColor){
+		if(stoneColor == Board.BLACK_VALUE) return game.getPlayerTwo();
+		return game.getPlayerOne();
 	}
 	
 	
@@ -127,5 +149,7 @@ public abstract class GameLogic implements PlayerListener {
 		
 		return false;
 	}
+	
+	
 	
 }
