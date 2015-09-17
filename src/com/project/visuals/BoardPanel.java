@@ -15,10 +15,10 @@ public class BoardPanel extends JPanel {
 
 	private static final long serialVersionUID = -6218578367247380839L;
 
-	private int distance = 60;
-	private int yOffset = 25;
+	private int distance;
+	private int yOffset = 10;
 
-	private int tileSize = 40;
+	private int tileSize;
 
 	public BoardPanel(Board board) {
 		this.setBackground(new Color(185, 0, 0));
@@ -29,6 +29,8 @@ public class BoardPanel extends JPanel {
 		super.paintComponent(g2);
 
 		Graphics2D g = (Graphics2D) g2;
+
+		this.tileSize = this.getHeight() / 20;
 
 		this.distance = (this.getHeight() - 2 * yOffset - tileSize) / 8;
 		int yDown = (int) Math.round((distance * Math.sin(Math.toRadians(30))));
@@ -46,7 +48,7 @@ public class BoardPanel extends JPanel {
 		y[0] = yOffset + distance + tileSize / 2;
 		y[1] = yOffset + distance + 3 * yDown + tileSize / 2;
 		y[2] = yOffset + 4 * distance + 3 * yDown + tileSize / 2;
-		y[3] = yOffset + 7 * distance + tileSize / 2-2;
+		y[3] = yOffset + 7 * distance + tileSize / 2 - 2;
 		y[4] = yOffset + 4 * distance + 3 * yDown + tileSize / 2;
 		y[5] = yOffset + distance + 3 * yDown + tileSize / 2;
 		g.setColor(Color.GRAY);
