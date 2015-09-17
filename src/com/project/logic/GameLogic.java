@@ -2,8 +2,9 @@ package com.project.logic;
 
 public abstract class GameLogic implements PlayerListener {
 
-	private Game game;
-
+	protected Game game;
+	protected Player currentPlayer;
+	
 	public GameLogic(Game game) {
 		this.game = game;
 	}
@@ -97,6 +98,14 @@ public abstract class GameLogic implements PlayerListener {
 	}
 
 	public void eventPerformed(PlayerEvent e) {
-
+		game.getBoard().place(e.getPlayer().getStoneColor(), e.getFromPoint(), e.getToPoint());
+	}
+	
+	private void moveToNextPlayer(){
+		if(currentPlayer == game.getPlayerOne()){
+			currentPlayer = game.getPlayerTwo();
+		}else{
+			currentPlayer = game.getPlayerOne();
+		}
 	}
 }
