@@ -108,4 +108,24 @@ public abstract class GameLogic implements PlayerListener {
 			currentPlayer = game.getPlayerOne();
 		}
 	}
+	
+	
+	private Player returnWinner(){
+		if(game.getPlayerOne().getStoneAccount() == 0)
+			return game.getPlayerTwo();
+		
+		if(game.getPlayerTwo().getStoneAccount() == 0)
+			return game.getPlayerOne();
+		
+		return null;
+	}
+	
+	
+	private boolean checkForWin(){
+		if(game.getPlayerOne().getStoneAccount() == 0 || game.getPlayerTwo().getStoneAccount() == 0)
+			return true;
+		
+		return false;
+	}
+	
 }
