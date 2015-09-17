@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -28,11 +30,35 @@ public class SidePanel extends JPanel implements FocusListener {
 		this.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.DARK_GRAY));
 
 		this.newGame = new JButton("New Game");
-		this.newGame.setContentAreaFilled(false);
 		this.newGame.setFocusPainted(false);
 		this.newGame.setBorder(BorderFactory.createEmptyBorder());
-		this.newGame.setForeground(Color.WHITE);
+		this.newGame.setForeground(Color.BLACK);
 		this.newGame.setFont(new Font("Segoe MP", 0, 20));
+		this.newGame.setPreferredSize(new Dimension(200,40));
+		this.newGame.setHorizontalAlignment(JButton.CENTER);
+		this.newGame.setAlignmentX(JButton.CENTER_ALIGNMENT);
+		this.newGame.setBackground(this.background.darker());
+		this.newGame.addMouseListener(new MouseListener() {
+			public void mouseClicked(MouseEvent arg0) {
+				
+			}
+			
+			public void mouseEntered(MouseEvent arg0) {
+				
+			}
+
+			public void mouseExited(MouseEvent arg0) {
+				
+			}
+
+			public void mousePressed(MouseEvent arg0) {
+				
+			}
+
+			public void mouseReleased(MouseEvent arg0) {
+				
+			}
+		});
 
 		this.setLayout(new BorderLayout());
 
