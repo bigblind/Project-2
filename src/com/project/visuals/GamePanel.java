@@ -10,13 +10,17 @@ public class GamePanel extends JPanel {
 
 	private static final long serialVersionUID = 2230253311268206870L;
 
-	private Game game;
+	private BoardPanel boardPanel;
 	
 	public GamePanel(Game game) {
-		this.game = game;
+		this.boardPanel = new BoardPanel(game.getBoard());
 		
 		this.setLayout(new BorderLayout());
-		this.add(new BoardPanel(game.getBoard()), BorderLayout.CENTER);
+		this.add(this.boardPanel, BorderLayout.CENTER);
 		this.add(new SidePanel(), BorderLayout.EAST);
+	}
+	
+	public BoardPanel getBoardPanel() {
+		return this.boardPanel;
 	}
 }

@@ -112,5 +112,7 @@ public class BoardPanel extends JPanel {
 		for (int i = 0; i < 5; i++) {
 			g.drawImage(ResourceLoader.OUTER_DOT, this.getWidth() / 2 + 4 * xDown - tileSize / 2, yOffset + 4 * yDown + i * distance + 2, tileSize, tileSize, null);
 		}
+		
+		g.drawImage(ResourceLoader.WHITE_STONE, 50, 50, tileSize, tileSize, null);
 	}
 }
