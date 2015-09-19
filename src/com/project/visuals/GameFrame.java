@@ -41,6 +41,8 @@ public class GameFrame extends JFrame implements ComponentListener {
 		layer.add(this.ghostBoardPanel, new Integer(1));
 		layer.add(this.ghostGamePanel, new Integer(2));
 
+		this.ghostGamePanel.setVisible(false);
+		
 		this.pack();
 	}
 
