@@ -47,7 +47,7 @@ public abstract class GameLogic implements PlayerListener {
 										blackExtensionStones
 									)
 								);
-						counter = 1
+						counter = 1;
 					}
 				}
 			}
