@@ -27,6 +27,14 @@ public class Player {
 		this.stoneColor = stoneColor;
 	}
 	
+	public void makeTurn(Game game){
+		//the player should call notifyListeners when he has made his turn.
+	}
+	
+	public void chooseRowToRemove(Game game, ArrayList<Row> rows){
+		//The player should call notifyListeners with the row he wants to remove.
+	}
+	
 	public String getName(){
 		return this.name;
 	}
