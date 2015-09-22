@@ -120,22 +120,33 @@ public abstract class GameLogic implements PlayerListener {
 			counter = 0;
 			prevValue = -1;
 		}
-
-		for (int i = 1; i < 4; i++) {
+		
+		//The maximum row length you can create is 7, by pushing a stone between 2 rows of 3.
+		for (int i = 1; i < 7; i++) {
 			for (int j = 1; j < (9 - i) - 1; j++) {
 				if (prevValue == grid[i + j][j] && prevValue > 0) counter++;
 				else {
-					counter = 1;
 					prevValue = grid[i + j][j];
-				}
-				if (counter == 4) {
-					lineEndX = i + j;
-					lineEndY = j;
-					lineStartX = i - 3 + j;
-					lineStartY = j - 3;
+					if (counter == 4) {
+						lineEndX = i + (j-1);
+						lineEndY = j-1;
+					lineStartX = i - counter + j;
+					lineStartY = j - counter;
 					
 					hasLine = true;
-					removeOptions.add(new PlayerEvent(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY), checkPlayer(prevValue)));
+					//TODO implement a way to count the number of white and black stones that extend the row.
+					int whiteExtensionStones = 0;
+					int blackExtensionStones = 0;
+					removeOptions.add(
+							new Row(new Point(lineStartX, lineStartY),
+									new Point(lineEndX, lineEndY),
+									checkPlayer(prevValue),
+									counter,
+									whiteExtensionStones,
+									blackExtensionStones
+								)
+							);
+					}
 				}
 			}
 			counter = 0;
@@ -150,7 +161,7 @@ public abstract class GameLogic implements PlayerListener {
 		game.getBoard().place(e.getPlayer().getStoneColor(), e.getFromPoint(), e.getToPoint());
 	}
 	
-	protected void (){
+	protected void movetoNextPlayer(){
 		if(currentPlayer == game.getPlayerOne()){
 			currentPlayer = game.getPlayerTwo();
 		}else{
