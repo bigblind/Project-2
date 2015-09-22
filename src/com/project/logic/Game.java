@@ -4,10 +4,10 @@ public class Game {
 
 	private GameLogic logic;
 	private Player playerOne, playerTwo;
-	private Board board;
+	private GridBoard board;
 	
 	public Game() {
-		this.board = new Board();
+		this.board = new GridBoard();
 		this.playerOne = new Player();
 		this.playerTwo = new Player();
 	}
@@ -28,7 +28,7 @@ public class Game {
 		return this.playerTwo;
 	}
 	
-	public Board getBoard() {
+	public GridBoard getBoard() {
 		return this.board;
 	}
 }
