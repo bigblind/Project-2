@@ -6,7 +6,7 @@ public abstract class GameLogic implements PlayerListener {
 
 	protected Game game;
 	protected Player currentPlayer;
-	protected ArrayList<PlayerEvent> removeOptions = new ArrayList<PlayerEvent>(); 
+	protected ArrayList<Row> removeOptions = new ArrayList<Row>(); 
 	
 	public GameLogic(Game game) {
 		this.game = game;
@@ -28,16 +28,27 @@ public abstract class GameLogic implements PlayerListener {
 			for (int j = 1; j < grid[i].length - 1; j++) {
 				if (prevValue == grid[i][j] && prevValue > 0) counter++;
 				else {
-					counter = 1;
 					prevValue = grid[i][j];
-				}
-				if (counter == 4) {
-					lineEndX = i;
-					lineEndY = j;
-					lineStartX = i;
-					lineStartY = j - 3;
-					hasLine = true;
-					removeOptions.add(new PlayerEvent(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY), checkPlayer(prevValue)));
+					if (counter >= 4) {
+						lineEndX = i;
+						lineEndY = j-1; //the current stone's color is different, so it doesn't count towards the row.
+						lineStartX = i;
+						lineStartY = j - counter;
+						hasLine = true;
+						//TODO implement a way to count the number of white and black stones that extend the row.
+						int whiteExtensionStones = 0;
+						int blackExtensionStones = 0;
+						removeOptions.add(
+								new Row(new Point(lineStartX, lineStartY),
+										new Point(lineEndX, lineEndY),
+										checkPlayer(prevValue),
+										counter,
+										whiteExtensionStones,
+										blackExtensionStones
+									)
+								);
+						counter = 1
+					}
 				}
 			}
 			counter = 0;
@@ -49,17 +60,28 @@ public abstract class GameLogic implements PlayerListener {
 			for (int i = 0; i < grid.length; i++) {
 				if (prevValue == grid[i][j] && prevValue > 0) counter++;
 				else {
-					counter = 1;
 					prevValue = grid[i][j];
-				}
-				if (counter == 4) {
-					lineEndX = i;
-					lineEndY = j;
-					lineStartX = i - 3;
-					lineStartY = j;
+					if (counter >= 4) {
+						lineEndX = i-1;
+						lineEndY = j;
+						lineStartX = i - counter;
+						lineStartY = j;
 				
-					hasLine = true;					
-					removeOptions.add(new PlayerEvent(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY), checkPlayer(prevValue)));
+						hasLine = true;					
+						//TODO implement a way to count the number of white and black stones that extend the row.
+						int whiteExtensionStones = 0;
+						int blackExtensionStones = 0;
+						removeOptions.add(
+								new Row(new Point(lineStartX, lineStartY),
+										new Point(lineEndX, lineEndY),
+										checkPlayer(prevValue),
+										counter,
+										whiteExtensionStones,
+										blackExtensionStones
+									)
+								);
+						counter = 1;
+					}
 				}
 			}
 			counter = 1;
@@ -71,17 +93,28 @@ public abstract class GameLogic implements PlayerListener {
 			for (int i = 1; i < (9 - j) - 1; i++) {
 				if (prevValue == grid[i][j + i] && prevValue > 0) counter++;
 				else {
-					counter = 1;
 					prevValue = grid[i][j + i];
-				}
-				if (counter == 4) {
-					lineEndX = i;
-					lineEndY = j + i;
-					lineStartX = i - 3;
-					lineStartY = j - 3 + i;
-
-					hasLine = true;
-					removeOptions.add(new PlayerEvent(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY), checkPlayer(prevValue)));
+					if (counter >= 4) {
+						lineEndX = i-1;
+						lineEndY = (j+1) + (i-1);
+						lineStartX = i - counter;
+						lineStartY = j - counter + i;
+						
+						hasLine = true;
+						//TODO implement a way to count the number of white and black stones that extend the row.
+						int whiteExtensionStones = 0;
+						int blackExtensionStones = 0;
+						removeOptions.add(
+								new Row(new Point(lineStartX, lineStartY),
+										new Point(lineEndX, lineEndY),
+										checkPlayer(prevValue),
+										counter,
+										whiteExtensionStones,
+										blackExtensionStones
+									)
+								);
+						counter = 1;
+					}
 				}
 			}
 			counter = 0;
@@ -117,7 +150,7 @@ public abstract class GameLogic implements PlayerListener {
 		game.getBoard().place(e.getPlayer().getStoneColor(), e.getFromPoint(), e.getToPoint());
 	}
 	
-	private void moveToNextPlayer(){
+	protected void (){
 		if(currentPlayer == game.getPlayerOne()){
 			currentPlayer = game.getPlayerTwo();
 		}else{
@@ -143,7 +176,7 @@ public abstract class GameLogic implements PlayerListener {
 	}
 	
 	
-	private boolean checkForWin(){
+	protected boolean checkForWin(){
 		if(game.getPlayerOne().getStoneAccount() == 0 || game.getPlayerTwo().getStoneAccount() == 0)
 			return true;
 		
