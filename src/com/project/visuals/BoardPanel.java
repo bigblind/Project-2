@@ -75,7 +75,7 @@ public class BoardPanel extends JPanel implements ComponentListener {
 			g.drawLine(coordinates[i][0].getX() + this.tileSize / 2, coordinates[i][0].getY() + this.tileSize / 2, coordinates[i][4 + i].getX() + this.tileSize / 2, coordinates[i][4 + i].getY() + this.tileSize / 2);
 		}
 
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 3; i++) {
 			g.drawLine(coordinates[i + 5][1 + i].getX() + this.tileSize / 2, coordinates[i + 5][1 + i].getY() + this.tileSize / 2, coordinates[i + 5][8].getX() + this.tileSize / 2, coordinates[i + 5][8].getY() + this.tileSize / 2);
 		}
 		for (int i = 0; i < 4; i++) {
@@ -86,10 +86,18 @@ public class BoardPanel extends JPanel implements ComponentListener {
 			g.drawLine(coordinates[i][0].getX() + this.tileSize / 2, coordinates[i][0].getY() + this.tileSize / 2, coordinates[8][8-i].getX() + this.tileSize / 2, coordinates[8][8-i].getY() + this.tileSize / 2);
 		}
 
-		for (int j = 0; j < 9; j++) {
-			for (int i = 0; i < 9; i++) {
-				if (coordinates[i][j] != null) g.drawImage(ResourceLoader.BLACK_STONE, coordinates[i][j].getX(), coordinates[i][j].getY(), tileSize, tileSize, null);
-			}
+//		for (int j = 0; j < 9; j++) {
+//			for (int i = 0; i < 9; i++) {
+//				if (coordinates[i][j] != null) g.drawImage(ResourceLoader.BLACK_STONE, coordinates[i][j].getX(), coordinates[i][j].getY(), tileSize, tileSize, null);
+//			}
+//		}
+		
+		for (int i = 0; i < 5; i++) {
+			g.drawImage(ResourceLoader.OUTER_DOT, coordinates[i][0].getX(), coordinates[i][0].getY(), tileSize, tileSize, null);
+		}
+		
+		for (int j = 1; j < 5; j++) {
+			g.drawImage(ResourceLoader.OUTER_DOT, coordinates[0][j].getX(), coordinates[0][j].getY(), tileSize, tileSize, null);
 		}
 	}
 
