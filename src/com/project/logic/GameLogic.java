@@ -158,7 +158,7 @@ public abstract class GameLogic implements PlayerListener {
 	}
 
 	public void eventPerformed(PlayerEvent e) {
-		game.getBoard().place(e.getPlayer().getStoneColor(), e.getFromPoint(), e.getToPoint());
+		
 	}
 	
 	protected void moveToNextPlayer(){
@@ -170,7 +170,7 @@ public abstract class GameLogic implements PlayerListener {
 	}
 	
 	
-	private Player checkPlayer(int stoneColor){
+	protected Player checkPlayer(int stoneColor){
 		if(stoneColor == Board.BLACK_VALUE) return game.getPlayerTwo();
 		return game.getPlayerOne();
 	}
