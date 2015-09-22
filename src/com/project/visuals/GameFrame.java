@@ -41,7 +41,8 @@ public class GameFrame extends JFrame implements ComponentListener {
 		layer.add(this.ghostBoardPanel, new Integer(1));
 		layer.add(this.ghostGamePanel, new Integer(2));
 
-//		this.ghostGamePanel.setVisible(false);
+		this.ghostGamePanel.setVisible(false);
+		this.setIconImage(ResourceLoader.ICON);
 		
 		this.pack();
 	}
@@ -57,7 +58,7 @@ public class GameFrame extends JFrame implements ComponentListener {
 	public void componentResized(ComponentEvent e) {
 		int width = (int) (this.getSize().getWidth() - this.getInsets().left - this.getInsets().right);
 		int height = (int) (this.getSize().getHeight() - this.getInsets().top - this.getInsets().bottom);
-		System.out.println(width + " " + height);
+
 		this.gamePanel.setSize(width, height);
 		this.ghostBoardPanel.setSize(this.gamePanel.getBoardPanel().getSize());
 		this.ghostGamePanel.setSize(width, height-1); // TODO EXPLAIN WHAT THE FUCK. ... JAG KAN INTE JAG ORKAR INTE

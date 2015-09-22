@@ -7,7 +7,7 @@ public class Game {
 	private Board board;
 	
 	public Game() {
-		this.board = new GridBoard();
+		this.board = new Board();
 		this.playerOne = new Player();
 		this.playerTwo = new Player();
 	}
