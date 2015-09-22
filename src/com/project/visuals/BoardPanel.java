@@ -96,8 +96,24 @@ public class BoardPanel extends JPanel implements ComponentListener {
 			g.drawImage(ResourceLoader.OUTER_DOT, coordinates[i][0].getX(), coordinates[i][0].getY(), tileSize, tileSize, null);
 		}
 		
+		for (int i = 4; i < 9; i++) {
+			g.drawImage(ResourceLoader.OUTER_DOT, coordinates[i][8].getX(), coordinates[i][8].getY(), tileSize, tileSize, null);
+		}
+		
 		for (int j = 1; j < 5; j++) {
 			g.drawImage(ResourceLoader.OUTER_DOT, coordinates[0][j].getX(), coordinates[0][j].getY(), tileSize, tileSize, null);
+		}
+		
+		for (int j = 4; j < 9; j++) {
+			g.drawImage(ResourceLoader.OUTER_DOT, coordinates[8][j].getX(), coordinates[8][j].getY(), tileSize, tileSize, null);
+		}
+		
+		for (int i = 0; i < 3; i++) {
+			g.drawImage(ResourceLoader.OUTER_DOT, coordinates[1+i][5+i].getX(), coordinates[1+i][5+i].getY(), tileSize, tileSize, null);
+		}
+		
+		for (int i = 0; i < 3; i++) {
+			g.drawImage(ResourceLoader.OUTER_DOT, coordinates[5+i][1+i].getX(), coordinates[5+i][1+i].getY(), tileSize, tileSize, null);
 		}
 	}
 
