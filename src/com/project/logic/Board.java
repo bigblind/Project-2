@@ -19,7 +19,7 @@ public class Board {
 	public static int BOARD_EDGE = -1;
 	public static int EMPTY_TILE = 0;
 	public static int VOID_TILE = -2;
-
+	
 	private int[][] grid;
 
 	public Board() {
