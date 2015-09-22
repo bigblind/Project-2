@@ -9,7 +9,7 @@ import java.awt.Polygon;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
-import com.project.logic.GridBoard;
+import com.project.logic.Board;
 
 public class BoardPanel extends JPanel {
 
@@ -20,7 +20,7 @@ public class BoardPanel extends JPanel {
 
 	private int tileSize;
 
-	public BoardPanel(GridBoard board) {
+	public BoardPanel(Board board) {
 		this.setBackground(new Color(185, 0, 0));
 		this.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 0, Color.DARK_GRAY));
 	}

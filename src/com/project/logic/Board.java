@@ -8,12 +8,12 @@ public abstract class Board {
 	
 	public abstract void print();
 	
-	public void place(int stone, Point from, Point to);
+	public abstract void place(int stone, Point from, Point to);
 	
-	public void push(Point from, Point to) {
+	public abstract void push(Point from, Point to);
 
-	public void move(Point from, Point to) {
+	public abstract void move(Point from, Point to);
 
-	public boolean isEmpty(Point point) {
+	public abstract boolean isEmpty(Point point);
 
 }

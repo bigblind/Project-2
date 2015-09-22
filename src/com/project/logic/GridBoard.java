@@ -1,6 +1,6 @@
 package com.project.logic;
 
-public class GridBoard {
+public class GridBoard extends Board {
 
 //	if (yy > 0) 
 //		if (xx == 0) vertically down
