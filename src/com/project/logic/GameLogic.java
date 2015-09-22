@@ -161,7 +161,7 @@ public abstract class GameLogic implements PlayerListener {
 		game.getBoard().place(e.getPlayer().getStoneColor(), e.getFromPoint(), e.getToPoint());
 	}
 	
-	protected void movetoNextPlayer(){
+	protected void moveToNextPlayer(){
 		if(currentPlayer == game.getPlayerOne()){
 			currentPlayer = game.getPlayerTwo();
 		}else{
