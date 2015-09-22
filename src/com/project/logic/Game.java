@@ -14,6 +14,7 @@ public class Game {
 	
 	public void setGameLogic(GameLogic logic) {
 		this.logic = logic;
+		this.board.setLogic(logic);
 	}
 	
 	public GameLogic getGameLogic() {

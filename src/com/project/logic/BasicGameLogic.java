@@ -20,8 +20,9 @@ public class BasicGameLogic extends GameLogic{
 		}else{ //this is a row removal action
 			handleRowChoice((Row)e);
 		}
-		boolean waitingForAny = waitingForWhite || waitingForBlack;
-		if(checkForLines()){
+		boolean waitingForAny = (waitingForWhite || waitingForBlack) == true;
+		
+		if(game.getBoard().checkForLines().size() != 0){
 			handleLines();
 			if(! waitingForAny && checkForWin()){
 				//TODO somehow indicate that the game is over, so the GUI can show the winner

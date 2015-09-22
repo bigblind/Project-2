@@ -1,5 +1,7 @@
 package com.project.logic;
 
+import java.util.ArrayList;
+
 public class Board {
 
 //	if (yy > 0) 
@@ -21,9 +23,14 @@ public class Board {
 	public static int VOID_TILE = -2;
 	
 	private int[][] grid;
+	private GameLogic logic;
 
 	public Board() {
 		this.init();
+	}
+	
+	public void setLogic(GameLogic l){
+		logic = l;
 	}
 
 	public Board(int[][] grid) {
@@ -122,5 +129,142 @@ public class Board {
 
 	public int[][] getGrid() {
 		return this.grid;
+	}
+	
+	public ArrayList<Row> checkForLines() {
+		ArrayList<Row> lines = new ArrayList<Row>();
+		int lineStartX = -1, lineStartY = -1, lineEndX = -1, lineEndY = -1;
+
+		int counter = -1;
+		int prevValue = -1;
+
+		// checks for vertical lines
+		for (int i = 1; i < grid.length - 1; i++) {
+			for (int j = 1; j < grid[i].length - 1; j++) {
+				if (prevValue == grid[i][j] && prevValue > 0) counter++;
+				else {
+					prevValue = grid[i][j];
+					if (counter >= 4) {
+						lineEndX = i;
+						lineEndY = j-1; //the current stone's color is different, so it doesn't count towards the row.
+						lineStartX = i;
+						lineStartY = j - counter;
+						//TODO implement a way to count the number of white and black stones that extend the row.
+						int whiteExtensionStones = 0;
+						int blackExtensionStones = 0;
+						lines.add(
+								new Row(new Point(lineStartX, lineStartY),
+										new Point(lineEndX, lineEndY),
+										logic.checkPlayer(prevValue),
+										counter,
+										whiteExtensionStones,
+										blackExtensionStones
+									)
+								);
+						counter = 1;
+					}
+				}
+			}
+			counter = 0;
+			prevValue = -1;
+		}
+
+		// checks for left down right up lines
+		for (int j = 0; j < grid[0].length; j++) {
+			for (int i = 0; i < grid.length; i++) {
+				if (prevValue == grid[i][j] && prevValue > 0) counter++;
+				else {
+					prevValue = grid[i][j];
+					if (counter >= 4) {
+						lineEndX = i-1;
+						lineEndY = j;
+						lineStartX = i - counter;
+						lineStartY = j;
+				
+						//TODO implement a way to count the number of white and black stones that extend the row.
+						int whiteExtensionStones = 0;
+						int blackExtensionStones = 0;
+						lines.add(
+								new Row(new Point(lineStartX, lineStartY),
+										new Point(lineEndX, lineEndY),
+										logic.checkPlayer(prevValue),
+										counter,
+										whiteExtensionStones,
+										blackExtensionStones
+									)
+								);
+						counter = 1;
+					}
+				}
+			}
+			counter = 1;
+			prevValue = -1;
+		}
+
+		// checks for lines left top right bottom
+		for (int j = 3; j >= 0; j--) {
+			for (int i = 1; i < (9 - j) - 1; i++) {
+				if (prevValue == grid[i][j + i] && prevValue > 0) counter++;
+				else {
+					prevValue = grid[i][j + i];
+					if (counter >= 4) {
+						lineEndX = i-1;
+						lineEndY = (j+1) + (i-1);
+						lineStartX = i - counter;
+						lineStartY = j - counter + i;
+						
+						//TODO implement a way to count the number of white and black stones that extend the row.
+						int whiteExtensionStones = 0;
+						int blackExtensionStones = 0;
+						lines.add(
+								new Row(new Point(lineStartX, lineStartY),
+										new Point(lineEndX, lineEndY),
+										logic.checkPlayer(prevValue),
+										counter,
+										whiteExtensionStones,
+										blackExtensionStones
+									)
+								);
+						counter = 1;
+					}
+				}
+			}
+			counter = 0;
+			prevValue = -1;
+		}
+		
+		//The maximum row length you can create is 7, by pushing a stone between 2 rows of 3.
+		for (int i = 1; i < 7; i++) {
+			for (int j = 1; j < (9 - i) - 1; j++) {
+				if (prevValue == grid[i + j][j] && prevValue > 0) counter++;
+				else {
+					prevValue = grid[i + j][j];
+					if (counter == 4) {
+						lineEndX = i + (j-1);
+						lineEndY = j-1;
+					lineStartX = i - counter + j;
+					lineStartY = j - counter;
+					
+					//TODO implement a way to count the number of white and black stones that extend the row.
+					int whiteExtensionStones = 0;
+					int blackExtensionStones = 0;
+					lines.add(
+							new Row(new Point(lineStartX, lineStartY),
+									new Point(lineEndX, lineEndY),
+									logic.checkPlayer(prevValue),
+									counter,
+									whiteExtensionStones,
+									blackExtensionStones
+								)
+							);
+					}
+				}
+			}
+			counter = 0;
+			prevValue = -1;
+		}
+
+//		System.out.println(new Point(lineStartX, lineStartY) + " " + new Point(lineEndX, lineEndY));
+		return lines;
 	}
 }
