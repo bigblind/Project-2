@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 
 import javax.swing.JButton;
 
+import com.project.logic.Board;
 import com.project.logic.Player;
 
 public class TestButton extends JButton {
@@ -12,10 +13,20 @@ public class TestButton extends JButton {
 	private static final long serialVersionUID = -3216722706956588440L;
 
 	private Player player;
-	
+
 	public void paintComponent(Graphics g2) {
 		Graphics2D g = (Graphics2D) g2;
 
-		g.drawImage(ResourceLoader.BLACK_STONE, 0, 0, this.getWidth(), this.getHeight(), null);
+		if (player != null) {
+			if (player.getStoneColor() == Board.BLACK_VALUE) {
+				g.drawImage(ResourceLoader.BLACK_STONE, 0, 0, this.getWidth(), this.getHeight(), null);
+			} else {
+				g.drawImage(ResourceLoader.WHITE_STONE, 0, 0, this.getWidth(), this.getHeight(), null);
+			}
+		}
+	}
+	
+	public void setPlayer(Player player) {
+		this.player = player;
 	}
 }

@@ -6,10 +6,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import com.project.logic.Player;
 import com.project.logic.Point;
 
 public class GhostBoardButtonPanel extends JPanel implements ComponentListener {
@@ -45,11 +44,11 @@ public class GhostBoardButtonPanel extends JPanel implements ComponentListener {
 					}
 
 					public void mouseEntered(MouseEvent e) {
-						button.setIcon(new ImageIcon(ResourceLoader.WHITE_STONE));
+						button.setPlayer(new Player());
 					}
 
 					public void mouseExited(MouseEvent e) {
-						
+						button.setPlayer(null);
 					}
 
 					public void mousePressed(MouseEvent e) {
