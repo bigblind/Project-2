@@ -34,31 +34,10 @@ public class SidePanel extends JPanel implements FocusListener {
 		this.newGame.setBorder(BorderFactory.createEmptyBorder());
 		this.newGame.setForeground(Color.BLACK);
 		this.newGame.setFont(new Font("Segoe MP", 0, 20));
-		this.newGame.setPreferredSize(new Dimension(200,40));
+		this.newGame.setPreferredSize(new Dimension(200, 40));
 		this.newGame.setHorizontalAlignment(JButton.CENTER);
 		this.newGame.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		this.newGame.setBackground(this.background.darker());
-		this.newGame.addMouseListener(new MouseListener() {
-			public void mouseClicked(MouseEvent arg0) {
-				
-			}
-			
-			public void mouseEntered(MouseEvent arg0) {
-				
-			}
-
-			public void mouseExited(MouseEvent arg0) {
-				
-			}
-
-			public void mousePressed(MouseEvent arg0) {
-				
-			}
-
-			public void mouseReleased(MouseEvent arg0) {
-				
-			}
-		});
 
 		this.setLayout(new BorderLayout());
 

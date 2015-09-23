@@ -19,6 +19,8 @@ public class BoardPanel extends JPanel implements ComponentListener {
 
 	private static final long serialVersionUID = -6218578367247380839L;
 
+	private Board board;
+
 	private int distance;
 	private int yOffset = 10;
 
@@ -28,6 +30,7 @@ public class BoardPanel extends JPanel implements ComponentListener {
 
 	public BoardPanel(Board board) {
 		this.coordinates = new Point[9][9];
+		this.board = board;
 		this.resize();
 		this.setBackground(new Color(185, 0, 0));
 		this.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 0, Color.DARK_GRAY));
@@ -83,37 +86,62 @@ public class BoardPanel extends JPanel implements ComponentListener {
 		}
 
 		for (int i = 1; i < 4; i++) {
-			g.drawLine(coordinates[i][0].getX() + this.tileSize / 2, coordinates[i][0].getY() + this.tileSize / 2, coordinates[8][8-i].getX() + this.tileSize / 2, coordinates[8][8-i].getY() + this.tileSize / 2);
+			g.drawLine(coordinates[i][0].getX() + this.tileSize / 2, coordinates[i][0].getY() + this.tileSize / 2, coordinates[8][8 - i].getX() + this.tileSize / 2, coordinates[8][8 - i].getY() + this.tileSize / 2);
 		}
 
-//		for (int j = 0; j < 9; j++) {
-//			for (int i = 0; i < 9; i++) {
-//				if (coordinates[i][j] != null) g.drawImage(ResourceLoader.BLACK_STONE, coordinates[i][j].getX(), coordinates[i][j].getY(), tileSize, tileSize, null);
-//			}
-//		}
-		
 		for (int i = 0; i < 5; i++) {
 			g.drawImage(ResourceLoader.OUTER_DOT, coordinates[i][0].getX(), coordinates[i][0].getY(), tileSize, tileSize, null);
 		}
-		
+
 		for (int i = 4; i < 9; i++) {
 			g.drawImage(ResourceLoader.OUTER_DOT, coordinates[i][8].getX(), coordinates[i][8].getY(), tileSize, tileSize, null);
 		}
-		
+
 		for (int j = 1; j < 5; j++) {
 			g.drawImage(ResourceLoader.OUTER_DOT, coordinates[0][j].getX(), coordinates[0][j].getY(), tileSize, tileSize, null);
 		}
-		
+
 		for (int j = 4; j < 9; j++) {
 			g.drawImage(ResourceLoader.OUTER_DOT, coordinates[8][j].getX(), coordinates[8][j].getY(), tileSize, tileSize, null);
 		}
-		
+
 		for (int i = 0; i < 3; i++) {
-			g.drawImage(ResourceLoader.OUTER_DOT, coordinates[1+i][5+i].getX(), coordinates[1+i][5+i].getY(), tileSize, tileSize, null);
+			g.drawImage(ResourceLoader.OUTER_DOT, coordinates[1 + i][5 + i].getX(), coordinates[1 + i][5 + i].getY(), tileSize, tileSize, null);
 		}
-		
+
 		for (int i = 0; i < 3; i++) {
-			g.drawImage(ResourceLoader.OUTER_DOT, coordinates[5+i][1+i].getX(), coordinates[5+i][1+i].getY(), tileSize, tileSize, null);
+			g.drawImage(ResourceLoader.OUTER_DOT, coordinates[5 + i][1 + i].getX(), coordinates[5 + i][1 + i].getY(), tileSize, tileSize, null);
+		}
+
+		this.drawStones(g);
+	}
+
+	private void drawStones(Graphics2D g) {
+		for (int j = 0; j < 5; j++) {
+			for (int i = 0; i < 5 + j; i++) {
+				if (this.board.getGrid()[i][j] == Board.BLACK_VALUE) {
+					g.drawImage(ResourceLoader.BLACK_STONE, this.coordinates[i][j].getX(), this.coordinates[i][j].getY(), tileSize, tileSize, null);
+				} else if (this.board.getGrid()[i][j] == Board.WHITE_VALUE) {
+					g.drawImage(ResourceLoader.WHITE_STONE, this.coordinates[i][j].getX(), this.coordinates[i][j].getY(), tileSize, tileSize, null);
+				} else if (this.board.getGrid()[i][j] == Board.GIPF_BLACK_VALUE) {
+					
+				} else if (this.board.getGrid()[i][j] == Board.GIPF_WHITE_VALUE) {
+					
+				}
+			}
+		}
+		for (int j = 1; j < 5; j++) {
+			for (int i = j; i < 9; i++) {
+				if (this.board.getGrid()[i][4+j] == Board.BLACK_VALUE) {
+					g.drawImage(ResourceLoader.BLACK_STONE, this.coordinates[i][4+j].getX(), this.coordinates[i][4+j].getY(), tileSize, tileSize, null);
+				} else if (this.board.getGrid()[i][4+j] == Board.WHITE_VALUE) {
+					g.drawImage(ResourceLoader.WHITE_STONE, this.coordinates[i][4+j].getX(), this.coordinates[i][4+j].getY(), tileSize, tileSize, null);
+				} else if (this.board.getGrid()[i][4+j] == Board.GIPF_BLACK_VALUE) {
+					
+				} else if (this.board.getGrid()[i][4+j] == Board.GIPF_WHITE_VALUE) {
+					
+				}
+			}
 		}
 	}
 
@@ -154,5 +182,13 @@ public class BoardPanel extends JPanel implements ComponentListener {
 
 	public void componentShown(ComponentEvent e) {
 
+	}
+	
+	public int getTileSize() {
+		return this.tileSize;
+	}
+	
+	public Point[][] getCoordinates() {
+		return this.coordinates;
 	}
 }

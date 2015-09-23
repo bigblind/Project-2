@@ -205,7 +205,7 @@ public class Board {
 	}
 
 
-//	public int[][] getGrid() {
-//		return this.grid;
-//	}
+	public int[][] getGrid() {
+		return this.grid;
+	}
 }

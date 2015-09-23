@@ -16,8 +16,9 @@ public class GameFrame extends JFrame implements ComponentListener {
 	private static final long serialVersionUID = -3171344956959611349L;
 
 	private GamePanel gamePanel;
-	private JPanel ghostBoardPanel, ghostGamePanel;
-
+	private JPanel ghostGamePanel;
+	private GhostBoardButtonPanel ghostBoardButtonPanel;
+	
 	public GameFrame(Game game) {
 		final int width = 1200;
 		this.setPreferredSize(new Dimension(width, width / 16 * 9));
@@ -31,14 +32,13 @@ public class GameFrame extends JFrame implements ComponentListener {
 		this.gamePanel.setMinimumSize(new Dimension(50, 50));
 		this.gamePanel.setSize(50, 50);
 
-		this.ghostBoardPanel = new JPanel();
-		this.ghostBoardPanel.setOpaque(false);
+		this.ghostBoardButtonPanel = new GhostBoardButtonPanel(this.gamePanel.getBoardPanel());
 
 		this.ghostGamePanel = new JPanel();
 		this.ghostGamePanel.setBackground(new Color(0, 0, 0, 150));
 
 		layer.add(this.gamePanel, new Integer(0));
-		layer.add(this.ghostBoardPanel, new Integer(1));
+		layer.add(this.ghostBoardButtonPanel, new Integer(1));
 		layer.add(this.ghostGamePanel, new Integer(2));
 
 		this.ghostGamePanel.setVisible(false);
@@ -60,7 +60,6 @@ public class GameFrame extends JFrame implements ComponentListener {
 		int height = (int) (this.getSize().getHeight() - this.getInsets().top - this.getInsets().bottom);
 
 		this.gamePanel.setSize(width, height);
-		this.ghostBoardPanel.setSize(this.gamePanel.getBoardPanel().getSize());
 		this.ghostGamePanel.setSize(width, height-1); // TODO EXPLAIN WHAT THE FUCK. ... JAG KAN INTE JAG ORKAR INTE
 		this.revalidate();
 	}
