@@ -67,7 +67,7 @@ public class BasicGameLogic extends GameLogic{
 	}
 	
 	private void handleSingleRow(Row row){
-		game.getBoard().removeRowAndExtensions(row.getFromPoint(), row.getToPoint());
+		game.getBoard().removeRowAndExtensions(row);
 		Player rowPlayer = row.getPlayer();
 		rowPlayer.setStoneAccount(rowPlayer.getStoneAccount() + row.getLength());
 		handleExtensions(row);

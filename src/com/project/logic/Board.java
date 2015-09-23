@@ -267,4 +267,40 @@ public class Board {
 //		System.out.println(new Point(lineStartX, lineStartY) + " " + new Point(lineEndX, lineEndY));
 		return lines;
 	}
+	
+	public void removeRowAndExtensions(Row row){
+		Point start = row.getFromPoint();
+		Point end = row.getToPoint();
+		int deltaX = end.getX() - start.getX();
+		int deltaY = end.getY() - start.getY();
+		//normalize these deltas to 1 if it goes up, -1 if it goes down, 0 if it remains the same.
+		deltaX = deltaX/Math.abs(deltaX);
+		deltaY = deltaY/Math.abs(deltaY);
+		Point connectedStart = findConnectionEnd(start, -deltaX, -deltaY);
+		Point connectedEnd = findConnectionEnd(end, deltaX, deltaY);
+		removeLine(connectedStart, connectedEnd, deltaX, deltaY);
+	}
+	
+	private Point findConnectionEnd(Point from, int deltaX, int deltaY){
+		int i=1;
+		while(true){
+			int x = from.getX() + deltaX * i;
+			int y = from.getY() + deltaY * i;
+			Point p = new Point(x, y);
+			if(isEmpty(p)){
+				return p;
+			}
+			i++;
+		}
+	}
+	
+	private void removeLine(Point start, Point end, int deltaX, int deltaY){
+		int x = start.getX();
+		int y = start.getY();
+		while(!(x == end.getX() && y == end.getY())){
+			this.grid[x][y] = EMPTY_TILE;
+			x += deltaX;
+			y += deltaY;
+		}
+	}
 }
