@@ -1,7 +1,13 @@
 package com.project.logic;
 
-public class Game {
+import java.io.Serializable;
 
+public class Game implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private GameLogic logic;
 	private Player playerOne, playerTwo;
 	private Board board;
