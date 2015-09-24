@@ -9,6 +9,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 import com.project.logic.Board;
+import com.project.logic.Game;
 import com.project.logic.Player;
 import com.project.logic.Point;
 
@@ -21,7 +22,7 @@ public class GhostBoardButtonPanel extends JPanel implements ComponentListener {
 	private int tileSize;
 	private Point[][] coordinates;
 
-	public GhostBoardButtonPanel(BoardPanel boardPanel) {
+	public GhostBoardButtonPanel(Game game, BoardPanel boardPanel) {
 		this.setOpaque(false);
 		this.setLayout(null);
 

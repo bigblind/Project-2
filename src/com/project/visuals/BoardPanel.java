@@ -13,6 +13,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 import com.project.logic.Board;
+import com.project.logic.Game;
 import com.project.logic.Point;
 
 public class BoardPanel extends JPanel implements ComponentListener {
@@ -28,9 +29,9 @@ public class BoardPanel extends JPanel implements ComponentListener {
 
 	private Point[][] coordinates;
 
-	public BoardPanel(Board board) {
+	public BoardPanel(Game game) {
 		this.coordinates = new Point[9][9];
-		this.board = board;
+		this.board = game.getBoard();
 		this.resize();
 		this.setBackground(new Color(185, 0, 0));
 		this.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 0, Color.DARK_GRAY));

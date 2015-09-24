@@ -32,7 +32,7 @@ public class GameFrame extends JFrame implements ComponentListener {
 		this.gamePanel.setMinimumSize(new Dimension(50, 50));
 		this.gamePanel.setSize(50, 50);
 
-		this.ghostBoardButtonPanel = new GhostBoardButtonPanel(this.gamePanel.getBoardPanel());
+		this.ghostBoardButtonPanel = new GhostBoardButtonPanel(game, this.gamePanel.getBoardPanel());
 
 		this.ghostGamePanel = new JPanel();
 		this.ghostGamePanel.setBackground(new Color(0, 0, 0, 150));
