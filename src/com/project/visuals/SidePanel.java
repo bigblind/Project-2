@@ -32,10 +32,10 @@ public class SidePanel extends JPanel implements FocusListener {
 		this.newGame.setBorder(BorderFactory.createEmptyBorder());
 		this.newGame.setForeground(Color.BLACK);
 		this.newGame.setFont(new Font("Segoe MP", 0, 20));
-		this.newGame.setPreferredSize(new Dimension(200, 40));
+		this.newGame.setPreferredSize(new Dimension((int) big.getWidth(), 40));
 		this.newGame.setHorizontalAlignment(JButton.CENTER);
 		this.newGame.setAlignmentX(JButton.CENTER_ALIGNMENT);
-		this.newGame.setBackground(this.background.darker());
+		this.newGame.setBackground(this.background.brighter());
 
 		this.setLayout(new BorderLayout());
 
@@ -62,11 +62,13 @@ public class SidePanel extends JPanel implements FocusListener {
 
 	private void goBig() {
 		this.setPreferredSize(big);
+		this.newGame.setPreferredSize(new Dimension((int) big.getWidth(), 40));
 		this.revalidate();
 	}
 
 	private void goHome() {
 		this.setPreferredSize(small);
+		this.newGame.setPreferredSize(new Dimension((int) small.getWidth(), 40));
 		this.revalidate();
 	}
 

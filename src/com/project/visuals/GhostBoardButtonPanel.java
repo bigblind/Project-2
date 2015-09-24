@@ -8,6 +8,7 @@ import java.awt.event.MouseListener;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
+import com.project.logic.Board;
 import com.project.logic.Player;
 import com.project.logic.Point;
 
@@ -44,7 +45,7 @@ public class GhostBoardButtonPanel extends JPanel implements ComponentListener {
 					}
 
 					public void mouseEntered(MouseEvent e) {
-						button.setPlayer(new Player());
+						button.setPlayer(new Player(Board.WHITE_VALUE));
 					}
 
 					public void mouseExited(MouseEvent e) {
@@ -68,7 +69,27 @@ public class GhostBoardButtonPanel extends JPanel implements ComponentListener {
 				button.setContentAreaFilled(false);
 				button.setBorder(BorderFactory.createEmptyBorder());
 				button.setName(Integer.toString(i) + Integer.toString(4 + j));
+				button.addMouseListener(new MouseListener() {
+					public void mouseClicked(MouseEvent e) {
+						
+					}
 
+					public void mouseEntered(MouseEvent e) {
+						button.setPlayer(new Player(Board.WHITE_VALUE));
+					}
+
+					public void mouseExited(MouseEvent e) {
+						button.setPlayer(null);
+					}
+
+					public void mousePressed(MouseEvent e) {
+						
+					}
+
+					public void mouseReleased(MouseEvent e) {
+						
+					}
+				});
 				this.buttons[i][4 + j] = button;
 			}
 		}

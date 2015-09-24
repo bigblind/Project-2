@@ -19,9 +19,9 @@ public class TestButton extends JButton {
 
 		if (player != null) {
 			if (player.getStoneColor() == Board.BLACK_VALUE) {
-				g.drawImage(ResourceLoader.BLACK_STONE, 0, 0, this.getWidth(), this.getHeight(), null);
+				g.drawImage(ResourceLoader.BLACK_STONE_TRANSPARENT, 0, 0, this.getWidth(), this.getHeight(), null);
 			} else {
-				g.drawImage(ResourceLoader.WHITE_STONE, 0, 0, this.getWidth(), this.getHeight(), null);
+				g.drawImage(ResourceLoader.WHITE_STONE_TRANSPARENT, 0, 0, this.getWidth(), this.getHeight(), null);
 			}
 		}
 	}

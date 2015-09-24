@@ -8,7 +8,6 @@ public class Player {
 	private int stoneAccount;
 	private int stoneColor;
 	
-	
 	public Player(){
 		this.name = null;
 		this.stoneAccount = 18;
