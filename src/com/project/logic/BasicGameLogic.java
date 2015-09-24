@@ -16,24 +16,34 @@ public class BasicGameLogic extends GameLogic{
 	
 	public void eventPerformed(PlayerEvent e) {
 		if(!(e instanceof Row)){ //if the action is not to pick a row.
-			super.eventPerformed(e); //because super.eventPerformed places a stone on the board.
+			handlePlayerMove(e);
 		}else{ //this is a row removal action
-			handleSingleRow((Row)e);
-			if(e.getPlayer().getStoneColor() == game.getBoard().WHITE_VALUE)
-				waitingForWhite = false;
-			else
-				waitingForBlack = false;
+			handleRowChoice((Row)e);
 		}
-		boolean waitingForAny = waitingForWhite || waitingForBlack;
-		if(checkForLines()){
+		boolean waitingForAny = (waitingForWhite || waitingForBlack) == true;
+		
+		if(game.getBoard().checkForLines().size() != 0){
 			handleLines();
 			if(! waitingForAny && checkForWin()){
 				//TODO somehow indicate that the game is over, so the GUI can show the winner
 			}
 		}
-		if(! waitingForAny)){
+		if(!waitingForAny){
 			moveToNextPlayer();
 		}
+	}
+	
+	private void handlePlayerMove(PlayerEvent e){
+		game.getBoard().place(e.getPlayer().getStoneColor(), e.getFromPoint(), e.getToPoint());
+		e.getPlayer().setStoneAccount(e.getPlayer().getStoneAccount() - 1);
+	}
+	
+	private void handleRowChoice(Row row){
+		handleSingleRow(row);
+		if(row.getPlayer().getStoneColor() == game.getBoard().WHITE_VALUE)
+			waitingForWhite = false;
+		else
+			waitingForBlack = false;
 	}
 	
 	private void handleLines(){
@@ -57,7 +67,7 @@ public class BasicGameLogic extends GameLogic{
 	}
 	
 	private void handleSingleRow(Row row){
-		game.getBoard().removeRowAndExtensions(row.getFromPoint(), row.getToPoint());
+		game.getBoard().removeRowAndExtensions(row);
 		Player rowPlayer = row.getPlayer();
 		rowPlayer.setStoneAccount(rowPlayer.getStoneAccount() + row.getLength());
 		handleExtensions(row);
@@ -81,7 +91,7 @@ public class BasicGameLogic extends GameLogic{
 	}
 	
 	private void handleExtensions(Row row){
-		if(currentPlayer.getStoneColor() == game.getBoard().WHITE){
+		if(currentPlayer.getStoneColor() == game.getBoard().WHITE_VALUE){
 			currentPlayer.setStoneAccount(currentPlayer.getStoneAccount() + row.getWhiteExtensionStones());
 		}else{
 			currentPlayer.setStoneAccount(currentPlayer.getStoneAccount() + row.getBlackExtensionStones());
