@@ -20,7 +20,7 @@ public class BottomButtonPanel extends MenuComponent {
 
 		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		Dimension buttonDimension = new Dimension(48, 48);
-		help = new JButton();
+		this.help = new JButton();
 		this.help.setContentAreaFilled(false);
 		this.help.setFocusPainted(false);
 		this.help.setBorder(BorderFactory.createEmptyBorder());

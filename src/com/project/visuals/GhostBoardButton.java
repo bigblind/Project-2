@@ -8,7 +8,7 @@ import javax.swing.JButton;
 import com.project.logic.Board;
 import com.project.logic.Player;
 
-public class TestButton extends JButton {
+public class GhostBoardButton extends JButton {
 
 	private static final long serialVersionUID = -3216722706956588440L;
 

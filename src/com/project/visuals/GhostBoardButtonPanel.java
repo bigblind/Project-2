@@ -16,7 +16,7 @@ public class GhostBoardButtonPanel extends JPanel implements ComponentListener {
 
 	private static final long serialVersionUID = -4895368866649881850L;
 
-	private TestButton[][] buttons;
+	private GhostBoardButton[][] buttons;
 	private BoardPanel boardPanel;
 	private int tileSize;
 	private Point[][] coordinates;
@@ -31,11 +31,11 @@ public class GhostBoardButtonPanel extends JPanel implements ComponentListener {
 		this.coordinates = boardPanel.getCoordinates();
 		this.tileSize = boardPanel.getTileSize();
 
-		this.buttons = new TestButton[9][9];
+		this.buttons = new GhostBoardButton[9][9];
 
 		for (int j = 0; j < 5; j++) {
 			for (int i = 0; i < 5 + j; i++) {
-				TestButton button = new TestButton();
+				GhostBoardButton button = new GhostBoardButton();
 				button.setContentAreaFilled(false);
 				button.setBorder(BorderFactory.createEmptyBorder());
 				button.setName(Integer.toString(i) + Integer.toString(j));
@@ -65,7 +65,7 @@ public class GhostBoardButtonPanel extends JPanel implements ComponentListener {
 		}
 		for (int j = 1; j < 5; j++) {
 			for (int i = j; i < 9; i++) {
-				TestButton button = new TestButton();
+				GhostBoardButton button = new GhostBoardButton();
 				button.setContentAreaFilled(false);
 				button.setBorder(BorderFactory.createEmptyBorder());
 				button.setName(Integer.toString(i) + Integer.toString(4 + j));
