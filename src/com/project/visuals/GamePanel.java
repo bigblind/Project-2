@@ -12,12 +12,17 @@ public class GamePanel extends JPanel {
 
 	private BoardPanel boardPanel;
 	
+	private SidePanel sidePanel;
+	
 	public GamePanel(Game game) {
 		this.boardPanel = new BoardPanel(game);
 		
+		this.sidePanel = new SidePanel();
+		this.sidePanel.setVisible(false);
+		
 		this.setLayout(new BorderLayout());
 		this.add(this.boardPanel, BorderLayout.CENTER);
-		this.add(new SidePanel(), BorderLayout.EAST);
+		this.add(this.sidePanel, BorderLayout.WEST);
 	}
 	
 	public BoardPanel getBoardPanel() {

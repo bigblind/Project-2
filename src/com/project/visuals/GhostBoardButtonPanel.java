@@ -2,21 +2,20 @@ package com.project.visuals;
 
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
-import com.project.logic.Board;
 import com.project.logic.Game;
-import com.project.logic.Player;
 import com.project.logic.Point;
+import com.project.visuals.state.MoveStateA;
+import com.project.visuals.state.State;
 
 public class GhostBoardButtonPanel extends JPanel implements ComponentListener {
 
 	private static final long serialVersionUID = -4895368866649881850L;
 
+	private State state; //TODO needs to be changed
 	private GhostBoardButton[][] buttons;
 	private BoardPanel boardPanel;
 	private int tileSize;
@@ -40,27 +39,27 @@ public class GhostBoardButtonPanel extends JPanel implements ComponentListener {
 				button.setContentAreaFilled(false);
 				button.setBorder(BorderFactory.createEmptyBorder());
 				button.setName(Integer.toString(i) + Integer.toString(j));
-				button.addMouseListener(new MouseListener() {
-					public void mouseClicked(MouseEvent e) {
-						
-					}
-
-					public void mouseEntered(MouseEvent e) {
-						button.setPlayer(new Player(Board.WHITE_VALUE));
-					}
-
-					public void mouseExited(MouseEvent e) {
-						button.setPlayer(null);
-					}
-
-					public void mousePressed(MouseEvent e) {
-						
-					}
-
-					public void mouseReleased(MouseEvent e) {
-						
-					}
-				});
+//				button.addMouseListener(new MouseListener() {
+//					public void mouseClicked(MouseEvent e) {
+//						
+//					}
+//
+//					public void mouseEntered(MouseEvent e) {
+//						button.setPlayer(new Player(Board.WHITE_VALUE));
+//					}
+//
+//					public void mouseExited(MouseEvent e) {
+//						button.setPlayer(null);
+//					}
+//
+//					public void mousePressed(MouseEvent e) {
+//						
+//					}
+//
+//					public void mouseReleased(MouseEvent e) {
+//						
+//					}
+//				});
 				this.buttons[i][j] = button;
 			}
 		}
@@ -70,27 +69,27 @@ public class GhostBoardButtonPanel extends JPanel implements ComponentListener {
 				button.setContentAreaFilled(false);
 				button.setBorder(BorderFactory.createEmptyBorder());
 				button.setName(Integer.toString(i) + Integer.toString(4 + j));
-				button.addMouseListener(new MouseListener() {
-					public void mouseClicked(MouseEvent e) {
-						
-					}
-
-					public void mouseEntered(MouseEvent e) {
-						button.setPlayer(new Player(Board.WHITE_VALUE));
-					}
-
-					public void mouseExited(MouseEvent e) {
-						button.setPlayer(null);
-					}
-
-					public void mousePressed(MouseEvent e) {
-						
-					}
-
-					public void mouseReleased(MouseEvent e) {
-						
-					}
-				});
+//				button.addMouseListener(new MouseListener() {
+//					public void mouseClicked(MouseEvent e) {
+//						
+//					}
+//
+//					public void mouseEntered(MouseEvent e) {
+//						button.setPlayer(new Player(Board.WHITE_VALUE));
+//					}
+//
+//					public void mouseExited(MouseEvent e) {
+//						button.setPlayer(null);
+//					}
+//
+//					public void mousePressed(MouseEvent e) {
+//						
+//					}
+//
+//					public void mouseReleased(MouseEvent e) {
+//						
+//					}
+//				});
 				this.buttons[i][4 + j] = button;
 			}
 		}
@@ -105,6 +104,9 @@ public class GhostBoardButtonPanel extends JPanel implements ComponentListener {
 				this.add(this.buttons[i][4+j]);
 			}
 		}
+		
+		this.state = new MoveStateA(buttons, game);
+		this.state.execute();
 	}
 
 	public void componentHidden(ComponentEvent e) {

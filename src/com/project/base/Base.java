@@ -14,11 +14,7 @@ public class Base {
 
 		StandardGameLogic logic = new StandardGameLogic(game);
 		game.setGameLogic(logic);
-//		
-//		logic.checkForLines();
-//		
-//		game.getBoard().print();
-		
+
 		ResourceLoader loader = new ResourceLoader();
 		try {
 			loader.init();

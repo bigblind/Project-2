@@ -2,6 +2,8 @@ package com.project.visuals;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
@@ -18,7 +20,7 @@ public class GameFrame extends JFrame implements ComponentListener {
 	private GamePanel gamePanel;
 	private JPanel ghostGamePanel;
 	private GhostBoardButtonPanel ghostBoardButtonPanel;
-	
+
 	public GameFrame(Game game) {
 		final int width = 1200;
 		this.setPreferredSize(new Dimension(width, width / 16 * 9));
@@ -32,6 +34,8 @@ public class GameFrame extends JFrame implements ComponentListener {
 		this.gamePanel.setMinimumSize(new Dimension(50, 50));
 		this.gamePanel.setSize(50, 50);
 
+		this.setUndecorated(true);
+
 		this.ghostBoardButtonPanel = new GhostBoardButtonPanel(game, this.gamePanel.getBoardPanel());
 
 		this.ghostGamePanel = new JPanel();
@@ -43,7 +47,7 @@ public class GameFrame extends JFrame implements ComponentListener {
 
 		this.ghostGamePanel.setVisible(false);
 		this.setIconImage(ResourceLoader.ICON);
-		
+
 		this.pack();
 	}
 
@@ -60,7 +64,9 @@ public class GameFrame extends JFrame implements ComponentListener {
 		int height = (int) (this.getSize().getHeight() - this.getInsets().top - this.getInsets().bottom);
 
 		this.gamePanel.setSize(width, height);
-		this.ghostGamePanel.setSize(width, height-1); // TODO EXPLAIN WHAT THE FUCK. ... JAG KAN INTE JAG ORKAR INTE
+		this.ghostGamePanel.setSize(width, height - 1); // TODO EXPLAIN WHAT THE
+														// FUCK. ... JAG KAN
+														// INTE JAG ORKAR INTE
 		this.revalidate();
 	}
 

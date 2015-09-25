@@ -33,8 +33,8 @@ public class BoardPanel extends JPanel implements ComponentListener {
 		this.coordinates = new Point[9][9];
 		this.board = game.getBoard();
 		this.resize();
-		this.setBackground(new Color(185, 0, 0));
-		this.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 0, Color.DARK_GRAY));
+		this.setBackground(new Color(52, 207, 67).brighter());
+//		this.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 0, Color.DARK_GRAY));
 		this.addComponentListener(this);
 	}
 
