@@ -10,6 +10,7 @@ public class GhostBoardButton extends JButton {
 
 	private static final long serialVersionUID = -3216722706956588440L;
 
+	private boolean isOuterDot;
 	private boolean draw;
 	private Image image;
 
@@ -25,5 +26,13 @@ public class GhostBoardButton extends JButton {
 	
 	public void setDraw(boolean draw) {
 		this.draw = draw;
+	}
+	
+	public void setIsOuterDot(boolean bool) {
+		this.isOuterDot = bool;
+	}
+	
+	public boolean getIsOuterDot() {
+		return this.isOuterDot;
 	}
 }

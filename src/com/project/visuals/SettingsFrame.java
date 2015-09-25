@@ -2,6 +2,7 @@ package com.project.visuals;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
@@ -12,26 +13,23 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.border.Border;
 
-public class SettingsFrame extends JFrame{
-	
-	public SettingsFrame(){
-		createFrameSettings();
-	}
+public class SettingsFrame extends JFrame {
 
-	public static void createFrameSettings(){
-		JFrame frame = new JFrame("Settings");
-		JPanel checkBoxPanel = new JPanel(new GridLayout(0,1));
-		JPanel buttonPanel = new JPanel(new GridLayout(0,1));
-	
+	private static final long serialVersionUID = 1254854874509485288L;
+
+	public SettingsFrame() {
+		JPanel checkBoxPanel = new JPanel(new GridLayout(0, 1));
+		JPanel buttonPanel = new JPanel(new GridLayout(0, 1));
+
 		Border border = BorderFactory.createTitledBorder("GameStyle");
 		checkBoxPanel.setBorder(border);
 		ButtonGroup bg = new ButtonGroup();
-		
+
 		JRadioButton basic = new JRadioButton("Basic");
 		bg.add(basic);
 		basic.setSelected(true);
 		checkBoxPanel.add(basic);
-		
+
 		JRadioButton standard = new JRadioButton("Standard");
 		bg.add(standard);
 		checkBoxPanel.add(standard);
@@ -39,13 +37,11 @@ public class SettingsFrame extends JFrame{
 		buttonPanel.add(save);
 		JButton discard = new JButton("Cancel");
 		buttonPanel.add(discard);
-		
-		Container contentPane = frame.getContentPane();
+
+		Container contentPane = this.getContentPane();
 		contentPane.add(checkBoxPanel, BorderLayout.CENTER);
 		contentPane.add(buttonPanel, BorderLayout.SOUTH);
-		frame.setSize(300, 200);
-		frame.setVisible(true);
-		
-		
+		this.setPreferredSize(new Dimension(300, 200));
+		this.pack();
 	}
 }

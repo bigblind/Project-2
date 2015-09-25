@@ -6,6 +6,7 @@ import com.project.logic.Board;
 import com.project.logic.Game;
 import com.project.logic.Player;
 import com.project.visuals.GhostBoardButton;
+import com.project.visuals.GhostBoardButtonPanel;
 import com.project.visuals.ResourceLoader;
 
 public abstract class State {
@@ -15,8 +16,8 @@ public abstract class State {
 	protected Player activePlayer;
 	protected Image stoneImage;
 
-	public State(GhostBoardButton[][] buttons, Game game) {
-		this.buttons = buttons;
+	public State(GhostBoardButtonPanel boardButtonPanel, Game game) {
+		this.buttons = boardButtonPanel.getButtons();
 		this.game = game;
 	}
 

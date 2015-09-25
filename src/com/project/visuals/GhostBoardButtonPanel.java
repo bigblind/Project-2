@@ -15,7 +15,11 @@ public class GhostBoardButtonPanel extends JPanel implements ComponentListener {
 
 	private static final long serialVersionUID = -4895368866649881850L;
 
-	private State state; //TODO needs to be changed
+	/*
+	 * maybe make an init somewhere that then sets the state of the GhostBoardButtonPanel, sets the active player and everything
+	 */
+	
+	private State state; // TODO needs to be changed
 	private GhostBoardButton[][] buttons;
 	private BoardPanel boardPanel;
 	private int tileSize;
@@ -39,27 +43,15 @@ public class GhostBoardButtonPanel extends JPanel implements ComponentListener {
 				button.setContentAreaFilled(false);
 				button.setBorder(BorderFactory.createEmptyBorder());
 				button.setName(Integer.toString(i) + Integer.toString(j));
-//				button.addMouseListener(new MouseListener() {
-//					public void mouseClicked(MouseEvent e) {
-//						
-//					}
-//
-//					public void mouseEntered(MouseEvent e) {
-//						button.setPlayer(new Player(Board.WHITE_VALUE));
-//					}
-//
-//					public void mouseExited(MouseEvent e) {
-//						button.setPlayer(null);
-//					}
-//
-//					public void mousePressed(MouseEvent e) {
-//						
-//					}
-//
-//					public void mouseReleased(MouseEvent e) {
-//						
-//					}
-//				});
+				
+				if (i == 0 || j == 0 || j == 8 || i == 8) button.setIsOuterDot(true);
+				else if (i == 1 && j == 5) button.setIsOuterDot(true);
+				else if (i == 2 && j == 6)  button.setIsOuterDot(true);
+				else if (i == 3 && j == 7) button.setIsOuterDot(true);
+				else if (i == 5 && j == 1) button.setIsOuterDot(true);
+				else if (i == 6 && j == 2) button.setIsOuterDot(true);
+				else if (i == 7 && j == 3) button.setIsOuterDot(true);
+				
 				this.buttons[i][j] = button;
 			}
 		}
@@ -69,27 +61,15 @@ public class GhostBoardButtonPanel extends JPanel implements ComponentListener {
 				button.setContentAreaFilled(false);
 				button.setBorder(BorderFactory.createEmptyBorder());
 				button.setName(Integer.toString(i) + Integer.toString(4 + j));
-//				button.addMouseListener(new MouseListener() {
-//					public void mouseClicked(MouseEvent e) {
-//						
-//					}
-//
-//					public void mouseEntered(MouseEvent e) {
-//						button.setPlayer(new Player(Board.WHITE_VALUE));
-//					}
-//
-//					public void mouseExited(MouseEvent e) {
-//						button.setPlayer(null);
-//					}
-//
-//					public void mousePressed(MouseEvent e) {
-//						
-//					}
-//
-//					public void mouseReleased(MouseEvent e) {
-//						
-//					}
-//				});
+				
+				if (i == 0 || j == 0 || j == 4 || i == 8) button.setIsOuterDot(true);
+				else if (i == 1 && j == 5) button.setIsOuterDot(true);
+				else if (i == 2 && j == 6)  button.setIsOuterDot(true);
+				else if (i == 3 && j == 7) button.setIsOuterDot(true);
+				else if (i == 5 && j == 1) button.setIsOuterDot(true);
+				else if (i == 6 && j == 2) button.setIsOuterDot(true);
+				else if (i == 7 && j == 3) button.setIsOuterDot(true);
+				
 				this.buttons[i][4 + j] = button;
 			}
 		}
@@ -101,11 +81,11 @@ public class GhostBoardButtonPanel extends JPanel implements ComponentListener {
 		}
 		for (int j = 1; j < 5; j++) {
 			for (int i = j; i < 9; i++) {
-				this.add(this.buttons[i][4+j]);
+				this.add(this.buttons[i][4 + j]);
 			}
 		}
-		
-		this.state = new MoveStateA(buttons, game);
+
+		this.state = new MoveStateA(this, game);
 		this.state.execute();
 	}
 
@@ -121,7 +101,7 @@ public class GhostBoardButtonPanel extends JPanel implements ComponentListener {
 		this.coordinates = boardPanel.getCoordinates();
 		this.tileSize = boardPanel.getTileSize();
 		this.setSize(this.boardPanel.getSize());
-		
+
 		for (int j = 0; j < 5; j++) {
 			for (int i = 0; i < 5 + j; i++) {
 				this.buttons[i][j].setBounds(this.coordinates[i][j].getX(), this.coordinates[i][j].getY(), this.tileSize, this.tileSize);
@@ -138,4 +118,16 @@ public class GhostBoardButtonPanel extends JPanel implements ComponentListener {
 
 	}
 
+	public GhostBoardButton[][] getButtons() {
+		return this.buttons;
+	}
+
+	public void setState(State state) {
+		this.state = state;
+		this.state.execute();
+	}
+	
+	public Game getGame() {
+		return this.getGame();
+	}
 }
