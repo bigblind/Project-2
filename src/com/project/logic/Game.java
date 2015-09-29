@@ -9,7 +9,7 @@ public class Game {
 	public Game() {
 		this.board = new Board();
 		this.playerOne = new Player();
-		this.playerTwo = new Player();
+		this.playerTwo = new Player(Board.BLACK_VALUE);
 	}
 	
 	public void setGameLogic(GameLogic logic) {

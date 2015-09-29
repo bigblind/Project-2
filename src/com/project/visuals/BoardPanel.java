@@ -5,9 +5,11 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.RadialGradientPaint;
 import java.awt.RenderingHints;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.geom.Point2D;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -15,12 +17,23 @@ import javax.swing.JPanel;
 import com.project.logic.Board;
 import com.project.logic.Game;
 import com.project.logic.Point;
+import com.project.visuals.state.MoveStateA;
+import com.project.visuals.state.State;
 
 public class BoardPanel extends JPanel implements ComponentListener {
 
 	private static final long serialVersionUID = -6218578367247380839L;
 
+	/*
+	 * maybe make an init somewhere that then sets the state of the
+	 * GhostBoardButtonPanel, sets the active player and everything
+	 */
+
+	private State state; // TODO needs to be changed
+	private BoardButtons[][] buttons;
+
 	private Board board;
+	private Game game;
 
 	private int distance;
 	private int yOffset = 10;
@@ -30,18 +43,81 @@ public class BoardPanel extends JPanel implements ComponentListener {
 	private Point[][] coordinates;
 
 	public BoardPanel(Game game) {
+		this.buttons = new BoardButtons[9][9];
 		this.coordinates = new Point[9][9];
 		this.board = game.getBoard();
-		this.resize();
+		this.game = game;
 		this.setBackground(new Color(52, 207, 67).brighter());
-//		this.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 0, Color.DARK_GRAY));
 		this.addComponentListener(this);
+		this.setLayout(null);
+
+		for (int j = 0; j < 5; j++) {
+			for (int i = 0; i < 5 + j; i++) {
+				BoardButtons button = new BoardButtons();
+				button.setBorder(BorderFactory.createEmptyBorder());
+				button.setName(Integer.toString(i) + Integer.toString(j));
+				button.setContentAreaFilled(false);
+				if (i == 0 || j == 0 || j == 8 || i == 8) button.setIsOuterDot(true);
+				else if (i == 1 && j == 5) button.setIsOuterDot(true);
+				else if (i == 2 && j == 6) button.setIsOuterDot(true);
+				else if (i == 3 && j == 7) button.setIsOuterDot(true);
+				else if (i == 5 && j == 1) button.setIsOuterDot(true);
+				else if (i == 6 && j == 2) button.setIsOuterDot(true);
+				else if (i == 7 && j == 3) button.setIsOuterDot(true);
+
+				this.buttons[i][j] = button;
+			}
+		}
+		for (int j = 1; j < 5; j++) {
+			for (int i = j; i < 9; i++) {
+				BoardButtons button = new BoardButtons();
+				button.setBorder(BorderFactory.createEmptyBorder());
+				button.setName(Integer.toString(i) + Integer.toString(4 + j));
+				button.setContentAreaFilled(false);
+				if (i == 0 || j == 0 || j == 4 || i == 8) button.setIsOuterDot(true);
+				else if (i == 1 && j == 5) button.setIsOuterDot(true);
+				else if (i == 2 && j == 6) button.setIsOuterDot(true);
+				else if (i == 3 && j == 7) button.setIsOuterDot(true);
+				else if (i == 5 && j == 1) button.setIsOuterDot(true);
+				else if (i == 6 && j == 2) button.setIsOuterDot(true);
+				else if (i == 7 && j == 3) button.setIsOuterDot(true);
+
+				this.buttons[i][4 + j] = button;
+			}
+		}
+
+		for (int j = 0; j < 5; j++) {
+			for (int i = 0; i < 5 + j; i++) {
+				this.add(this.buttons[i][j]);
+			}
+		}
+		for (int j = 1; j < 5; j++) {
+			for (int i = j; i < 9; i++) {
+				this.add(this.buttons[i][4 + j]);
+			}
+		}
+
+		this.state = new MoveStateA(this, game);
+		this.state.execute();
+		this.resize();
 	}
 
 	public void paintComponent(Graphics g2) {
 		super.paintComponent(g2);
-
 		Graphics2D g = (Graphics2D) g2;
+
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
+
+		if (this.coordinates[8][8].getX() - this.coordinates[0][0].getX() > 0) {
+			Point2D center = new Point2D.Float(this.getWidth() / 2, this.getHeight() / 2);
+			float radius = this.getHeight() * 2 / 3;
+			float[] dist = { 0.6f, 0.8f };
+			Color[] colors = { new Color(25, 207, 67), new Color(23, 178, 67) };
+			RadialGradientPaint gp = new RadialGradientPaint(center, radius, dist, colors);
+			g.setPaint(gp);
+			g.fillRect(0, 0, this.getWidth(), this.getHeight());
+		}
 
 		// drawing the background
 		int[] x = new int[6];
@@ -64,9 +140,6 @@ public class BoardPanel extends JPanel implements ComponentListener {
 
 		g.setStroke(new BasicStroke(2));
 		g.setColor(Color.BLACK);
-
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
 
 		for (int j = 1; j < 5; j++) {
 			g.drawLine(coordinates[0][j].getX() + this.tileSize / 2, coordinates[0][j].getY() + this.tileSize / 2, coordinates[4 + j][j].getX() + this.tileSize / 2, coordinates[4 + j][j].getY() + this.tileSize / 2);
@@ -115,6 +188,7 @@ public class BoardPanel extends JPanel implements ComponentListener {
 		}
 
 		this.drawStones(g);
+		this.drawSideStones(g);
 	}
 
 	private void drawStones(Graphics2D g) {
@@ -125,25 +199,61 @@ public class BoardPanel extends JPanel implements ComponentListener {
 				} else if (this.board.getGrid()[i][j] == Board.WHITE_VALUE) {
 					g.drawImage(ResourceLoader.WHITE_STONE, this.coordinates[i][j].getX(), this.coordinates[i][j].getY(), tileSize, tileSize, null);
 				} else if (this.board.getGrid()[i][j] == Board.GIPF_BLACK_VALUE) {
-					
+
 				} else if (this.board.getGrid()[i][j] == Board.GIPF_WHITE_VALUE) {
-					
+
 				}
 			}
 		}
 		for (int j = 1; j < 5; j++) {
 			for (int i = j; i < 9; i++) {
-				if (this.board.getGrid()[i][4+j] == Board.BLACK_VALUE) {
-					g.drawImage(ResourceLoader.BLACK_STONE, this.coordinates[i][4+j].getX(), this.coordinates[i][4+j].getY(), tileSize, tileSize, null);
-				} else if (this.board.getGrid()[i][4+j] == Board.WHITE_VALUE) {
-					g.drawImage(ResourceLoader.WHITE_STONE, this.coordinates[i][4+j].getX(), this.coordinates[i][4+j].getY(), tileSize, tileSize, null);
-				} else if (this.board.getGrid()[i][4+j] == Board.GIPF_BLACK_VALUE) {
-					
-				} else if (this.board.getGrid()[i][4+j] == Board.GIPF_WHITE_VALUE) {
-					
+				if (this.board.getGrid()[i][4 + j] == Board.BLACK_VALUE) {
+					g.drawImage(ResourceLoader.BLACK_STONE, this.coordinates[i][4 + j].getX(), this.coordinates[i][4 + j].getY(), tileSize, tileSize, null);
+				} else if (this.board.getGrid()[i][4 + j] == Board.WHITE_VALUE) {
+					g.drawImage(ResourceLoader.WHITE_STONE, this.coordinates[i][4 + j].getX(), this.coordinates[i][4 + j].getY(), tileSize, tileSize, null);
+				} else if (this.board.getGrid()[i][4 + j] == Board.GIPF_BLACK_VALUE) {
+
+				} else if (this.board.getGrid()[i][4 + j] == Board.GIPF_WHITE_VALUE) {
+
 				}
 			}
 		}
+	}
+
+	private void drawSideStones(Graphics2D g) {
+		int xDifference = this.coordinates[1][0].getX() - this.coordinates[0][0].getX();
+
+		int p1s = this.game.getPlayerOne().getStoneAccount();
+		int p2s = this.game.getPlayerTwo().getStoneAccount();
+
+		for (double i = -p1s / 2.0; i < p1s / 2.0; i++) {
+			g.drawImage(ResourceLoader.WHITE_STONE, this.coordinates[0][0].getX() - 2 * xDifference, (int) (this.getHeight() / 2 - this.tileSize / 2 - (i * tileSize / 2)), tileSize, tileSize, null);
+//			if (i % 2 == 0) g.drawImage(ResourceLoader.WHITE_STONE, this.coordinates[0][0].getX() - xDifference - tileSize/16, this.getHeight() / 2 - this.tileSize / 2 - (i * tileSize / 4), tileSize, tileSize, null);
+//			else g.drawImage(ResourceLoader.WHITE_STONE, this.coordinates[0][0].getX() - xDifference + tileSize/2, this.getHeight() / 2 - this.tileSize/2 - (i*tileSize/4), tileSize, tileSize, null);
+		}
+
+		for (double i = -p2s / 2.0; i < p2s / 2.0; i++) {
+			g.drawImage(ResourceLoader.BLACK_STONE, this.coordinates[8][8].getX() + 2 * xDifference, (int) (this.getHeight() / 2 - this.tileSize / 2 - (i * tileSize / 2)), tileSize, tileSize, null);
+		}
+//		g.drawImage(ResourceLoader.WHITE_STONE, this.coordinates[0][0].getX() - xDifference, this.getHeight() / 2 - this.tileSize / 2, tileSize, tileSize, null);
+//		g.setFont(new Font("Segoe WP", 0, tileSize*2/3));
+//		g.drawString(Integer.toString(p1s), this.coordinates[0][0].getX() - xDifference + (tileSize - g.getFontMetrics().stringWidth(Integer.toString(p1s)))/2, this.getHeight() / 2 + (tileSize - g.getFontMetrics().getHeight()) + tileSize/9);
+
+//		int usedTileSize = tileSize * 8 / 7;
+//		int maxPerLine = 10;
+//		int startY = (this.getHeight() - maxPerLine * usedTileSize) / 2;
+//
+//		for (int i = 0; i <= (int) p1s/maxPerLine; i++) {
+//			if ((p1s - i * maxPerLine) > 9) {
+//				for (int j = 0; j < maxPerLine; j++) {
+//					g.drawImage(ResourceLoader.WHITE_STONE, 50 + i*usedTileSize, startY + j*usedTileSize, usedTileSize, usedTileSize, null);
+//				}
+//			} else {
+//				for (int j = 0; j < (p1s - i*maxPerLine); j++) {
+//					g.drawImage(ResourceLoader.WHITE_STONE, 50 + i*usedTileSize, startY + j*usedTileSize, usedTileSize, usedTileSize, null);
+//				}
+//			}
+//		}
 	}
 
 	public void componentHidden(ComponentEvent e) {
@@ -178,17 +288,37 @@ public class BoardPanel extends JPanel implements ComponentListener {
 				this.coordinates[i][4 + j] = new Point(start.getX() + i * xDifference - tileSize / 2, start.getY() - i * yDifference + (8 + (j * 2)) * yDifference);
 			}
 		}
+
+		for (int j = 0; j < 5; j++) {
+			for (int i = 0; i < 5 + j; i++) {
+				this.buttons[i][j].setBounds(this.coordinates[i][j].getX(), this.coordinates[i][j].getY(), this.tileSize, this.tileSize);
+			}
+		}
+		for (int j = 1; j < 5; j++) {
+			for (int i = j; i < 9; i++) {
+				this.buttons[i][4 + j].setBounds(this.coordinates[i][4 + j].getX(), this.coordinates[i][4 + j].getY(), this.tileSize, this.tileSize);
+			}
+		}
 		this.repaint();
 	}
 
 	public void componentShown(ComponentEvent e) {
 
 	}
+
+	public void setState(State state) {
+		this.state = state;
+		this.state.execute();
+	}
 	
+	public BoardButtons[][] getButtons() {
+		return this.buttons;
+	}
+
 	public int getTileSize() {
 		return this.tileSize;
 	}
-	
+
 	public Point[][] getCoordinates() {
 		return this.coordinates;
 	}

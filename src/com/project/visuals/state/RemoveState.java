@@ -1,12 +1,12 @@
 package com.project.visuals.state;
 
 import com.project.logic.Game;
-import com.project.visuals.GhostBoardButtonPanel;
+import com.project.visuals.BoardPanel;
 
 public class RemoveState extends State {
 
-	public RemoveState(GhostBoardButtonPanel boardButtonPanel, Game game) {
-		super(boardButtonPanel, game);
+	public RemoveState(BoardPanel boardPanel, Game game) {
+		super(boardPanel, game);
 	}
 
 	public void execute() {

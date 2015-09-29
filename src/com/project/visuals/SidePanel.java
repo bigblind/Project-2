@@ -23,7 +23,7 @@ public class SidePanel extends JPanel implements FocusListener {
 	private JButton newGame;
 
 	public SidePanel() {
-		this.background = new Color(52, 207, 67);
+		this.background = new Color(23, 178, 67);
 		this.setBackground(this.background);
 
 		this.newGame = new JButton("New Game");

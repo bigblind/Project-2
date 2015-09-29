@@ -4,28 +4,28 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import com.project.logic.Game;
-import com.project.visuals.GhostBoardButton;
-import com.project.visuals.GhostBoardButtonPanel;
+import com.project.visuals.BoardButtons;
+import com.project.visuals.BoardPanel;
 
 public class MoveStateA extends State {
 
 	private MouseListener listener;
 
-	public MoveStateA(GhostBoardButtonPanel boardButtonPanel, Game game) {
-		super(boardButtonPanel, game);
+	public MoveStateA(BoardPanel boardPanel, Game game) {
+		super(boardPanel, game);
 
 		this.listener = new MouseListener() {
 			public void mouseClicked(MouseEvent e) {
-				boardButtonPanel.setState(new MoveStateB(boardButtonPanel, game, (GhostBoardButton) e.getComponent()));
+				boardPanel.setState(new MoveStateB(boardPanel, game, (BoardButtons) e.getComponent()));
 			}
 
 			public void mouseEntered(MouseEvent e) {
-				((GhostBoardButton) e.getComponent()).setDraw(true);
+				((BoardButtons) e.getComponent()).setDraw(true);
 				e.getComponent().repaint();
 			}
 
 			public void mouseExited(MouseEvent e) {
-				((GhostBoardButton) e.getComponent()).setDraw(false);
+				((BoardButtons) e.getComponent()).setDraw(false);
 				e.getComponent().repaint();
 			}
 

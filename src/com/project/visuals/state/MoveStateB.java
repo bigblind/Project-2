@@ -4,22 +4,22 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import com.project.logic.Game;
-import com.project.visuals.GhostBoardButton;
-import com.project.visuals.GhostBoardButtonPanel;
+import com.project.visuals.BoardButtons;
+import com.project.visuals.BoardPanel;
 
 public class MoveStateB extends State {
 
 	private MouseListener listener;
 
-	public MoveStateB(GhostBoardButtonPanel boardButtonPanel, Game game, GhostBoardButton pressedButton) {
-		super(boardButtonPanel, game);
+	public MoveStateB(BoardPanel boardPanel, Game game, BoardButtons pressedButton) {
+		super(boardPanel, game);
 
 		this.listener = new MouseListener() {
 			public void mouseClicked(MouseEvent e) {
-				if (((GhostBoardButton) e.getComponent()).getIsOuterDot() == true) {
+				if (((BoardButtons) e.getComponent()).getIsOuterDot() == true) {
 					pressedButton.setDraw(false);
-					boardButtonPanel.setState(new MoveStateB(boardButtonPanel, game, (GhostBoardButton) e.getComponent()));
-					boardButtonPanel.repaint();
+					boardPanel.setState(new MoveStateB(boardPanel, game, (BoardButtons) e.getComponent()));
+					boardPanel.repaint();
 				} else {
 					// TODO check if it is a possible move ( maybe in game
 					// logic, that makes more sense ) so just make player fire
@@ -31,12 +31,12 @@ public class MoveStateB extends State {
 			}
 
 			public void mouseEntered(MouseEvent e) {
-				((GhostBoardButton) e.getComponent()).setDraw(true);
+				((BoardButtons) e.getComponent()).setDraw(true);
 				e.getComponent().repaint();
 			}
 
 			public void mouseExited(MouseEvent e) {
-				if (!((GhostBoardButton) e.getComponent()).equals(pressedButton)) ((GhostBoardButton) e.getComponent()).setDraw(false);
+				if (!((BoardButtons) e.getComponent()).equals(pressedButton)) ((BoardButtons) e.getComponent()).setDraw(false);
 				e.getComponent().repaint();
 			}
 

@@ -5,19 +5,19 @@ import java.awt.Image;
 import com.project.logic.Board;
 import com.project.logic.Game;
 import com.project.logic.Player;
-import com.project.visuals.GhostBoardButton;
-import com.project.visuals.GhostBoardButtonPanel;
+import com.project.visuals.BoardButtons;
+import com.project.visuals.BoardPanel;
 import com.project.visuals.ResourceLoader;
 
 public abstract class State {
 
-	protected GhostBoardButton[][] buttons;
+	protected BoardButtons[][] buttons;
 	protected Game game;
 	protected Player activePlayer;
 	protected Image stoneImage;
 
-	public State(GhostBoardButtonPanel boardButtonPanel, Game game) {
-		this.buttons = boardButtonPanel.getButtons();
+	public State(BoardPanel boardPanel, Game game) {
+		this.buttons = boardPanel.getButtons();
 		this.game = game;
 	}
 

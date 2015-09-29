@@ -62,12 +62,12 @@ public class Board {
 		this.grid[3][7] = BOARD_EDGE;
 
 		// placing the stones
-//		this.grid[1][1] = WHITE_VALUE;
-//		this.grid[4][1] = BLACK_VALUE;
-//		this.grid[7][4] = WHITE_VALUE;
-//		this.grid[7][7] = BLACK_VALUE;
-//		this.grid[4][7] = WHITE_VALUE;
-//		this.grid[1][4] = BLACK_VALUE;
+		this.grid[1][1] = WHITE_VALUE;
+		this.grid[4][1] = BLACK_VALUE;
+		this.grid[7][4] = WHITE_VALUE;
+		this.grid[7][7] = BLACK_VALUE;
+		this.grid[4][7] = WHITE_VALUE;
+		this.grid[1][4] = BLACK_VALUE;
 	}
 
 	public Board copy() {
