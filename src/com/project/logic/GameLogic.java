@@ -52,5 +52,4 @@ public abstract class GameLogic implements PlayerListener {
 	}
 	
 	
-	
 }

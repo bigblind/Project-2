@@ -15,12 +15,13 @@ public class BasicGameLogic extends GameLogic{
 	}
 	
 	public void eventPerformed(PlayerEvent e) {
-		if(!(e instanceof Row)){ //if the action is not to pick a row.
+		//handle the player's action
+		if(!(e instanceof Row)){ //if the action is not to pick a row, it's a move
 			handlePlayerMove(e);
 		}else{ //this is a row removal action
 			handleRowChoice((Row)e);
 		}
-		boolean waitingForAny = (waitingForWhite || waitingForBlack) == true;
+		boolean waitingForAny = (waitingForWhite || waitingForBlack) == true; // We're waiting for any player to pick a row.
 		
 		if(game.getBoard().checkForLines().size() != 0){
 			handleLines();
