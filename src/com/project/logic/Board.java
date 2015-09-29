@@ -287,15 +287,14 @@ public class Board {
 	
 	private Point findConnectionEnd(Point from, int deltaX, int deltaY){
 		int i=1;
-		while(true){
+		Point 	p = from;
+		while(!isEmpty(p)){
 			int x = from.getX() + deltaX * i;
 			int y = from.getY() + deltaY * i;
-			Point p = new Point(x, y);
-			if(isEmpty(p)){
-				return p;
-			}
+			p = new Point(x, y);
 			i++;
 		}
+		return p;
 	}
 	
 	private void removeLine(Point start, Point end, int deltaX, int deltaY){
