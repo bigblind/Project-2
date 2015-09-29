@@ -87,14 +87,14 @@ public class BasicGameLogic extends GameLogic{
 	}
 	
 	private ArrayList<Row> rowsForPlayer(int color, ArrayList<Row> possibleRows) {
-		ArrayList<Row> rowsForPlayer = new ArrayList<Row>();
+		ArrayList<Row> rowsForPlayer = new ArrayList<Row>();	
 		
 		for(int x = 0; x < possibleRows.size(); x++){
 			Row tmp = possibleRows.get(x);
-			if(color == tmp.getWhiteExtensionStones() && tmp.getWhiteExtensionStones() >= 4)
+			if(color == tmp.getPlayer().getStoneColor() && tmp.getWhiteExtensionStones() >= 4)
 				rowsForPlayer.add(new Row(tmp.getFromPoint(), tmp.getToPoint(), tmp.getPlayer(), tmp.getLength(), tmp.getWhiteExtensionStones(), tmp.getBlackExtensionStones()));
 
-			if(color == tmp.getBlackExtensionStones() && tmp.getBlackExtensionStones() >= 4)
+			if(color == tmp.getPlayer().getStoneColor() && tmp.getBlackExtensionStones() >= 4)
 				rowsForPlayer.add(new Row(tmp.getFromPoint(), tmp.getToPoint(), tmp.getPlayer(), tmp.getLength(), tmp.getWhiteExtensionStones(), tmp.getBlackExtensionStones()));		
 		}
 		// rows only for white and rows only for black
