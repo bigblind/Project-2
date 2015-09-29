@@ -150,7 +150,7 @@ public class Board {
 						lineStartX = i;
 						lineStartY = j - counter;
 						//TODO implement a way to count the number of white and black stones that extend the row.
-						int[] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), Point(lineEndX, lineEndY));
+						int[] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY));
 						lines.add(
 								new Row(new Point(lineStartX, lineStartY),
 										new Point(lineEndX, lineEndY),
