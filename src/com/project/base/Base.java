@@ -2,6 +2,7 @@ package com.project.base;
 
 import java.io.IOException;
 
+import com.project.logic.BasicGameLogic;
 import com.project.logic.Game;
 import com.project.logic.StandardGameLogic;
 import com.project.visuals.GameFrame;
@@ -12,8 +13,9 @@ public class Base {
 	public static void main(String[] args) {
 		Game game = new Game();
 
-		StandardGameLogic logic = new StandardGameLogic(game);
+		BasicGameLogic logic = new BasicGameLogic(game);
 		game.setGameLogic(logic);
+		
 //		
 //		logic.checkForLines();
 //		

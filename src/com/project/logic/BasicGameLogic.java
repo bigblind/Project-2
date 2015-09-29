@@ -57,10 +57,10 @@ public class BasicGameLogic extends GameLogic{
 				else blackRowCount += 1;
 			}
 			if(whiteRowCount > 0){
-				handlePlayerRows(game.getBoard().WHITE_VALUE);
+				handlePlayerRows(game.getBoard().WHITE_VALUE, game.getGameLogic().removeOptions);
 			}
 			if(blackRowCount > 0 && !waitingForWhite){
-				handlePlayerRows(game.getBoard().BLACK_VALUE);
+				handlePlayerRows(game.getBoard().BLACK_VALUE, game.getGameLogic().removeOptions);
 			}
 		}
 		
@@ -73,8 +73,8 @@ public class BasicGameLogic extends GameLogic{
 		handleExtensions(row);
 	}
 	
-	private void handlePlayerRows(int color){
-		ArrayList<Row> rows = rowsForPlayer(color);
+	private void handlePlayerRows(int color, ArrayList<Row> possibleRows){
+		ArrayList<Row> rows = rowsForPlayer(color, possibleRows);
 		if(rows.size() == 1){
 			handleSingleRow(rows.get(0));
 		}else{
@@ -84,10 +84,20 @@ public class BasicGameLogic extends GameLogic{
 			p.chooseRowToRemove(game, rows);
 		}
 	}
+	
+	private ArrayList<Row> rowsForPlayer(int color, ArrayList<Row> possibleRows) {
+		ArrayList<Row> rowsForPlayer = new ArrayList<Row>();
+		
+		for(int x = 0; x < possibleRows.size(); x++){
+			Row tmp = possibleRows.get(x);
+			if(color == tmp.getWhiteExtensionStones() && tmp.getWhiteExtensionStones() >= 4)
+				rowsForPlayer.add(new Row(tmp.getFromPoint(), tmp.getToPoint(), tmp.getPlayer(), tmp.getLength(), tmp.getWhiteExtensionStones(), tmp.getBlackExtensionStones()));
 
-	private ArrayList<Row> rowsForPlayer(int color) {
-		// TODO Auto-generated method stub
-		return null;
+			if(color == tmp.getBlackExtensionStones() && tmp.getBlackExtensionStones() >= 4)
+				rowsForPlayer.add(new Row(tmp.getFromPoint(), tmp.getToPoint(), tmp.getPlayer(), tmp.getLength(), tmp.getWhiteExtensionStones(), tmp.getBlackExtensionStones()));		
+		}
+		// rows only for white and rows only for black
+		return rowsForPlayer;
 	}
 	
 	private void handleExtensions(Row row){
