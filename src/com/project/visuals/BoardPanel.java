@@ -33,7 +33,8 @@ public class BoardPanel extends JPanel implements ComponentListener {
 
 	private BoardButtons[][] buttons;
 	private Point[][] coordinates;
-
+	private Point[][][] connectedLocations;
+	
 	private Board board;
 	private Game game;
 
@@ -43,6 +44,7 @@ public class BoardPanel extends JPanel implements ComponentListener {
 	private int tileSize;
 
 	public BoardPanel(Game game) {
+		this.connectedLocations = new Point[9][9][];
 		this.buttons = new BoardButtons[9][9];
 		this.coordinates = new Point[9][9];
 		this.board = game.getBoard();
@@ -51,6 +53,14 @@ public class BoardPanel extends JPanel implements ComponentListener {
 		this.addComponentListener(this);
 		this.setLayout(null);
 
+		this.initButtons();
+		this.initConnections();
+		
+		this.setState(new MoveStateA(this, game));
+		this.resize();
+	}
+	
+	private void initButtons() {
 		for (int j = 0; j < 5; j++) {
 			for (int i = 0; i < 5 + j; i++) {
 				BoardButtons button = new BoardButtons();
@@ -96,11 +106,39 @@ public class BoardPanel extends JPanel implements ComponentListener {
 				this.add(this.buttons[i][4 + j]);
 			}
 		}
-
-		this.setState(new MoveStateA(this, game));
-		this.resize();
 	}
 
+	private void initConnections() {
+		Point[] p;
+		
+		p = new Point[1];
+		p[0] = new Point(1,1);
+		this.connectedLocations[0][0] = p;
+		for (int i = 1; i < 4; i++) {
+			p = new Point[2];
+			for (int j = 0; j < 2; j++) {
+				p[j] = new Point(1, i+j);
+			}
+			this.connectedLocations[0][i] = p;
+		}
+		p = new Point[1];
+		p[0] = new Point(1,4);
+		this.connectedLocations[0][4] = p;
+		
+		for (int i = 1; i < 4; i++) {
+			p = new Point[2];
+			for (int j = 0; j < 2; j++) {
+				p[j] = new Point(i+j, 1);
+			}
+			this.connectedLocations[i][0] = p;
+		}
+		p = new Point[1];
+		p[0] = new Point(4, 1);
+		this.connectedLocations[4][0] = p;
+		
+		
+	}
+	
 	public void paintComponent(Graphics g2) {
 		super.paintComponent(g2);
 		Graphics2D g = (Graphics2D) g2;

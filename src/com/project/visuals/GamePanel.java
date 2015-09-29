@@ -19,7 +19,7 @@ public class GamePanel extends JPanel {
 		this.boardPanel = new BoardPanel(game);
 		
 		this.sidePanel = new SidePanel();
-//		this.sidePanel.setVisible(false);
+		this.sidePanel.setVisible(false);
 		
 		this.setLayout(new BorderLayout());
 		this.add(this.boardPanel, BorderLayout.CENTER);
