@@ -2,9 +2,9 @@ package com.project.visuals.state;
 
 import java.awt.Image;
 
-import com.project.logic.Board;
 import com.project.logic.Game;
-import com.project.logic.Player;
+import com.project.logic.board.Board;
+import com.project.logic.player.Player;
 import com.project.visuals.BoardButtons;
 import com.project.visuals.BoardPanel;
 import com.project.visuals.ResourceLoader;

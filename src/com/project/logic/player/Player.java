@@ -1,6 +1,8 @@
-package com.project.logic;
+package com.project.logic.player;
 
 import java.util.ArrayList;
+
+import com.project.logic.board.Board;
 
 public class Player {
 

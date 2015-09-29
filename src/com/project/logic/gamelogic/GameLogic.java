@@ -1,4 +1,9 @@
-package com.project.logic;
+package com.project.logic.gamelogic;
+
+import com.project.logic.Game;
+import com.project.logic.player.Player;
+import com.project.logic.player.PlayerEvent;
+import com.project.logic.player.PlayerListener;
 
 public abstract class GameLogic implements PlayerListener {
 

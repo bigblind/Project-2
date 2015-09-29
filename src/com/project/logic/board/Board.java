@@ -1,4 +1,6 @@
-package com.project.logic;
+package com.project.logic.board;
+
+import com.project.logic.Point;
 
 public class Board {
 

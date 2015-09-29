@@ -1,4 +1,4 @@
-package com.project.visuals;
+package com.project.visuals.sidepanel;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -9,6 +9,8 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+
+import com.project.visuals.ResourceLoader;
 
 public class BottomButtonPanel extends MenuComponent {
 

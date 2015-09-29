@@ -1,4 +1,4 @@
-package com.project.visuals;
+package com.project.visuals.sidepanel;
 
 import java.awt.BorderLayout;
 import java.awt.Container;

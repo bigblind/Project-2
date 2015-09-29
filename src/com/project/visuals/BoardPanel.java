@@ -14,9 +14,9 @@ import java.awt.geom.Point2D;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
-import com.project.logic.Board;
 import com.project.logic.Game;
 import com.project.logic.Point;
+import com.project.logic.board.Board;
 import com.project.visuals.state.MoveStateA;
 import com.project.visuals.state.State;
 
@@ -30,7 +30,9 @@ public class BoardPanel extends JPanel implements ComponentListener {
 	 */
 
 	private State state; // TODO needs to be changed
+
 	private BoardButtons[][] buttons;
+	private Point[][] coordinates;
 
 	private Board board;
 	private Game game;
@@ -39,8 +41,6 @@ public class BoardPanel extends JPanel implements ComponentListener {
 	private int yOffset = 10;
 
 	private int tileSize;
-
-	private Point[][] coordinates;
 
 	public BoardPanel(Game game) {
 		this.buttons = new BoardButtons[9][9];
@@ -97,8 +97,7 @@ public class BoardPanel extends JPanel implements ComponentListener {
 			}
 		}
 
-		this.state = new MoveStateA(this, game);
-		this.state.execute();
+		this.setState(new MoveStateA(this, game));
 		this.resize();
 	}
 

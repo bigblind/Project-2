@@ -1,4 +1,6 @@
-package com.project.logic;
+package com.project.logic.gamelogic;
+
+import com.project.logic.Game;
 
 public class BasicGameLogic extends GameLogic{
 

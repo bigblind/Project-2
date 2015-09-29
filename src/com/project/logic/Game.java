@@ -1,5 +1,9 @@
 package com.project.logic;
 
+import com.project.logic.board.Board;
+import com.project.logic.gamelogic.GameLogic;
+import com.project.logic.player.Player;
+
 public class Game {
 
 	private GameLogic logic;

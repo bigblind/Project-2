@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 
 import com.project.logic.Game;
+import com.project.visuals.sidepanel.SidePanel;
 
 public class GamePanel extends JPanel {
 
