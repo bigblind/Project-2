@@ -40,7 +40,7 @@ public class GameFrame extends JFrame implements ComponentListener {
 		this.ghostGamePanel = new JPanel();
 		this.ghostGamePanel.setBackground(new Color(0, 0, 0, 150));
 		this.ghostGamePanel.setOpaque(false);
-
+ 
 		layer.add(this.gamePanel, new Integer(0));
 		layer.add(this.ghostGamePanel, new Integer(1));
 
