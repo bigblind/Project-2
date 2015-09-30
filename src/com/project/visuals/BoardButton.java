@@ -6,7 +6,7 @@ import java.awt.Image;
 
 import javax.swing.JButton;
 
-public class BoardButtons extends JButton {
+public class BoardButton extends JButton {
 
 	private static final long serialVersionUID = -3216722706956588440L;
 

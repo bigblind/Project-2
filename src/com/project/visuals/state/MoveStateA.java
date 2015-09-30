@@ -4,7 +4,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import com.project.logic.Game;
-import com.project.visuals.BoardButtons;
+import com.project.visuals.BoardButton;
 import com.project.visuals.BoardPanel;
 
 public class MoveStateA extends State {
@@ -16,16 +16,16 @@ public class MoveStateA extends State {
 
 		this.listener = new MouseListener() {
 			public void mouseClicked(MouseEvent e) {
-				boardPanel.setState(new MoveStateB(boardPanel, game, (BoardButtons) e.getComponent()));
+				boardPanel.setState(new MoveStateB(boardPanel, game, (BoardButton) e.getComponent()));
 			}
 
 			public void mouseEntered(MouseEvent e) {
-				((BoardButtons) e.getComponent()).setDraw(true);
+				((BoardButton) e.getComponent()).setDraw(true);
 				e.getComponent().repaint();
 			}
 
 			public void mouseExited(MouseEvent e) {
-				((BoardButtons) e.getComponent()).setDraw(false);
+				((BoardButton) e.getComponent()).setDraw(false);
 				e.getComponent().repaint();
 			}
 

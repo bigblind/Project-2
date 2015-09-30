@@ -31,9 +31,9 @@ public class BoardPanel extends JPanel implements ComponentListener {
 
 	private State state; // TODO needs to be changed
 
-	private BoardButtons[][] buttons;
-	private Point[][] coordinates;
+	private BoardButton[][] buttons;
 	private Point[][][] connectedLocations;
+	private Point[][] coordinates;
 	
 	private Board board;
 	private Game game;
@@ -45,7 +45,7 @@ public class BoardPanel extends JPanel implements ComponentListener {
 
 	public BoardPanel(Game game) {
 		this.connectedLocations = new Point[9][9][];
-		this.buttons = new BoardButtons[9][9];
+		this.buttons = new BoardButton[9][9];
 		this.coordinates = new Point[9][9];
 		this.board = game.getBoard();
 		this.game = game;
@@ -63,7 +63,7 @@ public class BoardPanel extends JPanel implements ComponentListener {
 	private void initButtons() {
 		for (int j = 0; j < 5; j++) {
 			for (int i = 0; i < 5 + j; i++) {
-				BoardButtons button = new BoardButtons();
+				BoardButton button = new BoardButton();
 				button.setBorder(BorderFactory.createEmptyBorder());
 				button.setName(Integer.toString(i) + Integer.toString(j));
 				button.setContentAreaFilled(false);
@@ -80,7 +80,7 @@ public class BoardPanel extends JPanel implements ComponentListener {
 		}
 		for (int j = 1; j < 5; j++) {
 			for (int i = j; i < 9; i++) {
-				BoardButtons button = new BoardButtons();
+				BoardButton button = new BoardButton();
 				button.setBorder(BorderFactory.createEmptyBorder());
 				button.setName(Integer.toString(i) + Integer.toString(4 + j));
 				button.setContentAreaFilled(false);
@@ -348,7 +348,7 @@ public class BoardPanel extends JPanel implements ComponentListener {
 		this.state.execute();
 	}
 	
-	public BoardButtons[][] getButtons() {
+	public BoardButton[][] getButtons() {
 		return this.buttons;
 	}
 
@@ -358,5 +358,9 @@ public class BoardPanel extends JPanel implements ComponentListener {
 
 	public Point[][] getCoordinates() {
 		return this.coordinates;
+	}
+	
+	public Point[][][] getConnections() {
+		return this.connectedLocations;
 	}
 }

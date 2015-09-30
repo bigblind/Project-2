@@ -5,13 +5,13 @@ import java.awt.Image;
 import com.project.logic.Game;
 import com.project.logic.board.Board;
 import com.project.logic.player.Player;
-import com.project.visuals.BoardButtons;
+import com.project.visuals.BoardButton;
 import com.project.visuals.BoardPanel;
 import com.project.visuals.ResourceLoader;
 
 public abstract class State {
 
-	protected BoardButtons[][] buttons;
+	protected BoardButton[][] buttons;
 	protected Game game;
 	protected Player activePlayer;
 	protected Image stoneImage;

@@ -4,21 +4,24 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import com.project.logic.Game;
-import com.project.visuals.BoardButtons;
+import com.project.visuals.BoardButton;
 import com.project.visuals.BoardPanel;
 
 public class MoveStateB extends State {
 
+	private BoardButton pressedButton;
 	private MouseListener listener;
 
-	public MoveStateB(BoardPanel boardPanel, Game game, BoardButtons pressedButton) {
+	public MoveStateB(BoardPanel boardPanel, Game game, BoardButton pressedButton) {
 		super(boardPanel, game);
 
+		this.pressedButton = pressedButton;
+		
 		this.listener = new MouseListener() {
 			public void mouseClicked(MouseEvent e) {
-				if (((BoardButtons) e.getComponent()).getIsOuterDot() == true) {
+				if (((BoardButton) e.getComponent()).getIsOuterDot() == true) {
 					pressedButton.setDraw(false);
-					boardPanel.setState(new MoveStateB(boardPanel, game, (BoardButtons) e.getComponent()));
+					boardPanel.setState(new MoveStateB(boardPanel, game, (BoardButton) e.getComponent()));
 					boardPanel.repaint();
 				} else {
 					// TODO check if it is a possible move ( maybe in game
@@ -31,12 +34,12 @@ public class MoveStateB extends State {
 			}
 
 			public void mouseEntered(MouseEvent e) {
-				((BoardButtons) e.getComponent()).setDraw(true);
+				((BoardButton) e.getComponent()).setDraw(true);
 				e.getComponent().repaint();
 			}
 
 			public void mouseExited(MouseEvent e) {
-				if (!((BoardButtons) e.getComponent()).equals(pressedButton)) ((BoardButtons) e.getComponent()).setDraw(false);
+				if (!((BoardButton) e.getComponent()).equals(pressedButton)) ((BoardButton) e.getComponent()).setDraw(false);
 				e.getComponent().repaint();
 			}
 
