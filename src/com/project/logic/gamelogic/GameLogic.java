@@ -17,6 +17,7 @@ public abstract class GameLogic implements PlayerListener {
 	
 	public GameLogic(Game game) {
 		this.game = game;
+		this.currentPlayer = game.getPlayerOne();
 	}
 
 	public abstract void loop();
@@ -59,8 +60,7 @@ public abstract class GameLogic implements PlayerListener {
 	}
 
 	public Player getActivePlayer() {
-		// TODO Auto-generated method stub
-		return null;
+		return currentPlayer;
 	}
 	
 	
