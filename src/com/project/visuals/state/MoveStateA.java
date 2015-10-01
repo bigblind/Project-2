@@ -11,7 +11,7 @@ public class MoveStateA extends State {
 
 	private MouseListener listener;
 
-	public MoveStateA(BoardPanel boardPanel, Game game) {
+	public MoveStateA(final BoardPanel boardPanel, final Game game) {
 		super(boardPanel, game);
 
 		this.listener = new MouseListener() {

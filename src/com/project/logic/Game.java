@@ -1,11 +1,17 @@
 package com.project.logic;
 
+import java.io.Serializable;
+
 import com.project.logic.board.Board;
 import com.project.logic.gamelogic.GameLogic;
 import com.project.logic.player.Player;
 
-public class Game {
+public class Game implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private GameLogic logic;
 	private Player playerOne, playerTwo;
 	private Board board;
@@ -13,11 +19,12 @@ public class Game {
 	public Game() {
 		this.board = new Board();
 		this.playerOne = new Player();
-		this.playerTwo = new Player(Board.BLACK_VALUE);
+		this.playerTwo = new Player();
 	}
 	
 	public void setGameLogic(GameLogic logic) {
 		this.logic = logic;
+		this.board.setLogic(logic);
 	}
 	
 	public GameLogic getGameLogic() {

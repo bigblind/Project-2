@@ -2,8 +2,9 @@ package com.project.base;
 
 import java.io.IOException;
 
-import com.project.logic.Game;
+import com.project.logic.gamelogic.BasicGameLogic;
 import com.project.logic.gamelogic.StandardGameLogic;
+import com.project.logic.Game;
 import com.project.visuals.GameFrame;
 import com.project.visuals.ResourceLoader;
 
@@ -12,7 +13,7 @@ public class Base {
 	public static void main(String[] args) {
 		Game game = new Game();
 
-		StandardGameLogic logic = new StandardGameLogic(game);
+		BasicGameLogic logic = new BasicGameLogic(game);
 		game.setGameLogic(logic);
 
 		ResourceLoader loader = new ResourceLoader();

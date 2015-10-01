@@ -14,7 +14,7 @@ public class MoveStateB extends State {
 	private BoardButton pressedButton;
 	private MouseListener listener;
 
-	public MoveStateB(BoardPanel boardPanel, Game game, BoardButton pressedButton) {
+	public MoveStateB(final BoardPanel boardPanel, final Game game, final BoardButton pressedButton) {
 		super(boardPanel, game);
 
 		this.pressedButton = pressedButton;

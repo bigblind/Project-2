@@ -1,6 +1,10 @@
 package com.project.logic.board;
 
+import java.util.ArrayList;
+
 import com.project.logic.Point;
+import com.project.logic.Row;
+import com.project.logic.gamelogic.GameLogic;
 
 public class Board {
 
@@ -23,9 +27,14 @@ public class Board {
 	public static int VOID_TILE = -2;
 	
 	private int[][] grid;
+	private GameLogic logic;
 
 	public Board() {
 		this.init();
+	}
+	
+	public void setLogic(GameLogic l){
+		logic = l;
 	}
 
 	public Board(int[][] grid) {
@@ -121,8 +130,13 @@ public class Board {
 	public boolean isEmpty(Point point) {
 		return this.grid[(int) point.getX()][(int) point.getY()] <= 0;
 	}
+
+	public int[][] getGrid() {
+		return this.grid;
+	}
 	
-	public void checkForLines() {
+	public ArrayList<Row> checkForLines() {
+		ArrayList<Row> lines = new ArrayList<Row>();
 		int lineStartX = -1, lineStartY = -1, lineEndX = -1, lineEndY = -1;
 
 		int counter = -1;
@@ -133,14 +147,24 @@ public class Board {
 			for (int j = 1; j < grid[i].length - 1; j++) {
 				if (prevValue == grid[i][j] && prevValue > 0) counter++;
 				else {
-					counter = 1;
 					prevValue = grid[i][j];
-				}
-				if (counter == 4) {
-					lineEndX = i;
-					lineEndY = j;
-					lineStartX = i;
-					lineStartY = j - 3;
+					if (counter >= 4) {
+						lineEndX = i;
+						lineEndY = j-1; //the current stone's color is different, so it doesn't count towards the row.
+						lineStartX = i;
+						lineStartY = j - counter;
+						int[] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY));
+						lines.add(
+								new Row(new Point(lineStartX, lineStartY),
+										new Point(lineEndX, lineEndY),
+										logic.checkPlayer(prevValue),
+										counter,
+										extensionStones[0],
+										extensionStones[1]
+									)
+								);
+						counter = 1;
+					}
 				}
 			}
 			counter = 0;
@@ -152,14 +176,25 @@ public class Board {
 			for (int i = 0; i < grid.length; i++) {
 				if (prevValue == grid[i][j] && prevValue > 0) counter++;
 				else {
-					counter = 1;
 					prevValue = grid[i][j];
-				}
-				if (counter == 4) {
-					lineEndX = i;
-					lineEndY = j;
-					lineStartX = i - 3;
-					lineStartY = j;
+					if (counter >= 4) {
+						lineEndX = i-1;
+						lineEndY = j;
+						lineStartX = i - counter;
+						lineStartY = j;
+				
+						int[] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY));
+						lines.add(
+								new Row(new Point(lineStartX, lineStartY),
+										new Point(lineEndX, lineEndY),
+										logic.checkPlayer(prevValue),
+										counter,
+										extensionStones[0],
+										extensionStones[1]
+									)
+								);
+						counter = 1;
+					}
 				}
 			}
 			counter = 1;
@@ -171,43 +206,127 @@ public class Board {
 			for (int i = 1; i < (9 - j) - 1; i++) {
 				if (prevValue == grid[i][j + i] && prevValue > 0) counter++;
 				else {
-					counter = 1;
 					prevValue = grid[i][j + i];
-				}
-				if (counter == 4) {
-					lineEndX = i;
-					lineEndY = j + i;
-					lineStartX = i - 3;
-					lineStartY = j - 3 + i;
+					if (counter >= 4) {
+						lineEndX = i-1;
+						lineEndY = (j+1) + (i-1);
+						lineStartX = i - counter;
+						lineStartY = j - counter + i;
+						
+						int[] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY));
+						lines.add(
+								new Row(new Point(lineStartX, lineStartY),
+										new Point(lineEndX, lineEndY),
+										logic.checkPlayer(prevValue),
+										counter,
+										extensionStones[0],
+										extensionStones[1]
+									)
+								);
+						counter = 1;
+					}
 				}
 			}
 			counter = 0;
 			prevValue = -1;
 		}
-
-		for (int i = 1; i < 4; i++) {
+		
+		//The maximum row length you can create is 7, by pushing a stone between 2 rows of 3.
+		for (int i = 1; i < 7; i++) {
 			for (int j = 1; j < (9 - i) - 1; j++) {
 				if (prevValue == grid[i + j][j] && prevValue > 0) counter++;
 				else {
-					counter = 1;
 					prevValue = grid[i + j][j];
-				}
-				if (counter == 4) {
-					lineEndX = i + j;
-					lineEndY = j;
-					lineStartX = i - 3 + j;
-					lineStartY = j - 3;
+					if (counter == 4) {
+						lineEndX = i + (j-1);
+						lineEndY = j-1;
+					lineStartX = i - counter + j;
+					lineStartY = j - counter;
+					
+					int[] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY));
+					lines.add(
+							new Row(new Point(lineStartX, lineStartY),
+									new Point(lineEndX, lineEndY),
+									logic.checkPlayer(prevValue),
+									counter,
+									extensionStones[0],
+									extensionStones[1]
+								)
+							);
+					}
 				}
 			}
 			counter = 0;
 			prevValue = -1;
 		}
 
-		System.out.println(new Point(lineStartX, lineStartY) + " " + new Point(lineEndX, lineEndY));
+//		System.out.println(new Point(lineStartX, lineStartY) + " " + new Point(lineEndX, lineEndY));
+		return lines;
 	}
-
-
-	public int[][] getGrid() {
-		return this.grid;
+	
+	private int[] getExtensionStones(Point start, Point end){
+		int white = 0;
+		int black = 0;
+		int deltaX = end.getX() - start.getX();
+		int deltaY = end.getY() - start.getY();
+		//normalize these deltas to 1 if it goes up, -1 if it goes down, 0 if it remains the same.
+		deltaX = deltaX/Math.abs(deltaX);
+		deltaY = deltaY/Math.abs(deltaY);
+		Point connectedStart = findConnectionEnd(start, -deltaX, -deltaY);
+		Point connectedEnd = findConnectionEnd(end, deltaX, deltaY);
+		Point p = connectedStart;
+		while(!(p.getX() == start.getX() && p.getY() == start.getY())){
+			if(grid[p.getX()][p.getY()] == WHITE_VALUE){
+				white += 1;
+			}else{
+				black += 1;
+			}
+			p = new Point(p.getX() + deltaX, p.getY() + deltaY);
+		}
+		p = end;
+		while(!(p.getX() == connectedEnd.getX() && p.getY() == connectedEnd.getY())){
+			p = new Point(p.getX() + deltaX, p.getY() + deltaY);
+			if(grid[p.getX()][p.getY()] == WHITE_VALUE){
+				white += 1;
+			}else{
+				black += 1;
+			}
+		}
+		return new int[]{white, black};
+	}
+	
+	public void removeRowAndExtensions(Row row){
+		Point start = row.getFromPoint();
+		Point end = row.getToPoint();
+		int deltaX = end.getX() - start.getX();
+		int deltaY = end.getY() - start.getY();
+		//normalize these deltas to 1 if it goes up, -1 if it goes down, 0 if it remains the same.
+		deltaX = deltaX/Math.abs(deltaX);
+		deltaY = deltaY/Math.abs(deltaY);
+		Point connectedStart = findConnectionEnd(start, -deltaX, -deltaY);
+		Point connectedEnd = findConnectionEnd(end, deltaX, deltaY);
+		removeLine(connectedStart, connectedEnd, deltaX, deltaY);
+	}
+	
+	private Point findConnectionEnd(Point from, int deltaX, int deltaY){
+		int i=1;
+		Point 	p = from;
+		while(!isEmpty(p)){
+			int x = from.getX() + deltaX * i;
+			int y = from.getY() + deltaY * i;
+			p = new Point(x, y);
+			i++;
+		}
+		return p;
+	}
+	
+	private void removeLine(Point start, Point end, int deltaX, int deltaY){
+		int x = start.getX();
+		int y = start.getY();
+		while(!(x == end.getX() && y == end.getY())){
+			this.grid[x][y] = EMPTY_TILE;
+			x += deltaX;
+			y += deltaY;
+		}
 	}
 }
