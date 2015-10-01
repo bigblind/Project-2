@@ -1,6 +1,10 @@
-package com.project.logic;
+package com.project.logic.player;
 
 import java.util.ArrayList;
+
+import com.project.logic.board.Board;
+import com.project.logic.Game;
+import com.project.logic.Row;
 
 public class Player {
 

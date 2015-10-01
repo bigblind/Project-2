@@ -1,4 +1,6 @@
-package com.project.logic;
+package com.project.logic.player;
+
+import com.project.logic.Point;
 
 public class PlayerEvent {
 

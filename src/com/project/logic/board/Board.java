@@ -1,6 +1,10 @@
-package com.project.logic;
+package com.project.logic.board;
 
 import java.util.ArrayList;
+
+import com.project.logic.Point;
+import com.project.logic.Row;
+import com.project.logic.gamelogic.GameLogic;
 
 public class Board {
 

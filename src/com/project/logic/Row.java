@@ -1,5 +1,8 @@
 package com.project.logic;
 
+import com.project.logic.player.PlayerEvent;
+import com.project.logic.player.Player;
+
 public class Row extends PlayerEvent{
 	private int whiteExtensionStones;
 	private int blackExtensionStones;

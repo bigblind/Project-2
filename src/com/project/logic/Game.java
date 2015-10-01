@@ -2,6 +2,10 @@ package com.project.logic;
 
 import java.io.Serializable;
 
+import com.project.logic.board.Board;
+import com.project.logic.gamelogic.GameLogic;
+import com.project.logic.player.Player;
+
 public class Game implements Serializable{
 
 	/**

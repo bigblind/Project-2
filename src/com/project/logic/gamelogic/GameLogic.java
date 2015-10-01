@@ -1,6 +1,13 @@
-package com.project.logic;
+package com.project.logic.gamelogic;
 
 import java.util.ArrayList;
+
+import com.project.logic.Game;
+import com.project.logic.Row;
+import com.project.logic.board.Board;
+import com.project.logic.player.Player;
+import com.project.logic.player.PlayerEvent;
+import com.project.logic.player.PlayerListener;
 
 public abstract class GameLogic implements PlayerListener {
 
@@ -10,6 +17,7 @@ public abstract class GameLogic implements PlayerListener {
 	
 	public GameLogic(Game game) {
 		this.game = game;
+		this.currentPlayer = game.getPlayerOne();
 	}
 
 	public abstract void loop();
@@ -27,7 +35,7 @@ public abstract class GameLogic implements PlayerListener {
 	}
 	
 	
-	protected Player checkPlayer(int stoneColor){
+	public Player checkPlayer(int stoneColor){
 		if(stoneColor == Board.BLACK_VALUE) return game.getPlayerTwo();
 		return game.getPlayerOne();
 	}
@@ -49,6 +57,10 @@ public abstract class GameLogic implements PlayerListener {
 			return true;
 		
 		return false;
+	}
+
+	public Player getActivePlayer() {
+		return currentPlayer;
 	}
 	
 	
