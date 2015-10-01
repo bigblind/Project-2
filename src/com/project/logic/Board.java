@@ -149,7 +149,6 @@ public class Board {
 						lineEndY = j-1; //the current stone's color is different, so it doesn't count towards the row.
 						lineStartX = i;
 						lineStartY = j - counter;
-						//TODO implement a way to count the number of white and black stones that extend the row.
 						int[] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY));
 						lines.add(
 								new Row(new Point(lineStartX, lineStartY),
@@ -180,16 +179,14 @@ public class Board {
 						lineStartX = i - counter;
 						lineStartY = j;
 				
-						//TODO implement a way to count the number of white and black stones that extend the row.
-						int whiteExtensionStones = 0;
-						int blackExtensionStones = 0;
+						int[] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY));
 						lines.add(
 								new Row(new Point(lineStartX, lineStartY),
 										new Point(lineEndX, lineEndY),
 										logic.checkPlayer(prevValue),
 										counter,
-										whiteExtensionStones,
-										blackExtensionStones
+										extensionStones[0],
+										extensionStones[1]
 									)
 								);
 						counter = 1;
@@ -212,16 +209,14 @@ public class Board {
 						lineStartX = i - counter;
 						lineStartY = j - counter + i;
 						
-						//TODO implement a way to count the number of white and black stones that extend the row.
-						int whiteExtensionStones = 0;
-						int blackExtensionStones = 0;
+						int[] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY));
 						lines.add(
 								new Row(new Point(lineStartX, lineStartY),
 										new Point(lineEndX, lineEndY),
 										logic.checkPlayer(prevValue),
 										counter,
-										whiteExtensionStones,
-										blackExtensionStones
+										extensionStones[0],
+										extensionStones[1]
 									)
 								);
 						counter = 1;
@@ -244,16 +239,14 @@ public class Board {
 					lineStartX = i - counter + j;
 					lineStartY = j - counter;
 					
-					//TODO implement a way to count the number of white and black stones that extend the row.
-					int whiteExtensionStones = 0;
-					int blackExtensionStones = 0;
+					int[] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY));
 					lines.add(
 							new Row(new Point(lineStartX, lineStartY),
 									new Point(lineEndX, lineEndY),
 									logic.checkPlayer(prevValue),
 									counter,
-									whiteExtensionStones,
-									blackExtensionStones
+									extensionStones[0],
+									extensionStones[1]
 								)
 							);
 					}
@@ -267,9 +260,35 @@ public class Board {
 		return lines;
 	}
 	
-	private int[] getExtensionStones(Point rowStart, Point rowEnd){
-		//TODO further implement this
-		return new int[2];
+	private int[] getExtensionStones(Point start, Point end){
+		int white = 0;
+		int black = 0;
+		int deltaX = end.getX() - start.getX();
+		int deltaY = end.getY() - start.getY();
+		//normalize these deltas to 1 if it goes up, -1 if it goes down, 0 if it remains the same.
+		deltaX = deltaX/Math.abs(deltaX);
+		deltaY = deltaY/Math.abs(deltaY);
+		Point connectedStart = findConnectionEnd(start, -deltaX, -deltaY);
+		Point connectedEnd = findConnectionEnd(end, deltaX, deltaY);
+		Point p = connectedStart;
+		while(!(p.getX() == start.getX() && p.getY() == start.getY())){
+			if(grid[p.getX()][p.getY()] == WHITE_VALUE){
+				white += 1;
+			}else{
+				black += 1;
+			}
+			p = new Point(p.getX() + deltaX, p.getY() + deltaY);
+		}
+		p = end;
+		while(!(p.getX() == connectedEnd.getX() && p.getY() == connectedEnd.getY())){
+			p = new Point(p.getX() + deltaX, p.getY() + deltaY);
+			if(grid[p.getX()][p.getY()] == WHITE_VALUE){
+				white += 1;
+			}else{
+				black += 1;
+			}
+		}
+		return new int[]{white, black};
 	}
 	
 	public void removeRowAndExtensions(Row row){
