@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.project.logic.board.Board;
 import com.project.logic.Game;
+import com.project.logic.Point;
 import com.project.logic.Row;
 
 public class Player {
@@ -11,7 +12,7 @@ public class Player {
 	private String name;
 	private int stoneAccount;
 	private int stoneColor;
-	
+	private ArrayList<PlayerListener> listeners = new ArrayList<PlayerListener>();
 	
 	public Player(){
 		this.name = null;
@@ -58,8 +59,6 @@ public class Player {
 	public int getStoneColor(){
 		return this.stoneColor;
 	}
-
-	private ArrayList<PlayerListener> listeners;
 	
 	public void addPlayerListener(PlayerListener listener) {
 		this.listeners.add(listener);
@@ -70,6 +69,14 @@ public class Player {
 	}
 	
 	private void notifyListeners(PlayerEvent e) {
+		System.out.println(e);
+		System.out.println(this.listeners.size());
 		for (PlayerListener l : this.listeners) l.eventPerformed(e);
+	}
+	
+	public void locationsClicked(Point a, Point b){
+		PlayerEvent e = new PlayerEvent(a, b, this);
+		this.notifyListeners(e);
+		
 	}
 }

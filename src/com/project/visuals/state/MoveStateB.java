@@ -28,6 +28,7 @@ public class MoveStateB extends State {
 					boardPanel.setState(new MoveStateB(boardPanel, game, (BoardButton) e.getComponent()));
 					boardPanel.repaint();
 				} else {
+					game.getGameLogic().getActivePlayer().locationsClicked(getButtonPoint(pressedButton), getButtonPoint(((BoardButton) e.getComponent())));
 					// TODO check if it is a possible move ( maybe in game
 					// logic, that makes more sense ) so just make player fire
 					// it anyway

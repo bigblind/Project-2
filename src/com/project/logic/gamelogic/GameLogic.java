@@ -18,12 +18,14 @@ public abstract class GameLogic implements PlayerListener {
 	public GameLogic(Game game) {
 		this.game = game;
 		this.currentPlayer = game.getPlayerOne();
+		this.game.getPlayerOne().addPlayerListener(this);
+		this.game.getPlayerTwo().addPlayerListener(this);
 	}
 
 	public abstract void loop();
 
 	public void eventPerformed(PlayerEvent e) {
-		
+		System.out.println(e);
 	}
 	
 	protected void moveToNextPlayer(){

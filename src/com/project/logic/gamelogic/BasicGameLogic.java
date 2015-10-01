@@ -21,6 +21,7 @@ public class BasicGameLogic extends GameLogic{
 	
 	public void eventPerformed(PlayerEvent e) {
 		//handle the player's action
+		super.eventPerformed(e);
 		if(!(e instanceof Row)){ //if the action is not to pick a row, it's a move
 			handlePlayerMove(e);
 		}else{ //this is a row removal action

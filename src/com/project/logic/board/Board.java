@@ -270,8 +270,13 @@ public class Board {
 		int deltaX = end.getX() - start.getX();
 		int deltaY = end.getY() - start.getY();
 		//normalize these deltas to 1 if it goes up, -1 if it goes down, 0 if it remains the same.
-		deltaX = deltaX/Math.abs(deltaX);
-		deltaY = deltaY/Math.abs(deltaY);
+		if(deltaX > 0 ) deltaX = 1;
+		else if(deltaX < 0) deltaX = -1;
+		else deltaX = 0;
+		if(deltaY > 0 ) deltaY = 1;
+		else if(deltaY < 0) deltaY = -1;
+		else deltaY = 0;
+		
 		Point connectedStart = findConnectionEnd(start, -deltaX, -deltaY);
 		Point connectedEnd = findConnectionEnd(end, deltaX, deltaY);
 		Point p = connectedStart;
@@ -301,8 +306,13 @@ public class Board {
 		int deltaX = end.getX() - start.getX();
 		int deltaY = end.getY() - start.getY();
 		//normalize these deltas to 1 if it goes up, -1 if it goes down, 0 if it remains the same.
-		deltaX = deltaX/Math.abs(deltaX);
-		deltaY = deltaY/Math.abs(deltaY);
+		if(deltaX > 0 ) deltaX = 1;
+		else if(deltaX < 0) deltaX = -1;
+		else deltaX = 0;
+		if(deltaY > 0 ) deltaY = 1;
+		else if(deltaY < 0) deltaY = -1;
+		else deltaY = 0;
+		
 		Point connectedStart = findConnectionEnd(start, -deltaX, -deltaY);
 		Point connectedEnd = findConnectionEnd(end, deltaX, deltaY);
 		removeLine(connectedStart, connectedEnd, deltaX, deltaY);
