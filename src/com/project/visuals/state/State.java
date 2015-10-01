@@ -11,6 +11,7 @@ import com.project.visuals.ResourceLoader;
 
 public abstract class State {
 
+	protected BoardPanel boardPanel;
 	protected BoardButton[][] buttons;
 	protected Game game;
 	protected Player activePlayer;
@@ -18,6 +19,7 @@ public abstract class State {
 
 	public State(BoardPanel boardPanel, Game game) {
 		this.buttons = boardPanel.getButtons();
+		this.boardPanel = boardPanel;
 		this.game = game;
 	}
 

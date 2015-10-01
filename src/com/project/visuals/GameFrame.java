@@ -40,7 +40,7 @@ public class GameFrame extends JFrame implements ComponentListener {
 		this.ghostGamePanel = new JPanel();
 		this.ghostGamePanel.setBackground(new Color(0, 0, 0, 150));
 		this.ghostGamePanel.setOpaque(false);
- 
+
 		layer.add(this.gamePanel, new Integer(0));
 		layer.add(this.ghostGamePanel, new Integer(1));
 
@@ -52,7 +52,7 @@ public class GameFrame extends JFrame implements ComponentListener {
 			private static final long serialVersionUID = -8738826952161833281L;
 
 			public void actionPerformed(ActionEvent e) {
-				if (getExtendedState() == JFrame.MAXIMIZED_BOTH) {
+				if (getExtendedState() == JFrame.MAXIMIZED_BOTH && isUndecorated()) {
 					dispose();
 					setUndecorated(false);
 					setPreferredSize(normalSize);
@@ -87,7 +87,7 @@ public class GameFrame extends JFrame implements ComponentListener {
 		int height = (int) (this.getSize().getHeight() - this.getInsets().top - this.getInsets().bottom);
 
 		this.gamePanel.setSize(width, height);
-		this.ghostGamePanel.setSize(width, height-1);
+		this.ghostGamePanel.setSize(width, height - 1);
 		this.revalidate();
 	}
 

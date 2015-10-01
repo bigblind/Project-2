@@ -18,6 +18,7 @@ import com.project.logic.Game;
 import com.project.logic.Point;
 import com.project.logic.board.Board;
 import com.project.visuals.state.MoveStateA;
+import com.project.visuals.state.MoveStateB;
 import com.project.visuals.state.State;
 
 public class BoardPanel extends JPanel implements ComponentListener {
@@ -34,7 +35,7 @@ public class BoardPanel extends JPanel implements ComponentListener {
 	private BoardButton[][] buttons;
 	private Point[][][] connectedLocations;
 	private Point[][] coordinates;
-	
+
 	private Board board;
 	private Game game;
 
@@ -55,11 +56,11 @@ public class BoardPanel extends JPanel implements ComponentListener {
 
 		this.initButtons();
 		this.initConnections();
-		
+
 		this.setState(new MoveStateA(this, game));
 		this.resize();
 	}
-	
+
 	private void initButtons() {
 		for (int j = 0; j < 5; j++) {
 			for (int i = 0; i < 5 + j; i++) {
@@ -68,9 +69,6 @@ public class BoardPanel extends JPanel implements ComponentListener {
 				button.setName(Integer.toString(i) + Integer.toString(j));
 				button.setContentAreaFilled(false);
 				if (i == 0 || j == 0 || j == 8 || i == 8) button.setIsOuterDot(true);
-				else if (i == 1 && j == 5) button.setIsOuterDot(true);
-				else if (i == 2 && j == 6) button.setIsOuterDot(true);
-				else if (i == 3 && j == 7) button.setIsOuterDot(true);
 				else if (i == 5 && j == 1) button.setIsOuterDot(true);
 				else if (i == 6 && j == 2) button.setIsOuterDot(true);
 				else if (i == 7 && j == 3) button.setIsOuterDot(true);
@@ -85,12 +83,9 @@ public class BoardPanel extends JPanel implements ComponentListener {
 				button.setName(Integer.toString(i) + Integer.toString(4 + j));
 				button.setContentAreaFilled(false);
 				if (i == 0 || j == 0 || j == 4 || i == 8) button.setIsOuterDot(true);
-				else if (i == 1 && j == 5) button.setIsOuterDot(true);
-				else if (i == 2 && j == 6) button.setIsOuterDot(true);
-				else if (i == 3 && j == 7) button.setIsOuterDot(true);
-				else if (i == 5 && j == 1) button.setIsOuterDot(true);
-				else if (i == 6 && j == 2) button.setIsOuterDot(true);
-				else if (i == 7 && j == 3) button.setIsOuterDot(true);
+				else if (i == 1 && j == 1) button.setIsOuterDot(true);
+				else if (i == 2 && j == 2) button.setIsOuterDot(true);
+				else if (i == 3 && j == 3) button.setIsOuterDot(true);
 
 				this.buttons[i][4 + j] = button;
 			}
@@ -110,35 +105,76 @@ public class BoardPanel extends JPanel implements ComponentListener {
 
 	private void initConnections() {
 		Point[] p;
-		
+
 		p = new Point[1];
-		p[0] = new Point(1,1);
+		p[0] = new Point(1, 1);
 		this.connectedLocations[0][0] = p;
 		for (int i = 1; i < 4; i++) {
 			p = new Point[2];
 			for (int j = 0; j < 2; j++) {
-				p[j] = new Point(1, i+j);
+				p[j] = new Point(1, i + j);
 			}
 			this.connectedLocations[0][i] = p;
 		}
 		p = new Point[1];
-		p[0] = new Point(1,4);
+		p[0] = new Point(1, 4);
 		this.connectedLocations[0][4] = p;
-		
+
 		for (int i = 1; i < 4; i++) {
 			p = new Point[2];
 			for (int j = 0; j < 2; j++) {
-				p[j] = new Point(i+j, 1);
+				p[j] = new Point(i + j, 1);
 			}
 			this.connectedLocations[i][0] = p;
 		}
 		p = new Point[1];
 		p[0] = new Point(4, 1);
 		this.connectedLocations[4][0] = p;
-		
-		
+
+		for (int i = 1; i < 4; i++) {
+			p = new Point[2];
+			p[0] = new Point(3 + i, i);
+			p[1] = new Point(4 + i, 1 + i);
+
+			this.connectedLocations[4 + i][i] = p;
+		}
+
+		p = new Point[1];
+		p[0] = new Point(7, 4);
+		this.connectedLocations[8][4] = p;
+		for (int i = 1; i < 4; i++) {
+			p = new Point[2];
+			for (int j = 0; j < 2; j++) {
+				p[j] = new Point(7, 4 + i - j);
+
+			}
+			this.connectedLocations[8][4 + i] = p;
+		}
+
+		p = new Point[1];
+		p[0] = new Point(7, 7);
+		this.connectedLocations[8][8] = p;
+		for (int i = 1; i < 4; i++) {
+			p = new Point[2];
+			for (int j = 0; j < 2; j++) {
+				p[j] = new Point(4 + i - j, 7);
+
+			}
+			this.connectedLocations[4 + i][8] = p;
+		}
+		p = new Point[1];
+		p[0] = new Point(4, 7);
+		this.connectedLocations[4][8] = p;
+
+		for (int i = 1; i < 4; i++) {
+			p = new Point[2];
+			p[0] = new Point(i, 3 + i);
+			p[1] = new Point(1 + i, 4 + i);
+
+			this.connectedLocations[i][4 + i] = p;
+		}
 	}
-	
+
 	public void paintComponent(Graphics g2) {
 		super.paintComponent(g2);
 		Graphics2D g = (Graphics2D) g2;
@@ -226,6 +262,21 @@ public class BoardPanel extends JPanel implements ComponentListener {
 
 		this.drawStones(g);
 		this.drawSideStones(g);
+
+		if (this.state instanceof MoveStateB) {
+			MoveStateB state = (MoveStateB) this.state;
+			Point[] locations = state.getConnectedLocations();
+			int name = Integer.parseInt(state.getPressedButton().getName());
+			Point originalLocation = new Point(name / 10, name - ((name / 10) * 10));
+
+			g.setColor(Color.WHITE);
+			g.setStroke(new BasicStroke(3.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND, 0.0f, new float[] {10.0f}, 0.0f));
+			
+			for (int i = 0; i < locations.length; i++) {
+				g.drawLine(this.coordinates[originalLocation.getX()][originalLocation.getY()].getX() + this.tileSize / 2, this.coordinates[originalLocation.getX()][originalLocation.getY()].getY() + this.tileSize / 2,
+						this.coordinates[locations[i].getX()][locations[i].getY()].getX() + this.tileSize / 2, this.coordinates[locations[i].getX()][locations[i].getY()].getY() + this.tileSize / 2);
+			}
+		}
 	}
 
 	private void drawStones(Graphics2D g) {
@@ -347,7 +398,7 @@ public class BoardPanel extends JPanel implements ComponentListener {
 		this.state = state;
 		this.state.execute();
 	}
-	
+
 	public BoardButton[][] getButtons() {
 		return this.buttons;
 	}
@@ -359,7 +410,7 @@ public class BoardPanel extends JPanel implements ComponentListener {
 	public Point[][] getCoordinates() {
 		return this.coordinates;
 	}
-	
+
 	public Point[][][] getConnections() {
 		return this.connectedLocations;
 	}

@@ -17,6 +17,7 @@ public class MoveStateA extends State {
 		this.listener = new MouseListener() {
 			public void mouseClicked(MouseEvent e) {
 				boardPanel.setState(new MoveStateB(boardPanel, game, (BoardButton) e.getComponent()));
+				boardPanel.repaint();
 			}
 
 			public void mouseEntered(MouseEvent e) {

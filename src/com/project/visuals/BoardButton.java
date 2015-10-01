@@ -28,6 +28,10 @@ public class BoardButton extends JButton {
 		this.draw = draw;
 	}
 	
+	public boolean getDraw() {
+		return this.draw;
+	}
+	
 	public void setIsOuterDot(boolean bool) {
 		this.isOuterDot = bool;
 	}
