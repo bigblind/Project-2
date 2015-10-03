@@ -30,8 +30,10 @@ public abstract class GameLogic implements PlayerListener {
 	
 	protected void moveToNextPlayer(){
 		if(currentPlayer == game.getPlayerOne()){
+			System.out.println("Switching to player 2");
 			currentPlayer = game.getPlayerTwo();
 		}else{
+			System.out.println("Switching to player 1");
 			currentPlayer = game.getPlayerOne();
 		}
 	}

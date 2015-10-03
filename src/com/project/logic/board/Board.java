@@ -102,6 +102,7 @@ public class Board {
 	}
 
 	public void place(int stone, Point from, Point to) {
+		System.out.println("Placing stone " + stone + " at point ("+to.getX()+","+to.getY()+")");
 		this.push(from, to);
 		this.grid[to.getX()][to.getY()] = stone;
 	}
@@ -137,6 +138,8 @@ public class Board {
 	
 	public ArrayList<Row> checkForLines() {
 		ArrayList<Row> lines = new ArrayList<Row>();
+		System.out.println("Checking for rows");
+		print();
 		int lineStartX = -1, lineStartY = -1, lineEndX = -1, lineEndY = -1;
 
 		int counter = -1;
@@ -259,8 +262,9 @@ public class Board {
 			counter = 0;
 			prevValue = -1;
 		}
-
-//		System.out.println(new Point(lineStartX, lineStartY) + " " + new Point(lineEndX, lineEndY));
+		
+		System.out.println("Result:");
+		System.out.println(lines);
 		return lines;
 	}
 	

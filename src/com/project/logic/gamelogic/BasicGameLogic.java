@@ -29,7 +29,8 @@ public class BasicGameLogic extends GameLogic{
 		}
 		boolean waitingForAny = (waitingForWhite || waitingForBlack) == true; // We're waiting for any player to pick a row.
 		
-		if(game.getBoard().checkForLines().size() != 0){
+		removeOptions = game.getBoard().checkForLines();
+		if(removeOptions.size() != 0){
 			handleLines();
 			if(! waitingForAny && checkForWin()){
 				//TODO somehow indicate that the game is over, so the GUI can show the winner
