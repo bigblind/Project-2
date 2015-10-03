@@ -47,7 +47,7 @@ public class BoardPanel extends JPanel implements ComponentListener, BoardChange
 
 	private int tileSize;
 	
-	private static final boolean SHOW_NUMBERS = false;
+	private static final boolean SHOW_NUMBERS = true;
 
 	public BoardPanel(ClientInterface clientInterface) {
 		this.connectedLocations = new Point[9][9][];

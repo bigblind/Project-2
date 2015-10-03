@@ -227,7 +227,7 @@ public class Board {
 										extensionStones[1]
 									)
 								);
-						counter = 1;
+						counter = 0;
 					}
 				}
 			}
@@ -235,13 +235,14 @@ public class Board {
 			prevValue = -1;
 		}
 
-		// checks for left down right up lines
 		for (int j = 0; j < grid[0].length; j++) {
 			for (int i = 0; i < grid.length; i++) {
-				if (prevValue == grid[i][j] && prevValue > 0) counter++;
-				else {
+				if (prevValue == grid[i][j] && prevValue > 0){
+					counter++;
+					System.out.println("left down to right up counter "+counter + " at point ("+i+", "+j+")");
+				}else {
 					prevValue = grid[i][j];
-					if (counter >= 4) {
+					if (counter >= 3) {
 						lineEndX = i-1;
 						lineEndY = j;
 						lineStartX = i - counter;
@@ -257,71 +258,47 @@ public class Board {
 										extensionStones[1]
 									)
 								);
-						counter = 1;
+						counter = 0;
 					}
 				}
 			}
-			counter = 1;
+			counter = 0;
 			prevValue = -1;
 		}
 
 		// checks for lines left top right bottom
-		for (int j = 3; j >= 0; j--) {
-			for (int i = 1; i < (9 - j) - 1; i++) {
-				if (prevValue == grid[i][j + i] && prevValue > 0) counter++;
-				else {
-					prevValue = grid[i][j + i];
-					if (counter >= 4) {
-						lineEndX = i-1;
-						lineEndY = (j+1) + (i-1);
-						lineStartX = i - counter;
-						lineStartY = j - counter + i;
+		for (int i = 1; i <= grid.length; i++) {
+			for (int j = 1; j < grid[0].length; j++) {
+				for(int k=0; k < Math.min(grid.length - i, grid[0].length - j); k++){
+					if (prevValue == grid[i + k][j + k] && prevValue > 0) {
+						counter++;
+						System.out.println("left top to right bottom counter "+counter + " at point ("+(i+k)+", "+(j+k)+")");
+					} else {
+						prevValue = grid[i+k][j+k];
+						if (counter >= 3) {
+							lineEndX = i + k - 1;
+							lineEndY = j + k - 1;
+							lineStartX = i + k - counter;
+							lineStartY = j + k - counter;
 						
-						int[] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY));
-						lines.add(
-								new Row(new Point(lineStartX, lineStartY),
-										new Point(lineEndX, lineEndY),
-										logic.checkPlayer(prevValue),
-										counter,
-										extensionStones[0],
-										extensionStones[1]
-									)
-								);
-						counter = 1;
+							int[] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY));
+							lines.add(
+									new Row(new Point(lineStartX, lineStartY),
+											new Point(lineEndX, lineEndY),
+											logic.checkPlayer(prevValue),
+											counter,
+											extensionStones[0],
+											extensionStones[1]
+										)
+									);
+							counter = 0;
+						}
 					}
 				}
+				counter = 0;
+				prevValue = -1;
 			}
-			counter = 0;
-			prevValue = -1;
-		}
-		
-		//The maximum row length you can create is 7, by pushing a stone between 2 rows of 3.
-		for (int i = 1; i < 7; i++) {
-			for (int j = 1; j < (9 - i) - 1; j++) {
-				if (prevValue == grid[i + j][j] && prevValue > 0) counter++;
-				else {
-					prevValue = grid[i + j][j];
-					if (counter == 4) {
-						lineEndX = i + (j-1);
-						lineEndY = j-1;
-					lineStartX = i - counter + j;
-					lineStartY = j - counter;
-					
-					int[] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY));
-					lines.add(
-							new Row(new Point(lineStartX, lineStartY),
-									new Point(lineEndX, lineEndY),
-									logic.checkPlayer(prevValue),
-									counter,
-									extensionStones[0],
-									extensionStones[1]
-								)
-							);
-					}
-				}
-			}
-			counter = 0;
-			prevValue = -1;
+			
 		}
 
 //		System.out.println(new Point(lineStartX, lineStartY) + " " + new Point(lineEndX, lineEndY));
