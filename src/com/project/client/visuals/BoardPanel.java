@@ -46,6 +46,8 @@ public class BoardPanel extends JPanel implements ComponentListener, BoardChange
 	private int yOffset = 10;
 
 	private int tileSize;
+	
+	private static final boolean SHOW_NUMBERS = false;
 
 	public BoardPanel(ClientInterface clientInterface) {
 		this.connectedLocations = new Point[9][9][];
@@ -324,6 +326,9 @@ public class BoardPanel extends JPanel implements ComponentListener, BoardChange
 				} else if (this.board.getGrid()[i][j] == Board.GIPF_WHITE_VALUE) {
 
 				}
+				if(this.SHOW_NUMBERS){
+					g.drawString(i + "," + j, this.coordinates[i][j].getX(), this.coordinates[i][j].getY());
+				}
 			}
 		}
 		for (int j = 1; j < 5; j++) {
@@ -338,6 +343,9 @@ public class BoardPanel extends JPanel implements ComponentListener, BoardChange
 
 				} else if (this.board.getGrid()[i][4 + j] == Board.GIPF_WHITE_VALUE) {
 
+				}
+				if(this.SHOW_NUMBERS){
+					g.drawString(i + "," + (4+j), this.coordinates[i][4+j].getX(), this.coordinates[i][4+j].getY());
 				}
 			}
 		}
