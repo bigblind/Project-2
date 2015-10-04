@@ -10,7 +10,7 @@ public class Server {
     
     private ServerSocket serverSocket;
     private Socket       clientSocket;
-    static final int     PORT = 1978;
+    static final int     PORT = 1965;
     private PlayerThread players[];
     private int          currentPlayer;
     
@@ -37,7 +37,7 @@ public class Server {
 	for (int i = 0; i < players.length; i++) {
 	    try {
 		clientSocket = serverSocket.accept();
-		System.out.println("connection estabilished woop woop");
+		System.out.println("Server: Connection estabilished");
 		players[i] = new PlayerThread(clientSocket, i + 1); //start a new thread for each player
 		players[i].start();
 		
@@ -61,7 +61,6 @@ public class Server {
     // made at a time.
     public synchronized boolean validMove(int player) {
 	
-	
 	while (player != currentPlayer) {
 	    try {
 		wait();     //wait for thread of other player to notify when to move
@@ -69,13 +68,12 @@ public class Server {
 		e.printStackTrace();
 	    }
 	}
-	if(true){                        
+	if (true) {
 	    //conditions for a valid move
-	currentPlayer = (currentPlayer + 1) % 2;
-	notify(); //notify other player to continue
-	return true;
-	}
-	else 
+	    currentPlayer = (currentPlayer + 1) % 2;
+	    notify(); //notify other player to continue
+	    return true;
+	} else
 	    return false;
 	
     }

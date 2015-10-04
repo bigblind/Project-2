@@ -12,6 +12,8 @@ public class PlayerThread extends Thread {
     protected Socket  clientSocket;
     protected boolean threadSuspended = true;
     private int       playerNumber;
+    InputStream       inp             = null;
+    DataOutputStream  out             = null;
     
     public PlayerThread(Socket clientSocket, int num) {
 	this.clientSocket = clientSocket;
@@ -20,48 +22,45 @@ public class PlayerThread extends Thread {
     
     public void run() {
 	boolean done = false;
-	InputStream inp = null;
-	BufferedInputStream buff = null;
-	DataOutputStream out = null;
+	
+	receive();
+	send();
+	
+	
+	
+	System.out.println("Player " + playerNumber + " connected");
+	if (playerNumber == 1) {
+	    System.out.println("Waiting for another player");
+	    
+	 // wait for another player to arrive
+	    try {
+		synchronized (this) {
+		    while (threadSuspended)
+			wait();
+		}
+	    } catch (InterruptedException e) {
+		e.printStackTrace();
+	    }
+	    
+	}
+    }
+    
+    private void receive() {
 	try {
 	    inp = clientSocket.getInputStream();
-	    buff = new BufferedInputStream(new DataInputStream(inp));
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
+    }
+    
+    private void send() {
+	try {
 	    out = new DataOutputStream(clientSocket.getOutputStream());
+	    //String test = "Server sendt message";
+	    out.writeByte(5);
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
 	
-	// wait for another player to arrive
-	try {
-	    
-	    System.out.println("Player " + playerNumber + " connected");
-	    if (playerNumber == 1) {
-		System.out.println("Waiting for another player");
-		
-		try {
-		    synchronized (this) {
-			while (threadSuspended)
-			    wait();
-		    }
-		} catch (InterruptedException e) {
-		    e.printStackTrace();
-		}
-		
-		
-	    }
-	    
-	    
-	    while(!done){
-		//play game
-		System.out.println("player 2 connected your mvoe");
-		String s = "stronzo";
-		out.writeChars(s);
-	    }
-	    
-	    
-	    
-	} catch (IOException e) {
-	    e.printStackTrace();
-	}
     }
 }

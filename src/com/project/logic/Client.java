@@ -25,32 +25,45 @@ public class Client {
     }
     
     private void openConnection(String address, int port) throws UnknownHostException, IOException{
-	//ip = InetAddress.getLocalHost();
+	
 	try {
 	        clientSocket = new Socket(
 	            InetAddress.getByName( "127.0.0.1" ), port);
-	         input = new DataInputStream(
-	                        clientSocket.getInputStream() );
-	         System.out.println(input.readChar());
-	         output = new DataOutputStream(
-	                        clientSocket.getOutputStream() );
+	       
+	        
 	         System.out.println("Connection estabilished");
 	         
 	      }
 	      catch ( IOException e ) {
 	         e.printStackTrace();         
 	      }
-	 System.out.println(input.readChar());
-	//ip = InetAddress.getByName(address);
-	
-	//clientSocket = new Socket(ip, port);
-	
+    }
+    private void send(){
+	try{
+	 output = new DataOutputStream(
+                 clientSocket.getOutputStream() );
+	 String test = "Client sent message";
+	 output.writeUTF(test);
+	}catch(IOException e){
+	    e.printStackTrace();
+	}
+    }
+    private void receive(){
+	try{
+	    input = new DataInputStream(
+                    clientSocket.getInputStream() );
+	 System.out.println(input.readByte());
+	}catch(IOException e){
+	    e.printStackTrace();
+	}
     }
     
     public static void main(String args[]){
-	Client client = new Client("leos", "localhost", 1978);
+	Client client = new Client("leos", "localhost", 1965);
 	try{
-	client.openConnection("localhost", 1978);
+	client.openConnection("localhost", 1965);
+	client.send();
+	client.receive();
 	}
 	catch(IOException e){
 	   e.printStackTrace();
