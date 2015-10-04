@@ -20,7 +20,7 @@ public class Client {
     public Client(String hostName, String address, int port){
 	this.name = hostName;
 	this.address = address;
-	this.port = port;
+	this. port = port;
 	
     }
     
@@ -28,18 +28,21 @@ public class Client {
 	//ip = InetAddress.getLocalHost();
 	try {
 	        clientSocket = new Socket(
-	            InetAddress.getByName( "127.0.0.1" ), 1978);
+	            InetAddress.getByName( "127.0.0.1" ), port);
 	         input = new DataInputStream(
 	                        clientSocket.getInputStream() );
+	         System.out.println(input.readChar());
 	         output = new DataOutputStream(
 	                        clientSocket.getOutputStream() );
+	         System.out.println("Connection estabilished");
+	         
 	      }
 	      catch ( IOException e ) {
 	         e.printStackTrace();         
 	      }
-	 
+	 System.out.println(input.readChar());
 	//ip = InetAddress.getByName(address);
-	System.out.println("Connection estabilished");
+	
 	//clientSocket = new Socket(ip, port);
 	
     }
@@ -52,9 +55,6 @@ public class Client {
 	catch(IOException e){
 	   e.printStackTrace();
 	}
-	finally{
-	    System.out.println("done");
-	    System.exit(1);
-	}
+	
     }
 }

@@ -29,6 +29,7 @@ public class Server {
     public static void main(String args[]) {
 	Server game = new Server();
 	game.execute();
+	
 	System.exit(1);
     }
     
@@ -37,7 +38,7 @@ public class Server {
 	    try {
 		clientSocket = serverSocket.accept();
 		System.out.println("connection estabilished woop woop");
-		players[i] = new PlayerThread(clientSocket, i); //start a new thread for each player
+		players[i] = new PlayerThread(clientSocket, i + 1); //start a new thread for each player
 		players[i].start();
 		
 	    } catch (IOException e) {

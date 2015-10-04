@@ -35,7 +35,7 @@ public class PlayerThread extends Thread {
 	try {
 	    
 	    System.out.println("Player " + playerNumber + " connected");
-	    if (playerNumber == 0) {
+	    if (playerNumber == 1) {
 		System.out.println("Waiting for another player");
 		
 		try {
@@ -47,13 +47,15 @@ public class PlayerThread extends Thread {
 		    e.printStackTrace();
 		}
 		
-		out.writeUTF("Player 2 connected, your move!");
 		
 	    }
 	    
 	    
 	    while(!done){
 		//play game
+		System.out.println("player 2 connected your mvoe");
+		String s = "stronzo";
+		out.writeChars(s);
 	    }
 	    
 	    
