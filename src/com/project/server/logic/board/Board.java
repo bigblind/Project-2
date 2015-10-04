@@ -91,7 +91,20 @@ public class Board {
 		}
 		System.out.println();
 	}
-
+	
+	
+	public boolean isValidMove(Point from, Point to) {
+		int x1 = from.getX();
+		int x2 = to.getX();
+		int y1 = from.getY();
+		int y2 = to.getY();
+		int xx = (int) (x2 - x1);
+		int yy = (int) (y2 - y1);
+		
+		if(!isEmpty(to)) return isValidMove(to, new Point(x2 + xx, y2 + yy));
+		return true;
+	}
+	
 	public void place(int stone, Point from, Point to) {
 		this.push(from, to);
 		this.grid[to.getX()][to.getY()] = stone;
