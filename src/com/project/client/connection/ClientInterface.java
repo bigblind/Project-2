@@ -70,10 +70,6 @@ public class ClientInterface implements PlayerListener {
 			}
 		}
 	}
-	// updates the amounts of the stones of the opposing player
-
-	// move made => server receives, server validates move, server pushes the
-	// changes, server listens to other player
 
 	private void readBoard(String boardString) {
 		String[] subParts = boardString.split(" ");

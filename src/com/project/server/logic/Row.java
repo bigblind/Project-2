@@ -5,6 +5,7 @@ import com.project.common.player.PlayerEvent;
 import com.project.common.utils.Point;
 
 public class Row extends PlayerEvent {
+	
 	private int whiteExtensionStones;
 	private int blackExtensionStones;
 	private int length;
@@ -28,6 +29,6 @@ public class Row extends PlayerEvent {
 	}
 
 	public String toString() {
-		return "[Row from: " + this.from + " to: " + this.to + " length: " + this.length + " whiteExtensions: " + this.whiteExtensionStones + " blackExtensions " + this.blackExtensionStones + "]";
+		return "[Row from: " + this.from + " to: " + this.to + " player: " + this.player + " length: " + this.length + " whiteExtensions: " + this.whiteExtensionStones + " blackExtensions " + this.blackExtensionStones + "]";
 	}
 }
