@@ -381,7 +381,6 @@ public class BoardPanel extends JPanel implements ComponentListener, BoardChange
 
 	private void resize() {
 		this.tileSize = this.getHeight() / 20;
-		System.out.println(this.tileSize);
 		this.distance = (this.getHeight() - 2 * yOffset - tileSize) / 8;
 		int yDifference = (int) Math.round((distance * Math.sin(Math.toRadians(30))));
 		int xDifference = (int) Math.round((distance * Math.cos(Math.toRadians(30))));
