@@ -23,10 +23,7 @@ public class PlayerThread extends Thread {
     public void run() {
 	boolean done = false;
 	
-	receive();
-	send();
-	
-	
+	receive(); 
 	
 	System.out.println("Player " + playerNumber + " connected");
 	if (playerNumber == 1) {
@@ -41,13 +38,13 @@ public class PlayerThread extends Thread {
 	    } catch (InterruptedException e) {
 		e.printStackTrace();
 	    }
-	    
 	}
     }
     
-    private void receive() {
-	try {
-	    inp = clientSocket.getInputStream();
+    private  void receive() {
+	try { 
+	    DataInputStream input = new DataInputStream(clientSocket.getInputStream());
+	    System.out.println("Server received client sent: " + input.readUTF());
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
@@ -56,11 +53,10 @@ public class PlayerThread extends Thread {
     private void send() {
 	try {
 	    out = new DataOutputStream(clientSocket.getOutputStream());
-	    //String test = "Server sendt message";
-	    out.writeByte(5);
+	    String test = "Server sent message";
+	    out.writeUTF(test);
 	} catch (IOException e) {
 	    e.printStackTrace();
-	}
-	
+	}	
     }
 }

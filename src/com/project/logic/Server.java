@@ -10,7 +10,7 @@ public class Server {
     
     private ServerSocket serverSocket;
     private Socket       clientSocket;
-    static final int     PORT = 1965;
+    static final int     PORT = 1650;
     private PlayerThread players[];
     private int          currentPlayer;
     
