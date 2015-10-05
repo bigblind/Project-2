@@ -3,6 +3,10 @@ package com.project.client.connection;
 import java.util.ArrayList;
 
 import com.project.client.board.Board;
+import com.project.client.visuals.BoardPanel;
+import com.project.client.visuals.state.MoveStateA;
+import com.project.client.visuals.state.OpponentTurnState;
+import com.project.client.visuals.state.RemoveState;
 import com.project.common.player.Player;
 import com.project.common.player.PlayerEvent;
 import com.project.common.player.PlayerListener;
@@ -13,6 +17,7 @@ public class ClientInterface implements PlayerListener {
 
 	private int opponentAccount;
 	private Board board;
+	private BoardPanel boardPanel;
 
 	private Player thisPlayer; // TODO get it's stoneColor and number
 
@@ -28,6 +33,10 @@ public class ClientInterface implements PlayerListener {
 		this.thisPlayer.setStoneColor(stoneColor);
 		this.opponentAccount = opponentStoneAccount;
 		this.readBoard(boardString);
+		
+		if (stoneColor == Board.BLACK_VALUE) this.boardPanel.setState(new OpponentTurnState(this.boardPanel, this));
+		else if (stoneColor == Board.WHITE_VALUE) this.boardPanel.setState(new MoveStateA(this.boardPanel, this));
+		else System.err.println("Invalid client input: Initialise StoneColor invalid");
 	}
 
 	public void receive(byte[] bytes) {
@@ -35,10 +44,8 @@ public class ClientInterface implements PlayerListener {
 		if (received.startsWith("/i")) {
 			// "/i Board.BLACK_VALUE thisStonesAccount opponentStonesAccount boardString";
 			String info = received.split("/i ")[1];
-			String boardString = received.substring(3 + info.split(" ")[0].length() + 1 + info.split(" ")[1].length()
-					+ 1 + info.split(" ")[2].length() + 1);
-			this.initCall(Byte.parseByte(info.split(" ")[0]), Byte.parseByte(info.split(" ")[1]),
-					Byte.parseByte(info.split(" ")[2]), boardString);
+			String boardString = received.substring(3 + info.split(" ")[0].length() + 1 + info.split(" ")[1].length() + 1 + info.split(" ")[2].length() + 1);
+			this.initCall(Byte.parseByte(info.split(" ")[0]), Byte.parseByte(info.split(" ")[1]), Byte.parseByte(info.split(" ")[2]), boardString);
 		} else if (received.startsWith("/u")) {
 			// "/u 18 boardString";
 			String[] subParts = received.split(" ");
@@ -46,6 +53,21 @@ public class ClientInterface implements PlayerListener {
 
 			String boardString = received.substring(subParts[0].length() + subParts[1].length() + 2);
 			this.readBoard(boardString);
+		} else if (received.startsWith("/s")) {
+			// for updating state
+			if (received.contains("move")) {
+				System.out.println("before change of state to move");
+				this.boardPanel.setState(new MoveStateA(this.boardPanel, this));
+				System.out.println("after change of state to move");
+			} else if (received.contains("remove")) {
+				this.boardPanel.setState(new RemoveState(this.boardPanel, this)); // will require the lines of this player currently on the board
+			} else if (received.contains("opponent")) {
+				System.out.println("before change of state to opponent");
+				this.boardPanel.setState(new OpponentTurnState(this.boardPanel, this));
+				System.out.println("after change of state to opponent");
+			} else {
+				System.err.println("Invalid client input: Input not recognised");
+			}
 		}
 	}
 	// updates the amounts of the stones of the opposing player
@@ -96,5 +118,9 @@ public class ClientInterface implements PlayerListener {
 	private void notifyListeners(PlayerEvent e) {
 		for (int i = 0; i < this.listeners.size(); i++)
 			this.listeners.get(i).playerEventPerformed(e);
+	}
+
+	public void setBoardPanel(BoardPanel boardPanel) {
+		this.boardPanel = boardPanel;
 	}
 }

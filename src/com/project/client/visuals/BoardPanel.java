@@ -18,8 +18,8 @@ import com.project.client.board.Board;
 import com.project.client.board.BoardChangeEvent;
 import com.project.client.board.BoardChangeListener;
 import com.project.client.connection.ClientInterface;
-import com.project.client.visuals.state.MoveStateA;
 import com.project.client.visuals.state.MoveStateB;
+import com.project.client.visuals.state.OpponentTurnState;
 import com.project.client.visuals.state.State;
 import com.project.common.utils.Point;
 
@@ -61,7 +61,7 @@ public class BoardPanel extends JPanel implements ComponentListener, BoardChange
 		this.initButtons();
 		this.initConnections();
 
-		this.setState(new MoveStateA(this, clientInterface));
+		this.setState(new OpponentTurnState(this, clientInterface));
 		this.resize();
 	}
 

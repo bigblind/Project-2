@@ -96,4 +96,8 @@ public class GameFrame extends JFrame implements ComponentListener {
 	public void componentShown(ComponentEvent e) {
 
 	}
+	
+	public GamePanel getGamePanel() {
+		return this.gamePanel;
+	}
 }

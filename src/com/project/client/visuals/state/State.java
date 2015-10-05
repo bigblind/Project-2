@@ -28,6 +28,7 @@ public abstract class State {
 	}
 
 	public void removeListeners() {
+		System.out.println("ejfkle;");
 		for (int i = 0; i < buttons.length; i++) {
 			for (int j = 0; j < buttons[0].length; j++) {
 				if (this.buttons[i][j] != null && this.buttons[i][j].getMouseListeners().length > 0) this.buttons[i][j].removeMouseListener(this.buttons[i][j].getMouseListeners()[0]);

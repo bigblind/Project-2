@@ -14,8 +14,7 @@ public class MoveStateB extends State {
 	private BoardButton pressedButton;
 	private MouseListener listener;
 
-	public MoveStateB(final BoardPanel boardPanel, final ClientInterface clientInterface,
-			final BoardButton pressedButton) {
+	public MoveStateB(final BoardPanel boardPanel, final ClientInterface clientInterface, final BoardButton pressedButton) {
 		super(boardPanel, clientInterface);
 
 		this.pressedButton = pressedButton;
@@ -32,22 +31,14 @@ public class MoveStateB extends State {
 					boardPanel.setState(new MoveStateB(boardPanel, clientInterface, (BoardButton) e.getComponent()));
 					boardPanel.repaint();
 				} else {
-					clientInterface.getThisPlayer().locationsClicked(getButtonPoint(pressedButton),
-							getButtonPoint(((BoardButton) e.getComponent())));
-					boardPanel.setState(new MoveStateA(boardPanel, clientInterface));
+					clientInterface.getThisPlayer().locationsClicked(getButtonPoint(pressedButton), getButtonPoint(((BoardButton) e.getComponent())));
 					pressedButton.setDraw(false);
 					boardPanel.repaint();
-					// TODO check if it is a possible move ( maybe in game
-					// logic, that makes more sense ) so just make player fire
-					// it anyway
-					// for server purpose, the player doesn't do the turn until
-					// the server / logic verifies it as a valid move
 				}
 			}
 
 			public void mouseEntered(MouseEvent e) {
-				if (((BoardButton) e.getComponent()).getIsOuterDot() == true
-						&& !(((BoardButton) e.getComponent()).equals(pressedButton))) {
+				if (((BoardButton) e.getComponent()).getIsOuterDot() == true && !(((BoardButton) e.getComponent()).equals(pressedButton))) {
 					((BoardButton) e.getComponent()).setDraw(true);
 				} else {
 					Point hover = getButtonPoint((BoardButton) e.getComponent());
@@ -62,8 +53,7 @@ public class MoveStateB extends State {
 			}
 
 			public void mouseExited(MouseEvent e) {
-				if (((BoardButton) e.getComponent()).getIsOuterDot() == true
-						&& !(((BoardButton) e.getComponent()).equals(pressedButton))) {
+				if (((BoardButton) e.getComponent()).getIsOuterDot() == true && !(((BoardButton) e.getComponent()).equals(pressedButton))) {
 					((BoardButton) e.getComponent()).setDraw(false);
 					e.getComponent().repaint();
 				} else {
@@ -98,10 +88,8 @@ public class MoveStateB extends State {
 		super.execute();
 
 		for (int l = 0; l < this.connectedLocations.length; l++) {
-			this.buttons[this.connectedLocations[l].getX()][this.connectedLocations[l].getY()]
-					.setImage(this.stoneImage);
-			this.buttons[this.connectedLocations[l].getX()][this.connectedLocations[l].getY()]
-					.addMouseListener(this.listener);
+			this.buttons[this.connectedLocations[l].getX()][this.connectedLocations[l].getY()].setImage(this.stoneImage);
+			this.buttons[this.connectedLocations[l].getX()][this.connectedLocations[l].getY()].addMouseListener(this.listener);
 		}
 
 		for (int i = 0; i < 5; i++) {

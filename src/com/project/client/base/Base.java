@@ -46,13 +46,19 @@ public class Base {
 		ClientInterface interfaceTwo = new ClientInterface();
 		
 		GameFrame frameOne = new GameFrame(interfaceOne);
-		frameOne.setTitle("Player One");
 		GameFrame frameTwo = new GameFrame(interfaceTwo);
+
+		frameOne.setTitle("Player One");
 		frameTwo.setTitle("Player Two");
+		
+		interfaceOne.setBoardPanel(frameOne.getGamePanel().getBoardPanel());
+		interfaceTwo.setBoardPanel(frameTwo.getGamePanel().getBoardPanel());
+		
 		frameOne.setVisible(true);
 		frameTwo.setVisible(true);
 		
 		LocalServer server = new LocalServer();
+		
 		server.addClient(interfaceOne);
 		server.addClient(interfaceTwo);
 		

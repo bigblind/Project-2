@@ -28,6 +28,8 @@ public class LocalServer implements PlayerListener, PlayerChangeListener {
 	 * 				???
 	 * 				change to opponentturnstate
 	 * 			no: send client invalid move and repeat
+	 * 
+	 * for rows, split up in white / black rows, remove / make active player remove rows, then check again if there is rows left and see if they are simple or complicated
 	 */
 
 	private ArrayList<PlayerListener> listeners;
@@ -75,11 +77,28 @@ public class LocalServer implements PlayerListener, PlayerChangeListener {
 		this.clients[1].receive(send.getBytes());
 	}
 
-	private void sendUpdate() {
-		String send = "/u " + this.game.getPlayerTwo().getStoneAccount() + " " + game.getBoard().toString();
+	private void sendGameUpdate() {
+		String send;
+		send = "/u " + this.game.getPlayerTwo().getStoneAccount() + " " + game.getBoard().toString();
 		this.clients[0].receive(send.getBytes());
 		send = "/u " + this.game.getPlayerOne().getStoneAccount() + " " + game.getBoard().toString();
 		this.clients[1].receive(send.getBytes());
+	}
+
+	private void sendStateUpdate(PlayerChangeEvent e) {
+		if (e.getFromPlayer() == game.getPlayerOne()) {
+			String send;
+			send = "/s opponent";
+			this.clients[0].receive(send.getBytes());
+			send = "/s move";
+			this.clients[1].receive(send.getBytes());
+		} else {
+			String send;
+			send = "/s move";
+			this.clients[0].receive(send.getBytes());
+			send = "/s opponent";
+			this.clients[1].receive(send.getBytes());
+		}
 	}
 
 	public void playerEventPerformed(PlayerEvent e) {
@@ -107,6 +126,7 @@ public class LocalServer implements PlayerListener, PlayerChangeListener {
 			this.clients[1].removePlayerListener(this);
 			this.clients[0].addPlayerListener(this);
 		}
-		this.sendUpdate();
+		this.sendGameUpdate();
+		this.sendStateUpdate(e);
 	}
 }
