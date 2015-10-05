@@ -41,6 +41,12 @@ public class BasicGameLogic extends GameLogic{
 	}
 	
 	private void handlePlayerMove(PlayerEvent e){
+		if(!game.getBoard().isValidMove(e.getFromPoint(), e.getToPoint())){
+			System.out.println("The  move is INVALID.");
+			setLastMoveValid(false);;
+			return;
+		}
+		setLastMoveValid(true);
 		game.getBoard().place(e.getPlayer().getStoneColor(), e.getFromPoint(), e.getToPoint());
 		e.getPlayer().setStoneAccount(e.getPlayer().getStoneAccount() - 1);
 	}

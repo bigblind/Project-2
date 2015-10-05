@@ -14,6 +14,7 @@ public abstract class GameLogic implements PlayerListener {
 	protected Player currentPlayer;
 	protected ArrayList<Row> removeOptions = new ArrayList<Row>();
 	private ArrayList<PlayerChangeListener> listeners;
+	private boolean lastMoveValid = true;
 
 	public GameLogic(Game game) {
 		this.game = game;
@@ -72,5 +73,13 @@ public abstract class GameLogic implements PlayerListener {
 	private void notifyListeners(PlayerChangeEvent e) {
 		for (PlayerChangeListener l : this.listeners)
 			l.changeEventPerformed(e);
+	}
+	
+	protected void setLastMoveValid(boolean valid){
+		this.lastMoveValid = valid;
+	}
+	
+	public boolean wasLastMoveValid(){
+		return this.lastMoveValid;
 	}
 }
