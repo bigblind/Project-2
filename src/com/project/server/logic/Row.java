@@ -27,4 +27,7 @@ public class Row extends PlayerEvent {
 		return blackExtensionStones;
 	}
 
+	public String toString() {
+		return "[Row from: " + this.from + " to: " + this.to + " length: " + this.length + " whiteExtensions: " + this.whiteExtensionStones + " blackExtensions " + this.blackExtensionStones + "]";
+	}
 }

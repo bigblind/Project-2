@@ -4,8 +4,8 @@ import com.project.common.utils.Point;
 
 public class PlayerEvent {
 
-	private Player player;
-	private Point from, to;
+	protected Player player;
+	protected Point from, to;
 	
 	public PlayerEvent(Point from, Point to, Player player) {
 		this.player = player;

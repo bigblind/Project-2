@@ -30,6 +30,8 @@ public class LocalServer implements PlayerListener, PlayerChangeListener {
 	 * 			no: send client invalid move and repeat
 	 * 
 	 * for rows, split up in white / black rows, remove / make active player remove rows, then check again if there is rows left and see if they are simple or complicated
+	 * 
+	 * GameLogic events - activeplayer changed - invalid move - rows need removing
 	 */
 
 	private ArrayList<PlayerListener> listeners;
