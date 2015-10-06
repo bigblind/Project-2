@@ -8,7 +8,7 @@ import com.project.common.player.Player;
 import com.project.common.player.PlayerEvent;
 import com.project.common.player.PlayerListener;
 import com.project.server.logic.Game;
-import com.project.server.logic.gamelogic.BasicGameLogic2;
+import com.project.server.logic.gamelogic.BasicGameLogic;
 import com.project.server.logic.gamelogic.GameLogic;
 import com.project.server.logic.gamelogic.PlayerChangeEvent;
 import com.project.server.logic.gamelogic.PlayerChangeListener;
@@ -52,7 +52,7 @@ public class LocalServer implements PlayerListener, PlayerChangeListener {
 	public void init() throws ServerNotPreparedException {
 		this.game = new Game();
 		this.game.getBoard().print();
-		this.logic = new BasicGameLogic2(this.game);
+		this.logic = new BasicGameLogic(this.game);
 		this.logic.addPlayerChangeListener(this);
 
 		if (this.logic == null) throw new ServerNotPreparedException();

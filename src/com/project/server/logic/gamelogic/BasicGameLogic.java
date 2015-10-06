@@ -1,90 +1,64 @@
 package com.project.server.logic.gamelogic;
 
+import java.util.ArrayList;
+
+import com.project.client.board.Board;
+import com.project.common.player.PlayerEvent;
 import com.project.server.logic.Game;
 import com.project.server.logic.Row;
-import com.project.common.player.Player;
-import com.project.common.player.PlayerEvent;
-
-import java.util.ArrayList;
 
 public class BasicGameLogic extends GameLogic {
 
-	private boolean waitingForWhite = false;
-	private boolean waitingForBlack = false;
+	private boolean inRemoveState = false;
 
 	public BasicGameLogic(Game game) {
 		super(game);
 	}
 
 	public void playerEventPerformed(PlayerEvent e) {
-		//handle the player's action
-		if (!(e instanceof Row)) { //if the action is not to pick a row, it's a move
-			handlePlayerMove(e);
-		} else { //this is a row removal action
-			handleRowChoice((Row) e);
-		}
-		boolean waitingForAny = (waitingForWhite || waitingForBlack) == true; // We're waiting for any player to pick a row.
+		if (inRemoveState) {
 
-		removeOptions = game.getBoard().checkForLines();
-		if (removeOptions.size() != 0) {
-			handleLines();
-			if (!waitingForAny && checkForWin()) {
-				//TODO somehow indicate that the game is over, so the GUI can show the winner
-			}
-		}
-		if (!waitingForAny) {
-			moveToNextPlayer();
-		}
-	}
+			inRemoveState = false;
 
-	private void handlePlayerMove(PlayerEvent e) {
-		game.getBoard().place(e.getPlayer().getStoneColor(), e.getFromPoint(), e.getToPoint());
-		e.getPlayer().setStoneAccount(e.getPlayer().getStoneAccount() - 1);
-	}
-
-	private void handleRowChoice(Row row) {
-		handleSingleRow(row);
-		if (row.getPlayer().getStoneColor() == game.getBoard().WHITE_VALUE) waitingForWhite = false;
-		else waitingForBlack = false;
-	}
-
-	private void handleLines() {
-		if (removeOptions.size() == 1) {
-			handleSingleRow(removeOptions.get(0));
 		} else {
-			int whiteRowCount = 0;
-			int blackRowCount = 0;
-			for (Row row : removeOptions) {
-				if (row.getPlayer().getStoneColor() == game.getBoard().WHITE_VALUE) whiteRowCount += 1;
-				else blackRowCount += 1;
-			}
-			if (whiteRowCount > 0) {
-				handlePlayerRows(game.getBoard().WHITE_VALUE, removeOptions);
-			}
-			if (blackRowCount > 0 && !waitingForWhite) {
-				handlePlayerRows(game.getBoard().BLACK_VALUE, game.getGameLogic().removeOptions);
-			}
+			if (!this.game.getBoard().isValidMove(e.getFromPoint(), e.getToPoint())) return;
+			this.game.getBoard().place(e.getPlayer().getStoneColor(), e.getFromPoint(), e.getToPoint());
+			this.getCurrentPlayer().setStoneAccount(this.getCurrentPlayer().getStoneAccount() - 1); //TODO update for client aswell somehow
+
+			if (this.handleRows()) return;
+
+			this.moveToNextPlayer();
+			if (this.checkForWin()) System.out.println("someone won");
 		}
-
 	}
 
-	private void handleSingleRow(Row row) {
-		game.getBoard().removeRowAndExtensions(row);
-		Player rowPlayer = row.getPlayer();
-		rowPlayer.setStoneAccount(rowPlayer.getStoneAccount() + row.getLength());
-		handleExtensions(row);
-	}
+	private boolean handleRows() {
+		ArrayList<Row> rows = this.game.getBoard().checkForLines();
 
-	private void handlePlayerRows(int color, ArrayList<Row> possibleRows) {
-		ArrayList<Row> rows = rowsForPlayer(color, possibleRows);
 		if (rows.size() == 1) {
-			handleSingleRow(rows.get(0));
-		} else {
-			Player p = checkPlayer(color);
-			if (p.getStoneColor() == game.getBoard().WHITE_VALUE) waitingForWhite = true;
-			else waitingForBlack = true;
-			p.chooseRowToRemove(game, rows);
+			Row row = rows.get(0);
+			int stones = row.getLength(); // Need to look out for gipf stones in the row
+			this.game.getBoard().removeRowAndExtensions(row);
+			handleExtensions(row);
+			System.out.println(row.getPlayer() + " length " + row.getLength() + " black extension " + row.getBlackExtensionStones() + " white extension " + row.getWhiteExtensionStones());
+			row.getPlayer().setStoneAccount(row.getPlayer().getStoneAccount() + stones);
+			
+		} else if (rows.size() > 1) {
+
+			ArrayList<Row> activeRows = rowsForPlayer(this.currentPlayer.getStoneColor(), rows);
+			if (activeRows.size() > 0) {
+				// MAKE ACTIVEPLAYER CHOOSE
+				return true;
+			} else {
+				ArrayList<Row> notActiveRows;
+				if (currentPlayer.getStoneColor() == Board.WHITE_VALUE) notActiveRows = rowsForPlayer(Board.BLACK_VALUE, rows);
+				else notActiveRows = rowsForPlayer(Board.WHITE_VALUE, rows);
+
+				//MAKE OTHER PLAYER CHOOSE
+				return true;
+			}
 		}
+		return false;
 	}
 
 	private ArrayList<Row> rowsForPlayer(int color, ArrayList<Row> possibleRows) {
@@ -92,21 +66,18 @@ public class BasicGameLogic extends GameLogic {
 
 		for (int x = 0; x < possibleRows.size(); x++) {
 			Row tmp = possibleRows.get(x);
-			if (color == tmp.getPlayer().getStoneColor() && tmp.getWhiteExtensionStones() >= 4)
-				rowsForPlayer.add(new Row(tmp.getFromPoint(), tmp.getToPoint(), tmp.getPlayer(), tmp.getLength(), tmp.getWhiteExtensionStones(), tmp.getBlackExtensionStones()));
-
-			if (color == tmp.getPlayer().getStoneColor() && tmp.getBlackExtensionStones() >= 4)
+			if (color == tmp.getPlayer().getStoneColor())
 				rowsForPlayer.add(new Row(tmp.getFromPoint(), tmp.getToPoint(), tmp.getPlayer(), tmp.getLength(), tmp.getWhiteExtensionStones(), tmp.getBlackExtensionStones()));
 		}
-		// rows only for white and rows only for black
 		return rowsForPlayer;
 	}
 
 	private void handleExtensions(Row row) {
-		if (currentPlayer.getStoneColor() == game.getBoard().WHITE_VALUE) {
-			currentPlayer.setStoneAccount(currentPlayer.getStoneAccount() + row.getWhiteExtensionStones());
-		} else {
-			currentPlayer.setStoneAccount(currentPlayer.getStoneAccount() + row.getBlackExtensionStones());
-		}
+		if (currentPlayer.getStoneColor() == Board.WHITE_VALUE) currentPlayer.setStoneAccount(currentPlayer.getStoneAccount() + row.getWhiteExtensionStones());
+		else currentPlayer.setStoneAccount(currentPlayer.getStoneAccount() + row.getBlackExtensionStones());
+	}
+
+	public void setRemoveState(boolean state) {
+		this.inRemoveState = state;
 	}
 }
