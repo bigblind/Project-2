@@ -12,8 +12,10 @@ import com.project.server.logic.gamelogic.BasicGameLogic;
 import com.project.server.logic.gamelogic.GameLogic;
 import com.project.server.logic.gamelogic.PlayerChangeEvent;
 import com.project.server.logic.gamelogic.PlayerChangeListener;
+import com.project.server.logic.gamelogic.RowRemovalRequestEvent;
+import com.project.server.logic.gamelogic.RowRemovalRequestListener;
 
-public class LocalServer implements PlayerListener, PlayerChangeListener {
+public class LocalServer implements PlayerListener, PlayerChangeListener, RowRemovalRequestListener {
 
 	/*
 	 * Supposed to be created Then add players Give the server the logic Then
@@ -87,7 +89,7 @@ public class LocalServer implements PlayerListener, PlayerChangeListener {
 		this.clients[1].receive(send.getBytes());
 	}
 
-	private void sendStateUpdate(PlayerChangeEvent e) {
+	private void sendTurnStateUpdate(PlayerChangeEvent e) {
 		if (e.getFromPlayer() == game.getPlayerOne()) {
 			String send;
 			send = "/s opponent";
@@ -129,6 +131,15 @@ public class LocalServer implements PlayerListener, PlayerChangeListener {
 			this.clients[0].addPlayerListener(this);
 		}
 		this.sendGameUpdate();
-		this.sendStateUpdate(e);
+		this.sendTurnStateUpdate(e);
+	}
+
+	public void rowRemoveRequestEventPerformed(RowRemovalRequestEvent e) {
+		if (this.game.getGameLogic().getCurrentPlayer().getStoneColor() == Board.WHITE_VALUE) {
+			String send = "/s remove ";
+			this.clients[0].receive(send.getBytes());
+		} else {
+			
+		}
 	}
 }

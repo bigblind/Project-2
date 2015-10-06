@@ -14,6 +14,7 @@ public abstract class GameLogic implements PlayerListener {
 	protected Player currentPlayer;
 	protected ArrayList<Row> removeOptions = new ArrayList<Row>();
 	private ArrayList<PlayerChangeListener> listeners;
+	private ArrayList<RowRemovalRequestListener> rowListeners;
 
 	public GameLogic(Game game) {
 		this.game = game;
@@ -72,5 +73,18 @@ public abstract class GameLogic implements PlayerListener {
 	public void notifyListeners(PlayerChangeEvent e) {
 		for (PlayerChangeListener l : this.listeners)
 			l.changeEventPerformed(e);
+	}
+	
+	public void addRowRemovalRequestListener(RowRemovalRequestListener listener) {
+		this.rowListeners.add(listener);
+	}
+
+	public void removeRowRemovalRequestListener(RowRemovalRequestListener listener) {
+		this.rowListeners.remove(listener);
+	}
+
+	public void notifyRowListeners(RowRemovalRequestEvent e) {
+		for (RowRemovalRequestListener l : this.rowListeners)
+			l.rowRemoveRequestEventPerformed(e);
 	}
 }
