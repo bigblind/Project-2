@@ -8,7 +8,7 @@ import com.project.common.player.Player;
 import com.project.common.player.PlayerEvent;
 import com.project.common.player.PlayerListener;
 import com.project.server.logic.Game;
-import com.project.server.logic.gamelogic.BasicGameLogic;
+import com.project.server.logic.gamelogic.BasicGameLogic2;
 import com.project.server.logic.gamelogic.GameLogic;
 import com.project.server.logic.gamelogic.PlayerChangeEvent;
 import com.project.server.logic.gamelogic.PlayerChangeListener;
@@ -52,7 +52,7 @@ public class LocalServer implements PlayerListener, PlayerChangeListener {
 	public void init() throws ServerNotPreparedException {
 		this.game = new Game();
 		this.game.getBoard().print();
-		this.logic = new BasicGameLogic(this.game);
+		this.logic = new BasicGameLogic2(this.game);
 		this.logic.addPlayerChangeListener(this);
 
 		if (this.logic == null) throw new ServerNotPreparedException();
@@ -73,17 +73,17 @@ public class LocalServer implements PlayerListener, PlayerChangeListener {
 	}
 
 	private void sendClientInit() {
-		String send = "/i " + Board.WHITE_VALUE + " 18 18 " + this.game.getBoard().toString();
+		String send = "/i " + Board.WHITE_VALUE + " 15 15 " + this.game.getBoard().toString();
 		this.clients[0].receive(send.getBytes());
-		send = "/i " + Board.BLACK_VALUE + " 18 18 " + this.game.getBoard().toString();
+		send = "/i " + Board.BLACK_VALUE + " 15 15 " + this.game.getBoard().toString();
 		this.clients[1].receive(send.getBytes());
 	}
 
 	private void sendGameUpdate() {
 		String send;
-		send = "/u " + this.game.getPlayerTwo().getStoneAccount() + " " + game.getBoard().toString();
+		send = "/u " + this.game.getPlayerOne().getStoneAccount() + " " + this.game.getPlayerTwo().getStoneAccount() + " " + this.game.getBoard().toString();
 		this.clients[0].receive(send.getBytes());
-		send = "/u " + this.game.getPlayerOne().getStoneAccount() + " " + game.getBoard().toString();
+		send = "/u " + this.game.getPlayerTwo().getStoneAccount() + " " + this.game.getPlayerOne().getStoneAccount() + " " + this.game.getBoard().toString();
 		this.clients[1].receive(send.getBytes());
 	}
 

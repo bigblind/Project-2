@@ -33,7 +33,7 @@ public class ClientInterface implements PlayerListener {
 		this.thisPlayer.setStoneColor(stoneColor);
 		this.opponentAccount = opponentStoneAccount;
 		this.readBoard(boardString);
-		
+
 		if (stoneColor == Board.BLACK_VALUE) this.boardPanel.setState(new OpponentTurnState(this.boardPanel, this));
 		else if (stoneColor == Board.WHITE_VALUE) this.boardPanel.setState(new MoveStateA(this.boardPanel, this));
 		else System.err.println("Invalid client input: Initialise StoneColor invalid");
@@ -47,24 +47,20 @@ public class ClientInterface implements PlayerListener {
 			String boardString = received.substring(3 + info.split(" ")[0].length() + 1 + info.split(" ")[1].length() + 1 + info.split(" ")[2].length() + 1);
 			this.initCall(Byte.parseByte(info.split(" ")[0]), Byte.parseByte(info.split(" ")[1]), Byte.parseByte(info.split(" ")[2]), boardString);
 		} else if (received.startsWith("/u")) {
-			// "/u 18 boardString";
+			// "/u 18 18 boardString";
 			String[] subParts = received.split(" ");
-			this.opponentAccount = Integer.parseInt(subParts[1]);
-
-			String boardString = received.substring(subParts[0].length() + subParts[1].length() + 2);
+			this.thisPlayer.setStoneAccount(Integer.parseInt(subParts[1]));
+			this.opponentAccount = Integer.parseInt(subParts[2]);
+			String boardString = received.substring(subParts[0].length() + subParts[1].length() + 3 + subParts[2].length());
 			this.readBoard(boardString);
 		} else if (received.startsWith("/s")) {
 			// for updating state
 			if (received.contains("move")) {
-				System.out.println("before change of state to move");
 				this.boardPanel.setState(new MoveStateA(this.boardPanel, this));
-				System.out.println("after change of state to move");
 			} else if (received.contains("remove")) {
 				this.boardPanel.setState(new RemoveState(this.boardPanel, this)); // will require the lines of this player currently on the board
 			} else if (received.contains("opponent")) {
-				System.out.println("before change of state to opponent");
 				this.boardPanel.setState(new OpponentTurnState(this.boardPanel, this));
-				System.out.println("after change of state to opponent");
 			} else {
 				System.err.println("Invalid client input: Input not recognised");
 			}

@@ -20,7 +20,7 @@ public class Player {
 
 	public Player(int stoneColor) {
 		this.name = "Player " + String.valueOf(stoneColor);
-		this.stoneAccount = 18;
+		this.stoneAccount = 15;
 		this.stoneColor = stoneColor;
 		this.listeners = new ArrayList<PlayerListener>();
 	}

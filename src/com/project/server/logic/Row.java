@@ -14,6 +14,7 @@ public class Row extends PlayerEvent {
 		super(from, to, player);
 		this.whiteExtensionStones = whiteExtensionStones;
 		this.blackExtensionStones = blackExtensionStones;
+		this.length = length;
 	}
 
 	public int getLength() {

@@ -91,7 +91,22 @@ public class Board {
 		}
 		System.out.println();
 	}
-
+	
+	
+	public boolean isValidMove(Point from, Point to) {
+		if (grid[to.getX()][to.getY()] == BOARD_EDGE) return false;
+		
+		int x1 = from.getX();
+		int x2 = to.getX();
+		int y1 = from.getY();
+		int y2 = to.getY();
+		int xx = (int) (x2 - x1);
+		int yy = (int) (y2 - y1);
+		
+		if(!isEmpty(to)) return isValidMove(to, new Point(x2 + xx, y2 + yy));
+		return true;
+	}
+	
 	public void place(int stone, Point from, Point to) {
 		this.push(from, to);
 		this.grid[to.getX()][to.getY()] = stone;
@@ -126,207 +141,176 @@ public class Board {
 		return this.grid;
 	}
 
+//	public ArrayList<Row> checkForLines() {
+//		System.out.println("Checking for rows");
+//		ArrayList<Row> lines = new ArrayList<Row>();
+//		int lineStartX = -1, lineStartY = -1, lineEndX = -1, lineEndY = -1;
+//
+//		int counter = 0;
+//		int prevValue = -1;
+//
+//		// checks for vertical lines
+//		for (int i = 1; i < this.grid.length - 1; i++) {
+//			for (int j = 1; j < this.grid[i].length - 1; j++) {
+//				if (counter >= 4) {
+//					lineEndX = i;
+//					lineEndY = j - 1;
+//					lineStartX = i;
+//					lineStartY = j - counter;
+//					int[] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY));
+//					lines.add(new Row(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY), logic.checkPlayer(prevValue), counter, extensionStones[0], extensionStones[1]));
+//				}
+//				
+//				if ((j == 1 && i < 5) || (j == 2 && i == 5) || (j == 3 && i == 6) || (j == 4 && i == 7)) {
+//					prevValue = this.grid[i][j];
+//					if (prevValue > 0) counter = 1;
+//					else counter = 0;
+//				} else if (this.grid[i][j] == 0) {
+//					prevValue = 0;
+//					counter = 0;
+//				} else if (this.grid[i][j] == prevValue && prevValue > 0) {
+//					counter++;
+//				} else {
+//					if (counter >= 4) {
+//						lineEndX = i;
+//						lineEndY = j - 1;
+//						lineStartX = i;
+//						lineStartY = j - counter;
+//						int[] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY));
+//						lines.add(new Row(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY), logic.checkPlayer(prevValue), counter, extensionStones[0], extensionStones[1]));
+//					}
+//					counter = 1;
+//					prevValue = this.grid[i][j];
+//				}
+//				
+//				if (counter >= 4) {
+//					lineEndX = i;
+//					lineEndY = j - 1;
+//					lineStartX = i;
+//					lineStartY = j - counter;
+//					int[] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY));
+//					lines.add(new Row(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY), logic.checkPlayer(prevValue), counter, extensionStones[0], extensionStones[1]));
+//				}
+//			}
+//		}
+//
+//		counter = 0;
+//		prevValue = -1;
+//
+//		// left down to right up lines
+//		//		for (int j = 1; j < this.grid[0].length - 1; j++) {
+//		//			for (int i = 1; i < this.grid.length - 1; i++) {
+//		//				if (i == )
+//		//			}
+//		//		}
+//		System.out.println("result:");
+//		System.out.println(lines);
+//		return lines;
+//	}
+
 	public ArrayList<Row> checkForLines() {
 		ArrayList<Row> lines = new ArrayList<Row>();
 		int lineStartX = -1, lineStartY = -1, lineEndX = -1, lineEndY = -1;
-
+		
 		int counter = 0;
 		int prevValue = -1;
 
 		// checks for vertical lines
-		for (int i = 1; i < this.grid.length - 1; i++) {
-			for (int j = 1; j < this.grid[i].length - 1; j++) {
-				if (counter >= 4) {
-					lineEndX = i;
-					lineEndY = j - 1;
-					lineStartX = i;
-					lineStartY = j - counter;
-					int[] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY));
-					lines.add(new Row(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY), logic.checkPlayer(prevValue), counter, extensionStones[0], extensionStones[1]));
-				}
-				
-				if ((j == 1 && i < 5) || (j == 2 && i == 5) || (j == 3 && i == 6) || (j == 4 && i == 7)) {
-					prevValue = this.grid[i][j];
-					if (prevValue > 0) counter = 1;
-					else counter = 0;
-				} else if (this.grid[i][j] == 0) {
-					prevValue = 0;
-					counter = 0;
-				} else if (this.grid[i][j] == prevValue && prevValue > 0) {
+		for (int i = 1; i < grid.length - 1; i++) {
+			for (int j = 1; j < grid[i].length; j++) {
+				if (prevValue == grid[i][j] && prevValue > 0) {
 					counter++;
-				} else {
-					if (counter >= 4) {
+				}else {
+					prevValue = grid[i][j];
+					if (counter >= 3) {
 						lineEndX = i;
-						lineEndY = j - 1;
+						lineEndY = j-1; //the current stone's color is different, so it doesn't count towards the row.
 						lineStartX = i;
 						lineStartY = j - counter;
 						int[] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY));
-						lines.add(new Row(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY), logic.checkPlayer(prevValue), counter, extensionStones[0], extensionStones[1]));
+						lines.add(
+								new Row(new Point(lineStartX, lineStartY),
+										new Point(lineEndX, lineEndY),
+										logic.checkPlayer(prevValue),
+										counter,
+										extensionStones[0],
+										extensionStones[1]
+									)
+								);
+						counter = 0;
 					}
-					counter = 1;
-					prevValue = this.grid[i][j];
-				}
-				
-				if (counter >= 4) {
-					lineEndX = i;
-					lineEndY = j - 1;
-					lineStartX = i;
-					lineStartY = j - counter;
-					int[] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY));
-					lines.add(new Row(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY), logic.checkPlayer(prevValue), counter, extensionStones[0], extensionStones[1]));
 				}
 			}
+			counter = 0;
+			prevValue = -1;
 		}
 
-		counter = 0;
-		prevValue = -1;
+		for (int j = 0; j < grid[0].length; j++) {
+			for (int i = 0; i < grid.length; i++) {
+				if (prevValue == grid[i][j] && prevValue > 0){
+					counter++;
+				}else {
+					prevValue = grid[i][j];
+					if (counter >= 3) {
+						lineEndX = i-1;
+						lineEndY = j;
+						lineStartX = i - counter;
+						lineStartY = j;
+				
+						int[] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY));
+						lines.add(
+								new Row(new Point(lineStartX, lineStartY),
+										new Point(lineEndX, lineEndY),
+										logic.checkPlayer(prevValue),
+										counter + 1,
+										extensionStones[0],
+										extensionStones[1]
+									)
+								);
+						counter = 0;
+					}
+				}
+			}
+			counter = 0;
+			prevValue = -1;
+		}
 
-		// left down to right up lines
-		//		for (int j = 1; j < this.grid[0].length - 1; j++) {
-		//			for (int i = 1; i < this.grid.length - 1; i++) {
-		//				if (i == )
-		//			}
-		//		}
+		// checks for lines left top right bottom
+		for (int i = 1; i <= grid.length; i++) {
+			for (int j = 1; j < grid[0].length; j++) {
+				for(int k=0; k < Math.min(grid.length - i, grid[0].length - j); k++){
+					if (prevValue == grid[i + k][j + k] && prevValue > 0) {
+						counter++;
+					} else {
+						prevValue = grid[i+k][j+k];
+						if (counter >= 3) {
+							lineEndX = i + k - 1;
+							lineEndY = j + k - 1;
+							lineStartX = i + k - counter;
+							lineStartY = j + k - counter;
+						
+							int[] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY));
+							lines.add(
+									new Row(new Point(lineStartX, lineStartY),
+											new Point(lineEndX, lineEndY),
+											logic.checkPlayer(prevValue),
+											counter,
+											extensionStones[0],
+											extensionStones[1]
+										)
+									);
+							counter = 0;
+						}
+					}
+				}
+				counter = 0;
+				prevValue = -1;
+			}
+			
+		}
 
 		return lines;
 	}
-
-	//	public ArrayList<Row> checkForLines() {
-	//		ArrayList<Row> lines = new ArrayList<Row>();
-	//		int lineStartX = -1, lineStartY = -1, lineEndX = -1, lineEndY = -1;
-	//
-	//		int counter = 0;
-	//		int prevValue = -1;
-	//
-	//		// checks for vertical lines
-	//		for (int i = 1; i < grid.length - 1; i++) {
-	//			for (int j = 1; j < grid[i].length - 1; j++) {
-	//				if (prevValue == grid[i][j] && prevValue > 0) {
-	//					counter++;
-	//				} else {
-	//					prevValue = grid[i][j];
-	//					if (counter >= 4) {
-	//						lineEndX = i;
-	//						lineEndY = j - 1; // the current stone's color is different, so it doesn't count towards the row.
-	//						lineStartX = i;
-	//						lineStartY = j - counter;
-	//						int[] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY));
-	//						lines.add(new Row(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY), logic.checkPlayer(prevValue), counter, extensionStones[0], extensionStones[1]));
-	//						counter = 1;
-	//					}
-	//					if (prevValue > 0)
-	//						counter = 1;
-	//					else
-	//						counter = 0;
-	//				}
-	//			}
-	//			counter = 0;
-	//			prevValue = -1;
-	//		}
-	//
-	//		// checks for left down right up lines
-	//		for (int j = 0; j < grid[0].length; j++) {
-	//			for (int i = 0; i < grid.length; i++) {
-	//				if (prevValue == grid[i][j] && prevValue > 0)
-	//					counter++;
-	//				else {
-	//					prevValue = grid[i][j];
-	//					if (counter >= 4) {
-	//						lineEndX = i - 1;
-	//						lineEndY = j;
-	//						lineStartX = i - counter;
-	//						lineStartY = j;
-	//
-	//						int[] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY));
-	//						lines.add(new Row(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY), logic.checkPlayer(prevValue), counter, extensionStones[0], extensionStones[1]));
-	//						counter = 1;
-	//					}
-	//				}
-	//			}
-	//			counter = 1;
-	//			prevValue = -1;
-	//		}
-	//
-	//		//		// checks for lines left top right bottom
-	//		//		for (int j = 3; j >= 0; j--) {
-	//		//			for (int i = 1; i < (9 - j) - 1; i++) {
-	//		//				if (prevValue == grid[i][j + i] && prevValue > 0)
-	//		//					counter++;
-	//		//				else {
-	//		//					prevValue = grid[i][j + i];
-	//		//					if (counter >= 4) {
-	//		//						lineEndX = i - 1;
-	//		//						lineEndY = (j + 1) + (i - 1);
-	//		//						lineStartX = i - counter;
-	//		//						lineStartY = j - counter + i;
-	//		//
-	//		//						int[] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY));
-	//		//						lines.add(new Row(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY), logic.checkPlayer(prevValue), counter, extensionStones[0], extensionStones[1]));
-	//		//						counter = 1;
-	//		//					}
-	//		//				}
-	//		//			}
-	//		//			counter = 0;
-	//		//			prevValue = -1;
-	//		//		}
-	//		
-	//		counter = 0;
-	//		prevValue = -1;
-	//		for (int j = 4; j > 0; j--) {
-	//			for (int i = 1; i < 5 + (4 - j); i++) {
-	//				if (prevValue == grid[i][j] && prevValue > 0) {
-	//					counter++;
-	//				} else {
-	//					prevValue = grid[i][j];
-	//					if (counter >= 4) {
-	//						lineEndX = i;
-	//						lineEndY = j - 1; // the current stone's color is different, so it doesn't count towards the row.
-	//						lineStartX = i;
-	//						lineStartY = j - counter;
-	//						int[] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY));
-	//						lines.add(new Row(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY), logic.checkPlayer(prevValue), counter, extensionStones[0], extensionStones[1]));
-	//						counter = 1;
-	//					}
-	//					if (prevValue > 0)
-	//						counter = 1;
-	//					else
-	//						counter = 0;
-	//				}
-	//			}
-	//
-	//			counter = 0;
-	//			prevValue = -1;
-	//		}
-	//
-	//		// The maximum row length you can create is 7, by pushing a stone
-	//		// between 2 rows of 3.
-	//
-	//		for (int i = 1; i < 7; i++) {
-	//			for (int j = 1; j < (9 - i) - 1; j++) {
-	//				if (prevValue == grid[i + j][j] && prevValue > 0)
-	//					counter++;
-	//				else {
-	//					prevValue = grid[i + j][j];
-	//					if (counter == 4) {
-	//						lineEndX = i + (j - 1);
-	//						lineEndY = j - 1;
-	//						lineStartX = i - counter + j;
-	//						lineStartY = j - counter;
-	//
-	//						int[] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY));
-	//						lines.add(new Row(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY), logic.checkPlayer(prevValue), counter, extensionStones[0], extensionStones[1]));
-	//					}
-	//				}
-	//			}
-	//			counter = 0;
-	//			prevValue = -1;
-	//		}
-	//
-	//		// System.out.println(new Point(lineStartX, lineStartY) + " " + new
-	//		// Point(lineEndX, lineEndY));
-	//
-	//		return lines;
-	//	}
 
 	private int[] getExtensionStones(Point start, Point end) {
 		int white = 0;
@@ -348,7 +332,7 @@ public class Board {
 		while (!(p.getX() == start.getX() && p.getY() == start.getY())) {
 			if (grid[p.getX()][p.getY()] == WHITE_VALUE) {
 				white += 1;
-			} else {
+			} else if(grid[p.getY()][p.getY()] == BLACK_VALUE){
 				black += 1;
 			}
 			p = new Point(p.getX() + deltaX, p.getY() + deltaY);

@@ -16,7 +16,6 @@ public class BoardButton extends JButton {
 
 	public void paintComponent(Graphics g2) {
 		Graphics2D g = (Graphics2D) g2;
-
 		if (this.draw && this.image != null) g.drawImage(this.image, 0, 0, this.getWidth(), this.getHeight(), null);
 	}
 

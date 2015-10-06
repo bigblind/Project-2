@@ -57,7 +57,7 @@ public abstract class GameLogic implements PlayerListener {
 		return false;
 	}
 
-	public Player getActivePlayer() {
+	public Player getCurrentPlayer() {
 		return currentPlayer;
 	}
 
@@ -69,7 +69,7 @@ public abstract class GameLogic implements PlayerListener {
 		this.listeners.remove(listener);
 	}
 
-	private void notifyListeners(PlayerChangeEvent e) {
+	public void notifyListeners(PlayerChangeEvent e) {
 		for (PlayerChangeListener l : this.listeners)
 			l.changeEventPerformed(e);
 	}
