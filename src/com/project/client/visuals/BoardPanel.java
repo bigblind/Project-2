@@ -33,6 +33,8 @@ public class BoardPanel extends JPanel implements ComponentListener, BoardChange
 	 * GhostBoardButtonPanel, sets the active player and everything
 	 */
 
+	private static final boolean SHOW_NUMBERS = true;
+
 	private State state; // TODO needs to be changed
 
 	private BoardButton[][] buttons;
@@ -303,6 +305,9 @@ public class BoardPanel extends JPanel implements ComponentListener, BoardChange
 				} else if (this.board.getGrid()[i][j] == Board.GIPF_WHITE_VALUE) {
 
 				}
+				if (SHOW_NUMBERS) {
+					g.drawString(i + "," + j, this.coordinates[i][j].getX(), this.coordinates[i][j].getY());
+				}
 			}
 		}
 		for (int j = 1; j < 5; j++) {
@@ -315,6 +320,9 @@ public class BoardPanel extends JPanel implements ComponentListener, BoardChange
 
 				} else if (this.board.getGrid()[i][4 + j] == Board.GIPF_WHITE_VALUE) {
 
+				}
+				if (SHOW_NUMBERS) {
+					g.drawString(i + "," + (4 + j), this.coordinates[i][4 + j].getX(), this.coordinates[i][4 + j].getY());
 				}
 			}
 		}
