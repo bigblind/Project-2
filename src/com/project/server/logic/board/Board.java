@@ -221,7 +221,6 @@ public class Board {
 				if (prevValue == grid[i][j] && prevValue > 0) {
 					counter++;
 				}else {
-					prevValue = grid[i][j];
 					if (counter >= 3) {
 						lineEndX = i;
 						lineEndY = j-1; //the current stone's color is different, so it doesn't count towards the row.
@@ -239,6 +238,7 @@ public class Board {
 								);
 						counter = 0;
 					}
+					prevValue = grid[i][j];
 				}
 			}
 			counter = 0;
@@ -250,7 +250,6 @@ public class Board {
 				if (prevValue == grid[i][j] && prevValue > 0){
 					counter++;
 				}else {
-					prevValue = grid[i][j];
 					if (counter >= 3) {
 						lineEndX = i-1;
 						lineEndY = j;
@@ -269,6 +268,7 @@ public class Board {
 								);
 						counter = 0;
 					}
+					prevValue = grid[i][j];
 				}
 			}
 			counter = 0;
@@ -282,7 +282,6 @@ public class Board {
 					if (prevValue == grid[i + k][j + k] && prevValue > 0) {
 						counter++;
 					} else {
-						prevValue = grid[i+k][j+k];
 						if (counter >= 3) {
 							lineEndX = i + k - 1;
 							lineEndY = j + k - 1;
@@ -301,6 +300,7 @@ public class Board {
 									);
 							counter = 0;
 						}
+						prevValue = grid[i+k][j+k];
 					}
 				}
 				counter = 0;
