@@ -33,6 +33,8 @@ public class BoardPanel extends JPanel implements ComponentListener, BoardChange
 	 * GhostBoardButtonPanel, sets the active player and everything
 	 */
 
+	private static final boolean SHOW_NUMBERS = true;
+
 	private State state; // TODO needs to be changed
 
 	private BoardButton[][] buttons;
@@ -220,31 +222,25 @@ public class BoardPanel extends JPanel implements ComponentListener, BoardChange
 		g.setColor(Color.BLACK);
 
 		for (int j = 1; j < 5; j++) {
-			g.drawLine(coordinates[0][j].getX() + this.tileSize / 2, coordinates[0][j].getY() + this.tileSize / 2, coordinates[4 + j][j].getX() + this.tileSize / 2,
-					coordinates[4 + j][j].getY() + this.tileSize / 2);
+			g.drawLine(coordinates[0][j].getX() + this.tileSize / 2, coordinates[0][j].getY() + this.tileSize / 2, coordinates[4 + j][j].getX() + this.tileSize / 2, coordinates[4 + j][j].getY() + this.tileSize / 2);
 		}
 		for (int j = 1; j < 4; j++) {
-			g.drawLine(coordinates[0 + j][j + 4].getX() + this.tileSize / 2, coordinates[0 + j][j + 4].getY() + this.tileSize / 2, coordinates[8][j + 4].getX() + this.tileSize / 2,
-					coordinates[8][j + 4].getY() + this.tileSize / 2);
+			g.drawLine(coordinates[0 + j][j + 4].getX() + this.tileSize / 2, coordinates[0 + j][j + 4].getY() + this.tileSize / 2, coordinates[8][j + 4].getX() + this.tileSize / 2, coordinates[8][j + 4].getY() + this.tileSize / 2);
 		}
 
 		for (int i = 1; i < 5; i++) {
-			g.drawLine(coordinates[i][0].getX() + this.tileSize / 2, coordinates[i][0].getY() + this.tileSize / 2, coordinates[i][4 + i].getX() + this.tileSize / 2,
-					coordinates[i][4 + i].getY() + this.tileSize / 2);
+			g.drawLine(coordinates[i][0].getX() + this.tileSize / 2, coordinates[i][0].getY() + this.tileSize / 2, coordinates[i][4 + i].getX() + this.tileSize / 2, coordinates[i][4 + i].getY() + this.tileSize / 2);
 		}
 
 		for (int i = 0; i < 3; i++) {
-			g.drawLine(coordinates[i + 5][1 + i].getX() + this.tileSize / 2, coordinates[i + 5][1 + i].getY() + this.tileSize / 2, coordinates[i + 5][8].getX() + this.tileSize / 2,
-					coordinates[i + 5][8].getY() + this.tileSize / 2);
+			g.drawLine(coordinates[i + 5][1 + i].getX() + this.tileSize / 2, coordinates[i + 5][1 + i].getY() + this.tileSize / 2, coordinates[i + 5][8].getX() + this.tileSize / 2, coordinates[i + 5][8].getY() + this.tileSize / 2);
 		}
 		for (int i = 0; i < 4; i++) {
-			g.drawLine(coordinates[0][3 - i].getX() + this.tileSize / 2, coordinates[0][3 - i].getY() + this.tileSize / 2, coordinates[5 + i][8].getX() + this.tileSize / 2,
-					coordinates[5 + i][8].getY() + this.tileSize / 2);
+			g.drawLine(coordinates[0][3 - i].getX() + this.tileSize / 2, coordinates[0][3 - i].getY() + this.tileSize / 2, coordinates[5 + i][8].getX() + this.tileSize / 2, coordinates[5 + i][8].getY() + this.tileSize / 2);
 		}
 
 		for (int i = 1; i < 4; i++) {
-			g.drawLine(coordinates[i][0].getX() + this.tileSize / 2, coordinates[i][0].getY() + this.tileSize / 2, coordinates[8][8 - i].getX() + this.tileSize / 2,
-					coordinates[8][8 - i].getY() + this.tileSize / 2);
+			g.drawLine(coordinates[i][0].getX() + this.tileSize / 2, coordinates[i][0].getY() + this.tileSize / 2, coordinates[8][8 - i].getX() + this.tileSize / 2, coordinates[8][8 - i].getY() + this.tileSize / 2);
 		}
 
 		for (int i = 0; i < 5; i++) {
@@ -284,9 +280,7 @@ public class BoardPanel extends JPanel implements ComponentListener, BoardChange
 			g.setStroke(new BasicStroke(3.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND, 0.0f, new float[] { 10.0f }, 0.0f));
 
 			for (int i = 0; i < locations.length; i++) {
-				g.drawLine(this.coordinates[originalLocation.getX()][originalLocation.getY()].getX() + this.tileSize / 2,
-						this.coordinates[originalLocation.getX()][originalLocation.getY()].getY() + this.tileSize / 2,
-						this.coordinates[locations[i].getX()][locations[i].getY()].getX() + this.tileSize / 2, this.coordinates[locations[i].getX()][locations[i].getY()].getY() + this.tileSize / 2);
+				g.drawLine(this.coordinates[originalLocation.getX()][originalLocation.getY()].getX() + this.tileSize / 2, this.coordinates[originalLocation.getX()][originalLocation.getY()].getY() + this.tileSize / 2, this.coordinates[locations[i].getX()][locations[i].getY()].getX() + this.tileSize / 2, this.coordinates[locations[i].getX()][locations[i].getY()].getY() + this.tileSize / 2);
 			}
 		}
 	}
@@ -303,6 +297,9 @@ public class BoardPanel extends JPanel implements ComponentListener, BoardChange
 				} else if (this.board.getGrid()[i][j] == Board.GIPF_WHITE_VALUE) {
 
 				}
+				if (SHOW_NUMBERS) {
+					g.drawString(i + "," + j, this.coordinates[i][j].getX(), this.coordinates[i][j].getY());
+				}
 			}
 		}
 		for (int j = 1; j < 5; j++) {
@@ -315,6 +312,9 @@ public class BoardPanel extends JPanel implements ComponentListener, BoardChange
 
 				} else if (this.board.getGrid()[i][4 + j] == Board.GIPF_WHITE_VALUE) {
 
+				}
+				if (SHOW_NUMBERS) {
+					g.drawString(i + "," + (4 + j), this.coordinates[i][4 + j].getX(), this.coordinates[i][4 + j].getY());
 				}
 			}
 		}
