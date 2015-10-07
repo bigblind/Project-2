@@ -13,8 +13,12 @@ import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import com.project.client.connection.ClientInterface;
+import com.project.client.visuals.sidepanel.SidePanel;
 
 public class GameFrame extends JFrame implements ComponentListener {
 
@@ -22,11 +26,29 @@ public class GameFrame extends JFrame implements ComponentListener {
 
 	private GamePanel gamePanel;
 	private JPanel ghostGamePanel;
-
+	private SidePanel side = new SidePanel();
 	private Dimension normalSize;
 	private Point normalLocation;
 
 	public GameFrame(ClientInterface clientInterface) {
+		
+		try {
+		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+		        if ("Nimbus".equals(info.getName())) {
+		            UIManager.setLookAndFeel(info.getClassName());
+		            break;
+		        }
+		    }
+		} catch (UnsupportedLookAndFeelException e) {
+		    // handle exception
+		} catch (ClassNotFoundException e) {
+		    // handle exception
+		} catch (InstantiationException e) {
+		    // handle exception
+		} catch (IllegalAccessException e) {
+		    // handle exception
+		}
+		
 		final int width = 1200;
 		this.setPreferredSize(new Dimension(width, width / 16 * 9));
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -43,9 +65,10 @@ public class GameFrame extends JFrame implements ComponentListener {
 
 		layer.add(this.gamePanel, new Integer(0));
 		layer.add(this.ghostGamePanel, new Integer(1));
+		//layer.add(this.side, new Integer(2));
 
 		this.setIconImage(ResourceLoader.ICON);
-
+		
 		Object fullscreenKey = new Object();
 		this.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("F11"), fullscreenKey);
 		this.getRootPane().getActionMap().put(fullscreenKey, new AbstractAction() {
@@ -88,6 +111,7 @@ public class GameFrame extends JFrame implements ComponentListener {
 		int width = (int) (this.getSize().getWidth() - this.getInsets().left - this.getInsets().right);
 		int height = (int) (this.getSize().getHeight() - this.getInsets().top - this.getInsets().bottom);
 
+		this.side.setSize(500, height);
 		this.gamePanel.setSize(width, height);
 		this.ghostGamePanel.setSize(width, height - 1);
 		this.revalidate();

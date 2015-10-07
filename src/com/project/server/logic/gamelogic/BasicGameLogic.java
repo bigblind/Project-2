@@ -1,8 +1,13 @@
 package com.project.server.logic.gamelogic;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
 import com.project.client.board.Board;
+import com.project.client.sound.SoundManager;
 import com.project.common.player.PlayerEvent;
 import com.project.server.logic.Game;
 import com.project.server.logic.Row;
@@ -10,18 +15,26 @@ import com.project.server.logic.Row;
 public class BasicGameLogic extends GameLogic {
 
 	private boolean inRemoveState = false;
+	private SoundManager sound = new SoundManager();
 
 	public BasicGameLogic(Game game) {
 		super(game);
+		//sound.backgroundPlay();
 	}
 
 	public void playerEventPerformed(PlayerEvent e) {
 		if (inRemoveState) {
 
 			inRemoveState = false;
+			
 
 		} else {
-			if (!this.game.getBoard().isValidMove(e.getFromPoint(), e.getToPoint())) return;
+			if (!this.game.getBoard().isValidMove(e.getFromPoint(), e.getToPoint())) {
+				sound.movePlay(false);
+				System.out.println("Hellooo");
+				return;
+			}
+			sound.movePlay(true);
 			this.game.getBoard().place(e.getPlayer().getStoneColor(), e.getFromPoint(), e.getToPoint());
 			this.getCurrentPlayer().setStoneAccount(this.getCurrentPlayer().getStoneAccount() - 1); //TODO update for client aswell somehow
 

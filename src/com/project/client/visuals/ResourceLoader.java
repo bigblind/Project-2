@@ -5,12 +5,16 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
 
 public class ResourceLoader {
 
 	public static Image WHITE_STONE, BLACK_STONE, OUTER_DOT, WHITE_STONE_TRANSPARENT, BLACK_STONE_TRANSPARENT;
 	public static Image MENU_ICON, SOUND_ICON, SOUND_MUTED_ICON, SETTINGS_ICON, HELP_ICON;
 	public static Image ICON;
+	
+	public static File ON_VALID_MOVE, ON_INVALID_MOVE, BACKGROUND;
 	
 	public void init() throws IOException {
 		WHITE_STONE = ImageIO.read(this.getResource("res/icons/WhiteStone2.png"));
@@ -27,6 +31,11 @@ public class ResourceLoader {
 		
 		WHITE_STONE_TRANSPARENT = ImageIO.read(this.getResource("res/icons/WhiteStoneTransparent.png"));
 		BLACK_STONE_TRANSPARENT = ImageIO.read(this.getResource("res/icons/BlackStoneTransparent.png"));
+		
+		ON_INVALID_MOVE = new File("res/sounds/inValidMove.wav");
+		BACKGROUND = new File("res/sounds/Background.wav");
+		ON_VALID_MOVE = new File("res/sounds/ValidMove.wav");
+		
 	}
 	
 //	public InputStream getResource(String path) {

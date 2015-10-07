@@ -19,6 +19,7 @@ import com.project.client.board.Board;
 import com.project.client.board.BoardChangeEvent;
 import com.project.client.board.BoardChangeListener;
 import com.project.client.connection.ClientInterface;
+import com.project.client.visuals.sidepanel.SidePanel;
 import com.project.client.visuals.state.MoveStateB;
 import com.project.client.visuals.state.OpponentTurnState;
 import com.project.client.visuals.state.State;

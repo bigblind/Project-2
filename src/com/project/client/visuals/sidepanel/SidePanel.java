@@ -57,6 +57,8 @@ public class SidePanel extends JPanel implements FocusListener {
 		this.add(bottomButtonPanel, BorderLayout.SOUTH);
 
 		this.goBig();
+		
+		
 	}
 
 	private void goBig() {

@@ -17,6 +17,8 @@ public class BottomButtonPanel extends MenuComponent {
 	private static final long serialVersionUID = 3471989499685962625L;
 
 	private JButton help, sound, settings;
+	private HelpFrame helpFrame = new HelpFrame();
+	private SettingsFrame settingsFrame = new SettingsFrame();
 
 	public BottomButtonPanel() {
 		this.setPreferredSize(new Dimension(400, 150));
@@ -30,8 +32,10 @@ public class BottomButtonPanel extends MenuComponent {
 		this.help.setIcon(new ImageIcon(ResourceLoader.HELP_ICON));
 		this.help.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				HelpFrame frame = new HelpFrame();
-				frame.setVisible(true);
+				helpFrame.dispose();
+				helpFrame = new HelpFrame();
+				helpFrame.setVisible(true);
+
 			}
 		});
 
@@ -43,8 +47,10 @@ public class BottomButtonPanel extends MenuComponent {
 		this.settings.setIcon(new ImageIcon(ResourceLoader.SETTINGS_ICON));
 		this.settings.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				SettingsFrame frame = new SettingsFrame();
-				frame.setVisible(true);
+				settingsFrame.dispose();
+				settingsFrame = new SettingsFrame();
+				settingsFrame.setVisible(true);
+
 			}
 		});
 
@@ -60,8 +66,10 @@ public class BottomButtonPanel extends MenuComponent {
 		this.sound.setIcon(soundOn);
 		this.sound.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (sound.getIcon().equals(soundOn)) sound.setIcon(soundMuted);
-				else sound.setIcon(soundOn);
+				if (sound.getIcon().equals(soundOn))
+					sound.setIcon(soundMuted);
+				else
+					sound.setIcon(soundOn);
 				revalidate();
 			}
 		});
