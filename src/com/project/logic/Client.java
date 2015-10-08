@@ -5,8 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.SocketException;
-import java.net.UnknownHostException;
+import java.util.Scanner;
 
 public class Client {
     private String           name, address;
@@ -15,15 +14,39 @@ public class Client {
     private InetAddress      ip;
     private DataInputStream  input;
     private DataOutputStream output;
+    private Thread           receiveThread;
     
     public Client(String hostName, String address, int port) {
 	this.name = hostName;
 	this.address = address;
 	this.port = port;
+	openConnection("127.0.0.1", 40);
+	receiveThread = new Thread() {
+	    public void run() {
+		try {
+		    input = new DataInputStream(clientSocket.getInputStream());
+		    //System.out.println("client is listening");
+		    if (clientSocket.isConnected()) {
+			System.out.println(input.readUTF());
+			
+		    } else {
+			System.out.println("not connected");
+		    }
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
+	    }
+	};
+	
+	try {
+	    this.output = new DataOutputStream(clientSocket.getOutputStream());
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
 	
     }
     
-    private void openConnection(String address, int port) throws UnknownHostException, IOException {
+    private void openConnection(String address, int port) {
 	
 	try {
 	    clientSocket = new Socket(InetAddress.getByName("127.0.0.1"), port);
@@ -37,33 +60,22 @@ public class Client {
     
     private void send() {
 	try {
-	    output = new DataOutputStream(clientSocket.getOutputStream());
-	    String test = "Client says hi";
+	    Scanner in = new Scanner(System.in);
+	    System.out.println("Client: enter an int");
+	    int x = in.nextInt();
+	    String test = "Client sent message " + x;
 	    output.writeUTF(test);
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
     }
     
-    private void receive() {
-	try {
-	    input = new DataInputStream(clientSocket.getInputStream());
-	    
-	} catch (IOException e) {
-	    e.printStackTrace();
-	}
-    }
-    
     public static void main(String args[]) {
-	Client client = new Client("leos", "localhost", 1650);
-	try {
-	    client.openConnection("localhost", 1650);
-	    //client.receive();
-	    client.send();
-	    
-	} catch (IOException e) {
-	    e.printStackTrace();
-	}
+	
+	Client client = new Client("leos", "localhost", 40);
+	client.receiveThread.start();
+	client.send();
 	
     }
+    
 }

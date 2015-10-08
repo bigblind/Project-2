@@ -1,7 +1,5 @@
 package com.project.logic;
 
-import java.io.BufferedInputStream;
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -10,14 +8,13 @@ public class Server {
     
     private ServerSocket serverSocket;
     private Socket       clientSocket;
-    static final int     PORT = 1650;
+    static final int     PORT = 40;
     private PlayerThread players[];
     private int          currentPlayer;
     
     public Server() {
 	players = new PlayerThread[2];
 	currentPlayer = 0;
-	
 	try {
 	    serverSocket = new ServerSocket(PORT);
 	} catch (IOException e) {
@@ -27,9 +24,8 @@ public class Server {
     }
     
     public static void main(String args[]) {
-	Server game = new Server();
-	game.execute();
-	
+	Server gameServer = new Server();
+	gameServer.execute();
 	System.exit(1);
     }
     
@@ -38,8 +34,10 @@ public class Server {
 	    try {
 		clientSocket = serverSocket.accept();
 		System.out.println("Server: Connection estabilished");
-		players[i] = new PlayerThread(clientSocket, i + 1); //start a new thread for each player
+		players[i] = new PlayerThread(clientSocket, i + 1, this); //start a new thread for each player
+		
 		players[i].start();
+		
 		
 	    } catch (IOException e) {
 		System.out.println("I/O error: " + e);
@@ -53,13 +51,13 @@ public class Server {
 	    players[0].threadSuspended = false;
 	    players[0].notify();
 	}
-	
+	 
     }
     
     // Determine if a move is valid.
     // This method is synchronized because only one move can be
     // made at a time.
-    public synchronized boolean validMove(int player) {
+   public synchronized boolean validMove(int player, String s) {
 	
 	while (player != currentPlayer) {
 	    try {
@@ -68,8 +66,12 @@ public class Server {
 		e.printStackTrace();
 	    }
 	}
-	if (true) {
-	    //conditions for a valid move
+	if (true) {//conditions for a valid move
+	    if(currentPlayer == 0)
+		players[1].send(s);
+	    else
+		players[0].send(s);
+	    
 	    currentPlayer = (currentPlayer + 1) % 2;
 	    notify(); //notify other player to continue
 	    return true;
@@ -77,5 +79,11 @@ public class Server {
 	    return false;
 	
     }
+    
+    public boolean gameOver(){
+	//implement gameover conditions
+	return false;
+    }
+    
     
 }
