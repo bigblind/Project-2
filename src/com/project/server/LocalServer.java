@@ -56,9 +56,7 @@ public class LocalServer implements PlayerListener, PlayerChangeListener, RowRem
 		this.game.getBoard().print();
 		this.logic = new BasicGameLogic(this.game);
 		this.logic.addPlayerChangeListener(this);
-
-		if (this.logic == null) throw new ServerNotPreparedException();
-		this.game.setGameLogic(this.logic);
+		this.logic.addRowRemovalRequestListener(this);
 
 		if (this.clients[0] == null || this.clients[1] == null) throw new ServerNotPreparedException();
 

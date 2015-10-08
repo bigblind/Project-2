@@ -10,7 +10,8 @@ import com.project.server.logic.Row;
 public class BasicGameLogic extends GameLogic {
 
 	private boolean inRemoveState = false;
-
+	private ArrayList<RowRemovalRequestListener> rrrListeners = new ArrayList<RowRemovalRequestListener>();
+	
 	public BasicGameLogic(Game game) {
 		super(game);
 	}
@@ -47,14 +48,14 @@ public class BasicGameLogic extends GameLogic {
 
 			ArrayList<Row> activeRows = rowsForPlayer(this.currentPlayer.getStoneColor(), rows);
 			if (activeRows.size() > 0) {
-				// MAKE ACTIVEPLAYER CHOOSE
+				emitRowRemovalRequest(new RowRemovalRequestEvent(activeRows));
 				return true;
 			} else {
 				ArrayList<Row> notActiveRows;
 				if (currentPlayer.getStoneColor() == Board.WHITE_VALUE) notActiveRows = rowsForPlayer(Board.BLACK_VALUE, rows);
 				else notActiveRows = rowsForPlayer(Board.WHITE_VALUE, rows);
 
-				//MAKE OTHER PLAYER CHOOSE
+				emitRowRemovalRequest(new RowRemovalRequestEvent(notActiveRows));
 				return true;
 			}
 		}
@@ -79,5 +80,15 @@ public class BasicGameLogic extends GameLogic {
 
 	public void setRemoveState(boolean state) {
 		this.inRemoveState = state;
+	}
+	
+	public void addRowRemovalRequestListener(RowRemovalRequestListener l){
+		rrrListeners.add(l);
+	}
+	
+	private void emitRowRemovalRequest(RowRemovalRequestEvent e){
+		for(RowRemovalRequestListener l: rrrListeners){
+			l.rowRemoveRequestEventPerformed(e);
+		}
 	}
 }
