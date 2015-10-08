@@ -20,7 +20,7 @@ public class ClientInterface implements PlayerListener {
 	private Board board;
 	private BoardPanel boardPanel;
 
-	private Player thisPlayer; // TODO get it's stoneColor and number
+	private Player thisPlayer;
 
 	public ClientInterface() {
 		this.board = new Board();

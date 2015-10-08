@@ -24,8 +24,7 @@ public class BasicGameLogic extends GameLogic {
 		} else {
 			if (!this.game.getBoard().isValidMove(e.getFromPoint(), e.getToPoint())) return;
 			this.game.getBoard().place(e.getPlayer().getStoneColor(), e.getFromPoint(), e.getToPoint());
-			this.getCurrentPlayer().setStoneAccount(this.getCurrentPlayer().getStoneAccount() - 1); //TODO update for client aswell somehow
-			this.server.sendGameUpdate();
+			this.getCurrentPlayer().setStoneAccount(this.getCurrentPlayer().getStoneAccount() - 1);
 			
 			if (this.handleRows()) return;
 
@@ -44,6 +43,7 @@ public class BasicGameLogic extends GameLogic {
 			row.getPlayer().setStoneAccount(row.getPlayer().getStoneAccount() + stones);
 			
 		} else if (rows.size() > 1) {
+			this.server.sendGameUpdate();
 			ArrayList<Row> activeRows = rowsForPlayer(this.currentPlayer.getStoneColor(), rows);
 			if (activeRows.size() > 0) {
 				emitRowRemovalRequest(new RowRemovalRequestEvent(activeRows));
