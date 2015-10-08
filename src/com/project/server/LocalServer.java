@@ -15,7 +15,7 @@ import com.project.server.logic.gamelogic.PlayerChangeListener;
 import com.project.server.logic.gamelogic.RowRemovalRequestEvent;
 import com.project.server.logic.gamelogic.RowRemovalRequestListener;
 
-public class LocalServer implements PlayerListener, PlayerChangeListener, RowRemovalRequestListener {
+public class LocalServer extends Server implements PlayerListener, PlayerChangeListener, RowRemovalRequestListener {
 
 	/*
 	 * Supposed to be created Then add players Give the server the logic Then
@@ -55,7 +55,9 @@ public class LocalServer implements PlayerListener, PlayerChangeListener, RowRem
 		this.game = new Game();
 		this.game.getBoard().print();
 		this.logic = new BasicGameLogic(this.game);
+		this.logic.setServer(this);
 		this.logic.addPlayerChangeListener(this);
+		this.logic.addRowRemovalRequestListener(this);
 
 		if (this.logic == null) throw new ServerNotPreparedException();
 		this.game.setGameLogic(this.logic);
@@ -74,14 +76,14 @@ public class LocalServer implements PlayerListener, PlayerChangeListener, RowRem
 		this.addPlayerListener(logic);
 	}
 
-	private void sendClientInit() {
+	public void sendClientInit() {
 		String send = "/i " + Board.WHITE_VALUE + " 15 15 " + this.game.getBoard().toString();
 		this.clients[0].receive(send.getBytes());
 		send = "/i " + Board.BLACK_VALUE + " 15 15 " + this.game.getBoard().toString();
 		this.clients[1].receive(send.getBytes());
 	}
 
-	private void sendGameUpdate() {
+	public void sendGameUpdate() {
 		String send;
 		send = "/u " + this.game.getPlayerOne().getStoneAccount() + " " + this.game.getPlayerTwo().getStoneAccount() + " " + this.game.getBoard().toString();
 		this.clients[0].receive(send.getBytes());
@@ -134,12 +136,14 @@ public class LocalServer implements PlayerListener, PlayerChangeListener, RowRem
 		this.sendTurnStateUpdate(e);
 	}
 
+	// TODO THINK ABOUT LOOKING FOR CORRECT PLAYER TO MAKE ROW REMOVE
 	public void rowRemoveRequestEventPerformed(RowRemovalRequestEvent e) {
-		if (this.game.getGameLogic().getCurrentPlayer().getStoneColor() == Board.WHITE_VALUE) {
-			String send = "/s remove ";
-			this.clients[0].receive(send.getBytes());
-		} else {
-			
-		}
+		String send = "/s remove";
+		for (int i = 0; i < e.getRows().size(); i++)
+			send += " {" + e.getRows().get(i).getFromPoint() + " , " + e.getRows().get(i).getToPoint() + "}";
+		
+		if (this.game.getGameLogic().getCurrentPlayer().getStoneColor() == Board.WHITE_VALUE) this.clients[0].receive(send.getBytes());
+		else this.clients[1].receive(send.getBytes());
+
 	}
 }

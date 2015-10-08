@@ -380,11 +380,9 @@ public class Board {
 		if (xx == 0) length = yy;
 		else if (yy == 0) length = xx;
 		else length = xx;
-		
-		System.out.println(start + " " + end);
-		for (int i = 0; i <= length; i++) {
+
+		for (int i = 0; i <= length; i++)
 			this.grid[start.getX() + (i * dx)][start.getY() + (i * dy)] = Board.EMPTY_TILE;
-		}
 	}
 
 	public String toString() {

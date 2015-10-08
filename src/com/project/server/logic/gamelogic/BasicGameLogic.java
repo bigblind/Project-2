@@ -10,7 +10,8 @@ import com.project.server.logic.Row;
 public class BasicGameLogic extends GameLogic {
 
 	private boolean inRemoveState = false;
-
+	private ArrayList<RowRemovalRequestListener> rrrListeners = new ArrayList<RowRemovalRequestListener>();
+	
 	public BasicGameLogic(Game game) {
 		super(game);
 	}
@@ -24,7 +25,8 @@ public class BasicGameLogic extends GameLogic {
 			if (!this.game.getBoard().isValidMove(e.getFromPoint(), e.getToPoint())) return;
 			this.game.getBoard().place(e.getPlayer().getStoneColor(), e.getFromPoint(), e.getToPoint());
 			this.getCurrentPlayer().setStoneAccount(this.getCurrentPlayer().getStoneAccount() - 1); //TODO update for client aswell somehow
-
+			this.server.sendGameUpdate();
+			
 			if (this.handleRows()) return;
 
 			this.moveToNextPlayer();
@@ -34,27 +36,24 @@ public class BasicGameLogic extends GameLogic {
 
 	private boolean handleRows() {
 		ArrayList<Row> rows = this.game.getBoard().checkForLines();
-
 		if (rows.size() == 1) {
 			Row row = rows.get(0);
 			int stones = row.getLength(); // Need to look out for gipf stones in the row
 			this.game.getBoard().removeRowAndExtensions(row);
 			handleExtensions(row);
-			System.out.println(row.getPlayer() + " length " + row.getLength() + " black extension " + row.getBlackExtensionStones() + " white extension " + row.getWhiteExtensionStones());
 			row.getPlayer().setStoneAccount(row.getPlayer().getStoneAccount() + stones);
 			
 		} else if (rows.size() > 1) {
-
 			ArrayList<Row> activeRows = rowsForPlayer(this.currentPlayer.getStoneColor(), rows);
 			if (activeRows.size() > 0) {
-				// MAKE ACTIVEPLAYER CHOOSE
+				emitRowRemovalRequest(new RowRemovalRequestEvent(activeRows));
 				return true;
 			} else {
 				ArrayList<Row> notActiveRows;
 				if (currentPlayer.getStoneColor() == Board.WHITE_VALUE) notActiveRows = rowsForPlayer(Board.BLACK_VALUE, rows);
 				else notActiveRows = rowsForPlayer(Board.WHITE_VALUE, rows);
 
-				//MAKE OTHER PLAYER CHOOSE
+				emitRowRemovalRequest(new RowRemovalRequestEvent(notActiveRows));
 				return true;
 			}
 		}
@@ -79,5 +78,15 @@ public class BasicGameLogic extends GameLogic {
 
 	public void setRemoveState(boolean state) {
 		this.inRemoveState = state;
+	}
+	
+	public void addRowRemovalRequestListener(RowRemovalRequestListener l){
+		rrrListeners.add(l);
+	}
+	
+	private void emitRowRemovalRequest(RowRemovalRequestEvent e){
+		for (int i = 0; i < this.rrrListeners.size(); i++) {
+			rrrListeners.get(i).rowRemoveRequestEventPerformed(e);
+		}
 	}
 }

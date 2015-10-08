@@ -10,6 +10,7 @@ import com.project.client.visuals.state.RemoveState;
 import com.project.common.player.Player;
 import com.project.common.player.PlayerEvent;
 import com.project.common.player.PlayerListener;
+import com.project.common.utils.Point;
 
 public class ClientInterface implements PlayerListener {
 
@@ -41,6 +42,7 @@ public class ClientInterface implements PlayerListener {
 
 	public void receive(byte[] bytes) {
 		String received = new String(bytes);
+		System.out.println(received);
 		if (received.startsWith("/i")) {
 			// "/i Board.BLACK_VALUE thisStonesAccount opponentStonesAccount boardString";
 			String info = received.split("/i ")[1];
@@ -54,12 +56,29 @@ public class ClientInterface implements PlayerListener {
 			String boardString = received.substring(subParts[0].length() + subParts[1].length() + 3 + subParts[2].length());
 			this.readBoard(boardString);
 		} else if (received.startsWith("/s")) {
+			System.out.println("in /s");
 			// for updating state
-			if (received.contains("move")) {
+			if (received.equals("/s move")) {
 				this.boardPanel.setState(new MoveStateA(this.boardPanel, this));
-			} else if (received.contains("remove")) {
-				this.boardPanel.setState(new RemoveState(this.boardPanel, this)); // will require the lines of this player currently on the board
-			} else if (received.contains("opponent")) {
+			} else if (received.startsWith("/s remove")) {
+				System.out.println("in remove");
+				String[] subPartsX = received.split("Point: x = ");
+				String[] subPartsY = received.split("y = ");
+				int nRows = subPartsX.length / 2;
+				Point[] rowPoints = new Point[nRows*2];
+				for (int i = 0; i < nRows; i++) {
+					int x1 = Integer.parseInt(subPartsX[1 + i*2].substring(0, 1));
+					int y1 = Integer.parseInt(subPartsY[1 + i*2].substring(0, 1));
+
+					int x2 = Integer.parseInt(subPartsX[1 + i*2 + 1].substring(0, 1));
+					int y2 = Integer.parseInt(subPartsY[1 + i*2 + 1].substring(0, 1));
+
+					rowPoints[i * 2] = new Point(x1, y1);
+					rowPoints[i * 2 + 1] = new Point(x2, y2);
+				}
+				for (Point point : rowPoints) System.out.println(point);
+				this.boardPanel.setState(new RemoveState(this.boardPanel, this, rowPoints)); 
+			} else if (received.startsWith("/s opponent")) {
 				this.boardPanel.setState(new OpponentTurnState(this.boardPanel, this));
 			} else {
 				System.err.println("Invalid client input: Input not recognised");
