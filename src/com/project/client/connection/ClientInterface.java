@@ -3,6 +3,7 @@ package com.project.client.connection;
 import java.util.ArrayList;
 
 import com.project.client.board.Board;
+import com.project.client.sound.SoundManager;
 import com.project.client.visuals.BoardPanel;
 import com.project.client.visuals.state.MoveStateA;
 import com.project.client.visuals.state.OpponentTurnState;
@@ -14,6 +15,7 @@ import com.project.common.player.PlayerListener;
 public class ClientInterface implements PlayerListener {
 
 	private ArrayList<PlayerListener> listeners;
+	private SoundManager sound = new SoundManager();
 
 	private int opponentAccount;
 	private Board board;
@@ -26,6 +28,7 @@ public class ClientInterface implements PlayerListener {
 		this.thisPlayer = new Player();
 		this.listeners = new ArrayList<PlayerListener>();
 		this.thisPlayer.addPlayerListener(this);
+		sound.backgroundPlay();
 	}
 
 	public void initCall(byte stoneColor, byte numberOfStones, byte opponentStoneAccount, String boardString) {
@@ -47,6 +50,7 @@ public class ClientInterface implements PlayerListener {
 			String boardString = received.substring(3 + info.split(" ")[0].length() + 1 + info.split(" ")[1].length() + 1 + info.split(" ")[2].length() + 1);
 			this.initCall(Byte.parseByte(info.split(" ")[0]), Byte.parseByte(info.split(" ")[1]), Byte.parseByte(info.split(" ")[2]), boardString);
 		} else if (received.startsWith("/u")) {
+			sound.movePlay(true);
 			// "/u 18 18 boardString";
 			String[] subParts = received.split(" ");
 			this.thisPlayer.setStoneAccount(Integer.parseInt(subParts[1]));

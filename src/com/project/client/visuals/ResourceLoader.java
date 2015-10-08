@@ -10,16 +10,19 @@ import javax.sound.sampled.AudioSystem;
 
 public class ResourceLoader {
 
-	public static Image WHITE_STONE, BLACK_STONE, OUTER_DOT, WHITE_STONE_TRANSPARENT, BLACK_STONE_TRANSPARENT;
+	public static Image WHITE_STONE, BLACK_STONE, OUTER_DOT, WHITE_STONE_TRANSPARENT, BLACK_STONE_TRANSPARENT, WHITE_GIPF_STONE, BLACK_GIPF_STONE;
 	public static Image MENU_ICON, SOUND_ICON, SOUND_MUTED_ICON, SETTINGS_ICON, HELP_ICON;
 	public static Image ICON;
 	
-	public static File ON_VALID_MOVE, ON_INVALID_MOVE, BACKGROUND;
+	public static File ON_VALID_MOVE, ON_INVALID_MOVE, BACKGROUND, WIN_SOUND;
 	
 	public void init() throws IOException {
 		WHITE_STONE = ImageIO.read(this.getResource("res/icons/WhiteStone2.png"));
 		BLACK_STONE = ImageIO.read(this.getResource("res/icons/BlackStone2.png"));
 		OUTER_DOT = ImageIO.read(this.getResource("res/icons/OuterDot.png"));
+		
+		WHITE_GIPF_STONE = ImageIO.read(this.getResource("res/icons/GipfWhiteStone.png"));
+		BLACK_GIPF_STONE = ImageIO.read(this.getResource("res/icons/GipfBlackStone.png"));
 		
 		MENU_ICON = ImageIO.read(this.getResource("res/icons/Menu48.png"));
 		SOUND_ICON = ImageIO.read(this.getResource("res/icons/Volume48.png"));
@@ -35,6 +38,7 @@ public class ResourceLoader {
 		ON_INVALID_MOVE = new File("res/sounds/inValidMove.wav");
 		BACKGROUND = new File("res/sounds/Background.wav");
 		ON_VALID_MOVE = new File("res/sounds/ValidMove.wav");
+		WIN_SOUND = new File("res/sounds/WinApplause");
 		
 	}
 	
