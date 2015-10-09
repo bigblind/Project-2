@@ -25,8 +25,8 @@ public class ResourceLoader {
 		
 		ICON = ImageIO.read(this.getResource("res/icons/Icon.png"));
 		
-		WHITE_STONE_TRANSPARENT = ImageIO.read(this.getResource("res/icons/WhiteStoneTransparent.png"));
-		BLACK_STONE_TRANSPARENT = ImageIO.read(this.getResource("res/icons/BlackStoneTransparent.png"));
+		WHITE_STONE_TRANSPARENT = ImageIO.read(this.getResource("res/icons/WhiteStoneTransparent2.png"));
+		BLACK_STONE_TRANSPARENT = ImageIO.read(this.getResource("res/icons/BlackStoneTransparent2.png"));
 	}
 	
 //	public InputStream getResource(String path) {

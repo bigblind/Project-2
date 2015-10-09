@@ -11,11 +11,13 @@ import com.project.common.player.Player;
 import com.project.common.player.PlayerEvent;
 import com.project.common.player.PlayerListener;
 import com.project.common.utils.Point;
+import com.project.server.Server;
 
 public class ClientInterface implements PlayerListener {
 
 	private ArrayList<PlayerListener> listeners;
-
+	private Server server;
+	
 	private int opponentAccount;
 	private Board board;
 	private BoardPanel boardPanel;
@@ -56,33 +58,32 @@ public class ClientInterface implements PlayerListener {
 			String boardString = received.substring(subParts[0].length() + subParts[1].length() + 3 + subParts[2].length());
 			this.readBoard(boardString);
 		} else if (received.startsWith("/s")) {
-			System.out.println("in /s");
 			// for updating state
 			if (received.equals("/s move")) {
 				this.boardPanel.setState(new MoveStateA(this.boardPanel, this));
 			} else if (received.startsWith("/s remove")) {
-				System.out.println("in remove");
 				String[] subPartsX = received.split("Point: x = ");
 				String[] subPartsY = received.split("y = ");
 				int nRows = subPartsX.length / 2;
-				Point[] rowPoints = new Point[nRows*2];
+				Point[] rowPoints = new Point[nRows * 2];
 				for (int i = 0; i < nRows; i++) {
-					int x1 = Integer.parseInt(subPartsX[1 + i*2].substring(0, 1));
-					int y1 = Integer.parseInt(subPartsY[1 + i*2].substring(0, 1));
+					int x1 = Integer.parseInt(subPartsX[1 + i * 2].substring(0, 1));
+					int y1 = Integer.parseInt(subPartsY[1 + i * 2].substring(0, 1));
 
-					int x2 = Integer.parseInt(subPartsX[1 + i*2 + 1].substring(0, 1));
-					int y2 = Integer.parseInt(subPartsY[1 + i*2 + 1].substring(0, 1));
+					int x2 = Integer.parseInt(subPartsX[1 + i * 2 + 1].substring(0, 1));
+					int y2 = Integer.parseInt(subPartsY[1 + i * 2 + 1].substring(0, 1));
 
 					rowPoints[i * 2] = new Point(x1, y1);
 					rowPoints[i * 2 + 1] = new Point(x2, y2);
 				}
-				for (Point point : rowPoints) System.out.println(point);
-				this.boardPanel.setState(new RemoveState(this.boardPanel, this, rowPoints)); 
+				this.boardPanel.setState(new RemoveState(this.boardPanel, this, rowPoints));
 			} else if (received.startsWith("/s opponent")) {
 				this.boardPanel.setState(new OpponentTurnState(this.boardPanel, this));
 			} else {
 				System.err.println("Invalid client input: Input not recognised");
 			}
+		} else {
+			System.err.println("Invalid client input: Input not recognised");
 		}
 	}
 
@@ -97,9 +98,14 @@ public class ClientInterface implements PlayerListener {
 		}
 		this.board.setGrid(newBoardGrid);
 	}
+	
+	public void removeRowAnswer(Point start, Point end) {
+		String send = start.toString() + " " + end.toString();
+		this.send(send.getBytes());
+	}
 
-	public void send() {
-
+	private void send(byte[] bytes) {
+		this.server.receive(bytes);
 	}
 
 	public Board getBoard() {
@@ -133,5 +139,9 @@ public class ClientInterface implements PlayerListener {
 
 	public void setBoardPanel(BoardPanel boardPanel) {
 		this.boardPanel = boardPanel;
+	}
+	
+	public void setServer(Server server) {
+		this.server = server;
 	}
 }

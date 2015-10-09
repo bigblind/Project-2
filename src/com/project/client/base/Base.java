@@ -55,7 +55,22 @@ public class Base {
 
 		interfaceOne.setBoardPanel(frameOne.getGamePanel().getBoardPanel());
 		interfaceTwo.setBoardPanel(frameTwo.getGamePanel().getBoardPanel());
+		
+		LocalServer server = new LocalServer();
 
+		server.addClient(interfaceOne);
+		server.addClient(interfaceTwo);
+		
+		interfaceOne.setServer(server);
+		interfaceTwo.setServer(server);
+		
+		try {
+			server.init();
+		} catch (ServerNotPreparedException e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+		
 		frameOne.setVisible(true);
 		frameTwo.setVisible(true);
 		
@@ -67,17 +82,5 @@ public class Base {
 		frameTwo.setSize((int) width, (int) height);
 		frameOne.setLocation(0, 0);
 		frameTwo.setLocation((int) width, 0);
-		
-		LocalServer server = new LocalServer();
-
-		server.addClient(interfaceOne);
-		server.addClient(interfaceTwo);
-
-		try {
-			server.init();
-		} catch (ServerNotPreparedException e) {
-			e.printStackTrace();
-			System.exit(0);
-		}
 	}
 }

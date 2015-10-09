@@ -7,6 +7,7 @@ import com.project.client.connection.ClientInterface;
 import com.project.common.player.Player;
 import com.project.common.player.PlayerEvent;
 import com.project.common.player.PlayerListener;
+import com.project.common.utils.Point;
 import com.project.server.logic.Game;
 import com.project.server.logic.gamelogic.BasicGameLogic;
 import com.project.server.logic.gamelogic.GameLogic;
@@ -76,6 +77,23 @@ public class LocalServer extends Server implements PlayerListener, PlayerChangeL
 		this.addPlayerListener(logic);
 	}
 
+	public void receive(byte[] bytes) {
+		String received = new String(bytes);
+
+		String[] subPartsX = received.split("Point: x = ");
+		String[] subPartsY = received.split("y = ");
+
+		int x1 = Integer.parseInt(subPartsX[1].substring(0, 1));
+		int y1 = Integer.parseInt(subPartsY[1].substring(0, 1));
+
+		int x2 = Integer.parseInt(subPartsX[2].substring(0, 1));
+		int y2 = Integer.parseInt(subPartsY[2].substring(0, 1));
+		
+		Point start = new Point(x1, y1);
+		Point end = new Point(x2, y2);
+		this.logic.removeRowFromPoints(start, end);
+	}
+
 	public void sendClientInit() {
 		String send = "/i " + Board.WHITE_VALUE + " 15 15 " + this.game.getBoard().toString();
 		this.clients[0].receive(send.getBytes());
@@ -141,7 +159,7 @@ public class LocalServer extends Server implements PlayerListener, PlayerChangeL
 		String send = "/s remove";
 		for (int i = 0; i < e.getRows().size(); i++)
 			send += " {" + e.getRows().get(i).getFromPoint() + " , " + e.getRows().get(i).getToPoint() + "}";
-		
+
 		if (this.game.getGameLogic().getCurrentPlayer().getStoneColor() == Board.WHITE_VALUE) this.clients[0].receive(send.getBytes());
 		else this.clients[1].receive(send.getBytes());
 

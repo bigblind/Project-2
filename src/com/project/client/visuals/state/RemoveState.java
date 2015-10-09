@@ -5,7 +5,6 @@ import java.awt.event.MouseListener;
 
 import com.project.client.board.Board;
 import com.project.client.connection.ClientInterface;
-import com.project.client.visuals.BoardButton;
 import com.project.client.visuals.BoardPanel;
 import com.project.client.visuals.ResourceLoader;
 import com.project.common.utils.Point;
@@ -15,8 +14,8 @@ public class RemoveState extends State {
 	private MouseListener listener;
 	private Point[][] rowPoints;
 	private Point[] rows;
-	
-	private int rowIndexRemoved, rowValueRemoved;
+
+	private int rowIndexRemoved = -1, rowValueRemoved = -1;
 
 	public RemoveState(final BoardPanel boardPanel, final ClientInterface clientInterface, final Point[] rows) {
 		super(boardPanel, clientInterface);
@@ -25,7 +24,27 @@ public class RemoveState extends State {
 
 		this.listener = new MouseListener() {
 			public void mouseClicked(MouseEvent e) {
+				int name = Integer.parseInt(e.getComponent().getName());
+				int x = name / 10;
+				int y = name - (x * 10);
 
+				boolean[] activeInRow = activeInRows(x, y);
+				int ctr = 0;
+				int index = -1;
+				for (int i = 0; i < activeInRow.length; i++) {
+					if (activeInRow[i]) {
+						index = i;
+						ctr++;
+					}
+				}
+				if (ctr == 1) {
+					clientInterface.removeRowAnswer(rowPoints[index][0], rowPoints[index][rowPoints[index].length - 1]);
+					for (int i = 0; i < rowPoints[index].length; i++) {
+						buttons[rowPoints[index][i].getX()][rowPoints[index][i].getY()].setDraw(false);
+					}
+					boardPanel.setState(new OpponentTurnState(boardPanel, clientInterface));
+					boardPanel.repaint();
+				}
 			}
 
 			public void mouseEntered(MouseEvent e) {
@@ -36,7 +55,7 @@ public class RemoveState extends State {
 				boolean[] activeInRow = activeInRows(x, y);
 				int ctr = 0;
 				int index = -1;
-				for (int i = 0; i < activeInRow.length; i++){
+				for (int i = 0; i < activeInRow.length; i++) {
 					if (activeInRow[i]) {
 						index = i;
 						ctr++;
@@ -47,19 +66,20 @@ public class RemoveState extends State {
 					rowValueRemoved = boardPanel.getBoard().getGrid()[x][y];
 					for (int i = 0; i < rowPoints[index].length; i++) {
 						boardPanel.getBoard().getGrid()[rowPoints[index][i].getX()][rowPoints[index][i].getY()] = Board.EMPTY_TILE;
-						((BoardButton) e.getComponent()).setDraw(true);
+						buttons[rowPoints[rowIndexRemoved][i].getX()][rowPoints[rowIndexRemoved][i].getY()].setDraw(true);
 					}
 				}
-				System.out.println(rowIndexRemoved);
 				boardPanel.repaint();
 			}
 
 			public void mouseExited(MouseEvent e) {
-				for (int i = 0; i < rowPoints[rowIndexRemoved].length; i++) {
-					boardPanel.getBoard().getGrid()[rowPoints[rowIndexRemoved][i].getX()][rowPoints[rowIndexRemoved][i].getY()] = rowValueRemoved;
-					((BoardButton) e.getComponent()).setDraw(false);
+				if (rowIndexRemoved >= 0) {
+					for (int i = 0; i < rowPoints[rowIndexRemoved].length; i++) {
+						boardPanel.getBoard().getGrid()[rowPoints[rowIndexRemoved][i].getX()][rowPoints[rowIndexRemoved][i].getY()] = rowValueRemoved;
+						buttons[rowPoints[rowIndexRemoved][i].getX()][rowPoints[rowIndexRemoved][i].getY()].setDraw(false);
+					}
+					boardPanel.repaint();
 				}
-				boardPanel.repaint();
 			}
 
 			public void mousePressed(MouseEvent e) {
@@ -98,7 +118,8 @@ public class RemoveState extends State {
 				int x = start.getX() + (j * dx);
 				int y = start.getY() + (j * dy);
 				if (this.buttons[x][y].getMouseListeners().length == 0) this.buttons[x][y].addMouseListener(this.listener);
-				this.buttons[x][y].setImage(ResourceLoader.WHITE_STONE_TRANSPARENT);
+				if (this.boardPanel.getBoard().getGrid()[x][y] == Board.WHITE_VALUE || this.boardPanel.getBoard().getGrid()[x][y] == Board.GIPF_WHITE_VALUE) this.buttons[x][y].setImage(ResourceLoader.WHITE_STONE_TRANSPARENT);
+				else this.buttons[x][y].setImage(ResourceLoader.BLACK_STONE_TRANSPARENT);
 				this.rowPoints[i][j] = new Point(x, y);
 			}
 		}
