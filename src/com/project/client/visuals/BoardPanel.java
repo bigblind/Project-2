@@ -413,4 +413,8 @@ public class BoardPanel extends JPanel implements ComponentListener, BoardChange
 	public void boardChangeEventPerformed(BoardChangeEvent e) {
 		this.repaint();
 	}
+	
+	public Board getBoard() {
+		return this.board;
+	}
 }

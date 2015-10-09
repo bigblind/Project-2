@@ -5,7 +5,7 @@ import com.project.client.visuals.BoardPanel;
 
 public class OpponentTurnState extends State {
 
-	public OpponentTurnState(BoardPanel boardPanel, ClientInterface clientInterface) {
+	public OpponentTurnState(final BoardPanel boardPanel, final ClientInterface clientInterface) {
 		super(boardPanel, clientInterface);
 	}
 	

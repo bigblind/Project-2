@@ -15,7 +15,7 @@ public abstract class State {
 	protected ClientInterface clientInterface;	
 	protected Image stoneImage;
 
-	public State(BoardPanel boardPanel, ClientInterface clientInterface) {
+	public State(final BoardPanel boardPanel, final ClientInterface clientInterface) {
 		this.buttons = boardPanel.getButtons();
 		this.boardPanel = boardPanel;
 		this.clientInterface = clientInterface;
