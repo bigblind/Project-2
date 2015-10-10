@@ -1,12 +1,9 @@
 package com.project.logic;
 
-import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.Socket;
-import java.util.Scanner;
 
 public class PlayerThread extends Thread {
     
@@ -47,27 +44,33 @@ public class PlayerThread extends Thread {
 		e.printStackTrace();
 	    }
 	    
-	    //play game
-	    while (!done) {
-		try {
-		    String message = receive();
-		    
-		    if (server.validMove(playerNumber, message)) {
-			out.writeUTF("Message sent");
-		    } else
-			out.writeUTF("Invalid message, try again");
-		    
-		    if (server.gameOver())
-			done = true;
-		} catch (IOException e) {
-		    e.printStackTrace();
-		}
-	    }
+	 
+	    
+	}
+	
+	
+	   //play game
+	while (!done) {
 	    try {
-		clientSocket.close();
+		
+		//receive messages from the client
+		String message = receive();
+		
+		if (server.validMove(playerNumber - 1, message)) {
+		    out.writeUTF("Server: message sent");
+		} else
+		    out.writeUTF("Invalid message, try again");
+		
+		if (server.gameOver())
+		    done = true;
 	    } catch (IOException e) {
 		e.printStackTrace();
 	    }
+	}
+	try {
+	    clientSocket.close();
+	} catch (IOException e) {
+	    e.printStackTrace();
 	}
 	
     }
@@ -79,33 +82,12 @@ public class PlayerThread extends Thread {
 	return message;
     }
     
-    /*private void receive() throws IOException{
-    
-    
-        inp = new DataInputStream(clientSocket.getInputStream());
-        
-        String message = inp.readUTF();
-        System.out.println(message);
-    
-    }*/
-    
     public void send(String message) {
 	try {
-	    //String test = "Server sent message";
+	    
 	    out.writeUTF(message);
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
     }
-    /*public void send() {
-    try {
-        out = new DataOutputStream(clientSocket.getOutputStream());
-
-        String test = "Server sent message";
-        out.writeUTF(test);
-        
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
-      }*/
 }

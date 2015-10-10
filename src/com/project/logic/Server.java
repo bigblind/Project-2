@@ -26,14 +26,15 @@ public class Server {
     public static void main(String args[]) {
 	Server gameServer = new Server();
 	gameServer.execute();
-	System.exit(1);
+	
     }
     
     public void execute() {
 	for (int i = 0; i < players.length; i++) {
 	    try {
+		
 		clientSocket = serverSocket.accept();
-		System.out.println("Server: Connection estabilished");
+		System.out.println("Server: Connection established");
 		players[i] = new PlayerThread(clientSocket, i + 1, this); //start a new thread for each player
 		
 		players[i].start();
@@ -41,6 +42,7 @@ public class Server {
 		
 	    } catch (IOException e) {
 		System.out.println("I/O error: " + e);
+		System.exit(1);
 	    }
 	    
 	}
@@ -61,6 +63,7 @@ public class Server {
 	
 	while (player != currentPlayer) {
 	    try {
+		players[player].send("Not your turn");
 		wait();     //wait for thread of other player to notify when to move
 	    } catch (InterruptedException e) {
 		e.printStackTrace();
