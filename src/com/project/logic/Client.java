@@ -46,7 +46,7 @@ public class Client {
     
     public static void main(String args[]) {
 	
-	Client client = new Client("localhost", 40);
+	Client client = new Client("137.120.101.196", 40);
 	client.receiveThread.start();
 	Scanner in = new Scanner(System.in);
 	
@@ -66,7 +66,7 @@ public class Client {
     private void openConnection(String address, int port) {
 	
 	try {
-	    clientSocket = new Socket(serverAddress, port);
+	    clientSocket = new Socket(address, port);
 	    
 	    System.out.println("Connection established");
 	    
