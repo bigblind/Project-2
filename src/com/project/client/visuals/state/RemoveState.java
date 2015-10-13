@@ -28,20 +28,15 @@ public class RemoveState extends State {
 				int x = name / 10;
 				int y = name - (x * 10);
 
-				boolean[] activeInRow = activeInRows(x, y);
-				int ctr = 0;
-				int index = -1;
-				for (int i = 0; i < activeInRow.length; i++) {
-					if (activeInRow[i]) {
-						index = i;
-						ctr++;
+				int[] activeInRow = activeInRows(x, y);
+
+				if (activeInRow.length == 1) {
+					//					if (!containsGipfStone()) {
+					clientInterface.removeRowAnswer("/removerow " + rowPoints[activeInRow[0]][0].toString() + " " + rowPoints[activeInRow[0]][rowPoints[activeInRow[0]].length - 1].toString());
+					for (int i = 0; i < rowPoints[activeInRow[0]].length; i++) {
+						buttons[rowPoints[activeInRow[0]][i].getX()][rowPoints[activeInRow[0]][i].getY()].setDraw(false);
 					}
-				}
-				if (ctr == 1) {
-					clientInterface.removeRowAnswer(rowPoints[index][0], rowPoints[index][rowPoints[index].length - 1]);
-					for (int i = 0; i < rowPoints[index].length; i++) {
-						buttons[rowPoints[index][i].getX()][rowPoints[index][i].getY()].setDraw(false);
-					}
+					//					}
 					boardPanel.repaint();
 				}
 			}
@@ -51,16 +46,9 @@ public class RemoveState extends State {
 				int x = name / 10;
 				int y = name - (x * 10);
 
-				boolean[] activeInRow = activeInRows(x, y);
-				int ctr = 0;
-				int index = -1;
-				for (int i = 0; i < activeInRow.length; i++) {
-					if (activeInRow[i]) {
-						index = i;
-						ctr++;
-					}
-				}
-				if (ctr == 1) {
+				int[] activeInRow = activeInRows(x, y);
+
+				if (activeInRow.length == 1) {
 					rowIndexRemoved = index;
 					rowValueRemoved = boardPanel.getBoard().getGrid()[x][y];
 					for (int i = 0; i < rowPoints[index].length; i++) {
@@ -89,6 +77,31 @@ public class RemoveState extends State {
 
 			}
 		};
+	}
+
+	private boolean containsGipfStone(Point start, Point end) {
+		int xx = end.getX() - start.getX();
+		int yy = end.getY() - start.getY();
+
+		int dx, dy;
+		if (xx == 0) dx = 0;
+		else dx = 1;
+		if (yy == 0) dy = 0;
+		else dy = 1;
+
+		int length;
+		if (xx == 0) length = yy;
+		else if (yy == 0) length = xx;
+		else length = xx;
+		length++;
+		for (int j = 0; j < length; j++) {
+			int x = start.getX() + (j * dx);
+			int y = start.getY() + (j * dy);
+			if (this.boardPanel.getBoard().getGrid()[x][y] == Board.WHITE_VALUE || this.boardPanel.getBoard().getGrid()[x][y] == Board.GIPF_BLACK_VALUE) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void execute() {
@@ -124,16 +137,25 @@ public class RemoveState extends State {
 		}
 	}
 
-	private boolean[] activeInRows(int x, int y) { // make this in int array and return the row indices that it's in
+	private int[] activeInRows(int x, int y) { // make this in int array and return the row indices that it's in
 		boolean[] activeInRow = new boolean[rows.length];
+		int[] indices;
+		int[] tmp = new int[this.rowPoints.length];
+		int counter = 0;
 		for (int i = 0; i < this.rowPoints.length; i++) {
 			for (int j = 0; j < this.rowPoints[i].length; j++) {
 				if (this.rowPoints[i][j].getX() == x && this.rowPoints[i][j].getY() == y) {
 					activeInRow[i] = true;
+					tmp[counter] = i;
+					counter++;
 					break;
 				}
 			}
 		}
-		return activeInRow;
+		indices = new int[counter];
+		for (int i = 0; i < counter; i++) {
+			indices[i] = tmp[i];
+		}
+		return indices;
 	}
 }

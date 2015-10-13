@@ -29,7 +29,7 @@ public abstract class GameLogic implements PlayerListener {
 	public void setCurrentPlayer(Player player) {
 		this.currentPlayer = player;
 	}
-	
+
 	public void removeRowFromPoints(Point start, Point end) {
 		ArrayList<Row> rows = this.rowRemovalEvent.getRows();
 		for (int i = 0; i < rows.size(); i++) {
@@ -45,9 +45,9 @@ public abstract class GameLogic implements PlayerListener {
 		if (!this.handleRows()) {
 			System.out.println("moving to next player");
 			moveToNextPlayer();
-		} 
+		}
 	}
-	
+
 	protected boolean handleRows() {
 		ArrayList<Row> rows = this.game.getBoard().checkForLines();
 		if (rows.size() == 1) {
@@ -74,7 +74,14 @@ public abstract class GameLogic implements PlayerListener {
 		}
 		return false;
 	}
-	
+
+	public void removePoints(Point[] points) {
+
+		for (Point p : points) {
+			this.game.getBoard().getGrid()[p.getX()][p.getY()] = Board.EMPTY_TILE;
+		}
+	}
+
 	protected ArrayList<Row> rowsForPlayer(int color, ArrayList<Row> possibleRows) {
 		ArrayList<Row> rowsForPlayer = new ArrayList<Row>();
 
@@ -94,7 +101,7 @@ public abstract class GameLogic implements PlayerListener {
 			this.notifyListeners(new PlayerChangeEvent(game.getPlayerTwo(), game.getPlayerOne()));
 		}
 	}
-	
+
 	// TODO maybe this should work with the player of the row since when we are in removing state the player might be diffrent from the active one
 	protected void handleExtensions(Row row) {
 		if (currentPlayer.getStoneColor() == Board.WHITE_VALUE) currentPlayer.setStoneAccount(currentPlayer.getStoneAccount() + row.getWhiteExtensionStones());
@@ -102,24 +109,20 @@ public abstract class GameLogic implements PlayerListener {
 	}
 
 	public Player checkPlayer(int stoneColor) {
-		if (stoneColor == Board.BLACK_VALUE)
-			return game.getPlayerTwo();
+		if (stoneColor == Board.BLACK_VALUE) return game.getPlayerTwo();
 		return game.getPlayerOne();
 	}
 
 	protected Player returnWinner() {
-		if (game.getPlayerOne().getStoneAccount() == 0)
-			return game.getPlayerTwo();
+		if (game.getPlayerOne().getStoneAccount() == 0) return game.getPlayerTwo();
 
-		if (game.getPlayerTwo().getStoneAccount() == 0)
-			return game.getPlayerOne();
+		if (game.getPlayerTwo().getStoneAccount() == 0) return game.getPlayerOne();
 
 		return null;
 	}
 
 	protected boolean checkForWin() {
-		if (game.getPlayerOne().getStoneAccount() == 0 || game.getPlayerTwo().getStoneAccount() == 0)
-			return true;
+		if (game.getPlayerOne().getStoneAccount() == 0 || game.getPlayerTwo().getStoneAccount() == 0) return true;
 
 		return false;
 	}
@@ -140,11 +143,11 @@ public abstract class GameLogic implements PlayerListener {
 		for (PlayerChangeListener l : this.listeners)
 			l.changeEventPerformed(e);
 	}
-	
+
 	public void removeRowRemovalRequestListener(RowRemovalRequestListener l) {
 		this.rrrListeners.remove(l);
 	}
-	
+
 	public void addRowRemovalRequestListener(RowRemovalRequestListener l) {
 		rrrListeners.add(l);
 	}
@@ -155,7 +158,7 @@ public abstract class GameLogic implements PlayerListener {
 			rrrListeners.get(i).rowRemoveRequestEventPerformed(e);
 		}
 	}
-	
+
 	public void setServer(Server server) {
 		this.server = server;
 	}

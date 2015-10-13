@@ -13,8 +13,13 @@ import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import com.project.client.connection.ClientInterface;
+import com.project.client.visuals.sidepanel.BottomButtonPanel;
+import com.project.client.visuals.sidepanel.SidePanel;
 
 public class GameFrame extends JFrame implements ComponentListener {
 
@@ -22,11 +27,28 @@ public class GameFrame extends JFrame implements ComponentListener {
 
 	private GamePanel gamePanel;
 	private JPanel ghostGamePanel;
-
 	private Dimension normalSize;
 	private Point normalLocation;
+	private BottomButtonPanel buttons;
 
 	public GameFrame(ClientInterface clientInterface) {
+		try {
+		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+		        if ("Nimbus".equals(info.getName())) {
+		            UIManager.setLookAndFeel(info.getClassName());
+		            break;
+		        }
+		    }
+		} catch (UnsupportedLookAndFeelException e) {
+		    // handle exception
+		} catch (ClassNotFoundException e) {
+		    // handle exception
+		} catch (InstantiationException e) {
+		    // handle exception
+		} catch (IllegalAccessException e) {
+		    // handle exception
+		}
+		
 		final int width = 1200;
 		this.setPreferredSize(new Dimension(width, width / 16 * 9));
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -34,18 +56,29 @@ public class GameFrame extends JFrame implements ComponentListener {
 
 		JLayeredPane layer = this.getLayeredPane();
 		layer.removeAll();
-
+		
 		this.gamePanel = new GamePanel(clientInterface);
 
 		this.ghostGamePanel = new JPanel();
 		this.ghostGamePanel.setBackground(new Color(0, 0, 0, 150));
 		this.ghostGamePanel.setOpaque(false);
-
+		
+		this.buttons = new BottomButtonPanel();
+		buttons.setVisible(true);
+		buttons.setSize(400, 150);
+		buttons.setLocation(0, this.getHeight() - 300);
+		
 		layer.add(this.gamePanel, new Integer(0));
 		layer.add(this.ghostGamePanel, new Integer(1));
 
 		this.setIconImage(ResourceLoader.ICON);
 
+		layer.add(buttons, new Integer(2));
+
+		this.setIconImage(ResourceLoader.ICON);
+		
+		
+		
 		Object fullscreenKey = new Object();
 		this.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("F11"), fullscreenKey);
 		this.getRootPane().getActionMap().put(fullscreenKey, new AbstractAction() {
@@ -90,6 +123,10 @@ public class GameFrame extends JFrame implements ComponentListener {
 
 		this.gamePanel.setSize(width, height);
 		this.ghostGamePanel.setSize(width, height - 1);
+		buttons.setSize(width/2, height/10);
+		buttons.setLocation(0, height - height/10);
+		buttons.setOpaque(false);
+		buttons.componentResized(e);
 		this.revalidate();
 	}
 

@@ -60,6 +60,7 @@ public class LocalServer extends Server implements PlayerListener, PlayerChangeL
 		this.game = new Game();
 		this.game.getBoard().standardInit();
 		this.game.getBoard().print();
+		this.game.getBoard().basicInit();
 		this.logic = new StandardGameLogic(this.game);
 		this.logic.setServer(this);
 		this.logic.addPlayerChangeListener(this);
@@ -85,20 +86,35 @@ public class LocalServer extends Server implements PlayerListener, PlayerChangeL
 	public void receive(byte[] bytes) {
 		String received = new String(bytes);
 
-		String[] subPartsX = received.split("Point: x = ");
-		String[] subPartsY = received.split("y = ");
+		if (received.startsWith("removerow")) {
+			String[] subPartsX = received.split("Point: x = ");
+			String[] subPartsY = received.split("y = ");
 
-		int x1 = Integer.parseInt(subPartsX[1].substring(0, 1));
-		int y1 = Integer.parseInt(subPartsY[1].substring(0, 1));
+			int x1 = Integer.parseInt(subPartsX[1].substring(0, 1));
+			int y1 = Integer.parseInt(subPartsY[1].substring(0, 1));
 
-		int x2 = Integer.parseInt(subPartsX[2].substring(0, 1));
-		int y2 = Integer.parseInt(subPartsY[2].substring(0, 1));
+			int x2 = Integer.parseInt(subPartsX[2].substring(0, 1));
+			int y2 = Integer.parseInt(subPartsY[2].substring(0, 1));
 
-		Point start = new Point(x1, y1);
-		Point end = new Point(x2, y2);
-		this.logic.removeRowFromPoints(start, end);
+			Point start = new Point(x1, y1);
+			Point end = new Point(x2, y2);
+			this.logic.removeRowFromPoints(start, end);
+		} else if (received.startsWith("removepoints")) {
+			String[] subPartsX = received.split("Point: x = ");
+			String[] subPartsY = received.split("y = ");
+
+			Point[] points = new Point[subPartsX.length - 1];
+
+			for (int i = 0; i < subPartsX.length - 1; i++) {
+				int x = Integer.parseInt(subPartsX[1 + i].substring(0, 1));
+				int y = Integer.parseInt(subPartsY[1 + i].substring(0, 1));
+
+				points[i] = new Point(x, y);
+			}
+
+		}
 	}
-	
+
 	public void sendWinLoseUpdate(Player player) {
 		if (player.getStoneColor() == Board.WHITE_VALUE) {
 			this.clients[0].receive("/g win".getBytes());
@@ -161,7 +177,7 @@ public class LocalServer extends Server implements PlayerListener, PlayerChangeL
 	public void removePlayerListener(PlayerListener listener) {
 		this.listeners.remove(listener);
 	}
-	
+
 	private void notifyListeners(PlayerEvent e) {
 		for (PlayerListener l : this.listeners)
 			l.playerEventPerformed(e);

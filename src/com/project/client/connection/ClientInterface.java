@@ -125,9 +125,8 @@ public class ClientInterface implements PlayerListener {
 		this.board.setGrid(newBoardGrid);
 	}
 
-	public void removeRowAnswer(Point start, Point end) {
-		String send = start.toString() + " " + end.toString();
-		this.send(send.getBytes());
+	public void removeRowAnswer(String text) {
+		this.send(text.getBytes());
 	}
 
 	private void send(byte[] bytes) {
