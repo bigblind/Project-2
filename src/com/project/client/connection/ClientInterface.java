@@ -3,10 +3,11 @@ package com.project.client.connection;
 import java.util.ArrayList;
 
 import com.project.client.board.Board;
+import com.project.client.sound.SoundManager;
 import com.project.client.visuals.BoardPanel;
 import com.project.client.visuals.state.MoveStateA;
-import com.project.client.visuals.state.WaitState;
 import com.project.client.visuals.state.RemoveState;
+import com.project.client.visuals.state.WaitState;
 import com.project.common.player.Player;
 import com.project.common.player.PlayerEvent;
 import com.project.common.player.PlayerListener;
@@ -21,6 +22,7 @@ public class ClientInterface implements PlayerListener {
 	private int opponentAccount;
 	private Board board;
 	private BoardPanel boardPanel;
+	private SoundManager soundManager;
 
 	private Player thisPlayer;
 
@@ -29,6 +31,8 @@ public class ClientInterface implements PlayerListener {
 		this.thisPlayer = new Player();
 		this.listeners = new ArrayList<PlayerListener>();
 		this.thisPlayer.addPlayerListener(this);
+		this.soundManager = new SoundManager();
+		this.soundManager.backgroundPlay();
 	}
 
 	public void initCall(byte stoneColor, byte numberOfStones, byte opponentStoneAccount, String boardString) {
@@ -82,10 +86,21 @@ public class ClientInterface implements PlayerListener {
 				System.err.println("Invalid client input: Input not recognised");
 			}
 		} else if (received.startsWith("/m")) {
-			System.out.println("in / m");
 			if (received.equals("/m valid")) {
+				this.soundManager.movePlay(true);
 			} else if (received.equals("/m invalid")) {
+				this.soundManager.movePlay(false);
 				this.boardPanel.setState(new MoveStateA(this.boardPanel, this));
+			} else {
+				System.err.println("Invalid client input: Input not recognised");
+			}
+		} else if (received.startsWith("/g")) {
+			if (received.equals("/g win")) {
+				this.soundManager.stopPlayBackground();
+				this.soundManager.winPlay();
+			} else if (received.startsWith("/g lose")) {
+				this.soundManager.stopPlayBackground();
+				this.soundManager.losePlay();
 			} else {
 				System.err.println("Invalid client input: Input not recognised");
 			}

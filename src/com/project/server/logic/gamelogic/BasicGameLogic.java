@@ -21,6 +21,8 @@ public class BasicGameLogic extends GameLogic {
 		if (this.handleRows()) return;
 
 		this.moveToNextPlayer();
-		if (this.checkForWin()) System.out.println("someone won");
+		if (this.checkForWin()) {
+			this.server.sendWinLoseUpdate(this.returnWinner());
+		}
 	}
 }

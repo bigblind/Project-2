@@ -8,6 +8,7 @@ import com.project.common.player.Player;
 import com.project.common.player.PlayerEvent;
 import com.project.common.player.PlayerListener;
 import com.project.common.utils.Point;
+import com.project.server.console.Console;
 import com.project.server.logic.Game;
 import com.project.server.logic.gamelogic.GameLogic;
 import com.project.server.logic.gamelogic.PlayerChangeEvent;
@@ -42,9 +43,12 @@ public class LocalServer extends Server implements PlayerListener, PlayerChangeL
 	private GameLogic logic;
 	private Game game;
 
+	private Console console;
+
 	public LocalServer() {
 		this.clients = new ClientInterface[2];
 		this.listeners = new ArrayList<PlayerListener>();
+		this.console = new Console(this);
 	}
 
 	public void addClient(ClientInterface clientInterface) {
@@ -56,7 +60,6 @@ public class LocalServer extends Server implements PlayerListener, PlayerChangeL
 		this.game = new Game();
 		this.game.getBoard().standardInit();
 		this.game.getBoard().print();
-//		this.logic = new BasicGameLogic(this.game);
 		this.logic = new StandardGameLogic(this.game);
 		this.logic.setServer(this);
 		this.logic.addPlayerChangeListener(this);
@@ -94,6 +97,16 @@ public class LocalServer extends Server implements PlayerListener, PlayerChangeL
 		Point start = new Point(x1, y1);
 		Point end = new Point(x2, y2);
 		this.logic.removeRowFromPoints(start, end);
+	}
+	
+	public void sendWinLoseUpdate(Player player) {
+		if (player.getStoneColor() == Board.WHITE_VALUE) {
+			this.clients[0].receive("/g win".getBytes());
+			this.clients[1].receive("/g lose".getBytes());
+		} else {
+			this.clients[1].receive("/g win".getBytes());
+			this.clients[0].receive("/g lose".getBytes());
+		}
 	}
 
 	public void sendClientInit() {

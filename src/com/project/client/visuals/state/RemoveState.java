@@ -11,7 +11,7 @@ import com.project.common.utils.Point;
 
 public class RemoveState extends State {
 
-	private MouseListener listener;
+	protected MouseListener listener;
 	private Point[][] rowPoints;
 	private Point[] rows;
 

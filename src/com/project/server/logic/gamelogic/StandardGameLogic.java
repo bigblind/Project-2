@@ -8,7 +8,6 @@ public class StandardGameLogic extends GameLogic {
 
 	public StandardGameLogic(Game game) {
 		super(game);
-		game.getBoard().getGrid()[2][1] = 111;
 	}
 
 	public void playerEventPerformed(PlayerEvent e) {
@@ -23,7 +22,9 @@ public class StandardGameLogic extends GameLogic {
 		if (this.handleRows()) return;
 
 		this.moveToNextPlayer();
-		if (this.checkForWin()) System.out.println("someone won");
+		if (this.checkForWin()) {
+			this.server.sendWinLoseUpdate(this.returnWinner());
+		}
 	}
 
 	public boolean checkForWin() {
@@ -34,19 +35,17 @@ public class StandardGameLogic extends GameLogic {
 		else if (!containGipfStones[1]) return true;
 		else return false;
 	}
-	
-	protected Player returnWinner() {
-		if (game.getPlayerOne().getStoneAccount() == 0)
-			return game.getPlayerTwo();
 
-		if (game.getPlayerTwo().getStoneAccount() == 0)
-			return game.getPlayerOne();
+	protected Player returnWinner() {
+		if (game.getPlayerOne().getStoneAccount() == 0) return game.getPlayerTwo();
+
+		if (game.getPlayerTwo().getStoneAccount() == 0) return game.getPlayerOne();
 
 		boolean[] containGipfStones = this.game.getBoard().containGipfStones();
 
 		if (!containGipfStones[0]) return this.game.getPlayerOne();
 		else if (!containGipfStones[1]) return this.game.getPlayerTwo();
-		
+
 		return null;
 	}
 }

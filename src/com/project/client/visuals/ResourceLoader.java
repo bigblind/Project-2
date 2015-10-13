@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 
 public class ResourceLoader {
 
+	public static File ON_VALID_MOVE, ON_INVALID_MOVE, BACKGROUND, WIN_SOUND, LOSE_SOUND;
 	public static Image WHITE_STONE, BLACK_STONE, OUTER_DOT, WHITE_STONE_TRANSPARENT, BLACK_STONE_TRANSPARENT, GIPF_WHITE_STONE, GIPF_BLACK_STONE;
 	public static Image MENU_ICON, SOUND_ICON, SOUND_MUTED_ICON, SETTINGS_ICON, HELP_ICON;
 	public static Image ICON;
@@ -30,6 +31,12 @@ public class ResourceLoader {
 		
 		GIPF_WHITE_STONE = ImageIO.read(this.getResource("res/icons/GipfWhiteStone.png"));
 		GIPF_BLACK_STONE = ImageIO.read(this.getResource("res/icons/GipfBlackStone.png"));
+		
+		ON_INVALID_MOVE = new File("res/sounds/inValidMove.wav");
+		BACKGROUND = new File("res/sounds/Background.wav");
+		ON_VALID_MOVE = new File("res/sounds/ValidMove.wav");
+		WIN_SOUND = new File("res/sounds/WinApplause.wav");
+		LOSE_SOUND = new File("res/sounds/failSound.wav");
 	}
 	
 //	public InputStream getResource(String path) {

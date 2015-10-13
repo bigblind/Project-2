@@ -141,6 +141,7 @@ public class Board {
 	}
 
 	public boolean isValidMove(Point from, Point to) {
+		this.print();
 		if (grid[to.getX()][to.getY()] == BOARD_EDGE) return false;
 
 		int x1 = from.getX();
