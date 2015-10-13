@@ -8,7 +8,7 @@ import javax.imageio.ImageIO;
 
 public class ResourceLoader {
 
-	public static Image WHITE_STONE, BLACK_STONE, OUTER_DOT, WHITE_STONE_TRANSPARENT, BLACK_STONE_TRANSPARENT;
+	public static Image WHITE_STONE, BLACK_STONE, OUTER_DOT, WHITE_STONE_TRANSPARENT, BLACK_STONE_TRANSPARENT, GIPF_WHITE_STONE, GIPF_BLACK_STONE;
 	public static Image MENU_ICON, SOUND_ICON, SOUND_MUTED_ICON, SETTINGS_ICON, HELP_ICON;
 	public static Image ICON;
 	
@@ -27,6 +27,9 @@ public class ResourceLoader {
 		
 		WHITE_STONE_TRANSPARENT = ImageIO.read(this.getResource("res/icons/WhiteStoneTransparent2.png"));
 		BLACK_STONE_TRANSPARENT = ImageIO.read(this.getResource("res/icons/BlackStoneTransparent2.png"));
+		
+		GIPF_WHITE_STONE = ImageIO.read(this.getResource("res/icons/GipfWhiteStone.png"));
+		GIPF_BLACK_STONE = ImageIO.read(this.getResource("res/icons/GipfBlackStone.png"));
 	}
 	
 //	public InputStream getResource(String path) {

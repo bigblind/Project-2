@@ -9,12 +9,12 @@ import com.project.common.player.PlayerEvent;
 import com.project.common.player.PlayerListener;
 import com.project.common.utils.Point;
 import com.project.server.logic.Game;
-import com.project.server.logic.gamelogic.BasicGameLogic;
 import com.project.server.logic.gamelogic.GameLogic;
 import com.project.server.logic.gamelogic.PlayerChangeEvent;
 import com.project.server.logic.gamelogic.PlayerChangeListener;
 import com.project.server.logic.gamelogic.RowRemovalRequestEvent;
 import com.project.server.logic.gamelogic.RowRemovalRequestListener;
+import com.project.server.logic.gamelogic.StandardGameLogic;
 
 public class LocalServer extends Server implements PlayerListener, PlayerChangeListener, RowRemovalRequestListener {
 
@@ -54,8 +54,10 @@ public class LocalServer extends Server implements PlayerListener, PlayerChangeL
 
 	public void init() throws ServerNotPreparedException {
 		this.game = new Game();
+		this.game.getBoard().standardInit();
 		this.game.getBoard().print();
-		this.logic = new BasicGameLogic(this.game);
+//		this.logic = new BasicGameLogic(this.game);
+		this.logic = new StandardGameLogic(this.game);
 		this.logic.setServer(this);
 		this.logic.addPlayerChangeListener(this);
 		this.logic.addRowRemovalRequestListener(this);
@@ -88,7 +90,7 @@ public class LocalServer extends Server implements PlayerListener, PlayerChangeL
 
 		int x2 = Integer.parseInt(subPartsX[2].substring(0, 1));
 		int y2 = Integer.parseInt(subPartsY[2].substring(0, 1));
-		
+
 		Point start = new Point(x1, y1);
 		Point end = new Point(x2, y2);
 		this.logic.removeRowFromPoints(start, end);
@@ -112,7 +114,7 @@ public class LocalServer extends Server implements PlayerListener, PlayerChangeL
 	private void sendTurnStateUpdate(PlayerChangeEvent e) {
 		if (e.getFromPlayer() == game.getPlayerOne()) {
 			String send;
-			send = "/s opponent";
+			send = "/s wait";
 			this.clients[0].receive(send.getBytes());
 			send = "/s move";
 			this.clients[1].receive(send.getBytes());
@@ -120,8 +122,18 @@ public class LocalServer extends Server implements PlayerListener, PlayerChangeL
 			String send;
 			send = "/s move";
 			this.clients[0].receive(send.getBytes());
-			send = "/s opponent";
+			send = "/s wait";
 			this.clients[1].receive(send.getBytes());
+		}
+	}
+
+	public void sendMoveValidity(boolean valid) {
+		if (valid) {
+			if (this.game.getGameLogic().getCurrentPlayer().getStoneColor() == Board.WHITE_VALUE) this.clients[0].receive("/m valid".getBytes());
+			else this.clients[1].receive("/m valid".getBytes());
+		} else {
+			if (this.game.getGameLogic().getCurrentPlayer().getStoneColor() == Board.WHITE_VALUE) this.clients[0].receive("/m invalid".getBytes());
+			else this.clients[1].receive("/m invalid".getBytes());
 		}
 	}
 
@@ -136,7 +148,7 @@ public class LocalServer extends Server implements PlayerListener, PlayerChangeL
 	public void removePlayerListener(PlayerListener listener) {
 		this.listeners.remove(listener);
 	}
-
+	
 	private void notifyListeners(PlayerEvent e) {
 		for (PlayerListener l : this.listeners)
 			l.playerEventPerformed(e);
@@ -154,14 +166,17 @@ public class LocalServer extends Server implements PlayerListener, PlayerChangeL
 		this.sendTurnStateUpdate(e);
 	}
 
-	// TODO THINK ABOUT LOOKING FOR CORRECT PLAYER TO MAKE ROW REMOVE
 	public void rowRemoveRequestEventPerformed(RowRemovalRequestEvent e) {
 		String send = "/s remove";
 		for (int i = 0; i < e.getRows().size(); i++)
 			send += " {" + e.getRows().get(i).getFromPoint() + " , " + e.getRows().get(i).getToPoint() + "}";
 
-		if (this.game.getGameLogic().getCurrentPlayer().getStoneColor() == Board.WHITE_VALUE) this.clients[0].receive(send.getBytes());
-		else this.clients[1].receive(send.getBytes());
-
+		if (e.getRows().get(0).getPlayer().getStoneColor() == Board.WHITE_VALUE) {
+			this.clients[0].receive(send.getBytes());
+			this.clients[1].receive("/s wait".getBytes());
+		} else {
+			this.clients[1].receive(send.getBytes());
+			this.clients[0].receive("/s wait".getBytes());
+		}
 	}
 }

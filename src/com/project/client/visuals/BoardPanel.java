@@ -20,7 +20,7 @@ import com.project.client.board.BoardChangeEvent;
 import com.project.client.board.BoardChangeListener;
 import com.project.client.connection.ClientInterface;
 import com.project.client.visuals.state.MoveStateB;
-import com.project.client.visuals.state.OpponentTurnState;
+import com.project.client.visuals.state.WaitState;
 import com.project.client.visuals.state.State;
 import com.project.common.utils.Point;
 
@@ -28,7 +28,7 @@ public class BoardPanel extends JPanel implements ComponentListener, BoardChange
 
 	private static final long serialVersionUID = -6218578367247380839L;
 
-	private static final boolean SHOW_NUMBERS = true;
+	private static final boolean SHOW_NUMBERS = false;
 
 	private State state;
 
@@ -59,7 +59,7 @@ public class BoardPanel extends JPanel implements ComponentListener, BoardChange
 		this.initButtons();
 		this.initConnections();
 
-		this.setState(new OpponentTurnState(this, clientInterface));
+		this.setState(new WaitState(this, clientInterface));
 		this.resize();
 	}
 
@@ -288,9 +288,9 @@ public class BoardPanel extends JPanel implements ComponentListener, BoardChange
 				} else if (this.board.getGrid()[i][j] == Board.WHITE_VALUE) {
 					g.drawImage(ResourceLoader.WHITE_STONE, this.coordinates[i][j].getX(), this.coordinates[i][j].getY(), tileSize, tileSize, null);
 				} else if (this.board.getGrid()[i][j] == Board.GIPF_BLACK_VALUE) {
-
+					g.drawImage(ResourceLoader.GIPF_BLACK_STONE, this.coordinates[i][j].getX(), this.coordinates[i][j].getY(), tileSize, tileSize, null);
 				} else if (this.board.getGrid()[i][j] == Board.GIPF_WHITE_VALUE) {
-
+					g.drawImage(ResourceLoader.GIPF_WHITE_STONE, this.coordinates[i][j].getX(), this.coordinates[i][j].getY(), tileSize, tileSize, null);
 				}
 				if (SHOW_NUMBERS) {
 					g.drawString(i + "," + j, this.coordinates[i][j].getX(), this.coordinates[i][j].getY());
@@ -304,9 +304,9 @@ public class BoardPanel extends JPanel implements ComponentListener, BoardChange
 				} else if (this.board.getGrid()[i][4 + j] == Board.WHITE_VALUE) {
 					g.drawImage(ResourceLoader.WHITE_STONE, this.coordinates[i][4 + j].getX(), this.coordinates[i][4 + j].getY(), tileSize, tileSize, null);
 				} else if (this.board.getGrid()[i][4 + j] == Board.GIPF_BLACK_VALUE) {
-
+					g.drawImage(ResourceLoader.GIPF_BLACK_STONE, this.coordinates[i][4 + j].getX(), this.coordinates[i][4 + j].getY(), tileSize, tileSize, null);
 				} else if (this.board.getGrid()[i][4 + j] == Board.GIPF_WHITE_VALUE) {
-
+					g.drawImage(ResourceLoader.GIPF_WHITE_STONE, this.coordinates[i][4 + j].getX(), this.coordinates[i][4 + j].getY(), tileSize, tileSize, null);
 				}
 				if (SHOW_NUMBERS) {
 					g.drawString(i + "," + (4 + j), this.coordinates[i][4 + j].getX(), this.coordinates[i][4 + j].getY());
@@ -391,6 +391,7 @@ public class BoardPanel extends JPanel implements ComponentListener, BoardChange
 
 	public void setState(State state) {
 		this.state = state;
+		System.out.println("changing state in boardPanel: " + state + " player: " + this.clientInterface.getThisPlayer());
 		this.state.execute();
 	}
 
@@ -412,6 +413,10 @@ public class BoardPanel extends JPanel implements ComponentListener, BoardChange
 
 	public void boardChangeEventPerformed(BoardChangeEvent e) {
 		this.repaint();
+	}
+	
+	public State getState() {
+		return this.state;
 	}
 	
 	public Board getBoard() {

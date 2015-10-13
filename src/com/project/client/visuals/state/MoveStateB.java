@@ -27,7 +27,6 @@ public class MoveStateB extends State {
 					boardPanel.repaint();
 				} else if (((BoardButton) e.getComponent()).getIsOuterDot() == true) {
 					pressedButton.setDraw(false);
-
 					boardPanel.setState(new MoveStateB(boardPanel, clientInterface, (BoardButton) e.getComponent()));
 					boardPanel.repaint();
 				} else {

@@ -30,7 +30,7 @@ public abstract class GameLogic implements PlayerListener {
 		this.currentPlayer = player;
 	}
 	
-	public void removeRowFromPoints(Point start, Point end) { // TODO add stones to right player ?
+	public void removeRowFromPoints(Point start, Point end) {
 		ArrayList<Row> rows = this.rowRemovalEvent.getRows();
 		for (int i = 0; i < rows.size(); i++) {
 			if (rows.get(i).getFromPoint().equals(start) && rows.get(i).getToPoint().equals(end)) {
@@ -43,8 +43,9 @@ public abstract class GameLogic implements PlayerListener {
 		this.rowRemovalEvent = null;
 		this.server.sendGameUpdate();
 		if (!this.handleRows()) {
+			System.out.println("moving to next player");
 			moveToNextPlayer();
-		}
+		} 
 	}
 	
 	protected boolean handleRows() {

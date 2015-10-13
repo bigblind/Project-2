@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.project.client.board.Board;
 import com.project.client.visuals.BoardPanel;
 import com.project.client.visuals.state.MoveStateA;
-import com.project.client.visuals.state.OpponentTurnState;
+import com.project.client.visuals.state.WaitState;
 import com.project.client.visuals.state.RemoveState;
 import com.project.common.player.Player;
 import com.project.common.player.PlayerEvent;
@@ -17,7 +17,7 @@ public class ClientInterface implements PlayerListener {
 
 	private ArrayList<PlayerListener> listeners;
 	private Server server;
-	
+
 	private int opponentAccount;
 	private Board board;
 	private BoardPanel boardPanel;
@@ -37,14 +37,13 @@ public class ClientInterface implements PlayerListener {
 		this.opponentAccount = opponentStoneAccount;
 		this.readBoard(boardString);
 
-		if (stoneColor == Board.BLACK_VALUE) this.boardPanel.setState(new OpponentTurnState(this.boardPanel, this));
+		if (stoneColor == Board.BLACK_VALUE) this.boardPanel.setState(new WaitState(this.boardPanel, this));
 		else if (stoneColor == Board.WHITE_VALUE) this.boardPanel.setState(new MoveStateA(this.boardPanel, this));
 		else System.err.println("Invalid client input: Initialise StoneColor invalid");
 	}
 
 	public void receive(byte[] bytes) {
 		String received = new String(bytes);
-		System.out.println(received);
 		if (received.startsWith("/i")) {
 			// "/i Board.BLACK_VALUE thisStonesAccount opponentStonesAccount boardString";
 			String info = received.split("/i ")[1];
@@ -77,14 +76,26 @@ public class ClientInterface implements PlayerListener {
 					rowPoints[i * 2 + 1] = new Point(x2, y2);
 				}
 				this.boardPanel.setState(new RemoveState(this.boardPanel, this, rowPoints));
-			} else if (received.startsWith("/s opponent")) {
-				this.boardPanel.setState(new OpponentTurnState(this.boardPanel, this));
+			} else if (received.startsWith("/s wait")) {
+				this.boardPanel.setState(new WaitState(this.boardPanel, this));
+			} else {
+				System.err.println("Invalid client input: Input not recognised");
+			}
+		} else if (received.startsWith("/m")) {
+			System.out.println("in / m");
+			if (received.equals("/m valid")) {
+			} else if (received.equals("/m invalid")) {
+				this.boardPanel.setState(new MoveStateA(this.boardPanel, this));
 			} else {
 				System.err.println("Invalid client input: Input not recognised");
 			}
 		} else {
 			System.err.println("Invalid client input: Input not recognised");
 		}
+
+		System.out.println();
+		System.out.println(this.boardPanel.getState() + " player: " + this.thisPlayer);
+		System.out.println();
 	}
 
 	private void readBoard(String boardString) {
@@ -98,7 +109,7 @@ public class ClientInterface implements PlayerListener {
 		}
 		this.board.setGrid(newBoardGrid);
 	}
-	
+
 	public void removeRowAnswer(Point start, Point end) {
 		String send = start.toString() + " " + end.toString();
 		this.send(send.getBytes());
@@ -140,7 +151,7 @@ public class ClientInterface implements PlayerListener {
 	public void setBoardPanel(BoardPanel boardPanel) {
 		this.boardPanel = boardPanel;
 	}
-	
+
 	public void setServer(Server server) {
 		this.server = server;
 	}

@@ -20,7 +20,7 @@ public class Board {
 	private GameLogic logic;
 
 	public Board() {
-		this.init();
+
 	}
 
 	public void setLogic(GameLogic l) {
@@ -31,7 +31,7 @@ public class Board {
 		this.grid = grid;
 	}
 
-	public void init() {
+	public void basicInit() {
 		this.grid = new int[9][9];
 
 		for (int j = 8; j > 4; j--)
@@ -69,6 +69,54 @@ public class Board {
 		this.grid[7][7] = BLACK_VALUE;
 		this.grid[4][7] = WHITE_VALUE;
 		this.grid[1][4] = BLACK_VALUE;
+
+		this.grid[2][2] = WHITE_VALUE;
+		this.grid[3][3] = WHITE_VALUE;
+		this.grid[4][6] = WHITE_VALUE;
+		this.grid[4][5] = WHITE_VALUE;
+
+		this.grid[6][4] = WHITE_VALUE;
+		this.grid[5][4] = WHITE_VALUE;
+	}
+
+	public void standardInit() {
+		this.grid = new int[9][9];
+
+		for (int j = 8; j > 4; j--)
+			for (int i = 0; i < 4 - (8 - j); i++)
+				this.grid[i][j] = VOID_TILE;
+
+		for (int j = 0; j < 4; j++)
+			for (int i = 8; i > 4 + j; i--)
+				this.grid[i][j] = VOID_TILE;
+
+		for (int i = 4; i < 9; i++)
+			this.grid[i][8] = BOARD_EDGE;
+
+		for (int j = 8; j >= 4; j--)
+			this.grid[8][j] = BOARD_EDGE;
+
+		for (int i = 0; i < 5; i++)
+			this.grid[i][0] = BOARD_EDGE;
+
+		for (int j = 0; j < 5; j++)
+			this.grid[0][j] = BOARD_EDGE;
+
+		this.grid[5][1] = BOARD_EDGE;
+		this.grid[6][2] = BOARD_EDGE;
+		this.grid[7][3] = BOARD_EDGE;
+
+		this.grid[1][5] = BOARD_EDGE;
+		this.grid[2][6] = BOARD_EDGE;
+		this.grid[3][7] = BOARD_EDGE;
+
+		// placing the stones
+		this.grid[1][1] = GIPF_WHITE_VALUE;
+		this.grid[4][1] = GIPF_BLACK_VALUE;
+		this.grid[7][4] = GIPF_WHITE_VALUE;
+		this.grid[7][7] = GIPF_BLACK_VALUE;
+		this.grid[4][7] = GIPF_WHITE_VALUE;
+		this.grid[1][4] = GIPF_BLACK_VALUE;
 	}
 
 	public Board copy() {
@@ -121,6 +169,18 @@ public class Board {
 
 		if (!isEmpty(new Point(x2, y2))) push(to, new Point(x2 + xx, y2 + yy));
 		if (grid[x1][y1] > 0) move(from, to);
+	}
+
+	public boolean[] containGipfStones() {
+		boolean[] result = new boolean[2];
+
+		for (int i = 1; i < this.grid.length - 1; i++) {
+			for (int j = 1; j < this.grid[i].length - 1; j++) {
+				if (this.grid[i][j] == GIPF_WHITE_VALUE) result[0] = true;
+				else if (this.grid[i][j] == GIPF_BLACK_VALUE) result[1] = true;
+			}
+		}
+		return result;
 	}
 
 	public void move(Point from, Point to) {

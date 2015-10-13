@@ -42,7 +42,6 @@ public class RemoveState extends State {
 					for (int i = 0; i < rowPoints[index].length; i++) {
 						buttons[rowPoints[index][i].getX()][rowPoints[index][i].getY()].setDraw(false);
 					}
-					boardPanel.setState(new OpponentTurnState(boardPanel, clientInterface));
 					boardPanel.repaint();
 				}
 			}

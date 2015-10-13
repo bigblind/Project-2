@@ -10,7 +10,11 @@ public class BasicGameLogic extends GameLogic {
 	}
 
 	public void playerEventPerformed(PlayerEvent e) {
-		if (!this.game.getBoard().isValidMove(e.getFromPoint(), e.getToPoint())) return;
+		if (!this.game.getBoard().isValidMove(e.getFromPoint(), e.getToPoint())) {
+			this.server.sendMoveValidity(false);
+			return;
+		}
+		this.server.sendMoveValidity(true);
 		this.game.getBoard().place(e.getPlayer().getStoneColor(), e.getFromPoint(), e.getToPoint());
 		this.getCurrentPlayer().setStoneAccount(this.getCurrentPlayer().getStoneAccount() - 1);
 

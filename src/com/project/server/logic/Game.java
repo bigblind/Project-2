@@ -12,6 +12,7 @@ public class Game {
 
 	public Game() {
 		this.board = new Board();
+		this.board.basicInit();
 	}
 	
 	public void setPlayerOne(Player player) {
