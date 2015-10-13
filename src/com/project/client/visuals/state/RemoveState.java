@@ -12,6 +12,8 @@ import com.project.common.utils.Point;
 public class RemoveState extends State {
 
 	protected MouseListener listener;
+	private Board originalBoard;
+	private Board boardCopy;
 	private Point[][] rowPoints;
 	private Point[] rows;
 
@@ -21,7 +23,10 @@ public class RemoveState extends State {
 		super(boardPanel, clientInterface);
 		this.rows = rows;
 		this.rowPoints = new Point[this.rows.length / 2][];
-
+		this.originalBoard = boardPanel.getBoard();
+		this.boardCopy = this.originalBoard.copy();
+		this.boardPanel.setBoard(this.boardCopy);
+		
 		this.listener = new MouseListener() {
 			public void mouseClicked(MouseEvent e) {
 				int name = Integer.parseInt(e.getComponent().getName());
@@ -31,14 +36,21 @@ public class RemoveState extends State {
 				int[] activeInRow = activeInRows(x, y);
 
 				if (activeInRow.length == 1) {
-					//					if (!containsGipfStone()) {
-					clientInterface.removeRowAnswer("/removerow " + rowPoints[activeInRow[0]][0].toString() + " " + rowPoints[activeInRow[0]][rowPoints[activeInRow[0]].length - 1].toString());
-					for (int i = 0; i < rowPoints[activeInRow[0]].length; i++) {
-						buttons[rowPoints[activeInRow[0]][i].getX()][rowPoints[activeInRow[0]][i].getY()].setDraw(false);
+					if (!containsGipfStone(rowPoints[activeInRow[0]][0], rowPoints[activeInRow[0]][rowPoints[activeInRow[0]].length - 1])) {
+						clientInterface.removeRowAnswer("/removerow " + rowPoints[activeInRow[0]][0].toString() + " " + rowPoints[activeInRow[0]][rowPoints[activeInRow[0]].length - 1].toString());
+						boardCopy.print();
+						for (int i = 0; i < rowPoints[activeInRow[0]].length; i++) {
+							buttons[rowPoints[activeInRow[0]][i].getX()][rowPoints[activeInRow[0]][i].getY()].setDraw(false);
+						}
+						boardPanel.repaint();
+					} else {
+						for (int i = 0; i < rowPoints[activeInRow[0]].length; i++) {
+							buttons[rowPoints[activeInRow[0]][i].getX()][rowPoints[activeInRow[0]][i].getY()].setDraw(false);
+						}
+						boardPanel.setBoard(originalBoard);
+						boardPanel.setState(new GipfRowRemoveState(boardPanel, clientInterface, new Point[] {rowPoints[activeInRow[0]][0], rowPoints[activeInRow[0]][rowPoints[activeInRow[0]].length - 1]}));
 					}
-					//					}
-					boardPanel.repaint();
-				}
+				} 
 			}
 
 			public void mouseEntered(MouseEvent e) {
@@ -49,10 +61,10 @@ public class RemoveState extends State {
 				int[] activeInRow = activeInRows(x, y);
 
 				if (activeInRow.length == 1) {
-					rowIndexRemoved = index;
+					rowIndexRemoved = activeInRow[0];
 					rowValueRemoved = boardPanel.getBoard().getGrid()[x][y];
-					for (int i = 0; i < rowPoints[index].length; i++) {
-						boardPanel.getBoard().getGrid()[rowPoints[index][i].getX()][rowPoints[index][i].getY()] = Board.EMPTY_TILE;
+					for (int i = 0; i < rowPoints[activeInRow[0]].length; i++) {
+						boardPanel.getBoard().getGrid()[rowPoints[activeInRow[0]][i].getX()][rowPoints[activeInRow[0]][i].getY()] = Board.EMPTY_TILE;
 						buttons[rowPoints[rowIndexRemoved][i].getX()][rowPoints[rowIndexRemoved][i].getY()].setDraw(true);
 					}
 				}
@@ -62,7 +74,7 @@ public class RemoveState extends State {
 			public void mouseExited(MouseEvent e) {
 				if (rowIndexRemoved >= 0) {
 					for (int i = 0; i < rowPoints[rowIndexRemoved].length; i++) {
-						boardPanel.getBoard().getGrid()[rowPoints[rowIndexRemoved][i].getX()][rowPoints[rowIndexRemoved][i].getY()] = rowValueRemoved;
+						boardPanel.getBoard().getGrid()[rowPoints[rowIndexRemoved][i].getX()][rowPoints[rowIndexRemoved][i].getY()] = originalBoard.getGrid()[rowPoints[rowIndexRemoved][i].getX()][rowPoints[rowIndexRemoved][i].getY()];
 						buttons[rowPoints[rowIndexRemoved][i].getX()][rowPoints[rowIndexRemoved][i].getY()].setDraw(false);
 					}
 					boardPanel.repaint();
@@ -97,7 +109,7 @@ public class RemoveState extends State {
 		for (int j = 0; j < length; j++) {
 			int x = start.getX() + (j * dx);
 			int y = start.getY() + (j * dy);
-			if (this.boardPanel.getBoard().getGrid()[x][y] == Board.WHITE_VALUE || this.boardPanel.getBoard().getGrid()[x][y] == Board.GIPF_BLACK_VALUE) {
+			if (this.originalBoard.getGrid()[x][y] == Board.GIPF_WHITE_VALUE || this.originalBoard.getGrid()[x][y] == Board.GIPF_BLACK_VALUE) { 
 				return true;
 			}
 		}

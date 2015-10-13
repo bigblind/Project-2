@@ -13,14 +13,16 @@ public class GipfRowRemoveState extends State {
 
 	private MouseListener listener;
 	private Point[] rows;
+	private Point[] gipfStonePoints;
+	private boolean[] gipfIsGhost;
 	private int rowValueRemoved;
 
 	public GipfRowRemoveState(final BoardPanel boardPanel, ClientInterface clientInterface, Point[] row) {
 		super(boardPanel, clientInterface);
-
+		this.rows = row;
 		this.listener = new MouseListener() {
 			public void mouseClicked(MouseEvent e) {
-
+				
 			}
 
 			public void mouseEntered(MouseEvent e) {
@@ -76,7 +78,9 @@ public class GipfRowRemoveState extends State {
 		length++;
 
 		int counter = 0;
+		int cntr = 0;
 		Point[] tmp = new Point[length];
+		Point[] gipfPoints = new Point[length];
 		for (int j = 0; j < length; j++) {
 			int x = start.getX() + (j * dx);
 			int y = start.getY() + (j * dy);
@@ -84,10 +88,18 @@ public class GipfRowRemoveState extends State {
 				if (this.buttons[x][y].getMouseListeners().length == 0) this.buttons[x][y].addMouseListener(this.listener);
 				if (this.boardPanel.getBoard().getGrid()[x][y] == Board.WHITE_VALUE || this.boardPanel.getBoard().getGrid()[x][y] == Board.GIPF_WHITE_VALUE) this.buttons[x][y].setImage(ResourceLoader.WHITE_STONE_TRANSPARENT);
 				else this.buttons[x][y].setImage(ResourceLoader.BLACK_STONE_TRANSPARENT);
+				gipfPoints[cntr] = new Point(x, y);
+				cntr++;
 			} else {
-				counter++;
 				tmp[counter] = new Point(x, y);
+				counter++;
 			}
+		}
+		
+		this.gipfStonePoints = new Point[cntr];
+		this.gipfIsGhost = new boolean[cntr];
+		for (int i = 0; i < cntr; i++) {
+			this.gipfStonePoints[i] = gipfPoints[i];
 		}
 
 		String send = "/removepoints ";

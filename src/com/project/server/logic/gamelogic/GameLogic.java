@@ -76,7 +76,6 @@ public abstract class GameLogic implements PlayerListener {
 	}
 
 	public void removePoints(Point[] points) {
-
 		for (Point p : points) {
 			this.game.getBoard().getGrid()[p.getX()][p.getY()] = Board.EMPTY_TILE;
 		}

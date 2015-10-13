@@ -28,7 +28,7 @@ public class BoardPanel extends JPanel implements ComponentListener, BoardChange
 
 	private static final long serialVersionUID = -6218578367247380839L;
 
-	private static final boolean SHOW_NUMBERS = false;
+	private static final boolean SHOW_NUMBERS = true;
 
 	private State state;
 
@@ -391,7 +391,6 @@ public class BoardPanel extends JPanel implements ComponentListener, BoardChange
 
 	public void setState(State state) {
 		this.state = state;
-		System.out.println("changing state in boardPanel: " + state + " player: " + this.clientInterface.getThisPlayer());
 		this.state.execute();
 	}
 
@@ -417,6 +416,11 @@ public class BoardPanel extends JPanel implements ComponentListener, BoardChange
 	
 	public State getState() {
 		return this.state;
+	}
+	
+	public void setBoard(Board board) {
+		this.board = board;
+		this.repaint();
 	}
 	
 	public Board getBoard() {

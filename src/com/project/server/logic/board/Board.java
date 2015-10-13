@@ -117,6 +117,16 @@ public class Board {
 		this.grid[7][7] = GIPF_BLACK_VALUE;
 		this.grid[4][7] = GIPF_WHITE_VALUE;
 		this.grid[1][4] = GIPF_BLACK_VALUE;
+
+		this.grid[1][1] = WHITE_VALUE;
+		this.grid[2][2] = WHITE_VALUE;
+		this.grid[3][3] = GIPF_WHITE_VALUE;
+		this.grid[4][5] = GIPF_WHITE_VALUE;
+		this.grid[4][6] = WHITE_VALUE;
+		this.grid[4][7] = WHITE_VALUE;
+		this.grid[7][4] = WHITE_VALUE;
+		this.grid[6][4] = WHITE_VALUE;
+		this.grid[5][4] = GIPF_WHITE_VALUE;
 	}
 
 	public Board copy() {

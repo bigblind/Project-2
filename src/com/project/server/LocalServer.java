@@ -49,6 +49,7 @@ public class LocalServer extends Server implements PlayerListener, PlayerChangeL
 		this.clients = new ClientInterface[2];
 		this.listeners = new ArrayList<PlayerListener>();
 		this.console = new Console(this);
+		this.console.setVisible(true);
 	}
 
 	public void addClient(ClientInterface clientInterface) {
@@ -59,8 +60,8 @@ public class LocalServer extends Server implements PlayerListener, PlayerChangeL
 	public void init() throws ServerNotPreparedException {
 		this.game = new Game();
 		this.game.getBoard().standardInit();
+//		this.game.getBoard().basicInit();
 		this.game.getBoard().print();
-		this.game.getBoard().basicInit();
 		this.logic = new StandardGameLogic(this.game);
 		this.logic.setServer(this);
 		this.logic.addPlayerChangeListener(this);
@@ -86,7 +87,7 @@ public class LocalServer extends Server implements PlayerListener, PlayerChangeL
 	public void receive(byte[] bytes) {
 		String received = new String(bytes);
 
-		if (received.startsWith("removerow")) {
+		if (received.startsWith("/removerow")) {
 			String[] subPartsX = received.split("Point: x = ");
 			String[] subPartsY = received.split("y = ");
 
@@ -99,7 +100,7 @@ public class LocalServer extends Server implements PlayerListener, PlayerChangeL
 			Point start = new Point(x1, y1);
 			Point end = new Point(x2, y2);
 			this.logic.removeRowFromPoints(start, end);
-		} else if (received.startsWith("removepoints")) {
+		} else if (received.startsWith("/removepoints")) {
 			String[] subPartsX = received.split("Point: x = ");
 			String[] subPartsY = received.split("y = ");
 
@@ -112,6 +113,8 @@ public class LocalServer extends Server implements PlayerListener, PlayerChangeL
 				points[i] = new Point(x, y);
 			}
 
+			this.logic.removePoints(points);
+			this.sendGameUpdate();
 		}
 	}
 

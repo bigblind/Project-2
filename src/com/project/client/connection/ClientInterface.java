@@ -108,9 +108,6 @@ public class ClientInterface implements PlayerListener {
 			System.err.println("Invalid client input: Input not recognised");
 		}
 
-		System.out.println();
-		System.out.println(this.boardPanel.getState() + " player: " + this.thisPlayer);
-		System.out.println();
 	}
 
 	private void readBoard(String boardString) {
@@ -123,6 +120,7 @@ public class ClientInterface implements PlayerListener {
 			}
 		}
 		this.board.setGrid(newBoardGrid);
+		this.boardPanel.setBoard(this.board);
 	}
 
 	public void removeRowAnswer(String text) {
