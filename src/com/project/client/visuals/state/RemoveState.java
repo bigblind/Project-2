@@ -17,7 +17,7 @@ public class RemoveState extends State {
 	private Point[][] rowPoints;
 	private Point[] rows;
 
-	private int rowIndexRemoved = -1, rowValueRemoved = -1;
+	private int rowIndexRemoved = -1;
 
 	public RemoveState(final BoardPanel boardPanel, final ClientInterface clientInterface, final Point[] rows) {
 		super(boardPanel, clientInterface);
@@ -62,7 +62,6 @@ public class RemoveState extends State {
 
 				if (activeInRow.length == 1) {
 					rowIndexRemoved = activeInRow[0];
-					rowValueRemoved = boardPanel.getBoard().getGrid()[x][y];
 					for (int i = 0; i < rowPoints[activeInRow[0]].length; i++) {
 						boardPanel.getBoard().getGrid()[rowPoints[activeInRow[0]][i].getX()][rowPoints[activeInRow[0]][i].getY()] = Board.EMPTY_TILE;
 						buttons[rowPoints[rowIndexRemoved][i].getX()][rowPoints[rowIndexRemoved][i].getY()].setDraw(true);

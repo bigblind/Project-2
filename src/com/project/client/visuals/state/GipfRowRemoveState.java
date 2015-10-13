@@ -14,23 +14,47 @@ public class GipfRowRemoveState extends State {
 	private MouseListener listener;
 	private Point[] rows;
 	private Point[] gipfStonePoints;
+	private Board originalBoard;
+	private Board boardCopy;
 	private boolean[] gipfIsGhost;
-	private int rowValueRemoved;
 
 	public GipfRowRemoveState(final BoardPanel boardPanel, ClientInterface clientInterface, Point[] row) {
 		super(boardPanel, clientInterface);
 		this.rows = row;
+
 		this.listener = new MouseListener() {
 			public void mouseClicked(MouseEvent e) {
-				
+				int name = Integer.parseInt(e.getComponent().getName());
+				int x = name / 10;
+				int y = name - (x * 10);
+
+				for (int i = 0; i < gipfStonePoints.length; i++) {
+					if (gipfStonePoints[i].getX() == x && gipfStonePoints[i].getY() == y) {
+						if (gipfIsGhost[i]) {
+							boardCopy.getGrid()[gipfStonePoints[i].getX()][gipfStonePoints[i].getY()] = originalBoard.getGrid()[gipfStonePoints[i].getX()][gipfStonePoints[i].getY()];
+//							boardPanel.setBoard(boardCopy);
+							buttons[x][y].setDraw(false);
+							gipfIsGhost[i] = false;
+							boardPanel.repaint();
+						} else {
+							boardCopy.getGrid()[gipfStonePoints[i].getX()][gipfStonePoints[i].getY()] = 0;
+//							boardPanel.setBoard(boardCopy);
+							buttons[x][y].setDraw(true);
+							gipfIsGhost[i] = true;
+							boardPanel.repaint();
+						}
+						break;
+					}
+				}
 			}
 
 			public void mouseEntered(MouseEvent e) {
 				int name = Integer.parseInt(e.getComponent().getName());
 				int x = name / 10;
 				int y = name - (x * 10);
-				rowValueRemoved = boardPanel.getBoard().getGrid()[x][y];
-				boardPanel.getBoard().getGrid()[x][y] = Board.EMPTY_TILE;
+				
+				boardCopy.getGrid()[x][y] = Board.EMPTY_TILE;
+//				originalBoard.getGrid()[x][y] = Board.EMPTY_TILE;
 				buttons[x][y].setDraw(true);
 				boardPanel.repaint();
 			}
@@ -40,11 +64,19 @@ public class GipfRowRemoveState extends State {
 				int x = name / 10;
 				int y = name - (x * 10);
 
-				if (rowValueRemoved > 0) {
-					boardPanel.getBoard().getGrid()[x][y] = rowValueRemoved;
-					buttons[x][y].setDraw(false);
-					boardPanel.repaint();
+				for (int i = 0; i < gipfStonePoints.length; i++) {
+					if (gipfStonePoints[i].getX() == x && gipfStonePoints[i].getY() == y) {
+						if (!gipfIsGhost[i]) {
+							boardCopy.getGrid()[x][y] = originalBoard.getGrid()[x][y];
+							System.out.println(originalBoard.getGrid()[x][y] + "   " + x + " " + y);
+							originalBoard.print();
+							buttons[x][y].setDraw(false);
+							boardPanel.repaint();
+						}
+						break;
+					}
 				}
+				
 			}
 
 			public void mousePressed(MouseEvent e) {
@@ -66,15 +98,22 @@ public class GipfRowRemoveState extends State {
 		int yy = end.getY() - start.getY();
 
 		int dx, dy;
-		if (xx == 0) dx = 0;
-		else dx = 1;
-		if (yy == 0) dy = 0;
-		else dy = 1;
+		if (xx == 0)
+			dx = 0;
+		else
+			dx = 1;
+		if (yy == 0)
+			dy = 0;
+		else
+			dy = 1;
 
 		int length;
-		if (xx == 0) length = yy;
-		else if (yy == 0) length = xx;
-		else length = xx;
+		if (xx == 0)
+			length = yy;
+		else if (yy == 0)
+			length = xx;
+		else
+			length = xx;
 		length++;
 
 		int counter = 0;
@@ -84,10 +123,15 @@ public class GipfRowRemoveState extends State {
 		for (int j = 0; j < length; j++) {
 			int x = start.getX() + (j * dx);
 			int y = start.getY() + (j * dy);
-			if (this.boardPanel.getBoard().getGrid()[x][y] == Board.GIPF_WHITE_VALUE || this.boardPanel.getBoard().getGrid()[x][y] == Board.GIPF_BLACK_VALUE) {
-				if (this.buttons[x][y].getMouseListeners().length == 0) this.buttons[x][y].addMouseListener(this.listener);
-				if (this.boardPanel.getBoard().getGrid()[x][y] == Board.WHITE_VALUE || this.boardPanel.getBoard().getGrid()[x][y] == Board.GIPF_WHITE_VALUE) this.buttons[x][y].setImage(ResourceLoader.WHITE_STONE_TRANSPARENT);
-				else this.buttons[x][y].setImage(ResourceLoader.BLACK_STONE_TRANSPARENT);
+			if (this.boardPanel.getBoard().getGrid()[x][y] == Board.GIPF_WHITE_VALUE
+					|| this.boardPanel.getBoard().getGrid()[x][y] == Board.GIPF_BLACK_VALUE) {
+				if (this.buttons[x][y].getMouseListeners().length == 0)
+					this.buttons[x][y].addMouseListener(this.listener);
+				if (this.boardPanel.getBoard().getGrid()[x][y] == Board.WHITE_VALUE
+						|| this.boardPanel.getBoard().getGrid()[x][y] == Board.GIPF_WHITE_VALUE)
+					this.buttons[x][y].setImage(ResourceLoader.WHITE_STONE_TRANSPARENT);
+				else
+					this.buttons[x][y].setImage(ResourceLoader.BLACK_STONE_TRANSPARENT);
 				gipfPoints[cntr] = new Point(x, y);
 				cntr++;
 			} else {
@@ -95,7 +139,7 @@ public class GipfRowRemoveState extends State {
 				counter++;
 			}
 		}
-		
+
 		this.gipfStonePoints = new Point[cntr];
 		this.gipfIsGhost = new boolean[cntr];
 		for (int i = 0; i < cntr; i++) {
@@ -107,5 +151,8 @@ public class GipfRowRemoveState extends State {
 			send += tmp[i].toString() + " ";
 		}
 		this.clientInterface.removeRowAnswer(send);
+		this.originalBoard = boardPanel.getBoard();
+		this.boardCopy = this.originalBoard.copy();
+		this.boardPanel.setBoard(this.boardCopy);
 	}
 }
