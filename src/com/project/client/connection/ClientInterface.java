@@ -167,4 +167,8 @@ public class ClientInterface implements PlayerListener {
 	public void setServer(Server server) {
 		this.server = server;
 	}
+	
+	public SoundManager getSoundManager() {
+		return this.soundManager;
+	}
 }

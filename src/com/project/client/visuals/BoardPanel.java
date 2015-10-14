@@ -28,7 +28,7 @@ public class BoardPanel extends JPanel implements ComponentListener, BoardChange
 
 	private static final long serialVersionUID = -6218578367247380839L;
 
-	private static final boolean SHOW_NUMBERS = true;
+	private static final boolean SHOW_NUMBERS = false;
 
 	private State state;
 

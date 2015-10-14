@@ -32,13 +32,11 @@ public class GipfRowRemoveState extends State {
 					if (gipfStonePoints[i].getX() == x && gipfStonePoints[i].getY() == y) {
 						if (gipfIsGhost[i]) {
 							boardCopy.getGrid()[gipfStonePoints[i].getX()][gipfStonePoints[i].getY()] = originalBoard.getGrid()[gipfStonePoints[i].getX()][gipfStonePoints[i].getY()];
-//							boardPanel.setBoard(boardCopy);
 							buttons[x][y].setDraw(false);
 							gipfIsGhost[i] = false;
 							boardPanel.repaint();
 						} else {
 							boardCopy.getGrid()[gipfStonePoints[i].getX()][gipfStonePoints[i].getY()] = 0;
-//							boardPanel.setBoard(boardCopy);
 							buttons[x][y].setDraw(true);
 							gipfIsGhost[i] = true;
 							boardPanel.repaint();
