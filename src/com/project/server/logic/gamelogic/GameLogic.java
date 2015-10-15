@@ -4,12 +4,14 @@ import java.util.ArrayList;
 
 import com.project.common.player.Player;
 import com.project.common.player.PlayerListener;
+import com.project.server.Server;
 import com.project.server.logic.Game;
 import com.project.server.logic.Row;
 import com.project.server.logic.board.Board;
 
 public abstract class GameLogic implements PlayerListener {
 
+	protected Server server;
 	protected Game game;
 	protected Player currentPlayer;
 	protected ArrayList<Row> removeOptions = new ArrayList<Row>();
@@ -86,5 +88,9 @@ public abstract class GameLogic implements PlayerListener {
 	public void notifyRowListeners(RowRemovalRequestEvent e) {
 		for (RowRemovalRequestListener l : this.rowListeners)
 			l.rowRemoveRequestEventPerformed(e);
+	}
+	
+	public void setServer(Server server) {
+		this.server = server;
 	}
 }

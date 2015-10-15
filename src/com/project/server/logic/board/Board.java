@@ -140,73 +140,6 @@ public class Board {
 		return this.grid;
 	}
 
-	//	public ArrayList<Row> checkForLines() {
-	//		System.out.println("Checking for rows");
-	//		ArrayList<Row> lines = new ArrayList<Row>();
-	//		int lineStartX = -1, lineStartY = -1, lineEndX = -1, lineEndY = -1;
-	//
-	//		int counter = 0;
-	//		int prevValue = -1;
-	//
-	//		// checks for vertical lines
-	//		for (int i = 1; i < this.grid.length - 1; i++) {
-	//			for (int j = 1; j < this.grid[i].length - 1; j++) {
-	//				if (counter >= 4) {
-	//					lineEndX = i;
-	//					lineEndY = j - 1;
-	//					lineStartX = i;
-	//					lineStartY = j - counter;
-	//					int[] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY));
-	//					lines.add(new Row(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY), logic.checkPlayer(prevValue), counter, extensionStones[0], extensionStones[1]));
-	//				}
-	//				
-	//				if ((j == 1 && i < 5) || (j == 2 && i == 5) || (j == 3 && i == 6) || (j == 4 && i == 7)) {
-	//					prevValue = this.grid[i][j];
-	//					if (prevValue > 0) counter = 1;
-	//					else counter = 0;
-	//				} else if (this.grid[i][j] == 0) {
-	//					prevValue = 0;
-	//					counter = 0;
-	//				} else if (this.grid[i][j] == prevValue && prevValue > 0) {
-	//					counter++;
-	//				} else {
-	//					if (counter >= 4) {
-	//						lineEndX = i;
-	//						lineEndY = j - 1;
-	//						lineStartX = i;
-	//						lineStartY = j - counter;
-	//						int[] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY));
-	//						lines.add(new Row(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY), logic.checkPlayer(prevValue), counter, extensionStones[0], extensionStones[1]));
-	//					}
-	//					counter = 1;
-	//					prevValue = this.grid[i][j];
-	//				}
-	//				
-	//				if (counter >= 4) {
-	//					lineEndX = i;
-	//					lineEndY = j - 1;
-	//					lineStartX = i;
-	//					lineStartY = j - counter;
-	//					int[] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY));
-	//					lines.add(new Row(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY), logic.checkPlayer(prevValue), counter, extensionStones[0], extensionStones[1]));
-	//				}
-	//			}
-	//		}
-	//
-	//		counter = 0;
-	//		prevValue = -1;
-	//
-	//		// left down to right up lines
-	//		//		for (int j = 1; j < this.grid[0].length - 1; j++) {
-	//		//			for (int i = 1; i < this.grid.length - 1; i++) {
-	//		//				if (i == )
-	//		//			}
-	//		//		}
-	//		System.out.println("result:");
-	//		System.out.println(lines);
-	//		return lines;
-	//	}
-
 	public ArrayList<Row> checkForLines() {
 		ArrayList<Row> lines = new ArrayList<Row>();
 		int lineStartX = -1, lineStartY = -1, lineEndX = -1, lineEndY = -1;
@@ -214,101 +147,129 @@ public class Board {
 		int counter = 0;
 		int prevValue = -1;
 
-		// checks for vertical lines
-		for (int i = 1; i < grid.length - 1; i++) {
-			for (int j = 1; j < grid[i].length; j++) {
-				if (prevValue == grid[i][j] && prevValue > 0) {
+		for (int i = 1; i < this.grid.length - 1; i++) {
+			for (int j = 1; j < this.grid[i].length; j++) {
+				if (((prevValue == Board.WHITE_VALUE) || (prevValue == Board.GIPF_WHITE_VALUE)) && ((this.grid[i][j] == Board.WHITE_VALUE) || (this.grid[i][j] == Board.GIPF_WHITE_VALUE))) {
+					counter++;
+				} else if (((prevValue == Board.BLACK_VALUE) || (prevValue == Board.GIPF_BLACK_VALUE)) && ((this.grid[i][j] == Board.BLACK_VALUE) || (this.grid[i][j] == Board.GIPF_BLACK_VALUE))) {
 					counter++;
 				} else {
-					if (counter >= 3) {
-						lineEndX = i;
-						lineEndY = j - 1; //the current stone's color is different, so it doesn't count towards the row.
+					if (counter >= 4) {
 						lineStartX = i;
+						lineEndX = i;
+
 						lineStartY = j - counter;
+						lineEndY = j - 1;
+
 						int[] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY));
-						lines.add(
-								new Row(new Point(lineStartX, lineStartY),
-										new Point(lineEndX, lineEndY),
-										logic.checkPlayer(prevValue),
-										counter,
-										extensionStones[0],
-										extensionStones[1]
-									)
-								);
-						counter = 0;
+						lines.add(new Row(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY), logic.checkPlayer(prevValue), counter, extensionStones[0], extensionStones[1]));
+
+						System.out.println("found a vertical line with x = " + lineStartX + " lineStartY = " + lineStartY + " lineEndY = " + lineEndY);
+						System.out.println("white extensions = " + extensionStones[0] + " black extensions = " + extensionStones[1]);
+						System.out.println("length: " + counter + " " + i + " " + j);
 					}
-					counter = 0;
-					prevValue = grid[i][j];
+
+					prevValue = this.grid[i][j];
+					if (prevValue > 0) counter = 1;
+					else counter = 0;
 				}
 			}
 			counter = 0;
 			prevValue = -1;
 		}
 
-		for (int j = 0; j < grid[0].length; j++) {
-			for (int i = 0; i < grid.length; i++) {
-				if (prevValue == grid[i][j] && prevValue > 0) {
+		for (int j = 1; j < this.grid[0].length - 1; j++) {
+			for (int i = 1; i < this.grid.length; i++) {
+				if (((prevValue == Board.WHITE_VALUE) || (prevValue == Board.GIPF_WHITE_VALUE)) && ((this.grid[i][j] == Board.WHITE_VALUE) || (this.grid[i][j] == Board.GIPF_WHITE_VALUE))) {
+					counter++;
+				} else if (((prevValue == Board.BLACK_VALUE) || (prevValue == Board.GIPF_BLACK_VALUE)) && ((this.grid[i][j] == Board.BLACK_VALUE) || (this.grid[i][j] == Board.GIPF_BLACK_VALUE))) {
 					counter++;
 				} else {
-					if (counter >= 3) {
-						lineEndX = i - 1;
-						lineEndY = j;
+					if (counter >= 4) {
 						lineStartX = i - counter;
+						lineEndX = i - 1;
+
 						lineStartY = j;
+						lineEndY = j;
 
 						int[] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY));
-						lines.add(
-								new Row(new Point(lineStartX, lineStartY),
-										new Point(lineEndX, lineEndY),
-										logic.checkPlayer(prevValue),
-										counter + 1,
-										extensionStones[0],
-										extensionStones[1]
-									)
-								);
-						counter = 0;
+						lines.add(new Row(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY), logic.checkPlayer(prevValue), counter, extensionStones[0], extensionStones[1]));
+
+						System.out.println("found a horizontal line with lineStartX = " + lineStartX + " lineEndX = " + lineEndX + " y = " + lineStartY);
+						System.out.println("white extensions = " + extensionStones[0] + " black extensions = " + extensionStones[1]);
+						System.out.println("lenght: " + counter + " " + i + " " + j);
 					}
-					prevValue = grid[i][j];
+
+					prevValue = this.grid[i][j];
+					if (prevValue > 0) counter = 1;
+					else counter = 0;
 				}
 			}
 			counter = 0;
 			prevValue = -1;
 		}
 
-		// checks for lines left top right bottom
-		for (int i = 1; i <= grid.length; i++) {
-			for (int j = 1; j < grid[0].length; j++) {
-				for (int k = 0; k < Math.min(grid.length - i, grid[0].length - j); k++) {
-					if (prevValue == grid[i + k][j + k] && prevValue > 0) {
-						counter++;
-					} else {
-						if (counter >= 3) {
-							lineEndX = i + k - 1;
-							lineEndY = j + k - 1;
-							lineStartX = i + k - counter;
-							lineStartY = j + k - counter;
+		for (int k = 0; k < 4; k++) {
+			for (int l = 0; l < 5 + k; l++) {
+				if (((prevValue == Board.WHITE_VALUE) || (prevValue == Board.GIPF_WHITE_VALUE)) && ((this.grid[l + 1][4 - k + l] == Board.WHITE_VALUE) || (this.grid[l + 1][4 - k + l] == Board.GIPF_WHITE_VALUE))) {
+					counter++;
+				} else if (((prevValue == Board.BLACK_VALUE) || (prevValue == Board.GIPF_BLACK_VALUE)) && ((this.grid[l + 1][4 - k + l] == Board.BLACK_VALUE) || (this.grid[l + 1][4 - k + l] == Board.GIPF_BLACK_VALUE))) {
+					counter++;
+				} else {
+					if (counter >= 4) {
+						lineStartX = 1 + l - counter;
+						lineEndX = l;
 
-							int[] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY));
-							lines.add(
-									new Row(new Point(lineStartX, lineStartY),
-											new Point(lineEndX, lineEndY),
-											logic.checkPlayer(prevValue),
-											counter,
-											extensionStones[0],
-											extensionStones[1]
-										)
-									);
-							counter = 0;
-						}
-						prevValue = grid[i + k][j + k];
+						lineStartY = 4 - k + l - counter;
+						lineEndY = 4 - k + l - 1;
+
+						int[] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY));
+						lines.add(new Row(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY), logic.checkPlayer(prevValue), counter, extensionStones[0], extensionStones[1]));
+
+						System.out.println("found a (lt - rb) line with lineStartX = " + lineStartX + " lineEndX = " + lineEndX + " lineStartY = " + lineStartY + " lineEndY = " + lineEndY);
+						System.out.println("white extensions = " + extensionStones[0] + " black extensions = " + extensionStones[1]);
+						System.out.println("lenght: " + counter + " " + (1 + l) + " " + (4 - k + l));
 					}
-				}
-				counter = 0;
-				prevValue = -1;
-			}
 
+					prevValue = this.grid[l + 1][4 - k + l];
+					if (prevValue > 0) counter = 1;
+					else counter = 0;
+				}
+			}
+			counter = 0;
+			prevValue = -1;
 		}
 
+		for (int k = 0; k < 3; k++) {
+			for (int l = 0; l < 7 - k; l++) {
+				if (((prevValue == Board.WHITE_VALUE) || (prevValue == Board.GIPF_WHITE_VALUE)) && ((this.grid[2 + k + l][1 + l] == Board.WHITE_VALUE) || (this.grid[2 + k + l][1 + l] == Board.GIPF_WHITE_VALUE))) {
+					counter++;
+				} else if (((prevValue == Board.BLACK_VALUE) || (prevValue == Board.GIPF_BLACK_VALUE)) && ((this.grid[2 + k + l][1 + l] == Board.BLACK_VALUE) || (this.grid[2 + k + l][1 + l] == Board.GIPF_BLACK_VALUE))) {
+					counter++;
+				} else {
+					if (counter >= 4) {
+						lineStartX = 2 + k + l - counter;
+						lineEndX = 2 + k + l - 1;
+
+						lineStartY = 1 + l - counter;
+						lineEndY = l;
+
+						int[] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY));
+						lines.add(new Row(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY), logic.checkPlayer(prevValue), counter, extensionStones[0], extensionStones[1]));
+
+						System.out.println("found a (lt - rb) line with lineStartX = " + lineStartX + " lineEndX = " + lineEndX + " lineStartY = " + lineStartY + " lineEndY = " + lineEndY);
+						System.out.println("white extensions = " + extensionStones[0] + " black extensions = " + extensionStones[1]);
+						System.out.println("lenght: " + counter + " " + (1 + l) + " " + (4 - k + l));
+					}
+
+					prevValue = this.grid[2 + k + l][1 + l];
+					if (prevValue > 0) counter = 1;
+					else counter = 0;
+				}
+			}
+			counter = 0;
+			prevValue = -1;
+		}
 		return lines;
 	}
 
@@ -328,23 +289,50 @@ public class Board {
 
 		Point connectedStart = findConnectionEnd(start, -deltaX, -deltaY);
 		Point connectedEnd = findConnectionEnd(end, deltaX, deltaY);
-		Point p = connectedStart;
-		while (!(p.getX() == start.getX() - deltaX && p.getY() == start.getY() - deltaY)) {
-			if (grid[p.getX()][p.getY()] == WHITE_VALUE) {
-				white += 1;
-			} else if (grid[p.getY()][p.getY()] == BLACK_VALUE) {
-				black += 1;
+
+		int xx = start.getX() - connectedStart.getX();
+		int yy = start.getY() - connectedStart.getY();
+
+		if (xx > 0) {
+			if (yy > 0) {
+				for (int i = connectedStart.getX(); i < start.getX(); i++) {
+					for (int j = connectedStart.getY(); j < start.getY(); j++) {
+						if (this.grid[i][j] == Board.WHITE_VALUE || this.grid[i][j] == Board.GIPF_WHITE_VALUE) white++;
+						else black++;
+					}
+				}
+			} else {
+				for (int i = connectedStart.getX(); i < start.getX(); i++) {
+					if (this.grid[i][start.getY()] == Board.WHITE_VALUE || this.grid[i][start.getY()] == Board.GIPF_WHITE_VALUE) white++;
+					else black++;
+				}
 			}
-			p = new Point(p.getX() + deltaX, p.getY() + deltaY);
+		} else {
+			for (int j = connectedStart.getY(); j < start.getY(); j++) {
+				if (this.grid[start.getX()][j] == Board.WHITE_VALUE || this.grid[start.getX()][j] == Board.GIPF_WHITE_VALUE) white++;
+				else black++;
+			}
 		}
-		p = new Point(end.getX() + deltaX, end.getY() + deltaY);
-		while (!(p.getX() == connectedEnd.getX() && p.getY() == connectedEnd.getY())) {
-			if (grid[p.getX()][p.getY()] == WHITE_VALUE) {
-				white += 1;
-			} else if (grid[p.getY()][p.getY()] == BLACK_VALUE) {
-				black += 1;
+
+		if (xx > 0) {
+			if (yy > 0) {
+				for (int i = end.getX(); i <= connectedEnd.getX(); i++) {
+					for (int j = end.getY(); j < connectedEnd.getY(); j++) {
+						if (this.grid[i][j] == Board.WHITE_VALUE || this.grid[i][j] == Board.GIPF_WHITE_VALUE) white++;
+						else black++;
+					}
+				}
+			} else {
+				for (int i = end.getX(); i < connectedEnd.getX(); i++) {
+					if (this.grid[i][start.getY()] == Board.WHITE_VALUE || this.grid[i][start.getY()] == Board.GIPF_WHITE_VALUE) white++;
+					else black++;
+				}
 			}
-			p = new Point(p.getX() + deltaX, p.getY() + deltaY);
+		} else {
+			for (int j = end.getY(); j < connectedEnd.getY(); j++) {
+				if (this.grid[start.getX()][j] == Board.WHITE_VALUE || this.grid[start.getX()][j] == Board.GIPF_WHITE_VALUE) white++;
+				else black++;
+			}
 		}
 		return new int[] { white, black };
 	}
@@ -365,29 +353,36 @@ public class Board {
 
 		Point connectedStart = findConnectionEnd(start, -deltaX, -deltaY);
 		Point connectedEnd = findConnectionEnd(end, deltaX, deltaY);
-		removeLine(connectedStart, connectedEnd, deltaX, deltaY);
+		removeLine(connectedStart, connectedEnd);
 	}
 
 	private Point findConnectionEnd(Point from, int deltaX, int deltaY) {
-		int i = 1;
 		Point p = from;
 		while (!isEmpty(p)) {
-			int x = from.getX() + deltaX * i;
-			int y = from.getY() + deltaY * i;
+			int x = p.getX() + deltaX;
+			int y = p.getY() + deltaY;
 			p = new Point(x, y);
-			i++;
 		}
-		return p;
+		return new Point(p.getX() - deltaX, p.getY() - deltaY);
 	}
 
-	private void removeLine(Point start, Point end, int deltaX, int deltaY) {
-		int x = start.getX();
-		int y = start.getY();
-		while (!(x == end.getX() && y == end.getY())) {
-			this.grid[x][y] = EMPTY_TILE;
-			x += deltaX;
-			y += deltaY;
-		}
+	private void removeLine(Point start, Point end) {
+		int xx = end.getX() - start.getX();
+		int yy = end.getY() - start.getY();
+
+		int dx, dy;
+		if (xx == 0) dx = 0;
+		else dx = 1;
+		if (yy == 0) dy = 0;
+		else dy = 1;
+
+		int length;
+		if (xx == 0) length = yy;
+		else if (yy == 0) length = xx;
+		else length = xx;
+
+		for (int i = 0; i <= length; i++)
+			this.grid[start.getX() + (i * dx)][start.getY() + (i * dy)] = Board.EMPTY_TILE;
 	}
 
 	public String toString() {

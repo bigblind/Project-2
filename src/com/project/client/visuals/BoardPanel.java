@@ -29,14 +29,9 @@ public class BoardPanel extends JPanel implements ComponentListener, BoardChange
 
 	private static final long serialVersionUID = -6218578367247380839L;
 
-	/*
-	 * maybe make an init somewhere that then sets the state of the
-	 * GhostBoardButtonPanel, sets the active player and everything
-	 */
-
 	private static final boolean SHOW_NUMBERS = true;
 
-	private State state; // TODO needs to be changed
+	private State state;
 
 	private BoardButton[][] buttons;
 	private Point[][][] connectedLocations;

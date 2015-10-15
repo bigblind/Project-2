@@ -65,7 +65,7 @@ public class GameFrame extends JFrame implements ComponentListener {
 
 		layer.add(this.gamePanel, new Integer(0));
 		layer.add(this.ghostGamePanel, new Integer(1));
-		//layer.add(this.side, new Integer(2));
+		layer.add(this.side, new Integer(2));
 
 		this.setIconImage(ResourceLoader.ICON);
 		
