@@ -69,14 +69,6 @@ public class Board {
 		this.grid[7][7] = BLACK_VALUE;
 		this.grid[4][7] = WHITE_VALUE;
 		this.grid[1][4] = BLACK_VALUE;
-
-		this.grid[2][2] = WHITE_VALUE;
-		this.grid[3][3] = WHITE_VALUE;
-		this.grid[4][6] = WHITE_VALUE;
-		this.grid[4][5] = WHITE_VALUE;
-
-		this.grid[6][4] = WHITE_VALUE;
-		this.grid[5][4] = WHITE_VALUE;
 	}
 
 	public void standardInit() {
@@ -117,16 +109,6 @@ public class Board {
 		this.grid[7][7] = GIPF_BLACK_VALUE;
 		this.grid[4][7] = GIPF_WHITE_VALUE;
 		this.grid[1][4] = GIPF_BLACK_VALUE;
-
-		this.grid[1][1] = WHITE_VALUE;
-		this.grid[2][2] = WHITE_VALUE;
-		this.grid[3][3] = GIPF_WHITE_VALUE;
-		this.grid[4][5] = GIPF_WHITE_VALUE;
-		this.grid[4][6] = WHITE_VALUE;
-		this.grid[4][7] = WHITE_VALUE;
-		this.grid[7][4] = WHITE_VALUE;
-		this.grid[6][4] = WHITE_VALUE;
-		this.grid[5][4] = GIPF_WHITE_VALUE;
 	}
 
 	public Board copy() {
@@ -209,6 +191,10 @@ public class Board {
 
 	public int[][] getGrid() {
 		return this.grid;
+	}
+	
+	public void setGrid(int[][] grid) {
+		this.grid = grid;
 	}
 
 	public ArrayList<Row> checkForLines() {

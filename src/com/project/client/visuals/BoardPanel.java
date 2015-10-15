@@ -2,6 +2,7 @@ package com.project.client.visuals;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -13,15 +14,20 @@ import java.awt.event.ComponentListener;
 import java.awt.geom.Point2D;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import com.project.client.board.Board;
 import com.project.client.board.BoardChangeEvent;
 import com.project.client.board.BoardChangeListener;
 import com.project.client.connection.ClientInterface;
+import com.project.client.visuals.state.GipfRowRemoveState;
+import com.project.client.visuals.state.MoveStateA;
 import com.project.client.visuals.state.MoveStateB;
-import com.project.client.visuals.state.WaitState;
+import com.project.client.visuals.state.RemoveState;
 import com.project.client.visuals.state.State;
+import com.project.client.visuals.state.WaitState;
 import com.project.common.utils.Point;
 
 public class BoardPanel extends JPanel implements ComponentListener, BoardChangeListener {
@@ -33,10 +39,13 @@ public class BoardPanel extends JPanel implements ComponentListener, BoardChange
 	private State state;
 
 	private BoardButton[][] buttons;
+	private JButton checkButton;
 	private Point[][][] connectedLocations;
 	private Point[][] coordinates;
 
 	private Board board;
+	
+	private TotalFrame totalFrame; // TODO this should be changed
 
 	private ClientInterface clientInterface;
 
@@ -64,6 +73,14 @@ public class BoardPanel extends JPanel implements ComponentListener, BoardChange
 	}
 
 	private void initButtons() {
+		this.checkButton = new JButton();
+		this.checkButton.setIcon(new ImageIcon(ResourceLoader.CHECK_ICON));
+		this.checkButton.setContentAreaFilled(false);
+		this.checkButton.setFocusPainted(false);
+		this.checkButton.setBorder(BorderFactory.createEmptyBorder());
+		this.checkButton.setPreferredSize(new Dimension(48, 48));
+		this.checkButton.setVisible(false);
+		
 		for (int j = 0; j < 5; j++) {
 			for (int i = 0; i < 5 + j; i++) {
 				BoardButton button = new BoardButton();
@@ -103,6 +120,8 @@ public class BoardPanel extends JPanel implements ComponentListener, BoardChange
 				this.add(this.buttons[i][4 + j]);
 			}
 		}
+		
+		this.add(checkButton);
 	}
 
 	private void initConnections() {
@@ -382,6 +401,8 @@ public class BoardPanel extends JPanel implements ComponentListener, BoardChange
 				this.buttons[i][4 + j].setBounds(this.coordinates[i][4 + j].getX(), this.coordinates[i][4 + j].getY(), this.tileSize, this.tileSize);
 			}
 		}
+		
+		this.checkButton.setBounds(this.getWidth() - 96 - 50, 50, 64, 64);
 		this.repaint();
 	}
 
@@ -391,6 +412,16 @@ public class BoardPanel extends JPanel implements ComponentListener, BoardChange
 
 	public void setState(State state) {
 		this.state = state;
+		if (state instanceof GipfRowRemoveState) {
+			this.checkButton.setVisible(true);
+		} else {
+			this.checkButton.setVisible(false);
+		}
+		if (this.totalFrame != null) {
+			if (state instanceof MoveStateA || state instanceof RemoveState) {
+				totalFrame.showBoard(this);
+			}
+		}
 		this.state.execute();
 	}
 
@@ -413,17 +444,25 @@ public class BoardPanel extends JPanel implements ComponentListener, BoardChange
 	public void boardChangeEventPerformed(BoardChangeEvent e) {
 		this.repaint();
 	}
-	
+
 	public State getState() {
 		return this.state;
 	}
-	
+
 	public void setBoard(Board board) {
 		this.board = board;
 		this.repaint();
 	}
-	
+
 	public Board getBoard() {
 		return this.board;
+	}
+	
+	public JButton getCheckButton() {
+		return this.checkButton;
+	}
+	
+	public void setTotalFrame(TotalFrame frame) {
+		this.totalFrame = frame;
 	}
 }

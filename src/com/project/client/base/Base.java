@@ -7,6 +7,7 @@ import java.io.IOException;
 import com.project.client.connection.ClientInterface;
 import com.project.client.visuals.GameFrame;
 import com.project.client.visuals.ResourceLoader;
+import com.project.client.visuals.TotalFrame;
 import com.project.server.LocalServer;
 import com.project.server.ServerNotPreparedException;
 
@@ -82,5 +83,11 @@ public class Base {
 		frameTwo.setSize((int) width, (int) height);
 		frameOne.setLocation(0, 0);
 		frameTwo.setLocation((int) width, 0);
+		
+		TotalFrame totalFrame = new TotalFrame(frameOne, frameTwo);
+		totalFrame.setPreferredSize(new Dimension(1500, 1500/ 16 * 9));
+		totalFrame.pack();
+		totalFrame.setVisible(true);
+		totalFrame.setTitle("Project Gipf");
 	}
 }

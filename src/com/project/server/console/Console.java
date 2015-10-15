@@ -61,8 +61,6 @@ public class Console extends JFrame {
 		this.add(this.input, BorderLayout.SOUTH);
 		
 		this.pack();
-		this.setVisible(true);
-		
 		this.init();
 	}
 	
@@ -75,5 +73,15 @@ public class Console extends JFrame {
 	public void handleInput(String text) {
 		this.output.append(text + "\n");
 		this.output.setCaretPosition(this.output.getDocument().getLength());
+		
+		if (text.equals("1")) {
+			this.server.showPresentationBoard(0);
+		} else if (text.equals("2")) {
+			this.server.showPresentationBoard(1);
+		} else if (text.equals("3")) {
+			this.server.showPresentationBoard(2);
+ 		} else if (text.equals("4")) {
+ 			this.server.showPresentationBoard(3);
+ 		}
 	}
 }

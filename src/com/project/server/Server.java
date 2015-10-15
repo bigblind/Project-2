@@ -13,4 +13,6 @@ public abstract class Server {
 	public abstract void receive(byte[] bytes);
 	
 	public abstract void sendWinLoseUpdate(Player player);
+	
+	public abstract void showPresentationBoard(int index); //TODO this needs to be removed, this is for presentation purposes
 }

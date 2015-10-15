@@ -32,7 +32,7 @@ public class ClientInterface implements PlayerListener {
 		this.listeners = new ArrayList<PlayerListener>();
 		this.thisPlayer.addPlayerListener(this);
 		this.soundManager = new SoundManager();
-		this.soundManager.backgroundPlay();
+//		this.soundManager.backgroundPlay();
 	}
 
 	public void initCall(byte stoneColor, byte numberOfStones, byte opponentStoneAccount, String boardString) {
@@ -87,20 +87,20 @@ public class ClientInterface implements PlayerListener {
 			}
 		} else if (received.startsWith("/m")) {
 			if (received.equals("/m valid")) {
-				this.soundManager.movePlay(true);
+//				this.soundManager.movePlay(true);
 			} else if (received.equals("/m invalid")) {
-				this.soundManager.movePlay(false);
+//				this.soundManager.movePlay(false);
 				this.boardPanel.setState(new MoveStateA(this.boardPanel, this));
 			} else {
 				System.err.println("Invalid client input: Input not recognised");
 			}
 		} else if (received.startsWith("/g")) {
 			if (received.equals("/g win")) {
-				this.soundManager.stopPlayBackground();
-				this.soundManager.winPlay();
+//				this.soundManager.stopPlayBackground();
+//				this.soundManager.winPlay();
 			} else if (received.startsWith("/g lose")) {
-				this.soundManager.stopPlayBackground();
-				this.soundManager.losePlay();
+//				this.soundManager.stopPlayBackground();
+//				this.soundManager.losePlay();
 			} else {
 				System.err.println("Invalid client input: Input not recognised");
 			}

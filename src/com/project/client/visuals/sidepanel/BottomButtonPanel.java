@@ -1,23 +1,30 @@
 package com.project.client.visuals.sidepanel;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JPanel;
 
 import com.project.client.visuals.ResourceLoader;
 
-public class BottomButtonPanel extends MenuComponent {
+public class BottomButtonPanel extends JPanel {
 
 	private static final long serialVersionUID = 3471989499685962625L;
 
 	private JButton help, sound, settings;
-
+ 
+	private HelpFrame helpFrame = new HelpFrame();
+	private SettingsFrame settingsFrame = new SettingsFrame();
+	private boolean isSmall = false;
+	
 	public BottomButtonPanel() {
 		this.setPreferredSize(new Dimension(400, 150));
 		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
@@ -53,18 +60,27 @@ public class BottomButtonPanel extends MenuComponent {
 		this.sound.setFocusPainted(false);
 		this.sound.setBorder(BorderFactory.createEmptyBorder());
 		this.sound.setPreferredSize(buttonDimension);
-
+		
 		final ImageIcon soundOn = new ImageIcon(ResourceLoader.SOUND_ICON);
 		final ImageIcon soundMuted = new ImageIcon(ResourceLoader.SOUND_MUTED_ICON);
+		final ImageIcon soundOnSmall = new ImageIcon(ResourceLoader.SOUND_ICON_SMALL);
+		final ImageIcon soundMutedSmall = new ImageIcon(ResourceLoader.SOUND_MUTED_ICON_SMALL);
 
 		this.sound.setIcon(soundOn);
 		this.sound.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (sound.getIcon().equals(soundOn)) sound.setIcon(soundMuted);
-				else sound.setIcon(soundOn);
+				if (sound.getIcon().equals(soundOn)){
+					if(isSmall) sound.setIcon(soundMutedSmall);
+					else sound.setIcon(soundMuted);
+				}
+				else{
+					if(isSmall) sound.setIcon(soundOnSmall);
+					else sound.setIcon(soundOn);
+				}
 				revalidate();
 			}
 		});
+		this.sound.doClick();
 
 		Box box = Box.createHorizontalBox();
 		box.add(Box.createHorizontalGlue());
@@ -78,16 +94,26 @@ public class BottomButtonPanel extends MenuComponent {
 		box.add(Box.createHorizontalGlue());
 		this.add(box);
 	}
-
-	public void goHome() {
-
-	}
-
-	public void goBig() {
-
-	}
-
-	public void addActionListener(ActionListener al) {
-
+	
+	public void componentResized(ComponentEvent e){
+		/*isSmall = false;
+		if(this.getWidth() < 200 || this.getHeight() < 90 	){
+			this.help.setIcon(new ImageIcon(ResourceLoader.HELP_ICON_SMALL));
+			this.settings.setIcon(new ImageIcon(ResourceLoader.HELP_ICON_SMALL));
+			isSmall = true;
+		}
+		System.out.println("small: "+isSmall+ " ("+this.getWidth()+","+this.getHeight()+")");
+		final ImageIcon soundOn = new ImageIcon(ResourceLoader.SOUND_ICON);
+		final ImageIcon soundMuted = new ImageIcon(ResourceLoader.SOUND_MUTED_ICON);
+		final ImageIcon soundOnSmall = new ImageIcon(ResourceLoader.SOUND_ICON_SMALL);
+		final ImageIcon soundMutedSmall = new ImageIcon(ResourceLoader.SOUND_MUTED_ICON_SMALL);
+		if (sound.getIcon().equals(soundOn)){
+			if(isSmall) sound.setIcon(soundOnSmall);
+			else sound.setIcon(soundOn);
+		}
+		else{
+			if(isSmall) sound.setIcon(soundMutedSmall);
+			else sound.setIcon(soundMuted);
+		}*/
 	}
 }
