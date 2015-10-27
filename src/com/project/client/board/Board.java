@@ -2,7 +2,7 @@ package com.project.client.board;
 
 import java.util.ArrayList;
 
-import com.project.common.utils.Point;
+import com.gipf.client.utils.Point;
 
 public class Board {
 
