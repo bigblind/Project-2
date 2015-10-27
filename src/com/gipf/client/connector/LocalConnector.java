@@ -17,6 +17,6 @@ public class LocalConnector extends Connector {
 	}
 
 	public void receive(String string) {
-	
+		super.receive(string);
 	}
 }

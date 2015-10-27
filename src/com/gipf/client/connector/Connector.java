@@ -12,5 +12,7 @@ public abstract class Connector {
 	
 	public abstract void send(String string);
 	
-	public abstract void receive(String string);
+	public void receive(String string) {
+		
+	}
 }

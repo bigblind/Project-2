@@ -42,7 +42,6 @@ public class ServerConnector extends Connector {
 	}
 
 	public void receive(String input) {
-		System.out.println(input);
 		if (input.equals("quit")) {
 			try {
 				in.close();
@@ -51,5 +50,6 @@ public class ServerConnector extends Connector {
 				e.printStackTrace();
 			}
 		}
+		super.receive(input);
 	}
 }
