@@ -1,6 +1,7 @@
 package com.gipf.client.localserver;
 
 import com.gipf.client.connector.LocalConnector;
+import com.gipf.client.game.Game;
 
 /**
  * @author simon
@@ -13,9 +14,18 @@ public class LocalServer {
 
 	private LocalConnector c1, c2;
 	
+//	private GameLogic gameLogic;
+	private Game game;
+	
 	public LocalServer(LocalConnector c1, LocalConnector c2) {
 		this.c1 = c1;
 		this.c2 = c2;
+	}
+	
+	public void init() {
+		this.game = new Game();
+		
+		this.game.getBoard().basicInit();
 	}
 	
 	public void sendToAll(String string) {

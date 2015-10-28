@@ -13,6 +13,6 @@ public abstract class Connector {
 	public abstract void send(String string);
 	
 	public void receive(String string) {
-		
+		this.gameController.input(string);
 	}
 }
