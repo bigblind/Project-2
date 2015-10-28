@@ -12,8 +12,20 @@ public class Game {
 		this.board = new Board();
 	}
 	
+	public void setBoard(Board board) {
+		this.board = board;
+	}
+	
 	public Board getBoard() {
 		return this.board;
+	}
+	
+	public void setPlayerOne(Player player) {
+		this.playerOne = player;
+	}
+	
+	public void setPlayerTwo(Player player) {
+		this.playerTwo = player;
 	}
 	
 	public Player getPlayerOne() {

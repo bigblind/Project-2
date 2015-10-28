@@ -25,7 +25,7 @@ public class LocalServer {
 	public void init() {
 		this.game = new Game();
 		
-		this.game.getBoard().basicInit();
+//		this.game.getBoard().basicInit();
 	}
 	
 	public void sendToAll(String string) {

@@ -1,4 +1,4 @@
-package com.gipf.client.game.player;
+ package com.gipf.client.game.player;
 
 public class Player {
 
