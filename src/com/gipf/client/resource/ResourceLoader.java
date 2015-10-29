@@ -19,7 +19,6 @@ public class ResourceLoader {
 		WHITE_STONE = ImageIO.read(this.getResource("res/icons/WhiteStone2.png"));
 		BLACK_STONE = ImageIO.read(this.getResource("res/icons/BlackStone2.png"));
 		OUTER_DOT = ImageIO.read(this.getResource("res/icons/OuterDot.png"));
-		
 		MENU_ICON_SMALL = ImageIO.read(this.getResource("res/icons/Menu.png"));
 		MENU_ICON = ImageIO.read(this.getResource("res/icons/Menu48.png"));
 		SOUND_ICON_SMALL = ImageIO.read(this.getResource("res/icons/Volume.png"));

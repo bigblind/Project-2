@@ -1,4 +1,4 @@
- package com.gipf.client.game.player;
+package com.gipf.client.game.player;
 
 public class Player {
 
@@ -31,7 +31,8 @@ public class Player {
 	}
 
 	public int getStoneAccount() {
-		if (name == null) this.name = "Player " + String.valueOf(stoneColor);
+		if (name == null)
+			this.name = "Player " + String.valueOf(stoneColor);
 		return this.stoneAccount;
 	}
 
@@ -49,5 +50,17 @@ public class Player {
 
 	public String toString() {
 		return this.name;
+	}
+
+	public boolean equals(Object o) {
+		if (o instanceof Player) {
+			Player p = (Player) o;
+			if (p.getStoneColor() == this.getStoneColor())
+				return true;
+			else
+				return false;
+		} else {
+			return false;
+		}
 	}
 }

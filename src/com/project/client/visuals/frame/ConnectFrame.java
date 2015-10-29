@@ -77,6 +77,9 @@ public class ConnectFrame extends JFrame {
 					try {
 						Connector connector = new ServerConnector(controller.getGameController(), ip, port);
 						controller.setConnector(connector);
+						controller.showPanel(controller.getGamePanel());
+						controller.getFrame().pack();
+						
 						frame.dispose();
 					} catch (IOException e1) {
 						e1.printStackTrace();

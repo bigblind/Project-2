@@ -8,7 +8,6 @@ import javax.swing.JPanel;
 
 import com.gipf.client.connector.Connector;
 import com.gipf.client.connector.LocalConnector;
-import com.gipf.client.connector.ServerConnector;
 import com.gipf.client.game.Game;
 import com.gipf.client.game.GameController;
 import com.gipf.client.game.player.Player;
@@ -22,7 +21,6 @@ import com.project.client.visuals.menu.GameModeMenuPageB;
 import com.project.client.visuals.menu.MainMenuPage;
 import com.project.client.visuals.menu.MenuPage;
 import com.project.client.visuals.menu.MultiplayerMenuPage;
-import com.project.client.visuals.state.MoveStateA;
 
 public class Controller {
 
@@ -34,8 +32,7 @@ public class Controller {
 	
 	private GameController gameController;
 	private GamePanel gamePanel;
-	
-	private Player player;
+	private Game game;
 	
 	public Controller() {
 		
@@ -43,6 +40,7 @@ public class Controller {
 	
 	public void init() {
 		this.frame = new Frame();
+		this.gameController = new GameController(this);
 		
 		ResourceLoader resourceLoader = new ResourceLoader();
 		try {
@@ -51,32 +49,34 @@ public class Controller {
 			e.printStackTrace();
 			System.exit(0);
 		}
+
+		this.gamePanel = new GamePanel(new Game(new Player("", 0, Board.WHITE_VALUE), new Player("", 0, Board.BLACK_VALUE)));
 		
 		this.menuPages = new ArrayList<MenuPage>();
-		
-		Game game = new Game();
-		
-		this.player = new Player(Board.WHITE_VALUE);
-		game.setPlayerOne(this.player);
-		game.setPlayerTwo(new Player(Board.BLACK_VALUE));
-		this.gamePanel = new GamePanel(game);
-		this.gameController = new GameController(this, this.player);
+//		
+//		Game game = new Game();
+//		
+//		this.player = new Player(Board.WHITE_VALUE);
+//		game.setPlayerOne(this.player);
+//		game.setPlayerTwo(new Player(Board.BLACK_VALUE));
+//		this.gamePanel = new GamePanel(game);
+//		this.gameController = new GameController(this, this.player);
 		this.initMenuPages();
 		this.showMenuPage(0);
-		this.showPanel(this.gamePanel);
-		
-		try {
-			this.connector = new ServerConnector(getGameController(), "192.168.1.15", 3620);
-			this.gameController.reinitConnector();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//		this.showPanel(this.gamePanel);
+//		
+//		try {
+//			this.connector = new ServerConnector(getGameController(), "192.168.1.15", 3620);
+//			this.gameController.reinitConnector();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 
-		this.frame.setVisible(true);
 		this.frame.pack();
+		this.frame.setVisible(true);
 		
-		this.gamePanel.repaint();
-		this.gamePanel.setState(new MoveStateA(this.gamePanel, this.gameController));
+//		this.gamePanel.repaint();
+//		this.gamePanel.setState(new MoveStateA(this.gamePanel, this.gameController));
 	}
 	
 	private void initMenuPages() {
@@ -90,7 +90,7 @@ public class Controller {
 		this.showPanel(this.menuPages.get(index));
 	}
 	
-	private void showPanel(JPanel panel) {
+	public void showPanel(JPanel panel) {
 		this.frame.setContentPane(panel);
 		this.frame.pack();
 	}
@@ -125,5 +125,17 @@ public class Controller {
 	
 	public Connector getConnector() {
 		return this.connector;
+	}
+	
+	public JFrame getFrame() {
+		return this.frame;
+	}
+	
+	public void setGame(Game game) {
+		this.game = game;
+	}
+	
+	public Game getGame() {
+		return this.game;
 	}
 }

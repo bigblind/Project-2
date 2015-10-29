@@ -8,6 +8,12 @@ public class Game {
 	private Player playerOne, playerTwo;
 	private Board board;
 	
+	public Game(Player playerOne, Player playerTwo) {
+		this.playerOne = playerOne;
+		this.playerTwo = playerTwo;
+		this.board = new Board();
+	}
+	
 	public Game() {
 		this.board = new Board();
 	}
