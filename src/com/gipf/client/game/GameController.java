@@ -81,8 +81,6 @@ public class GameController {
 			System.err.println("Invalid client input: Input not recognised");
 		}
 		this.controller.getGamePanel().revalidate();
-//		this.controller.getGamePanel().setVisible(false);
-//		this.controller.getGamePanel().setVisible(true);
 	}
 
 	private Player returnOpponent(Player player) {
@@ -110,6 +108,8 @@ public class GameController {
 		} else {
 			System.err.println("Invalid client input: Initialise invalid.");
 		}
+		this.controller.getGamePanel().setVisible(false);
+		this.controller.getGamePanel().setVisible(true);
 	}
 
 	private void readBoard(String boardString) {
