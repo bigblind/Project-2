@@ -1,4 +1,4 @@
-package com.project.ai.tree;
+package com.project.game.ai;
 
 import java.util.ArrayList;
 
