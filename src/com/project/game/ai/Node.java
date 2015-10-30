@@ -76,7 +76,13 @@ public class Node<E> implements PositionADT<E>{
 			this.estimateCost = estimateCost;
 		}
 		
-
+		public void setBoard(Board board){
+			this.board = board;
+		}
+		
+		public Board getBoard(){
+			return this.board;
+		}
 		
 	
 		
