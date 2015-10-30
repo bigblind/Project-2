@@ -2,7 +2,8 @@ package com.project.game.ai;
 
 import java.util.ArrayList;
 
-import com.project.server.logic.board.Board;
+import com.project.client.board.Board;
+
 
 
 public class Node<E> implements PositionADT<E>{
