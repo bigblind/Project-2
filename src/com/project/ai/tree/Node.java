@@ -21,6 +21,15 @@ public class Node<E> implements PositionADT<E>{
 		
 		
 		
+		public Node(Node parent, E pathCost){
+			this.parent = parent;
+			this.pathCost = pathCost;
+			this.estimateCost = null;
+			this.children = null;
+		}
+		
+		
+		
 		public Node(Node parent, E pathCost, E estimateCost, ArrayList<Node> children){
 			this.parent = parent;
 			this.pathCost = pathCost;
