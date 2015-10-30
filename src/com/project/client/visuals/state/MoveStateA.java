@@ -3,21 +3,21 @@ package com.project.client.visuals.state;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import com.project.client.connection.ClientInterface;
-import com.project.client.visuals.BoardButton;
-import com.project.client.visuals.BoardPanel;
+import com.gipf.client.game.GameController;
+import com.project.client.visuals.board.BoardButton;
+import com.project.client.visuals.board.GamePanel;
 
 public class MoveStateA extends State {
 
 	private MouseListener listener;
 
-	public MoveStateA(final BoardPanel boardPanel, final ClientInterface clientInterface) {
-		super(boardPanel, clientInterface);
+	public MoveStateA(final GamePanel gamePanel, final GameController controller) {
+		super(gamePanel, controller);
 
 		this.listener = new MouseListener() {
 			public void mouseClicked(MouseEvent e) {
-				boardPanel.setState(new MoveStateB(boardPanel, clientInterface, (BoardButton) e.getComponent()));
-				boardPanel.repaint();
+				gamePanel.setState(new MoveStateB(gamePanel, controller, (BoardButton) e.getComponent()));
+				gamePanel.repaint();
 			}
 
 			public void mouseEntered(MouseEvent e) {
@@ -40,7 +40,6 @@ public class MoveStateA extends State {
 
 	public void execute() {
 		super.execute();
-
 		for (int i = 0; i < 5; i++) {
 			this.buttons[i][0].setImage(this.stoneImage);
 			this.buttons[i][0].addMouseListener(this.listener);

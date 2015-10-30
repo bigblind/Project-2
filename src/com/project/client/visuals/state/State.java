@@ -2,28 +2,28 @@ package com.project.client.visuals.state;
 
 import java.awt.Image;
 
+import com.gipf.client.game.GameController;
+import com.gipf.client.resource.ResourceLoader;
 import com.project.client.board.Board;
-import com.project.client.connection.ClientInterface;
-import com.project.client.visuals.BoardButton;
-import com.project.client.visuals.BoardPanel;
-import com.project.client.visuals.ResourceLoader;
+import com.project.client.visuals.board.BoardButton;
+import com.project.client.visuals.board.GamePanel;
 
 public abstract class State {
 
-	protected BoardPanel boardPanel;
+	protected GamePanel gamePanel;
 	protected BoardButton[][] buttons;
-	protected ClientInterface clientInterface;	
+	protected GameController gameController;	
 	protected Image stoneImage;
 
-	public State(final BoardPanel boardPanel, final ClientInterface clientInterface) {
-		this.buttons = boardPanel.getButtons();
-		this.boardPanel = boardPanel;
-		this.clientInterface = clientInterface;
+	public State(final GamePanel gamePanel, final GameController controller) {
+		this.buttons = gamePanel.getButtons();
+		this.gamePanel = gamePanel;
+		this.gameController = controller;
 	}
 
 	public void execute() {
-		if (this.clientInterface.getThisPlayer().getStoneColor() == Board.BLACK_VALUE) this.stoneImage = ResourceLoader.BLACK_STONE_TRANSPARENT;
-		else if (this.clientInterface.getThisPlayer().getStoneColor() == Board.WHITE_VALUE) this.stoneImage = ResourceLoader.WHITE_STONE_TRANSPARENT;
+		if (this.gameController.getThisPlayer().getStoneColor() == Board.BLACK_VALUE) this.stoneImage = ResourceLoader.BLACK_STONE_TRANSPARENT;
+		else if (this.gameController.getThisPlayer().getStoneColor() == Board.WHITE_VALUE) this.stoneImage = ResourceLoader.WHITE_STONE_TRANSPARENT;
 		this.removeListeners();
 	}
 

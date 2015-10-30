@@ -5,11 +5,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import com.gipf.client.game.GameController;
+import com.gipf.client.resource.ResourceLoader;
+import com.gipf.client.utils.Point;
 import com.project.client.board.Board;
-import com.project.client.connection.ClientInterface;
-import com.project.client.visuals.BoardPanel;
-import com.project.client.visuals.ResourceLoader;
-import com.project.common.utils.Point;
+import com.project.client.visuals.board.GamePanel;
 
 public class GipfRowRemoveState extends State {
 
@@ -20,13 +20,13 @@ public class GipfRowRemoveState extends State {
 	private Board boardCopy;
 	private boolean[] gipfIsGhost;
 
-	public GipfRowRemoveState(final BoardPanel boardPanel, final ClientInterface clientInterface, Point[] row) {
-		super(boardPanel, clientInterface);
+	public GipfRowRemoveState(final GamePanel gamePanel, final GameController controller, Point[] row) {
+		super(gamePanel, controller);
 		this.rows = row;
 
-		this.boardPanel.getCheckButton().addActionListener(new ActionListener() {
+		this.gamePanel.getCheckButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				boardPanel.getCheckButton().removeActionListener(this);
+				gamePanel.getCheckButton().removeActionListener(this);
 
 				String send = "/removepoints ";
 				for (int i = 0; i < gipfIsGhost.length; i++) {
@@ -36,9 +36,9 @@ public class GipfRowRemoveState extends State {
 					}
 				}
 				send += " checkrows";
-				boardPanel.setBoard(originalBoard);
+				gamePanel.getGame().setBoard(originalBoard);
 
-				clientInterface.removeRowAnswer(send);
+				gameController.getConnector().send(send);
 			}
 		});
 
@@ -54,12 +54,12 @@ public class GipfRowRemoveState extends State {
 							boardCopy.getGrid()[gipfStonePoints[i].getX()][gipfStonePoints[i].getY()] = originalBoard.getGrid()[gipfStonePoints[i].getX()][gipfStonePoints[i].getY()];
 							buttons[x][y].setDraw(false);
 							gipfIsGhost[i] = false;
-							boardPanel.repaint();
+							gamePanel.repaint();
 						} else {
 							boardCopy.getGrid()[gipfStonePoints[i].getX()][gipfStonePoints[i].getY()] = 0;
 							buttons[x][y].setDraw(true);
 							gipfIsGhost[i] = true;
-							boardPanel.repaint();
+							gamePanel.repaint();
 						}
 						break;
 					}
@@ -73,7 +73,7 @@ public class GipfRowRemoveState extends State {
 
 				boardCopy.getGrid()[x][y] = Board.EMPTY_TILE;
 				buttons[x][y].setDraw(true);
-				boardPanel.repaint();
+				gamePanel.repaint();
 			}
 
 			public void mouseExited(MouseEvent e) {
@@ -86,7 +86,7 @@ public class GipfRowRemoveState extends State {
 						if (!gipfIsGhost[i]) {
 							boardCopy.getGrid()[x][y] = originalBoard.getGrid()[x][y];
 							buttons[x][y].setDraw(false);
-							boardPanel.repaint();
+							gamePanel.repaint();
 						}
 						break;
 					}
@@ -131,9 +131,9 @@ public class GipfRowRemoveState extends State {
 		for (int j = 0; j < length; j++) {
 			int x = start.getX() + (j * dx);
 			int y = start.getY() + (j * dy);
-			if (this.boardPanel.getBoard().getGrid()[x][y] == Board.GIPF_WHITE_VALUE || this.boardPanel.getBoard().getGrid()[x][y] == Board.GIPF_BLACK_VALUE) {
+			if (this.gamePanel.getGame().getBoard().getGrid()[x][y] == Board.GIPF_WHITE_VALUE || this.gamePanel.getGame().getBoard().getGrid()[x][y] == Board.GIPF_BLACK_VALUE) {
 				if (this.buttons[x][y].getMouseListeners().length == 0) this.buttons[x][y].addMouseListener(this.listener);
-				if (this.boardPanel.getBoard().getGrid()[x][y] == Board.WHITE_VALUE || this.boardPanel.getBoard().getGrid()[x][y] == Board.GIPF_WHITE_VALUE) this.buttons[x][y].setImage(ResourceLoader.WHITE_STONE_TRANSPARENT);
+				if (this.gamePanel.getGame().getBoard().getGrid()[x][y] == Board.WHITE_VALUE || this.gamePanel.getGame().getBoard().getGrid()[x][y] == Board.GIPF_WHITE_VALUE) this.buttons[x][y].setImage(ResourceLoader.WHITE_STONE_TRANSPARENT);
 				else this.buttons[x][y].setImage(ResourceLoader.BLACK_STONE_TRANSPARENT);
 				gipfPoints[cntr] = new Point(x, y);
 				cntr++;
@@ -153,9 +153,9 @@ public class GipfRowRemoveState extends State {
 		for (int i = 0; i < counter; i++) {
 			send += tmp[i].toString() + " ";
 		}
-		this.clientInterface.removeRowAnswer(send);
-		this.originalBoard = boardPanel.getBoard();
+		this.gameController.getConnector().send(send);
+		this.originalBoard = gamePanel.getGame().getBoard();
 		this.boardCopy = this.originalBoard.copy();
-		this.boardPanel.setBoard(this.boardCopy);
+		this.gamePanel.getGame().setBoard(this.boardCopy);
 	}
 }
