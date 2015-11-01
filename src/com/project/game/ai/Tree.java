@@ -3,15 +3,21 @@ package com.project.game.ai;
 import java.util.ListIterator;
 
 public class Tree<E> implements TreeADT {
-
-	public Object root() {
-		// TODO Auto-generated method stub
-		return null;
+	
+	private Node root;
+	private int size = 0;
+	
+	public Tree(Node node){
+		this.root = node;
+		this.size = 1;
+	}
+	
+	public Node root() {
+		return this.root;
 	}
 
-	public Object parent(Object node) {
-		// TODO Auto-generated method stub
-		return null;
+	public Node parent(Node node) {
+		return node.getParent();
 	}
 
 	public ListIterator children(Object element) {
@@ -19,29 +25,29 @@ public class Tree<E> implements TreeADT {
 		return null;
 	}
 
-	public boolean isInternal(Object node) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isInternal(Node node) {
+		return !node.getChildren().isEmpty();
 	}
 
-	public boolean isExternal(Object node) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isExternal(Node node) {
+		return node.getChildren().isEmpty();
 	}
 
-	public boolean isRoot(Object node) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isRoot(Node node) {
+		return (node.getParent() == null);
 	}
 
-	public void swapElements(Object firstNode, Object secondNode) {
-		// TODO Auto-generated method stub
-		
+	public void swapElements(Node firstNode, Node secondNode) {
+		E firstElement = (E) firstNode.element();
+		E secondElement = (E) secondNode.element();
+		firstNode.setElement(secondElement);
+		secondNode.setElement(firstElement);
 	}
 
-	public Object replaceElement(Object oldNode, Object newElement) {
-		// TODO Auto-generated method stub
-		return null;
+	public Object replaceElement(Node oldNode, Object newElement) {
+		E replaceable = (E) oldNode.element();
+		oldNode.setElement(newElement);
+		return replaceable;
 	}
 
 	public ListIterator elements() {
@@ -55,13 +61,13 @@ public class Tree<E> implements TreeADT {
 	}
 
 	public Integer size() {
-		// TODO Auto-generated method stub
-		return null;
+		return size;
 	}
 
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return (root.getChildren().isEmpty());
 	}
+
+
 
 }

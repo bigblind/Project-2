@@ -65,7 +65,7 @@ public class Node<E> implements PositionADT<E>{
 			return this.pathCost;
 		}
 		
-		public void setPathCost(E pathCost){
+		public void setElement(E pathCost){
 			this.pathCost = pathCost;
 		}
 		

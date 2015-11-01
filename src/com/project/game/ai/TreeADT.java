@@ -4,16 +4,16 @@ import java.util.ListIterator;
 
 public interface TreeADT<E> {
 	
-	E root();
-	E parent(E node);
+	Node root();
+	Node parent(Node node);
 	ListIterator<E> children(E element);
 	
-	boolean isInternal(E node);
-	boolean isExternal(E node);
-	boolean isRoot(E node);
+	boolean isInternal(Node node);
+	boolean isExternal(Node node);
+	boolean isRoot(Node node);
 	
-	void swapElements(E firstNode, E secondNode);
-	E replaceElement(E oldNode, E newElement);
+	void swapElements(Node firstNode, Node secondNode);
+	E replaceElement(Node oldNode, E newElement);
 	
 	ListIterator<E> elements();
 	ListIterator<E> positions();
