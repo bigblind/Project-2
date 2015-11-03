@@ -2,7 +2,8 @@ package com.project.game.ai;
 
 import java.util.ListIterator;
 
-public class Tree<E> implements TreeADT {
+
+public class Tree<E> implements TreeADT<E> {
 	
 	private Node root;
 	private int size = 0;
@@ -66,6 +67,16 @@ public class Tree<E> implements TreeADT {
 
 	public boolean isEmpty() {
 		return (root.getChildren().isEmpty());
+	}
+	
+	public String preOrder(Node node){
+		String result = "";
+		result += node.element();
+		if(isInternal(node))
+			for(int x = 0; x < node.getChildren().size(); x++)
+				result += "(" + preOrder((Node) node.getChildren().get(x)) + ")";
+			
+		return result;
 	}
 
 

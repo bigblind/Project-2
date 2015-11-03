@@ -14,14 +14,20 @@ public class Node<E> implements PositionADT<E>{
 		private ArrayList<Node> children;
 		private Board board;
 		
-		
+		public Node(E pathChost){
+			this.parent = null;
+			this.pathCost = pathCost;
+			this.estimateCost = null;
+			this.board = null;
+			this.children = new ArrayList<Node>();
+		}
 		
 		public Node(E pathCost, Board board){
 			this.parent = null;
 			this.pathCost = pathCost;
 			this.estimateCost = null;
 			this.board = board;
-			this.children = null;
+			this.children = new ArrayList<Node>();
 		}
 		
 		
@@ -31,7 +37,7 @@ public class Node<E> implements PositionADT<E>{
 			this.pathCost = pathCost;
 			this.estimateCost = null;
 			this.board = board;
-			this.children = null;
+			this.children = new ArrayList<Node>();
 		}
 		
 		
@@ -41,7 +47,7 @@ public class Node<E> implements PositionADT<E>{
 			this.pathCost = pathCost;
 			this.estimateCost = estimateCost;
 			this.board = board;
-			this.children = children;
+			this.children = new ArrayList<Node>();
 		}
 		
 	
