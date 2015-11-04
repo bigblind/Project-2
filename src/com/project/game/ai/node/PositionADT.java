@@ -1,4 +1,4 @@
-package com.project.game.ai;
+package com.project.game.ai.node;
 
 public interface PositionADT<E> {
 	

@@ -1,6 +1,8 @@
-package com.project.game.ai;
+package com.project.game.ai.tree;
 
 import java.util.ListIterator;
+
+import com.project.game.ai.node.Node;
 
 
 public class Tree<E> implements TreeADT<E> {
