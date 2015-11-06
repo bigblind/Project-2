@@ -25,7 +25,7 @@ public class GameController {
 			// "/i Board.BLACK_VALUE thisStonesAccount opponentStonesAccount boardString";
 			String info = received.split("/i ")[1];
 			String boardString = received.substring(3 + info.split(" ")[0].length() + 1 + info.split(" ")[1].length() + 1 + info.split(" ")[2].length() + 1);
-			this.initCall(Byte.parseByte(info.split(" ")[0]), Byte.parseByte(info.split(" ")[1]), Byte.parseByte(info.split(" ")[2]), boardString);
+			this.initCall(Integer.parseInt(info.split(" ")[0]), Integer.parseInt(info.split(" ")[1]), Integer.parseInt(info.split(" ")[2]), boardString);
 		} else if (received.startsWith("/u")) {
 			// "/u 18 18 boardString";
 			String[] subParts = received.split(" ");
@@ -80,6 +80,8 @@ public class GameController {
 		} else {
 			System.err.println("Invalid client input: Input not recognised");
 		}
+		System.out.println(received);
+		this.controller.getGame().getBoard().print();
 		this.controller.getGamePanel().revalidate();
 	}
 
@@ -99,7 +101,6 @@ public class GameController {
 			this.controller.getGame().getPlayerOne().setStoneAccount(opponentStones);
 			this.controller.getGamePanel().setGame(this.controller.getGame());
 			this.controller.getGamePanel().setState(new WaitState(this.controller.getGamePanel(), this));
-			this.readBoard(boardString);
 		} else if (stoneColor == Board.WHITE_VALUE) {
 			this.controller.setGame(new Game(this.thisPlayer, new Player(Board.BLACK_VALUE)));
 			this.controller.getGame().getPlayerTwo().setStoneAccount(opponentStones);
@@ -108,6 +109,7 @@ public class GameController {
 		} else {
 			System.err.println("Invalid client input: Initialise invalid.");
 		}
+		this.readBoard(boardString);
 		this.controller.getGamePanel().setVisible(false);
 		this.controller.getGamePanel().setVisible(true);
 	}

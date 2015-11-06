@@ -72,6 +72,7 @@ public class ConnectFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					String ip = textIpAdress.getText();
+					if (ip.equals("localhost")) ip = "127.0.0.1";
 					int port = Integer.parseInt(textPort.getText());
 
 					try {
@@ -89,6 +90,7 @@ public class ConnectFrame extends JFrame {
 				}
 			}
 		});
+		this.getRootPane().setDefaultButton(this.btnConnect);
 		this.contentPane.add(btnConnect);
 	}
 }
