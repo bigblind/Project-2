@@ -7,6 +7,7 @@ import com.gipf.client.game.GameController;
 import com.gipf.client.resource.ResourceLoader;
 import com.gipf.client.utils.Point;
 import com.project.client.board.Board;
+import com.project.client.board.Row;
 import com.project.client.visuals.board.GamePanel;
 
 public class RemoveState extends State {
@@ -14,12 +15,14 @@ public class RemoveState extends State {
 	protected MouseListener listener;
 	private Board originalBoard;
 	private Board boardCopy;
+	
 	private Point[][] rowPoints;
-	private Point[] rows;
+	
+	private Row[] rows;
 
 	private int rowIndexRemoved = -1;
 
-	public RemoveState(final GamePanel gamePanel, final GameController controller, final Point[] rows) {
+	public RemoveState(final GamePanel gamePanel, final GameController controller, final Row[] rows) {
 		super(gamePanel, controller);
 		this.rows = rows;
 		this.rowPoints = new Point[this.rows.length / 2][];
@@ -116,9 +119,9 @@ public class RemoveState extends State {
 
 	public void execute() {
 		super.execute();
-		for (int i = 0; i < this.rows.length / 2; i++) {
-			Point start = this.rows[i * 2];
-			Point end = this.rows[i * 2 + 1];
+		for (int i = 0; i < this.rows.length; i++) {
+			Point start = this.rows[i].getFromPoint();
+			Point end = this.rows[i].getToPoint();
 
 			int xx = end.getX() - start.getX();
 			int yy = end.getY() - start.getY();
@@ -147,7 +150,7 @@ public class RemoveState extends State {
 		}
 	}
 
-	private int[] activeInRows(int x, int y) { // make this in int array and return the row indices that it's in
+	private int[] activeInRows(int x, int y) { // return the row indices that it's in
 		boolean[] activeInRow = new boolean[rows.length];
 		int[] indices;
 		int[] tmp = new int[this.rowPoints.length];

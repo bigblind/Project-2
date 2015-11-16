@@ -49,7 +49,8 @@ public class ServerConnector extends Connector {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		} else {
+			super.receive(input);
 		}
-		super.receive(input);
 	}
 }

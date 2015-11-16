@@ -5,6 +5,7 @@ import com.gipf.client.game.player.Player;
 import com.gipf.client.utils.Point;
 import com.project.client.base.Controller;
 import com.project.client.board.Board;
+import com.project.client.board.Row;
 import com.project.client.visuals.state.MoveStateA;
 import com.project.client.visuals.state.RemoveState;
 import com.project.client.visuals.state.WaitState;
@@ -38,21 +39,28 @@ public class GameController {
 			if (received.equals("/s move")) {
 				this.controller.getGamePanel().setState(new MoveStateA(this.controller.getGamePanel(), this));
 			} else if (received.startsWith("/s remove")) {
-				String[] subPartsX = received.split("Point: x = ");
-				String[] subPartsY = received.split("y = ");
-				int nRows = subPartsX.length / 2;
-				Point[] rowPoints = new Point[nRows * 2];
-				for (int i = 0; i < nRows; i++) {
-					int x1 = Integer.parseInt(subPartsX[1 + i * 2].substring(0, 1));
-					int y1 = Integer.parseInt(subPartsY[1 + i * 2].substring(0, 1));
+				System.out.println(received);
+				String[] rowStrings = received.split("endRow ");
+				Row[] rows = new Row[rowStrings.length];
+				for (int i = 0; i < rows.length; i++)
+					rows[i] = this.readRow(rowStrings[i]);
 
-					int x2 = Integer.parseInt(subPartsX[1 + i * 2 + 1].substring(0, 1));
-					int y2 = Integer.parseInt(subPartsY[1 + i * 2 + 1].substring(0, 1));
-
-					rowPoints[i * 2] = new Point(x1, y1);
-					rowPoints[i * 2 + 1] = new Point(x2, y2);
-				}
-				this.controller.getGamePanel().setState(new RemoveState(this.controller.getGamePanel(), this, rowPoints));
+				//				System.out.println(received);
+				//				String[] subPartsX = received.split("Point: x = ");
+				//				String[] subPartsY = received.split("y = ");
+				//				int nRows = subPartsX.length / 2;
+				//				Point[] rowPoints = new Point[nRows * 2];
+				//				for (int i = 0; i < nRows; i++) {
+				//					int x1 = Integer.parseInt(subPartsX[1 + i * 2].substring(0, 1));
+				//					int y1 = Integer.parseInt(subPartsY[1 + i * 2].substring(0, 1));
+				//
+				//					int x2 = Integer.parseInt(subPartsX[1 + i * 2 + 1].substring(0, 1));
+				//					int y2 = Integer.parseInt(subPartsY[1 + i * 2 + 1].substring(0, 1));
+				//
+				//					rowPoints[i * 2] = new Point(x1, y1);
+				//					rowPoints[i * 2 + 1] = new Point(x2, y2);
+				//				}
+				this.controller.getGamePanel().setState(new RemoveState(this.controller.getGamePanel(), this, rows));
 			} else if (received.startsWith("/s wait")) {
 				this.controller.getGamePanel().setState(new WaitState(this.controller.getGamePanel(), this));
 			} else {
@@ -80,16 +88,13 @@ public class GameController {
 		} else {
 			System.err.println("Invalid client input: Input not recognised");
 		}
-		System.out.println(received);
-		this.controller.getGame().getBoard().print();
 		this.controller.getGamePanel().revalidate();
+		this.controller.getGamePanel().repaint();
 	}
 
 	private Player returnOpponent(Player player) {
-		if (player.equals(this.controller.getGame().getPlayerOne()))
-			return this.controller.getGame().getPlayerTwo();
-		else
-			return this.controller.getGame().getPlayerOne();
+		if (player.equals(this.controller.getGame().getPlayerOne())) return this.controller.getGame().getPlayerTwo();
+		else return this.controller.getGame().getPlayerOne();
 	}
 
 	private void initCall(int stoneColor, int numberOfStones, int opponentStones, String boardString) {
@@ -124,6 +129,51 @@ public class GameController {
 			}
 		}
 		this.controller.getGame().getBoard().setGrid(newBoardGrid);
+	}
+
+	private Row readRow(String rowString) {
+		System.out.println("Row string input: " + rowString);
+		System.out.println();
+
+		Point from = this.readPoint(rowString.split("from: ")[1].split("\\]")[0]);
+		Point end = this.readPoint(rowString.split("to: ")[1].split("\\]")[0]);
+
+		Player player;
+		if (rowString.split("player: ")[1].startsWith("Player 1")) player = controller.getGame().getPlayerOne();
+		else player = controller.getGame().getPlayerTwo();
+
+		int length = Integer.parseInt(rowString.split("length: ")[1].substring(0, 1));
+
+		String whiteExt = rowString.split("\\{")[1].split("\\}")[0];
+		String blackExt = rowString.split("\\{")[2].split("\\}")[0];
+
+		String[] whiteExt2;
+		if (!whiteExt.equals("")) whiteExt2 = whiteExt.split("\\]");
+		else whiteExt2 = new String[0];
+
+		String[] blackExt2;
+		if (!blackExt.equals("")) blackExt2 = blackExt.split("\\]");
+		else blackExt2 = new String[0];
+
+		Point[] whiteExtensions = new Point[whiteExt2.length];
+		Point[] blackExtensions = new Point[blackExt2.length];
+
+		for (int i = 0; i < whiteExtensions.length; i++) {
+			whiteExtensions[i] = this.readPoint(whiteExt2[i]);
+		}
+
+		for (int i = 0; i < blackExtensions.length; i++) {
+			blackExtensions[i] = this.readPoint(blackExt2[i]);
+		}
+
+		return new Row(from, end, player, length, whiteExtensions, blackExtensions);
+	}
+
+	private Point readPoint(String pointString) {
+		int x = Integer.parseInt(pointString.split("x = ")[1].substring(0, 1));
+		int y = Integer.parseInt(pointString.split("y = ")[1].substring(0, 1));
+
+		return new Point(x, y);
 	}
 
 	public void setGame(Game game) {
