@@ -7,15 +7,15 @@ public class EvaluationFunction {
     private Board board;
     private int blackStoneCnt;
     private int whiteStoneCnt;
-    public static  int CENTER_WEIGHT = 30;
-    public static  int STONECOUNT_WEIGHT = 50;
-    public static  int DIAGONAL_WEIGHT = 100;
+    public static  int CENTER_WEIGHT = 100;
+    public static  int STONECOUNT_WEIGHT = 200;
+    public static  int DIAGONAL_WEIGHT = 80;
     public EvaluationFunction(Board board, int blackStoneCnt, int whiteStoneCnt){
 	this.board = board;
 	this.blackStoneCnt = blackStoneCnt;
 	this.whiteStoneCnt = whiteStoneCnt;
     }
-    public int evaluate(Board board, int stoneCount){
+    public int evaluate(){
 	int boardValue = 0;
 
 	boardValue =  STONECOUNT_WEIGHT * (whiteStoneCnt - blackStoneCnt) + CENTER_WEIGHT * centerStones() + DIAGONAL_WEIGHT * diagonal(); 
