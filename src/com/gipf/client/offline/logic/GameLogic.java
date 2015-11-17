@@ -9,7 +9,7 @@ import com.gipf.client.utils.Point;
 public abstract class GameLogic {
 
 	protected LocalServer controller;
-	
+
 	protected Game game;
 	protected Player currentPlayer;
 	protected ArrayList<Row> removeOptions = new ArrayList<Row>();
@@ -19,7 +19,7 @@ public abstract class GameLogic {
 		this.controller = controller;
 		this.game = game;
 	}
-	
+
 	public abstract void playerEventPerformed(PlayerEvent e);
 
 	public void setCurrentPlayer(Player player) {
@@ -42,6 +42,7 @@ public abstract class GameLogic {
 			moveToNextPlayer();
 		}
 	}
+
 	private boolean containsGipfStone(Point start, Point end) {
 		int xx = end.getX() - start.getX();
 		int yy = end.getY() - start.getY();
@@ -60,7 +61,7 @@ public abstract class GameLogic {
 		for (int j = 0; j < length; j++) {
 			int x = start.getX() + (j * dx);
 			int y = start.getY() + (j * dy);
-			if (this.game.getBoard().getGrid()[x][y] == Board.GIPF_WHITE_VALUE || this.game.getBoard().getGrid()[x][y] == Board.GIPF_BLACK_VALUE) { 
+			if (this.game.getBoard().getGrid()[x][y] == Board.GIPF_WHITE_VALUE || this.game.getBoard().getGrid()[x][y] == Board.GIPF_BLACK_VALUE) {
 				return true;
 			}
 		}
@@ -80,10 +81,10 @@ public abstract class GameLogic {
 			this.controller.sendGameUpdate();
 			ArrayList<Row> activeRows = rowsForPlayer(this.currentPlayer.getStoneColor(), rows);
 			if (activeRows.size() > 0) {
-				this.controller.rowRemoveRequestEventPerformed(new RowRemovalRequestEvent(activeRows));
+				this.emitRowRemovalRequest(new RowRemovalRequestEvent(activeRows));
 				return true;
 			} else {
-				this.controller.rowRemoveRequestEventPerformed(new RowRemovalRequestEvent(activeRows));
+				this.emitRowRemovalRequest(new RowRemovalRequestEvent(activeRows));
 				return true;
 			}
 		}
@@ -144,27 +145,29 @@ public abstract class GameLogic {
 
 	protected Player returnWinner() {
 		if (game.getPlayerOne().getStoneAccount() == 0) return game.getPlayerTwo();
-
 		if (game.getPlayerTwo().getStoneAccount() == 0) return game.getPlayerOne();
-
 		return null;
 	}
 
 	protected boolean checkForWin() {
 		if (game.getPlayerOne().getStoneAccount() == 0 || game.getPlayerTwo().getStoneAccount() == 0) return true;
-
 		return false;
+	}
+	
+	protected void emitRowRemovalRequest(RowRemovalRequestEvent e) {
+		this.rowRemovalEvent = e;
+		this.controller.rowRemoveRequestEventPerformed(e);
 	}
 
 	public Player getCurrentPlayer() {
 		return currentPlayer;
 	}
-	
+
 	public Player getDisabledPlayer() {
 		if (this.currentPlayer == this.game.getPlayerOne()) return this.game.getPlayerTwo();
 		else return this.game.getPlayerOne();
 	}
-	
+
 	public void setGame(Game game) {
 		this.game = game;
 	}

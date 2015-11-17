@@ -27,9 +27,13 @@ public class LocalServer {
 		this.game = new Game();
 		this.game.setPlayerOne(new Player(Board.WHITE_VALUE));
 		this.game.setPlayerTwo(new Player(Board.BLACK_VALUE));
-		this.game.getBoard().basicInit();
-		if (logic.equals("basic")) this.logic = new BasicGameLogic(this.game, this);
-		else this.logic = new StandardGameLogic(this.game, this);
+		if (logic.equals("basic")) {
+			this.game.getBoard().basicInit();
+			this.logic = new BasicGameLogic(this.game, this);
+		} else {
+			this.game.getBoard().standardInit();
+			this.logic = new StandardGameLogic(this.game, this);
+		}
 		this.logic.setCurrentPlayer(this.game.getPlayerOne());
 		this.game.setGameLogic(this.logic);
 	}

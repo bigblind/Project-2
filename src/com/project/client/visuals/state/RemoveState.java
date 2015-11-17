@@ -61,7 +61,7 @@ public class RemoveState extends State {
 				int y = name - (x * 10);
 
 				int[] activeInRow = activeInRows(x, y);
-
+				System.out.println("hey");
 				if (activeInRow.length == 1) {
 					rowIndexRemoved = activeInRow[0];
 					for (int i = 0; i < rowPoints[activeInRow[0]].length; i++) {
@@ -69,6 +69,8 @@ public class RemoveState extends State {
 						buttons[rowPoints[rowIndexRemoved][i].getX()][rowPoints[rowIndexRemoved][i].getY()].setDraw(true);
 					}
 					gamePanel.getGame().setBoard(boardCopy);
+					gamePanel.repaint();
+					gamePanel.revalidate();
 				}
 			}
 
@@ -79,6 +81,8 @@ public class RemoveState extends State {
 						buttons[rowPoints[rowIndexRemoved][i].getX()][rowPoints[rowIndexRemoved][i].getY()].setDraw(false);
 					}
 					gamePanel.getGame().setBoard(boardCopy);
+					gamePanel.repaint();
+					gamePanel.revalidate();
 				}
 			}
 

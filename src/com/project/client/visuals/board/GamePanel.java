@@ -30,7 +30,7 @@ public class GamePanel extends JPanel implements ComponentListener {
 
 	private static final long serialVersionUID = 8555591759361318869L;
 	
-	private static final boolean SHOW_NUMBERS = true;
+	private static final boolean SHOW_NUMBERS = false;
 
 	private Point[][][] connectedLocations;
 	private BoardButton[][] buttons;
