@@ -1,25 +1,33 @@
 package com.project.server.logic.gamelogic;
 
 
+import java.util.ArrayList;
+
+import com.gipf.client.offline.logic.Row;
+import com.gipf.client.utils.Point;
 import com.project.client.board.Board;
 
 public class EvaluationFunction {
     private Board board;
+    private int[][] grid;
     private int blackStoneCnt;
     private int whiteStoneCnt;
-    public static  int CENTER_WEIGHT = 100;
-    public static  int STONECOUNT_WEIGHT = 200;
-    public static  int DIAGONAL_WEIGHT = 80;
-    public EvaluationFunction(Board board, int blackStoneCnt, int whiteStoneCnt){
+    public static int CENTER_WEIGHT = 100;
+    public static int STONECOUNT_WEIGHT = 200;
+    public static int DIAGONAL_WEIGHT = 80;
+    public static int LINE_OF_3_WEIGHT = 150;
+    public EvaluationFunction(){
+	
+    }
+    public int evaluate(Board board, int blackStoneCnt, int whiteStoneCnt){
+	this.grid = board.getGrid();
 	this.board = board;
 	this.blackStoneCnt = blackStoneCnt;
 	this.whiteStoneCnt = whiteStoneCnt;
-    }
-    public int evaluate(){
 	int boardValue = 0;
 
-	boardValue =  STONECOUNT_WEIGHT * (whiteStoneCnt - blackStoneCnt) + CENTER_WEIGHT * centerStones() + DIAGONAL_WEIGHT * diagonal(); 
-	
+	boardValue =  STONECOUNT_WEIGHT * (whiteStoneCnt - blackStoneCnt) + CENTER_WEIGHT * centerStones() + DIAGONAL_WEIGHT * diagonal()
+		      + LINE_OF_3_WEIGHT * lineOf3();
 		 return boardValue;
 	
     }
@@ -88,4 +96,111 @@ public class EvaluationFunction {
 	return diagonalValue;
     }
     
+    
+    private int lineOf3(){
+		
+		int lineStartX = -1, lineStartY = -1, lineEndX = -1, lineEndY = -1;
+		
+
+		int counter = 0;
+		int prevValue = -1;
+		int lineOf3Bonus = 50;
+		int lineOf3Value = 0;
+
+		for (int i = 1; i < this.grid.length - 1; i++) {
+			for (int j = 1; j < this.grid[i].length; j++) {
+				if (((prevValue == Board.WHITE_VALUE) || (prevValue == Board.GIPF_WHITE_VALUE)) && ((this.grid[i][j] == Board.WHITE_VALUE) || (this.grid[i][j] == Board.GIPF_WHITE_VALUE))) {
+					counter++;
+				} else if (((prevValue == Board.BLACK_VALUE) || (prevValue == Board.GIPF_BLACK_VALUE)) && ((this.grid[i][j] == Board.BLACK_VALUE) || (this.grid[i][j] == Board.GIPF_BLACK_VALUE))) {
+					counter++;
+				} else {
+					if (counter == 3) {
+						if(prevValue == Board.WHITE_VALUE)
+						    lineOf3Value += lineOf3Bonus;
+						else if(prevValue == Board.BLACK_VALUE)
+						    lineOf3Value -= Board.WHITE_VALUE;
+						
+					}
+
+					prevValue = this.grid[i][j];
+					if (prevValue > 0) counter = 1;
+					else counter = 0;
+				}
+			}
+			counter = 0;
+			prevValue = -1;
+		}
+
+		for (int j = 1; j < this.grid[0].length - 1; j++) {
+			for (int i = 1; i < this.grid.length; i++) {
+				if (((prevValue == Board.WHITE_VALUE) || (prevValue == Board.GIPF_WHITE_VALUE)) && ((this.grid[i][j] == Board.WHITE_VALUE) || (this.grid[i][j] == Board.GIPF_WHITE_VALUE))) {
+					counter++;
+				} else if (((prevValue == Board.BLACK_VALUE) || (prevValue == Board.GIPF_BLACK_VALUE)) && ((this.grid[i][j] == Board.BLACK_VALUE) || (this.grid[i][j] == Board.GIPF_BLACK_VALUE))) {
+					counter++;
+				} else {
+					if (counter == 3) {
+					    if(prevValue == Board.WHITE_VALUE)
+						    lineOf3Value += lineOf3Bonus;
+						else if(prevValue == Board.BLACK_VALUE)
+						    lineOf3Value -= Board.WHITE_VALUE;
+					}
+
+					prevValue = this.grid[i][j];
+					if (prevValue > 0) counter = 1;
+					else counter = 0;
+				}
+			}
+			counter = 0;
+			prevValue = -1;
+		}
+
+		for (int k = 0; k < 4; k++) {
+			for (int l = 0; l < 5 + k; l++) {
+				if (((prevValue == Board.WHITE_VALUE) || (prevValue == Board.GIPF_WHITE_VALUE)) && ((this.grid[l + 1][4 - k + l] == Board.WHITE_VALUE) || (this.grid[l + 1][4 - k + l] == Board.GIPF_WHITE_VALUE))) {
+					counter++;
+				} else if (((prevValue == Board.BLACK_VALUE) || (prevValue == Board.GIPF_BLACK_VALUE)) && ((this.grid[l + 1][4 - k + l] == Board.BLACK_VALUE) || (this.grid[l + 1][4 - k + l] == Board.GIPF_BLACK_VALUE))) {
+					counter++;
+				} else {
+					if (counter == 3) {
+					    if(prevValue == Board.WHITE_VALUE)
+						    lineOf3Value += lineOf3Bonus;
+						else if(prevValue == Board.BLACK_VALUE)
+						    lineOf3Value -= Board.WHITE_VALUE;
+					}
+
+					prevValue = this.grid[l + 1][4 - k + l];
+					if (prevValue > 0) counter = 1;
+					else counter = 0;
+				}
+			}
+			counter = 0;
+			prevValue = -1;
+		}
+
+		for (int k = 0; k < 3; k++) {
+			for (int l = 0; l < 7 - k; l++) {
+				if (((prevValue == Board.WHITE_VALUE) || (prevValue == Board.GIPF_WHITE_VALUE)) && ((this.grid[2 + k + l][1 + l] == Board.WHITE_VALUE) || (this.grid[2 + k + l][1 + l] == Board.GIPF_WHITE_VALUE))) {
+					counter++;
+				} else if (((prevValue == Board.BLACK_VALUE) || (prevValue == Board.GIPF_BLACK_VALUE)) && ((this.grid[2 + k + l][1 + l] == Board.BLACK_VALUE) || (this.grid[2 + k + l][1 + l] == Board.GIPF_BLACK_VALUE))) {
+					counter++;
+				} else {
+					if (counter == 3) {
+					    if(prevValue == Board.WHITE_VALUE)
+						    lineOf3Value += lineOf3Bonus;
+						else if(prevValue == Board.BLACK_VALUE)
+						    lineOf3Value -= Board.WHITE_VALUE;
+					}
+
+					prevValue = this.grid[2 + k + l][1 + l];
+					if (prevValue > 0) counter = 1;
+					else counter = 0;
+				}
+			}
+			counter = 0;
+			prevValue = -1;
+		}
+		 return lineOf3Value;
+	
+    }
+   
 }
