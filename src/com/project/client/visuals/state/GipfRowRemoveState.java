@@ -24,6 +24,7 @@ public class GipfRowRemoveState extends State {
 		super(gamePanel, controller);
 		this.rows = row;
 
+		this.gamePanel.getCheckButton().setVisible(true);
 		this.gamePanel.getCheckButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				gamePanel.getCheckButton().removeActionListener(this);
@@ -37,7 +38,8 @@ public class GipfRowRemoveState extends State {
 				}
 				send += " checkrows";
 				gamePanel.getGame().setBoard(originalBoard);
-
+				gamePanel.getCheckButton().setVisible(false);
+				gamePanel.getCheckButton().removeActionListener(this);
 				gameController.getConnector().send(send);
 			}
 		});

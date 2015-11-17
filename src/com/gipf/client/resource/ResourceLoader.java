@@ -30,7 +30,6 @@ public class ResourceLoader {
 		HELP_ICON_SMALL = ImageIO.read(this.getResource("res/icons/QuestionMark.png"));
 		HELP_ICON = ImageIO.read(this.getResource("res/icons/QuestionMark48.png"));
 		CHECK_ICON =  ImageIO.read(this.getResource("res/icons/check64.png"));
-		ICON = ImageIO.read(this.getResource("res/icons/Icon.png"));
 		
 		WHITE_STONE_TRANSPARENT = ImageIO.read(this.getResource("res/icons/WhiteStoneTransparent2.png"));
 		BLACK_STONE_TRANSPARENT = ImageIO.read(this.getResource("res/icons/BlackStoneTransparent2.png"));

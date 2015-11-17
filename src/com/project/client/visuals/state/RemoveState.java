@@ -61,7 +61,6 @@ public class RemoveState extends State {
 				int y = name - (x * 10);
 
 				int[] activeInRow = activeInRows(x, y);
-				System.out.println("hey");
 				if (activeInRow.length == 1) {
 					rowIndexRemoved = activeInRow[0];
 					for (int i = 0; i < rowPoints[activeInRow[0]].length; i++) {

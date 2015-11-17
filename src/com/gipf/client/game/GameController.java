@@ -24,7 +24,7 @@ public class GameController {
 	public void input(String received) {
 		if (received.startsWith("/i")) {
 			// "/i Board.BLACK_VALUE thisStonesAccount opponentStonesAccount boardString";
-			String info = received.split("/i ")[1];
+			String info = received.split("/i ")[1]; 
 			String boardString = received.substring(3 + info.split(" ")[0].length() + 1 + info.split(" ")[1].length() + 1 + info.split(" ")[2].length() + 1);
 			this.initCall(Integer.parseInt(info.split(" ")[0]), Integer.parseInt(info.split(" ")[1]), Integer.parseInt(info.split(" ")[2]), boardString);
 		} else if (received.startsWith("/u")) {
@@ -39,7 +39,6 @@ public class GameController {
 			if (received.equals("/s move")) {
 				this.controller.getGamePanel().setState(new MoveStateA(this.controller.getGamePanel(), this));
 			} else if (received.startsWith("/s remove")) {
-				System.out.println(received);
 				String[] rowStrings = received.split("endRow ");
 				Row[] rows = new Row[rowStrings.length];
 				for (int i = 0; i < rows.length; i++)
@@ -130,9 +129,6 @@ public class GameController {
 	}
 
 	private Row readRow(String rowString) {
-		System.out.println("Row string input: " + rowString);
-		System.out.println();
-
 		Point from = this.readPoint(rowString.split("from: ")[1].split("\\]")[0]);
 		Point end = this.readPoint(rowString.split("to: ")[1].split("\\]")[0]);
 
