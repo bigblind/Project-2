@@ -1,7 +1,7 @@
 package com.gipf.client.connector;
 
 import com.gipf.client.game.GameController;
-import com.gipf.client.localserver.LocalServer;
+import com.gipf.client.offline.logic.LocalServer;
 
 public class LocalConnector extends Connector {
 
@@ -13,7 +13,7 @@ public class LocalConnector extends Connector {
 	}
 	
 	public void send(String string) {
-		this.server.receive(string);
+		this.server.receive(string, this);
 	}
 
 	public void receive(String string) {

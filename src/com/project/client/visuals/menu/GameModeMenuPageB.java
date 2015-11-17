@@ -15,6 +15,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
+import com.gipf.client.offline.logic.LocalServer;
 import com.project.client.base.Controller;
 
 public class GameModeMenuPageB extends MenuPage {
@@ -62,6 +63,20 @@ public class GameModeMenuPageB extends MenuPage {
 		this.back.setMinimumSize(buttonDimension);
 		this.back.setMaximumSize(buttonDimension);
 	
+		this.basic.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.createLocalGame(new LocalServer(null, null, "basic"));
+				controller.showPanel(controller.getGamePanel());
+				controller.getFrame().pack();
+			}
+		});
+		this.standard.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.createLocalGame(new LocalServer(null, null, "standard"));
+				controller.showPanel(controller.getGamePanel());
+				controller.getFrame().pack();
+			}
+		});
 		this.back.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controller.showMenuPage(1);

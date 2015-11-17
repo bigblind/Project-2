@@ -1,4 +1,4 @@
-package com.gipf.client.localserver;
+package com.gipf.client.offline.logic;
 
 public class ServerNotPreparedException extends Exception {
 

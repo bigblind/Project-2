@@ -11,7 +11,7 @@ import com.gipf.client.connector.LocalConnector;
 import com.gipf.client.game.Game;
 import com.gipf.client.game.GameController;
 import com.gipf.client.game.player.Player;
-import com.gipf.client.localserver.LocalServer;
+import com.gipf.client.offline.logic.LocalServer;
 import com.gipf.client.resource.ResourceLoader;
 import com.project.client.board.Board;
 import com.project.client.visuals.board.GamePanel;
@@ -53,30 +53,17 @@ public class Controller {
 		this.gamePanel = new GamePanel(new Game(new Player("", 0, Board.WHITE_VALUE), new Player("", 0, Board.BLACK_VALUE)));
 		
 		this.menuPages = new ArrayList<MenuPage>();
-//		
-//		Game game = new Game();
-//		
-//		this.player = new Player(Board.WHITE_VALUE);
-//		game.setPlayerOne(this.player);
-//		game.setPlayerTwo(new Player(Board.BLACK_VALUE));
-//		this.gamePanel = new GamePanel(game);
-//		this.gameController = new GameController(this, this.player);
+
 		this.initMenuPages();
 		this.showMenuPage(0);
-//		this.showPanel(this.gamePanel);
-//		
-//		try {
-//			this.connector = new ServerConnector(getGameController(), "192.168.1.15", 3620);
-//			this.gameController.reinitConnector();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
 
 		this.frame.pack();
 		this.frame.setVisible(true);
-		
-//		this.gamePanel.repaint();
-//		this.gamePanel.setState(new MoveStateA(this.gamePanel, this.gameController));
+	}
+	
+	public void ghostInit() {
+		this.gameController = new GameController(this);
+		this.gamePanel = new GamePanel(new Game(new Player("", 0, Board.WHITE_VALUE), new Player("", 0, Board.BLACK_VALUE)));
 	}
 	
 	private void initMenuPages() {
@@ -110,9 +97,15 @@ public class Controller {
 	 */
 	public void createLocalGame(LocalServer server) {
 		Controller ghostController = new Controller();
+		ghostController.ghostInit();
+
+		LocalConnector ghostConnector = new LocalConnector(ghostController.getGameController(), server);
 		
 		this.setConnector(new LocalConnector(this.gameController, server));
-		ghostController.setConnector(new LocalConnector(this.gameController, server));
+		ghostController.setConnector(ghostConnector);
+		
+		server.setConnectors(this.connector, ghostConnector);
+		server.start();
 	}
 	
 	public GameController getGameController() {

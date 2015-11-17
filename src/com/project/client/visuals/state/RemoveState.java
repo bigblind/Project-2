@@ -25,7 +25,7 @@ public class RemoveState extends State {
 	public RemoveState(final GamePanel gamePanel, final GameController controller, final Row[] rows) {
 		super(gamePanel, controller);
 		this.rows = rows;
-		this.rowPoints = new Point[this.rows.length / 2][];
+		this.rowPoints = new Point[this.rows.length][];
 		this.originalBoard = gamePanel.getGame().getBoard();
 		this.boardCopy = this.originalBoard.copy();
 		this.gamePanel.getGame().setBoard(this.boardCopy);

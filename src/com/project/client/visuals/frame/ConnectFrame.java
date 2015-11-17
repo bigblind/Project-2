@@ -90,6 +90,9 @@ public class ConnectFrame extends JFrame {
 				}
 			}
 		});
+		this.textIpAdress.setText("localhost");
+		this.textPort.setText("2603");
+		
 		this.getRootPane().setDefaultButton(this.btnConnect);
 		this.contentPane.add(btnConnect);
 	}
