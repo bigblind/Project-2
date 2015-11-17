@@ -31,7 +31,6 @@ public class Player {
 	}
 
 	public int getStoneAccount() {
-//		if (name == null) this.name = "Player " + String.valueOf(stoneColor);
 		return this.stoneAccount;
 	}
 
@@ -40,8 +39,7 @@ public class Player {
 	}
 
 	public void setStoneColor(int color) {
-		this.name = "Player " + String.valueOf(stoneColor);
-		System.out.println("name: " + this.name + " color " + color + " " + String.valueOf(stoneColor));
+		this.name = "Player " + String.valueOf(color);
 		this.stoneColor = color;
 	}
 

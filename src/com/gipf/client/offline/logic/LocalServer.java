@@ -49,7 +49,7 @@ public class LocalServer {
 	}
 
 	public synchronized void sendToClient(String send, int index) {
-		if (index == 1) c1.receive(send);
+		if (index == 0) c1.receive(send);
 		else c2.receive(send);
 	}
 

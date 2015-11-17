@@ -21,6 +21,8 @@ import com.project.client.visuals.menu.GameModeMenuPageB;
 import com.project.client.visuals.menu.MainMenuPage;
 import com.project.client.visuals.menu.MenuPage;
 import com.project.client.visuals.menu.MultiplayerMenuPage;
+import com.project.client.visuals.state.State;
+import com.project.client.visuals.state.WaitState;
 
 public class Controller {
 
@@ -33,6 +35,9 @@ public class Controller {
 	private GameController gameController;
 	private GamePanel gamePanel;
 	private Game game;
+	
+	private boolean runningLocalGame = false;
+	private Controller ghostController;
 	
 	public Controller() {
 		
@@ -50,7 +55,7 @@ public class Controller {
 			System.exit(0);
 		}
 
-		this.gamePanel = new GamePanel(new Game(new Player("", 0, Board.WHITE_VALUE), new Player("", 0, Board.BLACK_VALUE)));
+		this.gamePanel = new GamePanel(new Game(new Player("", 0, Board.WHITE_VALUE), new Player("", 0, Board.BLACK_VALUE)), "1");
 		
 		this.menuPages = new ArrayList<MenuPage>();
 
@@ -63,7 +68,7 @@ public class Controller {
 	
 	public void ghostInit() {
 		this.gameController = new GameController(this);
-		this.gamePanel = new GamePanel(new Game(new Player("", 0, Board.WHITE_VALUE), new Player("", 0, Board.BLACK_VALUE)));
+		this.gamePanel = new GamePanel(new Game(new Player("", 0, Board.WHITE_VALUE), new Player("", 0, Board.BLACK_VALUE)), "2");
 	}
 	
 	private void initMenuPages() {
@@ -106,6 +111,15 @@ public class Controller {
 		
 		server.setConnectors(this.connector, ghostConnector);
 		server.start();
+		
+		this.runningLocalGame = true;
+	}
+	
+	public void gamePanelStateChange(State state) {
+		if (this.runningLocalGame) {
+			if (state instanceof WaitState) this.showPanel(this.ghostController.getGamePanel());
+			else this.showPanel(this.gamePanel);
+		}
 	}
 	
 	public GameController getGameController() {

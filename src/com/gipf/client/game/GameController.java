@@ -22,7 +22,6 @@ public class GameController {
 	}
 
 	public void input(String received) {
-		System.out.println(received);
 		if (received.startsWith("/i")) {
 			// "/i Board.BLACK_VALUE thisStonesAccount opponentStonesAccount boardString";
 			String info = received.split("/i ")[1];
@@ -101,7 +100,6 @@ public class GameController {
 	private void initCall(int stoneColor, int numberOfStones, int opponentStones, String boardString) {
 		this.thisPlayer.setStoneAccount(numberOfStones);
 		this.thisPlayer.setStoneColor(stoneColor);
-System.out.println("this player in init: " + this.thisPlayer + " stonecolor " + stoneColor);
 		if (stoneColor == Board.BLACK_VALUE) {
 			this.controller.setGame(new Game(new Player(Board.WHITE_VALUE), this.thisPlayer));
 			this.controller.getGame().getPlayerOne().setStoneAccount(opponentStones);
@@ -116,8 +114,8 @@ System.out.println("this player in init: " + this.thisPlayer + " stonecolor " + 
 			System.err.println("Invalid client input: Initialise invalid.");
 		}
 		this.readBoard(boardString);
-		this.controller.getGamePanel().setVisible(false);
 		this.controller.getGamePanel().setVisible(true);
+		System.out.println(this.controller.getGamePanel().getS() + this.thisPlayer);
 	}
 
 	private void readBoard(String boardString) {

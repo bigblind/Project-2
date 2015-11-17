@@ -46,7 +46,10 @@ public class GamePanel extends JPanel implements ComponentListener {
 	
 	private Game game;
 	
-	public GamePanel(Game game) {
+	private String s;
+	
+	public GamePanel(Game game, String s) {
+		this.s = s;
 		this.setLayout(null);
 		this.connectedLocations = new Point[9][9][];
 		this.buttons = new BoardButton[9][9];
@@ -352,6 +355,8 @@ public class GamePanel extends JPanel implements ComponentListener {
 
 	public void componentResized(ComponentEvent e) {
 		this.resize();
+		System.out.println("amount of listeners: " + this.buttons[0][0].getMouseListeners().length);
+		System.out.println("gamepanel: " + this.s);
 	}
 
 	public void resize() {
@@ -411,6 +416,10 @@ public class GamePanel extends JPanel implements ComponentListener {
 	
 	public void setGame(Game game) {
 		this.game = game;
+	}
+	
+	public String getS() {
+		return this.s;
 	}
 	
 	public Game getGame() {

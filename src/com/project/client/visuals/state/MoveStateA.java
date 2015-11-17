@@ -40,7 +40,6 @@ public class MoveStateA extends State {
 
 	public void execute() {
 		super.execute();
-		System.out.println("adding listeners");
 		for (int i = 0; i < 5; i++) {
 			this.buttons[i][0].setImage(this.stoneImage);
 			this.buttons[i][0].addMouseListener(this.listener);

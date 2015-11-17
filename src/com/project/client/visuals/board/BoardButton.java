@@ -38,4 +38,8 @@ public class BoardButton extends JButton {
 	public boolean getIsOuterDot() {
 		return this.isOuterDot;
 	}
+	
+	public Image getImage() {
+		return this.image;
+	}
 }
