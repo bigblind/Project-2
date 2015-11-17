@@ -55,7 +55,7 @@ public class Controller {
 			System.exit(0);
 		}
 
-		this.gamePanel = new GamePanel(new Game(new Player("", 0, Board.WHITE_VALUE), new Player("", 0, Board.BLACK_VALUE)), "1");
+		this.gamePanel = new GamePanel(new Game(new Player("", 0, Board.WHITE_VALUE), new Player("", 0, Board.BLACK_VALUE)), this);
 		
 		this.menuPages = new ArrayList<MenuPage>();
 
@@ -68,7 +68,7 @@ public class Controller {
 	
 	public void ghostInit() {
 		this.gameController = new GameController(this);
-		this.gamePanel = new GamePanel(new Game(new Player("", 0, Board.WHITE_VALUE), new Player("", 0, Board.BLACK_VALUE)), "2");
+		this.gamePanel = new GamePanel(new Game(new Player("", 0, Board.WHITE_VALUE), new Player("", 0, Board.BLACK_VALUE)), this);
 	}
 	
 	private void initMenuPages() {
@@ -101,13 +101,13 @@ public class Controller {
 	 * Used to make a local game.
 	 */
 	public void createLocalGame(LocalServer server) {
-		Controller ghostController = new Controller();
-		ghostController.ghostInit();
+		this.ghostController = new Controller();
+		this.ghostController.ghostInit();
 
-		LocalConnector ghostConnector = new LocalConnector(ghostController.getGameController(), server);
+		LocalConnector ghostConnector = new LocalConnector(this.ghostController.getGameController(), server);
 		
 		this.setConnector(new LocalConnector(this.gameController, server));
-		ghostController.setConnector(ghostConnector);
+		this.ghostController.setConnector(ghostConnector);
 		
 		server.setConnectors(this.connector, ghostConnector);
 		server.start();
@@ -117,8 +117,14 @@ public class Controller {
 	
 	public void gamePanelStateChange(State state) {
 		if (this.runningLocalGame) {
-			if (state instanceof WaitState) this.showPanel(this.ghostController.getGamePanel());
-			else this.showPanel(this.gamePanel);
+			if (state instanceof WaitState) {
+				System.out.println("going to other panel");
+				this.showPanel(this.ghostController.getGamePanel());
+			}
+			else {
+				System.out.println("going to this panel");
+				this.showPanel(this.gamePanel);
+			}
 		}
 	}
 	

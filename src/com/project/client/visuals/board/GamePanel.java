@@ -21,6 +21,7 @@ import javax.swing.JPanel;
 import com.gipf.client.game.Game;
 import com.gipf.client.resource.ResourceLoader;
 import com.gipf.client.utils.Point;
+import com.project.client.base.Controller;
 import com.project.client.board.Board;
 import com.project.client.visuals.state.MoveStateB;
 import com.project.client.visuals.state.State;
@@ -46,15 +47,15 @@ public class GamePanel extends JPanel implements ComponentListener {
 	
 	private Game game;
 	
-	private String s;
+	private Controller controller;
 	
-	public GamePanel(Game game, String s) {
-		this.s = s;
+	public GamePanel(Game game, Controller controller) {
 		this.setLayout(null);
 		this.connectedLocations = new Point[9][9][];
 		this.buttons = new BoardButton[9][9];
 		this.coordinates = new Point[9][9];
 		this.game = game;
+		this.controller = controller;
 		
 		this.addComponentListener(this);
 		
@@ -355,8 +356,6 @@ public class GamePanel extends JPanel implements ComponentListener {
 
 	public void componentResized(ComponentEvent e) {
 		this.resize();
-		System.out.println("amount of listeners: " + this.buttons[0][0].getMouseListeners().length);
-		System.out.println("gamepanel: " + this.s);
 	}
 
 	public void resize() {
@@ -404,6 +403,7 @@ public class GamePanel extends JPanel implements ComponentListener {
 	public void setState(State state) {
 		this.state = state;
 		state.execute();
+		this.controller.gamePanelStateChange(state);
 	}
 	
 	public Point[][][] getConnections() {
@@ -417,11 +417,7 @@ public class GamePanel extends JPanel implements ComponentListener {
 	public void setGame(Game game) {
 		this.game = game;
 	}
-	
-	public String getS() {
-		return this.s;
-	}
-	
+
 	public Game getGame() {
 		return this.game;
 	}

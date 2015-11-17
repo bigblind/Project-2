@@ -115,7 +115,6 @@ public class GameController {
 		}
 		this.readBoard(boardString);
 		this.controller.getGamePanel().setVisible(true);
-		System.out.println(this.controller.getGamePanel().getS() + this.thisPlayer);
 	}
 
 	private void readBoard(String boardString) {
