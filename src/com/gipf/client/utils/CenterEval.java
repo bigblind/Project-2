@@ -4,22 +4,25 @@ import com.project.client.board.Board;
 
 public class CenterEval  {
 	
-	Board board;
-	int [][] grid = board.getGrid();
-	
-	public CenterEval(Board board) {
-		this.board= board;
-	}
-	
-	public int evaluate(int x, int y,int whiteStones, int blackStones) {
+		
+	public int evaluate(Board board,int whiteStones, int blackStones) {
+		
+		int [][] grid= board.getGrid();
 		int white=0;
 		int black=0;
 		
-		if (grid[x][y] == board.WHITE_VALUE)
-			white = (4 - max(x,y)*10)+ (int)reserve(whiteStones);
-		else
-			black = (4 - max(x,y)*10)+ (int)reserve(blackStones);
-		
+		for(int x = 0; x < 9; x++) {
+			for(int y = 0; y < 9; y++) {
+				if (grid[x][y] == board.WHITE_VALUE)
+					white = white + (4 - max(x,y)*10)+ (int)reserve(whiteStones);
+				if (grid[x][y] == board.GIPF_WHITE_VALUE)
+					white = white + (4 - max(x,y)*20)+ (int)reserve(whiteStones);
+				if (grid[x][y] ==board.BLACK_VALUE)
+					black = black+ -((4 - max(x,y)*10)+ (int)reserve(blackStones));
+				if (grid[x][y] == board.GIPF_BLACK_VALUE)
+					black = black+ -((4 - max(x,y)*20)+ (int)reserve(blackStones));
+			}
+		}
 		return white+black;
 	}
 	
