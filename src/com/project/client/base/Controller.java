@@ -59,7 +59,7 @@ public class Controller {
 		this.player = new Player(Board.WHITE_VALUE);
 		game.setPlayerOne(this.player);
 		game.setPlayerTwo(new Player(Board.BLACK_VALUE));
-		this.gamePanel = new GamePanel(game);
+	this.gamePanel = new GamePanel(game);
 		this.gameController = new GameController(this, this.player);
 		this.initMenuPages();
 		this.showMenuPage(0);
@@ -67,13 +67,13 @@ public class Controller {
 		
 		try {
 			this.connector = new ServerConnector(getGameController(), "192.168.1.15", 3620);
-			this.gameController.reinitConnector();
+		this.gameController.reinitConnector();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		this.frame.setVisible(true);
 		this.frame.pack();
+		this.frame.setVisible(true);
+		
 		
 		this.gamePanel.repaint();
 		this.gamePanel.setState(new MoveStateA(this.gamePanel, this.gameController));
