@@ -6,13 +6,13 @@ import java.util.ArrayList;
 import com.project.client.board.Board;
 import com.project.common.player.PlayerEvent;
 import com.project.common.utils.Point;
-import com.project.game.ai.node.*;
-import com.project.game.ai.tree.*;
+import com.project.game.ai.node.Node;
+import com.project.game.ai.tree.Tree;
 import com.project.server.logic.Game;
 
 public class MiniMax<E> {
-	private Game game;
-	private Tree<E> tree;
+	protected Game game;
+	protected Tree<E> tree;
 	
 	public MiniMax(Game game, Tree<E> tree){
 		this.game = game;
@@ -20,46 +20,45 @@ public class MiniMax<E> {
 	}
 	
 	
-	public PlayerEvent miniMax(ArrayList<Node<E>> tree, int depth, boolean onTurn){
+	public Node<E> miniMax(ArrayList<Node<E>> nodeList, int depth, boolean turnOfPlayer){
 		int bestValue;
-		PlayerEvent bestMove;
+//		PlayerEvent bestMove;
+		Node<E> bestNode;
 		
 		if(depth == 0 || game.getGameLogic().checkForWin())
 			return null;
 		
-		if(onTurn == true){
+		if(turnOfPlayer == true){
 			bestValue = Integer.MIN_VALUE;
-			bestMove = null;
-			for(Node<E> node: tree){
-				PlayerEvent tmpEvent = miniMax(tree.breadthFirstSearch(node), depth-1, false);
+//			bestMove = null;
+			bestNode = null;
+			for(Node<E> node: nodeList){				
+				Node<E> tmpNode = miniMax(tree.bfSearch(node), depth-1, false);
 				if(node.getEvalValue() > bestValue){
 					bestValue = node.getEvalValue();
-					bestMove = tmpEvent;
+					bestNode = tmpNode;
 				}
 			}
-			return bestMove;
+//			return bestMove;
+			return bestNode;
 		}
 		
-		if(onTurn == false){
+		if(turnOfPlayer == false){
 			bestValue = Integer.MAX_VALUE;
-			bestMove = null;
-			
-			for(Node<E> node: tree){
-				PlayerEvent tmpEvent = miniMax(((Tree<E>) tree.breadthFirstSearch(node), depth-1, true);
+//			bestMove = null;
+			bestNode = null;
+			for(Node<E> node: nodeList){
+//				PlayerEvent tmpEvent = miniMax(tree.bfSearch(node), depth-1, true);
+				Node<E> tmpNode = miniMax(tree.bfSearch(node), depth-1, true);
 				if(node.getEvalValue() < bestValue){
 					bestValue = node.getEvalValue();
-					bestMove = tmpEvent;
+//					bestMove = node.getPlayerEvent();
+					bestNode = tmpNode;
 				}
 			}
-			return bestMove;
+//			return bestMove;
+			return bestNode;
 		};
-		
+		return null;
 	}
-	
-	
-	
-	
-	
-	
-
 }

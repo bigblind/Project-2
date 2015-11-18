@@ -125,17 +125,17 @@ public class Tree<E> implements TreeADT<E> {
 	
 	
 
-	public ArrayList<Node<E>> breadthFirstSearch(Node<E> node){
-		return breadthFirstSearch(node, new ArrayList<Node<E>>());
+	public ArrayList<Node<E>> bfSearch(Node<E> node){
+		return bfSearch(node, new ArrayList<Node<E>>());
 	}
 
 
-	private ArrayList<Node<E>> breadthFirstSearch(Node<E> node, ArrayList<Node<E>> result){
+	private ArrayList<Node<E>> bfSearch(Node<E> node, ArrayList<Node<E>> result){
 		result.add(node);
 		if(isInternal(node)){
 			Iterator<Node<E>> children = this.children(node);
 			while(children.hasNext())
-				result.addAll(breadthFirstSearch(children.next()));
+				result.addAll(bfSearch(children.next()));
 		}
 		return result;
 	}

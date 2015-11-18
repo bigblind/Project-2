@@ -3,6 +3,7 @@ package com.project.game.ai.node;
 import java.util.ArrayList;
 
 import com.project.client.board.Board;
+import com.project.common.player.PlayerEvent;
 
 
 
@@ -10,54 +11,60 @@ public class Node<E> implements PositionADT<E>{
 
 		private Node<E> parent;
 		private E pathCost;
-		private E estimateCost;
+//		private E estimateCost;
 		private int evalValue;
+		private PlayerEvent playerEvent;
 		private ArrayList<Node<E>> children;
 		private Board board;
 		
-		public Node(E pathCost){
+		public Node(E pathCost, int evalValue){
 			this.parent = null;
 			this.pathCost = pathCost;
-			this.estimateCost = null;
+			this.evalValue = evalValue;
+			this.playerEvent = null;
 			this.board = null;
 			this.children = new ArrayList<Node<E>>();
 		}
 		
-		public Node(E pathCost, Node<E> parent){
-			this.parent = parent;
+		public Node(E pathCost, int evalValue, PlayerEvent playerEvent){
+			this.parent = null;
 			this.pathCost = pathCost;
-			this.estimateCost = null;
+			this.evalValue = evalValue;
+			this.playerEvent = playerEvent;
 			this.board = null;
 			this.children = new ArrayList<Node<E>>();
 		}
 		
-		public Node(E pathCost, Board board){
+		public Node(E pathCost, int evalValue, PlayerEvent playerEvent, Node<E> parent){
+			this.parent = parent;
+			this.pathCost = pathCost;
+			this.evalValue = evalValue;
+			this.playerEvent = playerEvent;
+			this.board = null;
+			this.children = new ArrayList<Node<E>>();
+		}
+		
+		
+		public Node(E pathCost, int evalValue, PlayerEvent playerEvent, Board board){
 			this.parent = null;
 			this.pathCost = pathCost;
-			this.estimateCost = null;
+			this.evalValue = evalValue;
+			this.playerEvent = playerEvent;
 			this.board = board;
 			this.children = new ArrayList<Node<E>>();
 		}
 		
 		
 		
-		public Node(E pathCost, Board board, Node<E> parent){
+		public Node(E pathCost, int evalValue, PlayerEvent playerEvent, Board board, Node<E> parent){
 			this.parent = parent;
 			this.pathCost = pathCost;
-			this.estimateCost = null;
+			this.evalValue = evalValue;
+			this.playerEvent = playerEvent;
 			this.board = board;
 			this.children = new ArrayList<Node<E>>();
 		}
 		
-		
-		
-		public Node(Node<E> parent, E pathCost, E estimateCost, Board board, ArrayList<Node<E>> children){
-			this.parent = parent;
-			this.pathCost = pathCost;
-			this.estimateCost = estimateCost;
-			this.board = board;
-			this.children = new ArrayList<Node<E>>();
-		}
 		
 	
 		public Node<E> getParent(){
@@ -97,13 +104,13 @@ public class Node<E> implements PositionADT<E>{
 			this.pathCost = pathCost;
 		}
 		
-		public E getEstimateCost(){
-			return this.estimateCost;
-		}
-		
-		public void setEstimateCost(E estimateCost){
-			this.estimateCost = estimateCost;
-		}
+//		public E getEstimateCost(){
+//			return this.estimateCost;
+//		}
+//		
+//		public void setEstimateCost(E estimateCost){
+//			this.estimateCost = estimateCost;
+//		}
 		
 		public void setBoard(Board board){
 			this.board = board;
@@ -120,6 +127,14 @@ public class Node<E> implements PositionADT<E>{
 		
 		public void setEvalValue(int evalValue){
 			this.evalValue = evalValue;
+		}
+		
+		public PlayerEvent getPlayerEvent(){
+			return this.playerEvent;
+		}
+		
+		public void setPlayerEvent(PlayerEvent playerEvent){
+			this.playerEvent = playerEvent;
 		}
 	
 		
