@@ -2,22 +2,25 @@ package com.project.game.ai.minimax;
 
 import java.util.ArrayList;
 
-import javax.xml.soap.Node;
 
 import com.project.client.board.Board;
 import com.project.common.player.PlayerEvent;
 import com.project.common.utils.Point;
+import com.project.game.ai.node.*;
+import com.project.game.ai.tree.*;
 import com.project.server.logic.Game;
 
-public class MiniMax {
+public class MiniMax<E> {
 	private Game game;
+	private Tree<E> tree;
 	
-	public MiniMax(Game game){
+	public MiniMax(Game game, Tree<E> tree){
 		this.game = game;
+		this.tree = tree;
 	}
 	
 	
-	public PlayerEvent miniMax(ArrayList<Node> tree, int depth, boolean onTurn){
+	public PlayerEvent miniMax(ArrayList<Node<E>> tree, int depth, boolean onTurn){
 		int bestValue;
 		PlayerEvent bestMove;
 		
@@ -27,11 +30,10 @@ public class MiniMax {
 		if(onTurn == true){
 			bestValue = Integer.MIN_VALUE;
 			bestMove = null;
-		
-			for(Node node: tree){
+			for(Node<E> node: tree){
 				PlayerEvent tmpEvent = miniMax(tree.breadthFirstSearch(node), depth-1, false);
-				if(node.getValue() > bestValue){
-					bestValue = node.getValue();
+				if(node.getEvalValue() > bestValue){
+					bestValue = node.getEvalValue();
 					bestMove = tmpEvent;
 				}
 			}
@@ -42,10 +44,10 @@ public class MiniMax {
 			bestValue = Integer.MAX_VALUE;
 			bestMove = null;
 			
-			for(Node node: tree){
-				PlayerEvent tmpEvent = miniMax(tree.breadthFirstSerach(node), depth-1, true);
-				if(node.getValue() < bestMove){
-					bestValue = node.getValue();
+			for(Node<E> node: tree){
+				PlayerEvent tmpEvent = miniMax(((Tree<E>) tree.breadthFirstSearch(node), depth-1, true);
+				if(node.getEvalValue() < bestValue){
+					bestValue = node.getEvalValue();
 					bestMove = tmpEvent;
 				}
 			}
