@@ -2,7 +2,6 @@ package com.project.game.ai.node;
 
 import java.util.ArrayList;
 
-import com.project.client.board.Board;
 import com.project.common.player.PlayerEvent;
 
 
@@ -16,6 +15,15 @@ public class Node<E> implements PositionADT<E>{
 		private PlayerEvent playerEvent;
 		private ArrayList<Node<E>> children;
 		private Board board;
+		
+		public Node(Board board){
+			this.parent = null;
+			this.pathCost = null;
+			this.evalValue = 0;
+			this.playerEvent = null;
+			this.board = board;
+			this.children = new ArrayList<Node<E>>();
+		}
 		
 		public Node(E pathCost, int evalValue){
 			this.parent = null;
