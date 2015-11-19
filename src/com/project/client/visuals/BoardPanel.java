@@ -15,14 +15,13 @@ import java.awt.geom.Point2D;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
+import com.gipf.client.utils.Point;
 import com.project.client.board.Board;
 import com.project.client.board.BoardChangeEvent;
 import com.project.client.board.BoardChangeListener;
-import com.project.client.connection.ClientInterface;
+import com.project.client.visuals.board.BoardButton;
 import com.project.client.visuals.state.MoveStateB;
-import com.project.client.visuals.state.OpponentTurnState;
 import com.project.client.visuals.state.State;
-import com.project.common.utils.Point;
 
 public class BoardPanel extends JPanel implements ComponentListener, BoardChangeListener {
 

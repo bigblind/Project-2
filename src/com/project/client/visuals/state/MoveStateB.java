@@ -3,10 +3,11 @@ package com.project.client.visuals.state;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import com.project.client.connection.ClientInterface;
-import com.project.client.visuals.BoardButton;
-import com.project.client.visuals.BoardPanel;
-import com.project.common.utils.Point;
+import com.gipf.client.game.GameController;
+import com.gipf.client.game.player.PlayerEvent;
+import com.gipf.client.utils.Point;
+import com.project.client.visuals.board.BoardButton;
+import com.project.client.visuals.board.GamePanel;
 
 public class MoveStateB extends State {
 
@@ -14,8 +15,8 @@ public class MoveStateB extends State {
 	private BoardButton pressedButton;
 	private MouseListener listener;
 
-	public MoveStateB(final BoardPanel boardPanel, final ClientInterface clientInterface, final BoardButton pressedButton) {
-		super(boardPanel, clientInterface);
+	public MoveStateB(final GamePanel gamePanel, final GameController controller, final BoardButton pressedButton) {
+		super(gamePanel, controller);
 
 		this.pressedButton = pressedButton;
 		this.calculateConnectedLocations();
@@ -23,17 +24,17 @@ public class MoveStateB extends State {
 		this.listener = new MouseListener() {
 			public void mouseClicked(MouseEvent e) {
 				if (((BoardButton) e.getComponent()).equals(pressedButton)) {
-					boardPanel.setState(new MoveStateA(boardPanel, clientInterface));
-					boardPanel.repaint();
+					gamePanel.setState(new MoveStateA(gamePanel, controller));
+					gamePanel.repaint();
 				} else if (((BoardButton) e.getComponent()).getIsOuterDot() == true) {
 					pressedButton.setDraw(false);
-
-					boardPanel.setState(new MoveStateB(boardPanel, clientInterface, (BoardButton) e.getComponent()));
-					boardPanel.repaint();
+					gamePanel.setState(new MoveStateB(gamePanel, controller, (BoardButton) e.getComponent()));
+					gamePanel.repaint();
 				} else {
-					clientInterface.getThisPlayer().locationsClicked(getButtonPoint(pressedButton), getButtonPoint(((BoardButton) e.getComponent())));
+					PlayerEvent pe = new PlayerEvent(getButtonPoint(pressedButton), getButtonPoint((BoardButton) e.getComponent()), controller.getThisPlayer());
+					controller.getConnector().send(pe.toString());
 					pressedButton.setDraw(false);
-					boardPanel.repaint();
+					gamePanel.repaint();
 				}
 			}
 
@@ -49,7 +50,7 @@ public class MoveStateB extends State {
 						}
 					}
 				}
-				boardPanel.repaint();
+				gamePanel.repaint();
 			}
 
 			public void mouseExited(MouseEvent e) {
@@ -59,7 +60,7 @@ public class MoveStateB extends State {
 				} else {
 					calculateConnectedLocations();
 				}
-				boardPanel.repaint();
+				gamePanel.repaint();
 			}
 
 			public void mousePressed(MouseEvent e) {
@@ -71,10 +72,10 @@ public class MoveStateB extends State {
 	}
 
 	private void calculateConnectedLocations() {
-		int name = Integer.parseInt(pressedButton.getName());
+		int name = Integer.parseInt(this.pressedButton.getName());
 		int x = name / 10;
 		int y = name - (x * 10);
-		this.connectedLocations = boardPanel.getConnections()[x][y];
+		this.connectedLocations = this.gamePanel.getConnections()[x][y];
 	}
 
 	private Point getButtonPoint(BoardButton button) {
