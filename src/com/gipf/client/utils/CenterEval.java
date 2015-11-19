@@ -21,6 +21,8 @@ public class CenterEval  {
 					black = black+ -((4 - max(x,y)*10)+ (int)reserve(blackStones));
 				if (grid[x][y] == board.GIPF_BLACK_VALUE)
 					black = black+ -((4 - max(x,y)*20)+ (int)reserve(blackStones));
+				else
+					white+=0;
 			}
 		}
 		return white+black;
