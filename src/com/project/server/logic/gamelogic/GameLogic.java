@@ -2,10 +2,9 @@ package com.project.server.logic.gamelogic;
 
 import java.util.ArrayList;
 
-import com.project.common.player.Player;
-import com.project.common.player.PlayerListener;
-import com.project.server.logic.Game;
-import com.project.server.logic.Row;
+import com.gipf.client.game.Game;
+import com.gipf.client.game.player.Player;
+import com.project.client.board.Row;
 import com.project.server.logic.board.Board;
 
 public abstract class GameLogic implements PlayerListener {

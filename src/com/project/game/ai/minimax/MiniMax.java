@@ -2,13 +2,12 @@ package com.project.game.ai.minimax;
 
 import java.util.ArrayList;
 
-
+import com.gipf.client.game.Game;
 import com.project.client.board.Board;
-import com.project.common.player.PlayerEvent;
-import com.project.common.utils.Point;
+
 import com.project.game.ai.node.Node;
 import com.project.game.ai.tree.Tree;
-import com.project.server.logic.Game;
+
 
 public class MiniMax<E> {
 	protected Game game;

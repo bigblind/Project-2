@@ -2,8 +2,9 @@ package com.project.server.logic.board;
 
 import java.util.ArrayList;
 
-import com.project.common.utils.Point;
-import com.project.server.logic.Row;
+
+import com.gipf.client.utils.Point;
+import com.project.client.board.Row;
 import com.project.server.logic.gamelogic.GameLogic;
 
 public class Board {

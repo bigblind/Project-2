@@ -2,7 +2,7 @@ package com.project.game.ai.node;
 
 import java.util.ArrayList;
 
-import com.project.common.player.PlayerEvent;
+import com.gipf.client.game.player.PlayerEvent;
 import com.project.server.logic.board.Board;
 
 
@@ -54,9 +54,9 @@ public class Node<E> implements PositionADT<E>{
 		}
 		
 		
-		public Node(E pathCost, int evalValue, PlayerEvent playerEvent, Board board){
+		public Node(int evalValue, PlayerEvent playerEvent, Board board){
 			this.parent = null;
-			this.pathCost = pathCost;
+			this.pathCost = null;
 			this.evalValue = evalValue;
 			this.playerEvent = playerEvent;
 			this.board = board;

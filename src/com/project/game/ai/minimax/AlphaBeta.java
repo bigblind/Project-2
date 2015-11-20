@@ -3,7 +3,7 @@ package com.project.game.ai.minimax;
 import java.util.ArrayList;
 
 import com.project.game.ai.tree.Tree;
-import com.project.server.logic.Game;
+import com.gipf.client.game.Game;
 import com.project.game.ai.node.Node;
 
 
