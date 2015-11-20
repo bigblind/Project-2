@@ -37,7 +37,7 @@ public class LocalServer {
 		this.logic.setCurrentPlayer(this.game.getPlayerOne());
 		this.game.setGameLogic(this.logic);
 	}
-	
+
 	public void setConnectors(Connector c1, Connector c2) {
 		this.c1 = c1;
 		this.c2 = c2;
@@ -102,7 +102,7 @@ public class LocalServer {
 			this.sendGameUpdate();
 		}
 	}
-	
+
 	public void sendClientInit() {
 		String send = "/i " + Board.WHITE_VALUE + " 15 15 " + this.game.getBoard().toString();
 		this.sendToClient(send, 0);
@@ -117,11 +117,10 @@ public class LocalServer {
 		send = "/u " + this.game.getPlayerTwo().getStoneAccount() + " " + this.game.getPlayerOne().getStoneAccount() + " " + this.game.getBoard().toString();
 		this.sendToClient(send, 1);
 	}
-	
+
 	public void rowRemoveRequestEventPerformed(RowRemovalRequestEvent e) {
 		String send = "/s remove";
 		for (int i = 0; i < e.getRows().size(); i++) {
-//			send += " {" + e.getRows().get(i).getFromPoint() + " , " + e.getRows().get(i).getToPoint() + "}";
 			send += " " + e.getRows().get(i).toString() + "endRow ";
 		}
 		if (e.getRows().get(0).getPlayer().getStoneColor() == Board.WHITE_VALUE) {

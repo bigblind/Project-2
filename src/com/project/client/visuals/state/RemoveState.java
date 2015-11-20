@@ -15,9 +15,9 @@ public class RemoveState extends State {
 	protected MouseListener listener;
 	private Board originalBoard;
 	private Board boardCopy;
-	
+
 	private Point[][] rowPoints;
-	
+
 	private Row[] rows;
 
 	private int rowIndexRemoved = -1;
@@ -39,20 +39,32 @@ public class RemoveState extends State {
 
 				if (activeInRow.length == 1) {
 					if (!containsGipfStone(rowPoints[activeInRow[0]][0], rowPoints[activeInRow[0]][rowPoints[activeInRow[0]].length - 1])) {
-						controller.getConnector().send("/removerow " + rowPoints[activeInRow[0]][0].toString() + " " + rowPoints[activeInRow[0]][rowPoints[activeInRow[0]].length - 1].toString());
-						for (int i = 0; i < rowPoints[activeInRow[0]].length; i++) {
-							buttons[rowPoints[activeInRow[0]][i].getX()][rowPoints[activeInRow[0]][i].getY()].setDraw(false);
+						if (!extCurrentPlayerContainGipf(rows[activeInRow[0]].getWhiteExtensionStones(), rows[activeInRow[0]].getBlackExtensionStones())) {
+							controller.getConnector().send("/removerow " + rowPoints[activeInRow[0]][0].toString() + " " + rowPoints[activeInRow[0]][rowPoints[activeInRow[0]].length - 1].toString());
+							for (int i = 0; i < rowPoints[activeInRow[0]].length; i++) {
+								buttons[rowPoints[activeInRow[0]][i].getX()][rowPoints[activeInRow[0]][i].getY()].setDraw(false);
+							}
+							gamePanel.repaint();
+						} else {
+							for (int i = 0; i < rowPoints[activeInRow[0]].length; i++) {
+								buttons[rowPoints[activeInRow[0]][i].getX()][rowPoints[activeInRow[0]][i].getY()].setDraw(false);
+							}
+							gamePanel.getGame().setBoard(originalBoard);
+							
+							gamePanel.setState(new GipfRowRemoveState(gamePanel, controller, rows[activeInRow[0]]));
 						}
-						gamePanel.repaint();
+						
 					} else {
+						System.out.println("basic row has gipf");
 						for (int i = 0; i < rowPoints[activeInRow[0]].length; i++) {
 							buttons[rowPoints[activeInRow[0]][i].getX()][rowPoints[activeInRow[0]][i].getY()].setDraw(false);
 						}
 						gamePanel.getGame().setBoard(originalBoard);
-						gamePanel.setState(new GipfRowRemoveState(gamePanel, controller, new Point[] { rowPoints[activeInRow[0]][0], rowPoints[activeInRow[0]][rowPoints[activeInRow[0]].length - 1] }));
+						
+						gamePanel.setState(new GipfRowRemoveState(gamePanel, controller, rows[activeInRow[0]]));
 					}
 				}
-				
+
 			}
 
 			public void mouseEntered(MouseEvent e) {
@@ -110,12 +122,28 @@ public class RemoveState extends State {
 		else if (yy == 0) length = xx;
 		else length = xx;
 		length++;
+		System.out.println("in containsGipfStone in removeState length: " + length);
 		for (int j = 0; j < length; j++) {
 			int x = start.getX() + (j * dx);
 			int y = start.getY() + (j * dy);
-			if (this.originalBoard.getGrid()[x][y] == Board.GIPF_WHITE_VALUE || this.originalBoard.getGrid()[x][y] == Board.GIPF_BLACK_VALUE) {
-				return true;
+			System.out.println(this.originalBoard.getGrid()[x][y]);
+			if (this.gameController.getThisPlayer().getStoneColor() == Board.BLACK_VALUE) {
+				if (this.originalBoard.getGrid()[x][y] == Board.GIPF_BLACK_VALUE) return true;
+			} else {
+				if (this.originalBoard.getGrid()[x][y] == Board.GIPF_WHITE_VALUE) return true;
 			}
+		}
+		return false;
+	}
+	
+	private boolean extCurrentPlayerContainGipf(Point[] whiteExt, Point[] blackExt) {
+		System.out.println(this.gameController.getThisPlayer().getStoneColor());
+		this.originalBoard.print();
+		System.out.println(whiteExt.length);
+		if (this.gameController.getThisPlayer().getStoneColor() == Board.BLACK_VALUE) {
+			for (Point p : blackExt) if (this.originalBoard.getGrid()[p.getX()][p.getY()] == Board.GIPF_BLACK_VALUE) return true;
+		} else {
+			for (Point p : whiteExt) if (this.originalBoard.getGrid()[p.getX()][p.getY()] == Board.GIPF_WHITE_VALUE) return true;
 		}
 		return false;
 	}
@@ -135,11 +163,13 @@ public class RemoveState extends State {
 			if (yy == 0) dy = 0;
 			else dy = 1;
 
-			int length;
-			if (xx == 0) length = yy;
-			else if (yy == 0) length = xx;
-			else length = xx;
-			length++;
+			//			int length;
+			//			if (xx == 0) length = yy;
+			//			else if (yy == 0) length = xx;
+			//			else length = xx;
+			//			length++;
+
+			int length = this.rows[i].getLength();
 
 			this.rowPoints[i] = new Point[length];
 			for (int j = 0; j < length; j++) {

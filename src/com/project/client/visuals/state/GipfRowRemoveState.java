@@ -4,25 +4,27 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 import com.gipf.client.game.GameController;
 import com.gipf.client.resource.ResourceLoader;
 import com.gipf.client.utils.Point;
 import com.project.client.board.Board;
+import com.project.client.board.Row;
 import com.project.client.visuals.board.GamePanel;
 
 public class GipfRowRemoveState extends State {
 
 	private MouseListener listener;
-	private Point[] rows;
+	private Row row;
 	private Point[] gipfStonePoints;
 	private Board originalBoard;
 	private Board boardCopy;
 	private boolean[] gipfIsGhost;
 
-	public GipfRowRemoveState(final GamePanel gamePanel, final GameController controller, Point[] row) {
+	public GipfRowRemoveState(final GamePanel gamePanel, final GameController controller, Row row) {
 		super(gamePanel, controller);
-		this.rows = row;
+		this.row = row;
 
 		this.gamePanel.getCheckButton().setVisible(true);
 		this.gamePanel.getCheckButton().addActionListener(new ActionListener() {
@@ -108,8 +110,10 @@ public class GipfRowRemoveState extends State {
 
 	public void execute() {
 		super.execute();
-		Point start = this.rows[0];
-		Point end = this.rows[1];
+		this.originalBoard = gamePanel.getGame().getBoard();
+
+		Point start = this.row.getFromPoint();
+		Point end = this.row.getToPoint();
 
 		int xx = end.getX() - start.getX();
 		int yy = end.getY() - start.getY();
@@ -120,11 +124,7 @@ public class GipfRowRemoveState extends State {
 		if (yy == 0) dy = 0;
 		else dy = 1;
 
-		int length;
-		if (xx == 0) length = yy;
-		else if (yy == 0) length = xx;
-		else length = xx;
-		length++;
+		int length = this.row.getLength();
 
 		int counter = 0;
 		int cntr = 0;
@@ -144,19 +144,56 @@ public class GipfRowRemoveState extends State {
 				counter++;
 			}
 		}
+		
+		
+		ArrayList<Point> extGipfStones = new ArrayList<Point>();
+		ArrayList<Point> tmp2 = new ArrayList<Point>();
+		if (this.gameController.getThisPlayer().getStoneColor() == Board.WHITE_VALUE) {
+			for (Point p : row.getWhiteExtensionStones()) {
+				if (this.originalBoard.getGrid()[p.getX()][p.getY()] == Board.GIPF_WHITE_VALUE) {
+					this.gamePanel.getButtons()[p.getX()][p.getY()].setImage(ResourceLoader.WHITE_STONE_TRANSPARENT);
+					if (this.buttons[p.getX()][p.getY()].getMouseListeners().length == 0) this.buttons[p.getX()][p.getY()].addMouseListener(this.listener);
+					extGipfStones.add(p);
+				} else {
+					tmp2.add(p);
+				}
+			}
+			for (Point p : row.getBlackExtensionStones()) {
+				tmp2.add(p);
+			}
+		} else {
+			for (Point p : row.getBlackExtensionStones()) {
+				if (this.originalBoard.getGrid()[p.getX()][p.getY()] == Board.GIPF_BLACK_VALUE) {
+					this.gamePanel.getButtons()[p.getX()][p.getY()].setImage(ResourceLoader.BLACK_STONE_TRANSPARENT);
+					if (this.buttons[p.getX()][p.getY()].getMouseListeners().length == 0) this.buttons[p.getX()][p.getY()].addMouseListener(this.listener);
+					extGipfStones.add(p);
+				} else {
+					tmp2.add(p);
+				}
+			}
+			for (Point p : row.getWhiteExtensionStones()) {
+				tmp2.add(p);
+			}
+		}
 
-		this.gipfStonePoints = new Point[cntr];
-		this.gipfIsGhost = new boolean[cntr];
+		this.gipfStonePoints = new Point[cntr + extGipfStones.size()];
+		this.gipfIsGhost = new boolean[cntr + extGipfStones.size()];
 		for (int i = 0; i < cntr; i++) {
 			this.gipfStonePoints[i] = gipfPoints[i];
+		}
+		for (int i = 0; i < extGipfStones.size(); i++) {
+			this.gipfStonePoints[cntr + i] = extGipfStones.get(i);
 		}
 
 		String send = "/removepoints ";
 		for (int i = 0; i < counter; i++) {
 			send += tmp[i].toString() + " ";
 		}
+		
+		for (int i = 0; i < tmp2.size(); i++) {
+			send += tmp2.get(i).toString() + " ";
+		}
 		this.gameController.getConnector().send(send);
-		this.originalBoard = gamePanel.getGame().getBoard();
 		this.boardCopy = this.originalBoard.copy();
 		this.gamePanel.getGame().setBoard(this.boardCopy);
 	}

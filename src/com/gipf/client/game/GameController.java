@@ -43,22 +43,6 @@ public class GameController {
 				Row[] rows = new Row[rowStrings.length];
 				for (int i = 0; i < rows.length; i++)
 					rows[i] = this.readRow(rowStrings[i]);
-
-				//				System.out.println(received);
-				//				String[] subPartsX = received.split("Point: x = ");
-				//				String[] subPartsY = received.split("y = ");
-				//				int nRows = subPartsX.length / 2;
-				//				Point[] rowPoints = new Point[nRows * 2];
-				//				for (int i = 0; i < nRows; i++) {
-				//					int x1 = Integer.parseInt(subPartsX[1 + i * 2].substring(0, 1));
-				//					int y1 = Integer.parseInt(subPartsY[1 + i * 2].substring(0, 1));
-				//
-				//					int x2 = Integer.parseInt(subPartsX[1 + i * 2 + 1].substring(0, 1));
-				//					int y2 = Integer.parseInt(subPartsY[1 + i * 2 + 1].substring(0, 1));
-				//
-				//					rowPoints[i * 2] = new Point(x1, y1);
-				//					rowPoints[i * 2 + 1] = new Point(x2, y2);
-				//				}
 				this.controller.getGamePanel().setState(new RemoveState(this.controller.getGamePanel(), this, rows));
 			} else if (received.startsWith("/s wait")) {
 				this.controller.getGamePanel().setState(new WaitState(this.controller.getGamePanel(), this));
@@ -129,6 +113,7 @@ public class GameController {
 	}
 
 	private Row readRow(String rowString) {
+		System.out.println(rowString);
 		Point from = this.readPoint(rowString.split("from: ")[1].split("\\]")[0]);
 		Point end = this.readPoint(rowString.split("to: ")[1].split("\\]")[0]);
 
