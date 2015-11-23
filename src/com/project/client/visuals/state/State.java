@@ -12,7 +12,7 @@ public abstract class State {
 
 	protected GamePanel gamePanel;
 	protected BoardButton[][] buttons;
-	protected GameController gameController;	
+	protected GameController gameController;
 	protected Image stoneImage;
 
 	public State(final GamePanel gamePanel, final GameController controller) {
@@ -30,8 +30,13 @@ public abstract class State {
 	public void removeListeners() {
 		for (int i = 0; i < buttons.length; i++) {
 			for (int j = 0; j < buttons[0].length; j++) {
-				if (this.buttons[i][j] != null && this.buttons[i][j].getMouseListeners().length > 0) {
-					this.buttons[i][j].removeMouseListener(this.buttons[i][j].getMouseListeners()[0]);
+				if (this.buttons[i][j] != null) {
+					if (this.buttons[i][j].getMouseListeners().length > 0) {
+						this.buttons[i][j].removeMouseListener(this.buttons[i][j].getMouseListeners()[0]);
+					}
+					if (this.buttons[i][j].getActionListeners().length > 0) {
+						this.buttons[i][j].removeActionListener(this.buttons[i][j].getActionListeners()[0]);
+					}
 				}
 			}
 		}

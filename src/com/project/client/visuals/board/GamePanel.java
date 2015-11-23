@@ -77,7 +77,7 @@ public class GamePanel extends JPanel implements ComponentListener {
 		for (int j = 0; j < 5; j++) {
 			for (int i = 0; i < 5 + j; i++) {
 				BoardButton button = new BoardButton();
-				button.setBorder(BorderFactory.createEmptyBorder());
+//				button.setBorder(BorderFactory.createEmptyBorder());
 				button.setName(Integer.toString(i) + Integer.toString(j));
 				button.setContentAreaFilled(false);
 				if (i == 0 || j == 0 || j == 8 || i == 8) button.setIsOuterDot(true);
@@ -91,7 +91,7 @@ public class GamePanel extends JPanel implements ComponentListener {
 		for (int j = 1; j < 5; j++) {
 			for (int i = j; i < 9; i++) {
 				BoardButton button = new BoardButton();
-				button.setBorder(BorderFactory.createEmptyBorder());
+//				button.setBorder(BorderFactory.createEmptyBorder());
 				button.setName(Integer.toString(i) + Integer.toString(4 + j));
 				button.setContentAreaFilled(false);
 				if (i == 0 || j == 0 || j == 4 || i == 8) button.setIsOuterDot(true);
@@ -391,10 +391,6 @@ public class GamePanel extends JPanel implements ComponentListener {
 		this.checkButton.setBounds(this.getWidth() - 96 - 50, 50, 64, 64);
 		this.repaint();
 	}
-	
-	public BoardButton[][] getButtons() {
-		return this.buttons;
-	}
 
 	public void componentShown(ComponentEvent e) {
 		
@@ -404,6 +400,14 @@ public class GamePanel extends JPanel implements ComponentListener {
 		this.state = state;
 		state.execute();
 		this.controller.gamePanelStateChange(state);
+	}
+	
+	public BoardButton[][] getButtons() {
+		return this.buttons;
+	}
+	
+	public Controller getController() {
+		return this.controller;
 	}
 	
 	public Point[][][] getConnections() {

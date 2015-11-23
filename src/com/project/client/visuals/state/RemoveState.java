@@ -1,5 +1,8 @@
 package com.project.client.visuals.state;
 
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -12,7 +15,8 @@ import com.project.client.visuals.board.GamePanel;
 
 public class RemoveState extends State {
 
-	protected MouseListener listener;
+	private MouseListener mouseListener;
+	private ActionListener actionListener;
 	private Board originalBoard;
 	private Board boardCopy;
 
@@ -29,7 +33,44 @@ public class RemoveState extends State {
 		this.originalBoard = gamePanel.getGame().getBoard();
 		this.boardCopy = this.originalBoard.copy();
 		this.gamePanel.getGame().setBoard(this.boardCopy);
-		this.listener = new MouseListener() {
+		this.actionListener = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int name = Integer.parseInt(((Component) (e.getSource())).getName());
+				int x = name / 10;
+				int y = name - (x * 10);
+
+				int[] activeInRow = activeInRows(x, y);
+
+				if (activeInRow.length == 1) {
+					if (!containsGipfStone(rowPoints[activeInRow[0]][0], rowPoints[activeInRow[0]][rowPoints[activeInRow[0]].length - 1])) {
+						if (!extCurrentPlayerContainGipf(rows[activeInRow[0]].getWhiteExtensionStones(), rows[activeInRow[0]].getBlackExtensionStones())) {
+							controller.getConnector().send("/removerow " + rowPoints[activeInRow[0]][0].toString() + " " + rowPoints[activeInRow[0]][rowPoints[activeInRow[0]].length - 1].toString());
+							for (int i = 0; i < rowPoints[activeInRow[0]].length; i++) {
+								buttons[rowPoints[activeInRow[0]][i].getX()][rowPoints[activeInRow[0]][i].getY()].setDraw(false);
+							}
+							gamePanel.repaint();
+						} else {
+							for (int i = 0; i < rowPoints[activeInRow[0]].length; i++) {
+								buttons[rowPoints[activeInRow[0]][i].getX()][rowPoints[activeInRow[0]][i].getY()].setDraw(false);
+							}
+							gamePanel.getGame().setBoard(originalBoard);
+							
+							gamePanel.setState(new GipfRowRemoveState(gamePanel, controller, rows[activeInRow[0]]));
+						}
+						
+					} else {
+						System.out.println("basic row has gipf");
+						for (int i = 0; i < rowPoints[activeInRow[0]].length; i++) {
+							buttons[rowPoints[activeInRow[0]][i].getX()][rowPoints[activeInRow[0]][i].getY()].setDraw(false);
+						}
+						gamePanel.getGame().setBoard(originalBoard);
+						
+						gamePanel.setState(new GipfRowRemoveState(gamePanel, controller, rows[activeInRow[0]]));
+					}
+				}
+			}
+		};
+		this.mouseListener = new MouseListener() {
 			public void mouseClicked(MouseEvent e) {
 				int name = Integer.parseInt(e.getComponent().getName());
 				int x = name / 10;
@@ -64,7 +105,6 @@ public class RemoveState extends State {
 						gamePanel.setState(new GipfRowRemoveState(gamePanel, controller, rows[activeInRow[0]]));
 					}
 				}
-
 			}
 
 			public void mouseEntered(MouseEvent e) {
@@ -175,7 +215,8 @@ public class RemoveState extends State {
 			for (int j = 0; j < length; j++) {
 				int x = start.getX() + (j * dx);
 				int y = start.getY() + (j * dy);
-				if (this.buttons[x][y].getMouseListeners().length == 0) this.buttons[x][y].addMouseListener(this.listener);
+				if (this.buttons[x][y].getMouseListeners().length == 0) this.buttons[x][y].addMouseListener(this.mouseListener);
+				if (this.buttons[x][y].getActionListeners().length == 0) this.buttons[x][y].addActionListener(this.actionListener);
 				if (this.gamePanel.getGame().getBoard().getGrid()[x][y] == Board.WHITE_VALUE || this.gamePanel.getGame().getBoard().getGrid()[x][y] == Board.GIPF_WHITE_VALUE) this.buttons[x][y].setImage(ResourceLoader.WHITE_STONE_TRANSPARENT);
 				else this.buttons[x][y].setImage(ResourceLoader.BLACK_STONE_TRANSPARENT);
 				this.rowPoints[i][j] = new Point(x, y);

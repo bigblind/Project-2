@@ -38,14 +38,17 @@ public class GameController {
 			// for updating state
 			if (received.equals("/s move")) {
 				this.controller.getGamePanel().setState(new MoveStateA(this.controller.getGamePanel(), this));
+				this.thisPlayer.update("move");
 			} else if (received.startsWith("/s remove")) {
 				String[] rowStrings = received.split("endRow ");
 				Row[] rows = new Row[rowStrings.length];
 				for (int i = 0; i < rows.length; i++)
 					rows[i] = this.readRow(rowStrings[i]);
 				this.controller.getGamePanel().setState(new RemoveState(this.controller.getGamePanel(), this, rows));
+				this.thisPlayer.update("remove");
 			} else if (received.startsWith("/s wait")) {
 				this.controller.getGamePanel().setState(new WaitState(this.controller.getGamePanel(), this));
+				this.thisPlayer.update("wait");
 			} else {
 				System.err.println("Invalid client input: Input not recognised");
 			}
@@ -78,6 +81,17 @@ public class GameController {
 	private Player returnOpponent(Player player) {
 		if (player.equals(this.controller.getGame().getPlayerOne())) return this.controller.getGame().getPlayerTwo();
 		else return this.controller.getGame().getPlayerOne();
+	}
+	
+	public void setPlayer(Player player, boolean copyData) {
+		if (copyData) {
+			player.setName(this.thisPlayer.getName());
+			player.setStoneAccount(this.thisPlayer.getStoneAccount());
+			player.setStoneColor(this.thisPlayer.getStoneColor());
+			this.thisPlayer = player;
+		} else {
+			this.thisPlayer = player;
+		}
 	}
 
 	private void initCall(int stoneColor, int numberOfStones, int opponentStones, String boardString) {
@@ -153,6 +167,10 @@ public class GameController {
 		int y = Integer.parseInt(pointString.split("y = ")[1].substring(0, 1));
 
 		return new Point(x, y);
+	}
+	
+	public Controller getController() {
+		return this.controller;
 	}
 
 	public void setGame(Game game) {

@@ -21,6 +21,10 @@ public class Player {
 		this.stoneAccount = stones;
 		this.stoneColor = stoneColor;
 	}
+	
+	public void update(String state) {
+		
+	}
 
 	public String getName() {
 		return this.name;

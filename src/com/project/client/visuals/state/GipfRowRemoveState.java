@@ -1,5 +1,6 @@
 package com.project.client.visuals.state;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -15,7 +16,8 @@ import com.project.client.visuals.board.GamePanel;
 
 public class GipfRowRemoveState extends State {
 
-	private MouseListener listener;
+	private ActionListener actionListener;
+	private MouseListener mouseListener;
 	private Row row;
 	private Point[] gipfStonePoints;
 	private Board originalBoard;
@@ -45,8 +47,32 @@ public class GipfRowRemoveState extends State {
 				gameController.getConnector().send(send);
 			}
 		});
+		
+		this.actionListener = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int name = Integer.parseInt(((Component) (e.getSource())).getName());
+				int x = name / 10;
+				int y = name - (x * 10);
 
-		this.listener = new MouseListener() {
+				for (int i = 0; i < gipfStonePoints.length; i++) {
+					if (gipfStonePoints[i].getX() == x && gipfStonePoints[i].getY() == y) {
+						if (gipfIsGhost[i]) {
+							boardCopy.getGrid()[gipfStonePoints[i].getX()][gipfStonePoints[i].getY()] = originalBoard.getGrid()[gipfStonePoints[i].getX()][gipfStonePoints[i].getY()];
+							buttons[x][y].setDraw(false);
+							gipfIsGhost[i] = false;
+							gamePanel.repaint();
+						} else {
+							boardCopy.getGrid()[gipfStonePoints[i].getX()][gipfStonePoints[i].getY()] = 0;
+							buttons[x][y].setDraw(true);
+							gipfIsGhost[i] = true;
+							gamePanel.repaint();
+						}
+						break;
+					}
+				}
+			}
+		};
+		this.mouseListener = new MouseListener() {
 			public void mouseClicked(MouseEvent e) {
 				int name = Integer.parseInt(e.getComponent().getName());
 				int x = name / 10;
@@ -134,7 +160,8 @@ public class GipfRowRemoveState extends State {
 			int x = start.getX() + (j * dx);
 			int y = start.getY() + (j * dy);
 			if (this.gamePanel.getGame().getBoard().getGrid()[x][y] == Board.GIPF_WHITE_VALUE || this.gamePanel.getGame().getBoard().getGrid()[x][y] == Board.GIPF_BLACK_VALUE) {
-				if (this.buttons[x][y].getMouseListeners().length == 0) this.buttons[x][y].addMouseListener(this.listener);
+				if (this.buttons[x][y].getMouseListeners().length == 0) this.buttons[x][y].addMouseListener(this.mouseListener);
+				if (this.buttons[x][y].getActionListeners().length == 0) this.buttons[x][y].addActionListener(this.actionListener);
 				if (this.gamePanel.getGame().getBoard().getGrid()[x][y] == Board.WHITE_VALUE || this.gamePanel.getGame().getBoard().getGrid()[x][y] == Board.GIPF_WHITE_VALUE) this.buttons[x][y].setImage(ResourceLoader.WHITE_STONE_TRANSPARENT);
 				else this.buttons[x][y].setImage(ResourceLoader.BLACK_STONE_TRANSPARENT);
 				gipfPoints[cntr] = new Point(x, y);
@@ -152,7 +179,7 @@ public class GipfRowRemoveState extends State {
 			for (Point p : row.getWhiteExtensionStones()) {
 				if (this.originalBoard.getGrid()[p.getX()][p.getY()] == Board.GIPF_WHITE_VALUE) {
 					this.gamePanel.getButtons()[p.getX()][p.getY()].setImage(ResourceLoader.WHITE_STONE_TRANSPARENT);
-					if (this.buttons[p.getX()][p.getY()].getMouseListeners().length == 0) this.buttons[p.getX()][p.getY()].addMouseListener(this.listener);
+					if (this.buttons[p.getX()][p.getY()].getMouseListeners().length == 0) this.buttons[p.getX()][p.getY()].addMouseListener(this.mouseListener);
 					extGipfStones.add(p);
 				} else {
 					tmp2.add(p);
@@ -165,7 +192,7 @@ public class GipfRowRemoveState extends State {
 			for (Point p : row.getBlackExtensionStones()) {
 				if (this.originalBoard.getGrid()[p.getX()][p.getY()] == Board.GIPF_BLACK_VALUE) {
 					this.gamePanel.getButtons()[p.getX()][p.getY()].setImage(ResourceLoader.BLACK_STONE_TRANSPARENT);
-					if (this.buttons[p.getX()][p.getY()].getMouseListeners().length == 0) this.buttons[p.getX()][p.getY()].addMouseListener(this.listener);
+					if (this.buttons[p.getX()][p.getY()].getMouseListeners().length == 0) this.buttons[p.getX()][p.getY()].addMouseListener(this.mouseListener);
 					extGipfStones.add(p);
 				} else {
 					tmp2.add(p);
