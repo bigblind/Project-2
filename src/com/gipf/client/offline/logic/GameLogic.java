@@ -171,7 +171,7 @@ public abstract class GameLogic {
 		return null;
 	}
 
-	protected boolean checkForWin() {
+	public boolean checkForWin() {
 		if (game.getPlayerOne().getStoneAccount() == 0 || game.getPlayerTwo().getStoneAccount() == 0) return true;
 		return false;
 	}

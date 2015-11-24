@@ -19,6 +19,12 @@ public class Game {
 		this.playerTwo = playerTwo;
 	}
 	
+	public Game(Player playerOne, Player playerTwo) {
+		this.playerOne = playerOne;
+		this.playerTwo = playerTwo;
+		this.board = new Board();
+	}
+	
 	public void setPlayerOne(Player player) {
 		this.playerOne = player;
 	}
@@ -52,5 +58,9 @@ public class Game {
 		Game game = new Game(this.board.copy(), this.playerOne.copy(), this.playerTwo.copy());
 		game.setGameLogic(this.logic);
 		return game;
+	}
+
+	public void setBoard(Board board) {
+		this.board = board;
 	}
 }

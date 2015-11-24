@@ -8,9 +8,9 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import com.gipf.client.game.GameController;
+import com.gipf.client.offline.logic.Board;
 import com.gipf.client.resource.ResourceLoader;
 import com.gipf.client.utils.Point;
-import com.project.client.board.Board;
 import com.project.client.board.Row;
 import com.project.client.visuals.board.GamePanel;
 

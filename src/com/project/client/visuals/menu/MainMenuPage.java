@@ -21,7 +21,7 @@ public class MainMenuPage extends MenuPage {
 
 	private static final long serialVersionUID = -8717369149028464745L;
 
-	private JButton singlePlayer, multiPlayer, exit;
+	private JButton singlePlayer, multiPlayer, arena, exit;
 	private JLabel title;
 	
 	public MainMenuPage(final Controller controller) {
@@ -53,6 +53,14 @@ public class MainMenuPage extends MenuPage {
 		this.multiPlayer.setPreferredSize(buttonDimension);
 		this.multiPlayer.setMinimumSize(buttonDimension);
 		this.multiPlayer.setMaximumSize(buttonDimension);
+		this.arena = new JButton("Arena");
+		this.arena.setContentAreaFilled(false);
+		this.arena.setAlignmentX(JButton.CENTER_ALIGNMENT);
+		this.arena.setFont(buttonFont);
+		this.arena.setFocusPainted(false);
+		this.arena.setPreferredSize(buttonDimension);
+		this.arena.setMinimumSize(buttonDimension);
+		this.arena.setMaximumSize(buttonDimension);
 		this.exit = new JButton("Exit");
 		this.exit.setContentAreaFilled(false);
 		this.exit.setAlignmentX(JButton.CENTER_ALIGNMENT);
@@ -88,6 +96,9 @@ public class MainMenuPage extends MenuPage {
 		box.add(Box.createVerticalStrut(35));
 		box.add(Box.createVerticalGlue());
 		box.add(this.multiPlayer);
+		box.add(Box.createVerticalStrut(35));
+		box.add(Box.createVerticalGlue());
+		box.add(this.arena);
 		box.add(Box.createVerticalStrut(35));
 		box.add(Box.createVerticalGlue());
 		box.add(this.exit);

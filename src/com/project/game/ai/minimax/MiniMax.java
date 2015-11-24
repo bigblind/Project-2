@@ -2,12 +2,9 @@ package com.project.game.ai.minimax;
 
 import java.util.ArrayList;
 
-import com.gipf.client.game.Game;
-import com.project.client.board.Board;
-
+import com.gipf.client.offline.logic.Game;
 import com.project.game.ai.node.Node;
 import com.project.game.ai.tree.Tree;
-
 
 public class MiniMax<E> {
 	protected Game game;
@@ -34,8 +31,8 @@ public class MiniMax<E> {
 			for(Node<E> node: nodeList){				
 				Node<E> tmpNode = miniMax(node.getChildren(), depth-1, false);
 //				Node<E> tmpNode = miniMax(tree.bfSearch(node), depth-1, false);
-				if(node.getEvalValue() > bestValue){
-					bestValue = node.getEvalValue();
+				if(node.getValue() > bestValue){
+					bestValue = node.getValue();
 					bestNode = tmpNode;
 				}
 			}
@@ -51,8 +48,8 @@ public class MiniMax<E> {
 //				PlayerEvent tmpEvent = miniMax(tree.bfSearch(node), depth-1, true);
 				Node<E> tmpNode = miniMax(node.getChildren(), depth-1, true);
 //				Node<E> tmpNode = miniMax(tree.bfSearch(node), depth-1, true);
-				if(node.getEvalValue() < bestValue){
-					bestValue = node.getEvalValue();
+				if(node.getValue() < bestValue){
+					bestValue = node.getValue();
 //					bestMove = node.getPlayerEvent();
 					bestNode = tmpNode;
 				}

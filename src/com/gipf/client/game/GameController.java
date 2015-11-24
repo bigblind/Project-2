@@ -2,6 +2,7 @@ package com.gipf.client.game;
 
 import com.gipf.client.connector.Connector;
 import com.gipf.client.game.player.Player;
+import com.gipf.client.offline.logic.Game;
 import com.gipf.client.utils.Point;
 import com.project.client.base.Controller;
 import com.project.client.board.Board;

@@ -6,13 +6,11 @@ import java.util.ListIterator;
 
 import com.project.game.ai.node.Node;
 
-
-
-public class Tree<E> implements TreeADT<E> {
+public class Tree<E> {
 	
 	private Node<E> root;
 	
-	public Tree(){
+	public Tree() {
 		this.root = null;
 	}
 	
@@ -24,7 +22,7 @@ public class Tree<E> implements TreeADT<E> {
 		return this.root;
 	}
 
-	public void setNode(Node<E> root){
+	public void setRoot(Node<E> root){
 		this.root = root;
 	}
 	
@@ -35,7 +33,6 @@ public class Tree<E> implements TreeADT<E> {
 	public void setParent(Node<E> node, Node<E> parent){
 		node.setParent(parent);
 	}
-	
 	
 	public boolean isInternal(Node<E> node) {
 		return !node.getChildren().isEmpty();
@@ -53,38 +50,7 @@ public class Tree<E> implements TreeADT<E> {
 		return node.getChildren().listIterator();
 	}
 
-
-	public void swapElements(Node<E> firstNode, Node<E> secondNode) {
-		E firstElement = (E) firstNode.element();
-		E secondElement = (E) secondNode.element();
-		firstNode.setPathCost(secondElement);
-		secondNode.setPathCost(firstElement);
-	}
-
-	public E replaceElement(Node<E> oldNode, E newElement) {
-		E replaceable = (E) oldNode.element();
-		oldNode.setPathCost(newElement);
-		return replaceable;
-	}
-
-	public ListIterator<E> elements() {
-		return elements(root()).listIterator();
-	}
-	
-	private ArrayList<E> elements(Node<E> node){
-		ArrayList<E> result = new ArrayList<E>();
-		result.add((E) node.element());
-		Iterator<Node<E>> children = children(node);
-		while(children.hasNext())
-			result.addAll(elements((Node<E>) children.next()));
-		return result;
-	}
-	
-	public ListIterator positions(){
-		return positions(root()).listIterator();
-	}
-
-	private ArrayList<Node<E>> positions(Node<E> node) {
+	public ArrayList<Node<E>> positions(Node<E> node) {
 		ArrayList<Node<E>> result = new ArrayList<Node<E>>();
 		result.add(node);
 		Iterator<Node<E>> children = children(node);
@@ -101,10 +67,9 @@ public class Tree<E> implements TreeADT<E> {
 		return count(root) == 1;
 	}
 	
-	
 	public String preOrder(Node<E> node){
 		String result = "";
-		result += node.element();
+		result += node.getValue();
 		if(isInternal(node))
 			for(Node<E> child: node.getChildren())
 				result += "(" + preOrder(child) + ")";
@@ -112,23 +77,18 @@ public class Tree<E> implements TreeADT<E> {
 		return result;
 	}
 	
-	
 	public String postOrder(Node<E> node){
 		String result = "";
 		if(isInternal(node))
 			for(Node<E> child: node.getChildren())
 				result += ("(" + postOrder(child) + ")");
 				
-		return result += node.element();
+		return result += node.getValue();
 	}
 	
-	
-	
-
 	public ArrayList<Node<E>> bfSearch(Node<E> node){
 		return bfSearch(node, new ArrayList<Node<E>>());
 	}
-
 
 	private ArrayList<Node<E>> bfSearch(Node<E> node, ArrayList<Node<E>> result){
 		result.add(node);
@@ -140,8 +100,6 @@ public class Tree<E> implements TreeADT<E> {
 		return result;
 	}
 	
-
-	
 	private int count(Node<E> root){
 		int n = 0;
 		if(isInternal(root)){
@@ -150,7 +108,4 @@ public class Tree<E> implements TreeADT<E> {
 		}
 		return n+1;
 	}
-
-
-
 }

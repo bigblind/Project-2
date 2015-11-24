@@ -18,7 +18,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import com.gipf.client.game.Game;
+import com.gipf.client.offline.logic.Game;
 import com.gipf.client.resource.ResourceLoader;
 import com.gipf.client.utils.Point;
 import com.project.client.base.Controller;
@@ -77,7 +77,7 @@ public class GamePanel extends JPanel implements ComponentListener {
 		for (int j = 0; j < 5; j++) {
 			for (int i = 0; i < 5 + j; i++) {
 				BoardButton button = new BoardButton();
-//				button.setBorder(BorderFactory.createEmptyBorder());
+				button.setBorder(BorderFactory.createEmptyBorder());
 				button.setName(Integer.toString(i) + Integer.toString(j));
 				button.setContentAreaFilled(false);
 				if (i == 0 || j == 0 || j == 8 || i == 8) button.setIsOuterDot(true);
@@ -91,7 +91,7 @@ public class GamePanel extends JPanel implements ComponentListener {
 		for (int j = 1; j < 5; j++) {
 			for (int i = j; i < 9; i++) {
 				BoardButton button = new BoardButton();
-//				button.setBorder(BorderFactory.createEmptyBorder());
+				button.setBorder(BorderFactory.createEmptyBorder());
 				button.setName(Integer.toString(i) + Integer.toString(4 + j));
 				button.setContentAreaFilled(false);
 				if (i == 0 || j == 0 || j == 4 || i == 8) button.setIsOuterDot(true);

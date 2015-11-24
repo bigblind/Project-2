@@ -1,0 +1,43 @@
+package com.gipf.client.player.bot.algorithm;
+
+import java.util.ArrayList;
+
+import com.gipf.client.game.player.Player;
+import com.gipf.client.offline.logic.Board;
+import com.gipf.client.player.bot.evaluation.EvaluationFunction;
+import com.gipf.client.player.bot.generator.BoardState;
+import com.gipf.client.utils.Point;
+
+public class QuickGreedyAlgorithm extends Algorithm {
+
+	public QuickGreedyAlgorithm(EvaluationFunction function) {
+		super(function);
+	}
+
+	public Point[] returnBestMove(Board board, Player player) {
+		ArrayList<BoardState> states = this.generator.generateStates(board, player);
+		
+		int bestIndex = 0;
+		int bestValue = -1;
+		
+		if (player.getStoneColor() == Board.WHITE_VALUE) {
+			for (int i = 0; i < states.size(); i++) {
+				int value = this.evaluator.evaluate(states.get(i).getBoard(), this.game.getPlayerOne().getStoneAccount(), this.game.getPlayerTwo().getStoneAccount());
+				if (value > bestValue) {
+					bestValue = value;
+					bestIndex = i;
+				}
+			}
+		} else {
+			for (int i = 0; i < states.size(); i++) {
+				int value = -this.evaluator.evaluate(states.get(i).getBoard(), this.game.getPlayerOne().getStoneAccount(), this.game.getPlayerTwo().getStoneAccount());
+				if (value > bestValue) {
+					bestValue = value;
+					bestIndex = i;
+				}
+			}
+		}
+		
+		return new Point[] { states.get(bestIndex).getFromPoint(), states.get(bestIndex).getToPoint() };
+	}
+}

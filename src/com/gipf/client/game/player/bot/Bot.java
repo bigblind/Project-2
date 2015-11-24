@@ -2,48 +2,35 @@ package com.gipf.client.game.player.bot;
 
 import com.gipf.client.game.GameController;
 import com.gipf.client.game.player.Player;
+import com.gipf.client.player.bot.algorithm.Algorithm;
+import com.gipf.client.player.bot.evaluation.EvaluationFunction;
 
 public class Bot extends Player {
 
 	private GameController controller;
-
+	private Algorithm algorithm;
+	
+	public Bot(Algorithm algorithm) {
+		this.algorithm = algorithm;
+	}
+	
 	public void update(String state) {
-		System.out.println(state);
-		Thread bot = new Thread() {
-			public void run() {
-				long start = System.currentTimeMillis();
-
-				// computation for move
-				//				controller.getController().getGamePanel().getButtons()[0][0].doClick();
-				//				controller.getController().getGamePanel().getButtons()[1][1].doClick();
-
-				long end = System.currentTimeMillis();
-
-				
-				// used for making bots move visible
-				if (end - start < 1000) {
-					try {
-						Thread.sleep(end - start);
-					} catch (InterruptedException e) {
-						Thread.currentThread().interrupt();
-					}
-				}
-
-				// do move
-
-				// ending thread
-				try {
-					this.join();
-					Thread.currentThread().interrupt();
-				} catch (InterruptedException e) {
-					Thread.currentThread().interrupt();
-				}
-			}
-		};
-		bot.start();
+		// TODO think about remove state
+		BotThread botThread = new BotThread(this, controller, algorithm);
+		botThread.start();
 	}
 
 	public void setController(GameController controller) {
 		this.controller = controller;
+		this.algorithm.setGame(controller.getController().getGame());
+	}
+	
+	public void setAlgorithm(Algorithm algorithm) {
+		algorithm.setGame(this.algorithm.getGame());
+		this.algorithm = algorithm;
+	}
+	
+	public void setEvaluationFunction(EvaluationFunction function) {
+		this.algorithm.setEvaluationFunction(function);
 	}
 }

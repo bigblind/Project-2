@@ -8,13 +8,13 @@ import javax.swing.JPanel;
 
 import com.gipf.client.connector.Connector;
 import com.gipf.client.connector.LocalConnector;
-import com.gipf.client.game.Game;
 import com.gipf.client.game.GameController;
 import com.gipf.client.game.player.Player;
 import com.gipf.client.game.player.bot.Bot;
+import com.gipf.client.offline.logic.Board;
+import com.gipf.client.offline.logic.Game;
 import com.gipf.client.offline.logic.LocalServer;
 import com.gipf.client.resource.ResourceLoader;
-import com.project.client.board.Board;
 import com.project.client.visuals.board.GamePanel;
 import com.project.client.visuals.frame.Frame;
 import com.project.client.visuals.menu.GameModeMenuPageA;
@@ -127,11 +127,12 @@ public class Controller {
 		this.setConnector(new LocalConnector(this.gameController, server));
 		this.ghostController.setConnector(ghostConnector);
 
-		opponent.setController(this.ghostController.getGameController());
 		this.ghostController.getGameController().setPlayer(opponent, true);
 		
 		server.setConnectors(this.connector, ghostConnector);
 		server.start();
+
+		opponent.setController(this.ghostController.getGameController());
 
 		this.runningLocalGame = true;
 		this.runningBotGame = true;
