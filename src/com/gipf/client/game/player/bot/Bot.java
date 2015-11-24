@@ -13,11 +13,14 @@ public class Bot extends Player {
 			public void run() {
 				long start = System.currentTimeMillis();
 
+				// computation for move
 				//				controller.getController().getGamePanel().getButtons()[0][0].doClick();
 				//				controller.getController().getGamePanel().getButtons()[1][1].doClick();
 
 				long end = System.currentTimeMillis();
 
+				
+				// used for making bots move visible
 				if (end - start < 1000) {
 					try {
 						Thread.sleep(end - start);
@@ -28,6 +31,7 @@ public class Bot extends Player {
 
 				// do move
 
+				// ending thread
 				try {
 					this.join();
 					Thread.currentThread().interrupt();
