@@ -32,7 +32,8 @@ public class MiniMax<E> {
 //			bestMove = null;
 			bestNode = null;
 			for(Node<E> node: nodeList){				
-				Node<E> tmpNode = miniMax(tree.bfSearch(node), depth-1, false);
+				Node<E> tmpNode = miniMax(node.getChildren(), depth-1, false);
+//				Node<E> tmpNode = miniMax(tree.bfSearch(node), depth-1, false);
 				if(node.getEvalValue() > bestValue){
 					bestValue = node.getEvalValue();
 					bestNode = tmpNode;
@@ -48,7 +49,8 @@ public class MiniMax<E> {
 			bestNode = null;
 			for(Node<E> node: nodeList){
 //				PlayerEvent tmpEvent = miniMax(tree.bfSearch(node), depth-1, true);
-				Node<E> tmpNode = miniMax(tree.bfSearch(node), depth-1, true);
+				Node<E> tmpNode = miniMax(node.getChildren(), depth-1, true);
+//				Node<E> tmpNode = miniMax(tree.bfSearch(node), depth-1, true);
 				if(node.getEvalValue() < bestValue){
 					bestValue = node.getEvalValue();
 //					bestMove = node.getPlayerEvent();
