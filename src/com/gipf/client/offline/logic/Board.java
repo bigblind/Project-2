@@ -208,7 +208,7 @@ public class Board {
 				} else if (((prevValue == Board.BLACK_VALUE) || (prevValue == Board.GIPF_BLACK_VALUE)) && ((this.grid[i][j] == Board.BLACK_VALUE) || (this.grid[i][j] == Board.GIPF_BLACK_VALUE))) {
 					counter++;
 				} else {
-					if (counter >= 4) {
+					if (counter == 4) {
 						lineStartX = i;
 						lineEndX = i;
 
@@ -235,7 +235,7 @@ public class Board {
 				} else if (((prevValue == Board.BLACK_VALUE) || (prevValue == Board.GIPF_BLACK_VALUE)) && ((this.grid[i][j] == Board.BLACK_VALUE) || (this.grid[i][j] == Board.GIPF_BLACK_VALUE))) {
 					counter++;
 				} else {
-					if (counter >= 4) {
+					if (counter == 4) {
 						lineStartX = i - counter;
 						lineEndX = i - 1;
 
@@ -262,7 +262,7 @@ public class Board {
 				} else if (((prevValue == Board.BLACK_VALUE) || (prevValue == Board.GIPF_BLACK_VALUE)) && ((this.grid[l + 1][4 - k + l] == Board.BLACK_VALUE) || (this.grid[l + 1][4 - k + l] == Board.GIPF_BLACK_VALUE))) {
 					counter++;
 				} else {
-					if (counter >= 4) {
+					if (counter == 4) {
 						lineStartX = 1 + l - counter;
 						lineEndX = l;
 

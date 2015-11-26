@@ -141,6 +141,8 @@ public class Controller {
 		ghostController2.getGame().setGameLogic(server.getGameLogic());
 		one.setController(this.ghostController.getGameController());
 		two.setController(ghostController2.getGameController());
+
+		server.start();
 		
 		this.runningBotGame = true;
 		this.runningBotGame = true;

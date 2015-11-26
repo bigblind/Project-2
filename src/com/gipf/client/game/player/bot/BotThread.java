@@ -25,9 +25,9 @@ public class BotThread extends Thread {
 		long end = System.currentTimeMillis();
 
 		// used for making bots move visible
-		if (end - start < 1000) {
+		if (end - start < 500) {
 			try {
-				Thread.sleep(1000 - (end - start));
+				Thread.sleep(500 - (end - start));
 			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt();
 			}
