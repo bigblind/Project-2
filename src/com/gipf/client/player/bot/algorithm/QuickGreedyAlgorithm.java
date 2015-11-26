@@ -6,6 +6,7 @@ import com.gipf.client.game.player.Player;
 import com.gipf.client.offline.logic.Board;
 import com.gipf.client.player.bot.evaluation.EvaluationFunction;
 import com.gipf.client.player.bot.generator.BoardState;
+import com.gipf.client.player.bot.generator.GameState;
 import com.gipf.client.utils.Point;
 
 public class QuickGreedyAlgorithm extends Algorithm {
@@ -14,8 +15,8 @@ public class QuickGreedyAlgorithm extends Algorithm {
 		super(function);
 	}
 
-	public Point[] returnBestMove(Board board, Player player) {
-		ArrayList<BoardState> states = this.generator.generateStates(board, player, this.game.getGameLogic());
+	public Point[] returnBestMove(GameState gameState, Player player) {
+		ArrayList<BoardState> states = this.generator.generateStates(gameState.getGame().getBoard(), player, this.game.getGameLogic());
 		
 		int bestIndex = 0;
 		int bestValue = -1;

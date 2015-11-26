@@ -86,7 +86,7 @@ public class MainMenuPage extends MenuPage {
 		});
 		this.arena.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				controller.createArenaGame(new LocalServer(null, null, "basic"), new Bot(new QuickGreedyAlgorithm(new EvaluationFunctionA())), new Bot(new QuickGreedyAlgorithm(new EvaluationFunctionA())));
+				controller.createArenaGame(new LocalServer(null, null, "standard"), new Bot(new QuickGreedyAlgorithm(new EvaluationFunctionA(0.1, 0.1, 0.1, 0.1))), new Bot(new QuickGreedyAlgorithm(new EvaluationFunctionA(0.5, 0.1, 0.6, 0.3))));
 			}
 		});
 		this.exit.addActionListener(new ActionListener() {

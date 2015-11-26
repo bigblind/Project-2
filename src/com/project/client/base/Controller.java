@@ -139,8 +139,8 @@ public class Controller {
 		
 		ghostController.getGame().setGameLogic(server.getGameLogic());
 		ghostController2.getGame().setGameLogic(server.getGameLogic());
-		one.setController(this.ghostController.getGameController());
-		two.setController(ghostController2.getGameController());
+		one.setGameController(this.ghostController.getGameController());
+		two.setGameController(ghostController2.getGameController());
 
 		server.start();
 		
@@ -166,7 +166,7 @@ public class Controller {
 		server.start();
 
 		ghostController.getGame().setGameLogic(server.getGameLogic());
-		opponent.setController(this.ghostController.getGameController());
+		opponent.setGameController(this.ghostController.getGameController());
 		
 		this.runningLocalGame = true;
 		this.runningBotGame = true;
