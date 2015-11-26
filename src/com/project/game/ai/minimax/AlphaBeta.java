@@ -14,6 +14,7 @@ public class AlphaBeta<E> extends MiniMax<E> {
 		super(game, tree);
 	}
 
+	
 	public Node<E> alphaBeta(ArrayList<Node<E>> nodeList, int depth) {
 		Node<E> alpha = new Node<E>(Integer.MIN_VALUE);
 		Node<E> beta = new Node<E>(Integer.MAX_VALUE);
@@ -21,6 +22,7 @@ public class AlphaBeta<E> extends MiniMax<E> {
 		return minValue(tree.root(), alpha, beta, depth);
 	}
 
+	
 	public Node<E> maxValue(Node<E> node, Node<E> alpha, Node<E> beta, int depth) {
 		if (depth == 0 || tree.isExternal(node))
 			return node;
@@ -45,6 +47,7 @@ public class AlphaBeta<E> extends MiniMax<E> {
 		return alpha;
 	}
 
+	
 	public Node<E> minValue(Node<E> node, Node<E> alpha, Node<E> beta, int depth) {
 		if (depth == 0 || tree.isExternal(node))
 			return node;
