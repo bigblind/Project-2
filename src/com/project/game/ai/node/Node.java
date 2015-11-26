@@ -17,6 +17,16 @@ public class Node<E> implements PositionADT<E>{
 		private ArrayList<Node<E>> children;
 		private Board board;
 		
+		
+		
+		public Node(int evalValue){
+			this.parent = null;
+			this.evalValue = evalValue;
+			this.playerEvent = null;
+			this.board = null;
+			this.children = null;
+		}
+		
 		public Node(Board board){
 			this.parent = null;
 			this.pathCost = null;
