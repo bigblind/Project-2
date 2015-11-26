@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import com.gipf.client.game.player.Player;
 import com.gipf.client.game.player.PlayerEvent;
 import com.gipf.client.utils.Point;
-import com.project.client.board.Board;
 
 public abstract class GameLogic {
 

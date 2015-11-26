@@ -32,11 +32,6 @@ public class EvaluationFunctionA implements EvaluationFunction {
 		int diagonal = (int) (diagonalWeight * diagonal());
 		int lineOf3 = (int) (lineOfThreeWeight * lineOf3(board.getGrid()));
 
-		System.out.println("Count: " + count);
-		System.out.println("Center: " + center);
-		System.out.println("Diagonal: " + diagonal);
-		System.out.println("Line of 3: " + lineOf3);
-
 		boardValue = count + center + diagonal + lineOf3;
 		return boardValue;
 

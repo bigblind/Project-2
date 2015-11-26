@@ -18,37 +18,37 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import com.gipf.client.offline.logic.Board;
 import com.gipf.client.offline.logic.Game;
 import com.gipf.client.resource.ResourceLoader;
 import com.gipf.client.utils.Point;
 import com.project.client.base.Controller;
-import com.project.client.board.Board;
 import com.project.client.visuals.state.MoveStateB;
 import com.project.client.visuals.state.State;
 
 public class GamePanel extends JPanel implements ComponentListener {
 
 	private static final long serialVersionUID = 8555591759361318869L;
-	
+
 	private static final boolean SHOW_NUMBERS = true;
 
 	private Point[][][] connectedLocations;
 	private BoardButton[][] buttons;
 	private Point[][] coordinates;
 	private JButton checkButton;
-	
+
 	private State state;
 
 	private int distance;
 	private int yOffset = 10;
 	private int tileSize;
-	
+
 	private boolean initialised;
-	
+
 	private Game game;
-	
+
 	private Controller controller;
-	
+
 	public GamePanel(Game game, Controller controller) {
 		this.setLayout(null);
 		this.connectedLocations = new Point[9][9][];
@@ -56,15 +56,15 @@ public class GamePanel extends JPanel implements ComponentListener {
 		this.coordinates = new Point[9][9];
 		this.game = game;
 		this.controller = controller;
-		
+
 		this.addComponentListener(this);
-		
+
 		this.initButtons();
 		this.initConnections();
 		this.initialised = true;
 		this.resize();
 	}
-	
+
 	private void initButtons() {
 		this.checkButton = new JButton();
 		this.checkButton.setIcon(new ImageIcon(ResourceLoader.CHECK_ICON));
@@ -73,7 +73,7 @@ public class GamePanel extends JPanel implements ComponentListener {
 		this.checkButton.setBorder(BorderFactory.createEmptyBorder());
 		this.checkButton.setPreferredSize(new Dimension(48, 48));
 		this.checkButton.setVisible(false);
-		
+
 		for (int j = 0; j < 5; j++) {
 			for (int i = 0; i < 5 + j; i++) {
 				BoardButton button = new BoardButton();
@@ -113,7 +113,7 @@ public class GamePanel extends JPanel implements ComponentListener {
 				this.add(this.buttons[i][4 + j]);
 			}
 		}
-		
+
 		this.add(checkButton);
 	}
 
@@ -188,13 +188,13 @@ public class GamePanel extends JPanel implements ComponentListener {
 			this.connectedLocations[i][4 + i] = p;
 		}
 	}
-	
+
 	public void paintComponent(Graphics g2) {
 		super.paintComponent(g2);
 		Graphics2D g = (Graphics2D) g2;
 
 		if (!initialised) return;
-		
+
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
 
@@ -292,7 +292,7 @@ public class GamePanel extends JPanel implements ComponentListener {
 			}
 		}
 	}
-	
+
 	private void drawStones(Graphics2D g) {
 		for (int j = 0; j < 5; j++) {
 			for (int i = 0; i < 5 + j; i++) {
@@ -345,7 +345,7 @@ public class GamePanel extends JPanel implements ComponentListener {
 		}
 		g.drawString(Integer.toString(p2s), this.coordinates[8][8].getX() + 3 * xDifference, this.getHeight() / 2);
 	}
-	
+
 	public void componentHidden(ComponentEvent e) {
 
 	}
@@ -393,36 +393,40 @@ public class GamePanel extends JPanel implements ComponentListener {
 	}
 
 	public void componentShown(ComponentEvent e) {
-		
+
 	}
-	
+
 	public void setState(State state) {
 		this.state = state;
 		state.execute();
 		this.controller.gamePanelStateChange(state);
 	}
-	
+
 	public BoardButton[][] getButtons() {
 		return this.buttons;
 	}
-	
+
 	public Controller getController() {
 		return this.controller;
 	}
-	
+
 	public Point[][][] getConnections() {
 		return this.connectedLocations;
 	}
-	
+
 	public JButton getCheckButton() {
 		return this.checkButton;
 	}
-	
+
 	public void setGame(Game game) {
 		this.game = game;
 	}
 
 	public Game getGame() {
 		return this.game;
+	}
+
+	public State getState() {
+		return this.state;
 	}
 }

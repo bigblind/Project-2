@@ -3,8 +3,8 @@ package com.project.client.visuals.state;
 import java.awt.Image;
 
 import com.gipf.client.game.GameController;
+import com.gipf.client.offline.logic.Board;
 import com.gipf.client.resource.ResourceLoader;
-import com.project.client.board.Board;
 import com.project.client.visuals.board.BoardButton;
 import com.project.client.visuals.board.GamePanel;
 

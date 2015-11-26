@@ -2,11 +2,11 @@ package com.gipf.client.game;
 
 import com.gipf.client.connector.Connector;
 import com.gipf.client.game.player.Player;
+import com.gipf.client.offline.logic.Board;
 import com.gipf.client.offline.logic.Game;
+import com.gipf.client.offline.logic.Row;
 import com.gipf.client.utils.Point;
 import com.project.client.base.Controller;
-import com.project.client.board.Board;
-import com.project.client.board.Row;
 import com.project.client.visuals.state.MoveStateA;
 import com.project.client.visuals.state.RemoveState;
 import com.project.client.visuals.state.WaitState;
@@ -128,7 +128,6 @@ public class GameController {
 	}
 
 	private Row readRow(String rowString) {
-		System.out.println(rowString);
 		Point from = this.readPoint(rowString.split("from: ")[1].split("\\]")[0]);
 		Point end = this.readPoint(rowString.split("to: ")[1].split("\\]")[0]);
 
