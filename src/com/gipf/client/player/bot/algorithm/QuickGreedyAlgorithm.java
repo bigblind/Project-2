@@ -15,7 +15,7 @@ public class QuickGreedyAlgorithm extends Algorithm {
 	}
 
 	public Point[] returnBestMove(Board board, Player player) {
-		ArrayList<BoardState> states = this.generator.generateStates(board, player);
+		ArrayList<BoardState> states = this.generator.generateStates(board, player, this.game.getGameLogic());
 		
 		int bestIndex = 0;
 		int bestValue = -1;

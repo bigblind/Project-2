@@ -118,6 +118,37 @@ public class Controller {
 		this.runningLocalGame = true;
 	}
 	
+	public void createArenaGame(LocalServer server, Bot one, Bot two) {
+		this.ghostController = new Controller();
+		this.ghostController.ghostInit();
+		
+		Controller ghostController2 = new Controller();
+		ghostController2.ghostInit();
+		
+		LocalConnector ghostConnector1 = new LocalConnector(this.ghostController.getGameController(), server);
+		LocalConnector ghostConnector2 = new LocalConnector(ghostController2.getGameController(), server);
+		
+		this.ghostController.setConnector(ghostConnector1);
+		ghostController2.setConnector(ghostConnector2);
+		
+		this.ghostController.getGameController().setPlayer(one, true);
+		ghostController2.getGameController().setPlayer(two, true);
+		
+		server.setConnectors(ghostConnector1, ghostConnector2);
+		server.start();
+		
+		ghostController.getGame().setGameLogic(server.getGameLogic());
+		ghostController2.getGame().setGameLogic(server.getGameLogic());
+		one.setController(this.ghostController.getGameController());
+		two.setController(ghostController2.getGameController());
+		
+		this.runningBotGame = true;
+		this.runningBotGame = true;
+		
+		this.showPanel(ghostController.getGamePanel());
+		this.frame.pack();
+	}
+	
 	public void createLocalBotGame(LocalServer server, Bot opponent) {
 		this.ghostController = new Controller();
 		this.ghostController.ghostInit();
@@ -132,8 +163,9 @@ public class Controller {
 		server.setConnectors(this.connector, ghostConnector);
 		server.start();
 
+		ghostController.getGame().setGameLogic(server.getGameLogic());
 		opponent.setController(this.ghostController.getGameController());
-
+		
 		this.runningLocalGame = true;
 		this.runningBotGame = true;
 	}

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.gipf.client.game.player.Player;
 import com.gipf.client.offline.logic.Board;
+import com.gipf.client.offline.logic.GameLogic;
 import com.gipf.client.utils.Point;
 
 public class StateGenerator {
@@ -12,9 +13,8 @@ public class StateGenerator {
 
 	}
 
-	public ArrayList<BoardState> generateStates(Board board, Player player) {
+	public ArrayList<BoardState> generateStates(Board board, Player player, GameLogic logic) { //TODO use to do the moves
 		ArrayList<BoardState> states = new ArrayList<BoardState>();
-
 		Point from;
 		Point to1;
 		Point to2;

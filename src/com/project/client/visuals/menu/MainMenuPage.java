@@ -15,6 +15,10 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
+import com.gipf.client.game.player.bot.Bot;
+import com.gipf.client.offline.logic.LocalServer;
+import com.gipf.client.player.bot.algorithm.QuickGreedyAlgorithm;
+import com.gipf.client.player.bot.evaluation.EvaluationFunctionA;
 import com.project.client.base.Controller;
 
 public class MainMenuPage extends MenuPage {
@@ -23,15 +27,15 @@ public class MainMenuPage extends MenuPage {
 
 	private JButton singlePlayer, multiPlayer, arena, exit;
 	private JLabel title;
-	
+
 	public MainMenuPage(final Controller controller) {
 		super(controller);
-		
+
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		
+
 		final Font buttonFont = new Font("Segoe UI", 0, 32);
 		final Dimension buttonDimension = new Dimension(400, 80);
-		
+
 		this.title = new JLabel("Project Gipf");
 		this.title.setOpaque(false);
 		this.title.setHorizontalAlignment(JLabel.CENTER);
@@ -69,7 +73,7 @@ public class MainMenuPage extends MenuPage {
 		this.exit.setPreferredSize(buttonDimension);
 		this.exit.setMinimumSize(buttonDimension);
 		this.exit.setMaximumSize(buttonDimension);
-		
+
 		this.singlePlayer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controller.showMenuPage(2);
@@ -80,12 +84,17 @@ public class MainMenuPage extends MenuPage {
 				controller.showMenuPage(1);
 			}
 		});
+		this.arena.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.createArenaGame(new LocalServer(null, null, "basic"), new Bot(new QuickGreedyAlgorithm(new EvaluationFunctionA())), new Bot(new QuickGreedyAlgorithm(new EvaluationFunctionA())));
+			}
+		});
 		this.exit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
 			}
 		});
-		
+
 		Box box = Box.createVerticalBox();
 		box.add(Box.createVerticalStrut(50));
 		box.add(this.title);
@@ -103,10 +112,10 @@ public class MainMenuPage extends MenuPage {
 		box.add(Box.createVerticalGlue());
 		box.add(this.exit);
 		box.add(Box.createVerticalStrut(125));
-		
+
 		this.add(box);
 	}
-	
+
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;

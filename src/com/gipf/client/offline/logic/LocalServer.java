@@ -167,4 +167,8 @@ public class LocalServer {
 		if (c1.equals(connector)) this.clientInput(string, 1);
 		else this.clientInput(string, 2);
 	}
+	
+	public GameLogic getGameLogic() {
+		return this.logic;
+	}
 }

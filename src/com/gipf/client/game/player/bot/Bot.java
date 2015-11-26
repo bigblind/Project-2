@@ -16,7 +16,7 @@ public class Bot extends Player {
 	
 	public void update(String state) {
 		// TODO think about remove state
-		BotThread botThread = new BotThread(this, controller, algorithm);
+		BotThread botThread = new BotThread(this, this.controller, this.algorithm);
 		botThread.start();
 	}
 
