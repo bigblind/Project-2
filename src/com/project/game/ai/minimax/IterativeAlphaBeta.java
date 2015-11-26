@@ -6,15 +6,15 @@ import com.gipf.client.game.Game;
 import com.project.game.ai.node.Node;
 import com.project.game.ai.tree.Tree;
 
-public class IterativeAlphaBeta<E> extends AlphaBeta<E>{
+public class IterativeAlphaBeta extends AlphaBeta{
 
-	public IterativeAlphaBeta(Game game, Tree<E> tree) {
+	public IterativeAlphaBeta(Game game, Tree tree) {
 		super(game, tree);
 	}
 
 	
-	public Node<E> iterate(int depth){
-		Node<E> result = tree.root();
+	public Node iterate(int depth){
+		Node result = tree.root();
 		
 		for(int x = depth; x > 0; x--){
 			result = this.alphaBeta(result, x);
@@ -24,9 +24,9 @@ public class IterativeAlphaBeta<E> extends AlphaBeta<E>{
 	}
 	
 	
-	private Node<E> alphaBeta(Node<E> node, int depth){
-		Node<E> alpha = new Node<E>(Integer.MIN_VALUE);
-		Node<E> beta = new Node<E>(Integer.MAX_VALUE);
+	private Node alphaBeta(Node node, int depth){
+		Node alpha = new Node(Integer.MIN_VALUE);
+		Node beta = new Node(Integer.MAX_VALUE);
 
 		return minValue(node, alpha, beta, depth);
 	}

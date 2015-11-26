@@ -9,20 +9,20 @@ import com.project.game.ai.node.Node;
 import com.project.game.ai.tree.Tree;
 
 
-public class MiniMax<E> {
+public class MiniMax {
 	protected Game game;
-	protected Tree<E> tree;
+	protected Tree tree;
 	
-	public MiniMax(Game game, Tree<E> tree){
+	public MiniMax(Game game, Tree tree){
 		this.game = game;
 		this.tree = tree;
 	}
 	
 	
-	public Node<E> miniMax(ArrayList<Node<E>> nodeList, int depth, boolean turnOfPlayer){
+	public Node miniMax(ArrayList<Node> nodeList, int depth, boolean turnOfPlayer){
 		int bestValue;
 //		PlayerEvent bestMove;
-		Node<E> bestNode;
+		Node bestNode;
 		
 		if(depth == 0 || game.getGameLogic().checkForWin())
 			return null;
@@ -31,11 +31,11 @@ public class MiniMax<E> {
 			bestValue = Integer.MIN_VALUE;
 //			bestMove = null;
 			bestNode = null;
-			for(Node<E> node: nodeList){				
-				Node<E> tmpNode = miniMax(node.getChildren(), depth-1, false);
-//				Node<E> tmpNode = miniMax(tree.bfSearch(node), depth-1, false);
-				if(node.getEvalValue() > bestValue){
-					bestValue = node.getEvalValue();
+			for(Node node: nodeList){				
+				Node tmpNode = miniMax(node.getChildren(), depth-1, false);
+//				Node tmpNode = miniMax(tree.bfSearch(node), depth-1, false);
+				if(node.element() > bestValue){
+					bestValue = node.element();
 					bestNode = tmpNode;
 				}
 			}
@@ -47,12 +47,12 @@ public class MiniMax<E> {
 			bestValue = Integer.MAX_VALUE;
 //			bestMove = null;
 			bestNode = null;
-			for(Node<E> node: nodeList){
+			for(Node node: nodeList){
 //				PlayerEvent tmpEvent = miniMax(tree.bfSearch(node), depth-1, true);
-				Node<E> tmpNode = miniMax(node.getChildren(), depth-1, true);
-//				Node<E> tmpNode = miniMax(tree.bfSearch(node), depth-1, true);
-				if(node.getEvalValue() < bestValue){
-					bestValue = node.getEvalValue();
+				Node tmpNode = miniMax(node.getChildren(), depth-1, true);
+//				Node tmpNode = miniMax(tree.bfSearch(node), depth-1, true);
+				if(node.element() < bestValue){
+					bestValue = node.element();
 //					bestMove = node.getPlayerEvent();
 					bestNode = tmpNode;
 				}
