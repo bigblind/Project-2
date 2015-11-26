@@ -15,7 +15,7 @@ public class AlphaBeta<E> extends MiniMax<E> {
 	}
 
 	
-	public Node<E> alphaBeta(ArrayList<Node<E>> nodeList, int depth) {
+	public Node<E> alphaBeta(int depth) {
 		Node<E> alpha = new Node<E>(Integer.MIN_VALUE);
 		Node<E> beta = new Node<E>(Integer.MAX_VALUE);
 
