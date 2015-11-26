@@ -89,7 +89,7 @@ public class EvaluationFunctionA implements EvaluationFunction {
 				} else {
 					if (counter == 3) {
 						if (prevValue == Board.WHITE_VALUE) lineOf3Value += lineOf3Bonus;
-						else if (prevValue == Board.BLACK_VALUE) lineOf3Value -= Board.WHITE_VALUE;
+						else if (prevValue == Board.BLACK_VALUE) lineOf3Value -= lineOf3Bonus;
 					}
 
 					prevValue = this.grid[i][j];
