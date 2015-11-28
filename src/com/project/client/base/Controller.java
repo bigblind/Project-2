@@ -17,8 +17,9 @@ import com.gipf.client.offline.logic.LocalServer;
 import com.gipf.client.resource.ResourceLoader;
 import com.project.client.visuals.board.GamePanel;
 import com.project.client.visuals.frame.Frame;
-import com.project.client.visuals.menu.GameModeMenuPageA;
-import com.project.client.visuals.menu.GameModeMenuPageB;
+import com.project.client.visuals.menu.GameModeMenuPageArena;
+import com.project.client.visuals.menu.GameModeMenuPageMulti;
+import com.project.client.visuals.menu.GameModeMenuPageSingle;
 import com.project.client.visuals.menu.MainMenuPage;
 import com.project.client.visuals.menu.MenuPage;
 import com.project.client.visuals.menu.MultiplayerMenuPage;
@@ -77,8 +78,9 @@ public class Controller {
 	private void initMenuPages() {
 		this.menuPages.add(new MainMenuPage(this));
 		this.menuPages.add(new MultiplayerMenuPage(this));
-		this.menuPages.add(new GameModeMenuPageA(this));
-		this.menuPages.add(new GameModeMenuPageB(this));
+		this.menuPages.add(new GameModeMenuPageSingle(this));
+		this.menuPages.add(new GameModeMenuPageMulti(this));
+		this.menuPages.add(new GameModeMenuPageArena(this));
 	}
 
 	public void showMenuPage(int index) {
@@ -149,6 +151,8 @@ public class Controller {
 		
 		this.showPanel(ghostController.getGamePanel());
 		this.frame.pack();
+		
+		this.ghostController.getGameController().input("/s move");
 	}
 	
 	public void createLocalBotGame(LocalServer server, Bot opponent) {

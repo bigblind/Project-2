@@ -18,14 +18,14 @@ import javax.swing.JLabel;
 import com.gipf.client.offline.logic.LocalServer;
 import com.project.client.base.Controller;
 
-public class GameModeMenuPageB extends MenuPage {
+public class GameModeMenuPageMulti extends MenuPage {
 
 	private static final long serialVersionUID = -3991355653905765625L;
 
 	private JButton basic, standard, back;
 	private JLabel title;
 
-	public GameModeMenuPageB(final Controller controller) {
+	public GameModeMenuPageMulti(final Controller controller) {
 		super(controller);
 
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));

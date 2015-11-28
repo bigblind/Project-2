@@ -26,13 +26,13 @@ public class BotMoveThread extends Thread {
 		long end = System.currentTimeMillis();
 
 //		 used for making bots move visible
-		if (end - start < 800) {
-			try {
-				Thread.sleep(800 - (end - start));
-			} catch (InterruptedException e) {
-				Thread.currentThread().interrupt();
-			}
-		}
+//		if (end - start < 500) {
+//			try {
+//				Thread.sleep(500 - (end - start));
+//			} catch (InterruptedException e) {
+//				Thread.currentThread().interrupt();
+//			}
+//		}
 
 		// do move
 		this.gameController.getController().getGamePanel().getButtons()[move[0].getX()][move[0].getY()].doClick();

@@ -15,10 +15,6 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
-import com.gipf.client.game.player.bot.Bot;
-import com.gipf.client.offline.logic.LocalServer;
-import com.gipf.client.player.bot.algorithm.QuickGreedyAlgorithm;
-import com.gipf.client.player.bot.evaluation.EvaluationFunctionA;
 import com.project.client.base.Controller;
 
 public class MainMenuPage extends MenuPage {
@@ -86,7 +82,7 @@ public class MainMenuPage extends MenuPage {
 		});
 		this.arena.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				controller.createArenaGame(new LocalServer(null, null, "standard"), new Bot(new QuickGreedyAlgorithm(new EvaluationFunctionA(0.1, 0.1, 0.1, 0.1))), new Bot(new QuickGreedyAlgorithm(new EvaluationFunctionA(0.5, 0.1, 0.6, 0.3))));
+				controller.showMenuPage(4);
 			}
 		});
 		this.exit.addActionListener(new ActionListener() {
