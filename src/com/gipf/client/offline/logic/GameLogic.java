@@ -105,12 +105,21 @@ public abstract class GameLogic {
 		} else if (rows.size() > 0) {
 			this.controller.sendGameUpdate();
 			ArrayList<Row> activeRows = rowsForPlayer(this.currentPlayer.getStoneColor(), rows);
-			if (activeRows.size() > 0) {
-				this.emitRowRemovalRequest(new RowRemovalRequestEvent(activeRows));
-				return true;
+			
+			if (activeRows.size() == 1) {
+				Row row = activeRows.get(0);
+				int stones = row.getLength();
+				this.game.getBoard().removeRowAndExtensions(row);
+				this.handleExtensions(row);
+				row.getPlayer().setStoneAccount(row.getPlayer().getStoneAccount() + stones);
 			} else {
-				this.emitRowRemovalRequest(new RowRemovalRequestEvent(rowsForPlayer(this.getDisabledPlayer().getStoneColor(), rows)));
-				return true;
+				if (activeRows.size() > 0) {
+					this.emitRowRemovalRequest(new RowRemovalRequestEvent(activeRows));
+					return true;
+				} else {
+					this.emitRowRemovalRequest(new RowRemovalRequestEvent(rowsForPlayer(this.getDisabledPlayer().getStoneColor(), rows)));
+					return true;
+				}
 			}
 		}
 		return false;

@@ -37,13 +37,12 @@ public class StandardGameLogic extends GameLogic {
 
 	protected Player returnWinner() {
 		if (game.getPlayerOne().getStoneAccount() == 0) return game.getPlayerTwo();
-
 		if (game.getPlayerTwo().getStoneAccount() == 0) return game.getPlayerOne();
 
 		boolean[] containGipfStones = this.game.getBoard().containGipfStones();
 
-		if (!containGipfStones[0]) return this.game.getPlayerOne();
-		else if (!containGipfStones[1]) return this.game.getPlayerTwo();
+		if (!containGipfStones[0]) return this.game.getPlayerTwo();
+		else if (!containGipfStones[1]) return this.game.getPlayerOne();
 
 		return null;
 	}
