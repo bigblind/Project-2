@@ -76,6 +76,7 @@ public class MCTS extends Algorithm{
 		}
 		
 		private double getUCB1(){
+			//To understand this formula, see https://en.wikipedia.org/wiki/Monte_Carlo_tree_search#Exploration_and_exploitation
 			return ((double)this.score / (double)this.visits) + Math.sqrt(2*Math.log(this.parent.visits)/this.visits);
 		}
 		
@@ -87,7 +88,7 @@ public class MCTS extends Algorithm{
 			return child;
 		}
 		
-		public void simulate(){
+		public void simulate(Player activePlayer){
 			int depth = 0;
 			GameState simState = this.state;
 			Player simPlayer = this.player;
@@ -98,6 +99,11 @@ public class MCTS extends Algorithm{
 				simPlayer = getOtherPlayer(simPlayer);
 			}
 			int score = evaluate(simState);
+			//Make sure the score is always positive for the active player (the player for which we're running mcts).
+			if(activePlayer == game.getPlayerTwo()){
+				score = -score;
+			}
+			//TODO: normalize the score to a double between -1 and 1.
 			this.backPropagate(score);
 		}
 		
