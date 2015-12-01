@@ -64,9 +64,11 @@ public class GameController {
 			}
 		} else if (received.startsWith("/g")) {
 			if (received.equals("/g win")) {
+				this.controller.getGamePanel().setState(new WaitState(this.controller.getGamePanel(), this));
 				// this.soundManager.stopPlayBackground();
 				// this.soundManager.winPlay();
 			} else if (received.startsWith("/g lose")) {
+				this.controller.getGamePanel().setState(new WaitState(this.controller.getGamePanel(), this));
 				// this.soundManager.stopPlayBackground();
 				// this.soundManager.losePlay();
 			} else {

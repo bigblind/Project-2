@@ -58,7 +58,6 @@ public class GamePanel extends JPanel implements ComponentListener {
 		this.controller = controller;
 
 		this.addComponentListener(this);
-
 		this.initButtons();
 		this.initConnections();
 		this.initialised = true;

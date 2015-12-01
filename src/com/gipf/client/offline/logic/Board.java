@@ -18,7 +18,7 @@ public class Board {
 	private GameLogic logic;
 
 	public Board() {
-
+		this.grid = new int[9][9];
 	}
 
 	public void setLogic(GameLogic l) {
@@ -168,6 +168,7 @@ public class Board {
 			for (int j = 1; j < this.grid[i].length - 1; j++) {
 				if (this.grid[i][j] == GIPF_WHITE_VALUE) result[0] = true;
 				else if (this.grid[i][j] == GIPF_BLACK_VALUE) result[1] = true;
+				if (result[0] && result[1]) return result;
 			}
 		}
 		return result;

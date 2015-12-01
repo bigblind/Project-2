@@ -30,7 +30,6 @@ public class BotRemoveThread extends Thread {
 		}
 		Row[] rows = state.getRows();
 		
-		
 		long end = System.currentTimeMillis();
 
 		// used for making bots move visible
