@@ -21,14 +21,14 @@ import com.gipf.client.player.bot.algorithm.QuickGreedyAlgorithm;
 import com.gipf.client.player.bot.evaluation.EvaluationFunctionA;
 import com.project.client.base.Controller;
 
-public class GameModeMenuPageA extends MenuPage {
+public class GameModeMenuPageSingle extends MenuPage {
 
 	private static final long serialVersionUID = -3991355653905765625L;
 
 	private JButton basic, standard, back;
 	private JLabel title;
 
-	public GameModeMenuPageA(final Controller controller) {
+	public GameModeMenuPageSingle(final Controller controller) {
 		super(controller);
 
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));

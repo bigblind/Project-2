@@ -29,10 +29,10 @@ public class LocalServer {
 		this.game.setPlayerTwo(new Player(Board.BLACK_VALUE));
 		if (logic.equals("basic")) {
 			this.game.getBoard().basicInit();
-			this.logic = new BasicGameLogic(this.game, this);
+			this.logic = new GameLogic(this.game, this, false);
 		} else {
 			this.game.getBoard().standardInit();
-			this.logic = new StandardGameLogic(this.game, this);
+			this.logic = new GameLogic(this.game, this, true);
 		}
 		this.logic.setCurrentPlayer(this.game.getPlayerOne());
 		this.game.setGameLogic(this.logic);
@@ -162,7 +162,7 @@ public class LocalServer {
 			this.sendToClient("/g lose", 0);
 		}
 	}
-
+	
 	public void receive(String string, LocalConnector connector) {
 		if (c1.equals(connector)) this.clientInput(string, 1);
 		else this.clientInput(string, 2);

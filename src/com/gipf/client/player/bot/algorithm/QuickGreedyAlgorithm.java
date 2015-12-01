@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.gipf.client.game.player.Player;
 import com.gipf.client.offline.logic.Board;
 import com.gipf.client.player.bot.evaluation.EvaluationFunction;
-import com.gipf.client.player.bot.generator.BoardState;
+import com.gipf.client.player.bot.generator.GameState;
 import com.gipf.client.utils.Point;
 
 public class QuickGreedyAlgorithm extends Algorithm {
@@ -14,15 +14,15 @@ public class QuickGreedyAlgorithm extends Algorithm {
 		super(function);
 	}
 
-	public Point[] returnBestMove(Board board, Player player) {
-		ArrayList<BoardState> states = this.generator.generateStates(board, player, this.game.getGameLogic());
+	public Point[] returnBestMove(GameState gameState, Player player) {
+		ArrayList<GameState> states = this.generator.generateStates(gameState, player, this.game.getGameLogic());
 		
 		int bestIndex = 0;
 		int bestValue = -1;
 		
 		if (player.getStoneColor() == Board.WHITE_VALUE) {
 			for (int i = 0; i < states.size(); i++) {
-				int value = this.evaluator.evaluate(states.get(i).getBoard(), this.game.getPlayerOne().getStoneAccount(), this.game.getPlayerTwo().getStoneAccount());
+				int value = this.evaluator.evaluate(states.get(i).getGame().getBoard(), this.game.getPlayerOne().getStoneAccount(), this.game.getPlayerTwo().getStoneAccount());
 				if (value > bestValue) {
 					bestValue = value;
 					bestIndex = i;
@@ -30,7 +30,7 @@ public class QuickGreedyAlgorithm extends Algorithm {
 			}
 		} else {
 			for (int i = 0; i < states.size(); i++) {
-				int value = -this.evaluator.evaluate(states.get(i).getBoard(), this.game.getPlayerOne().getStoneAccount(), this.game.getPlayerTwo().getStoneAccount());
+				int value = -this.evaluator.evaluate(states.get(i).getGame().getBoard(), this.game.getPlayerOne().getStoneAccount(), this.game.getPlayerTwo().getStoneAccount());
 				if (value > bestValue) {
 					bestValue = value;
 					bestIndex = i;

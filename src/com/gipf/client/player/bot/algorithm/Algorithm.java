@@ -1,10 +1,10 @@
 package com.gipf.client.player.bot.algorithm;
 
 import com.gipf.client.game.player.Player;
-import com.gipf.client.offline.logic.Board;
 import com.gipf.client.offline.logic.Game;
 import com.gipf.client.player.bot.evaluation.EvaluationFunction;
 import com.gipf.client.player.bot.evaluation.Evaluator;
+import com.gipf.client.player.bot.generator.GameState;
 import com.gipf.client.player.bot.generator.StateGenerator;
 import com.gipf.client.utils.Point;
 
@@ -23,7 +23,7 @@ public abstract class Algorithm {
 		this.evaluator.setEvaulationFunction(function);
 	}
 	
-	public abstract Point[] returnBestMove(Board board, Player player);
+	public abstract Point[] returnBestMove(GameState gameState, Player player);
 	
 	public void setGame(Game game) {
 		this.game = game;

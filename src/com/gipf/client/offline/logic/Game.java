@@ -7,6 +7,8 @@ public class Game {
 	private GameLogic logic;
 	private Player playerOne, playerTwo;
 	private Board board;
+	
+	private boolean finished;
 
 	public Game() {
 		this.board = new Board();
@@ -62,5 +64,13 @@ public class Game {
 
 	public void setBoard(Board board) {
 		this.board = board;
+	}
+	
+	public void finish() {
+		this.finished = true;
+	}
+	
+	public boolean isFinished() {
+		return this.finished;
 	}
 }

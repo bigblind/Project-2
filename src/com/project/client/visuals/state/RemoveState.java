@@ -8,9 +8,9 @@ import java.awt.event.MouseListener;
 
 import com.gipf.client.game.GameController;
 import com.gipf.client.offline.logic.Board;
+import com.gipf.client.offline.logic.Row;
 import com.gipf.client.resource.ResourceLoader;
 import com.gipf.client.utils.Point;
-import com.project.client.board.Row;
 import com.project.client.visuals.board.GamePanel;
 
 public class RemoveState extends State {
@@ -59,7 +59,6 @@ public class RemoveState extends State {
 						}
 						
 					} else {
-						System.out.println("basic row has gipf");
 						for (int i = 0; i < rowPoints[activeInRow[0]].length; i++) {
 							buttons[rowPoints[activeInRow[0]][i].getX()][rowPoints[activeInRow[0]][i].getY()].setDraw(false);
 						}
@@ -96,7 +95,6 @@ public class RemoveState extends State {
 						}
 						
 					} else {
-						System.out.println("basic row has gipf");
 						for (int i = 0; i < rowPoints[activeInRow[0]].length; i++) {
 							buttons[rowPoints[activeInRow[0]][i].getX()][rowPoints[activeInRow[0]][i].getY()].setDraw(false);
 						}
@@ -162,11 +160,9 @@ public class RemoveState extends State {
 		else if (yy == 0) length = xx;
 		else length = xx;
 		length++;
-		System.out.println("in containsGipfStone in removeState length: " + length);
 		for (int j = 0; j < length; j++) {
 			int x = start.getX() + (j * dx);
 			int y = start.getY() + (j * dy);
-			System.out.println(this.originalBoard.getGrid()[x][y]);
 			if (this.gameController.getThisPlayer().getStoneColor() == Board.BLACK_VALUE) {
 				if (this.originalBoard.getGrid()[x][y] == Board.GIPF_BLACK_VALUE) return true;
 			} else {
@@ -177,9 +173,6 @@ public class RemoveState extends State {
 	}
 	
 	private boolean extCurrentPlayerContainGipf(Point[] whiteExt, Point[] blackExt) {
-		System.out.println(this.gameController.getThisPlayer().getStoneColor());
-		this.originalBoard.print();
-		System.out.println(whiteExt.length);
 		if (this.gameController.getThisPlayer().getStoneColor() == Board.BLACK_VALUE) {
 			for (Point p : blackExt) if (this.originalBoard.getGrid()[p.getX()][p.getY()] == Board.GIPF_BLACK_VALUE) return true;
 		} else {
@@ -203,12 +196,6 @@ public class RemoveState extends State {
 			if (yy == 0) dy = 0;
 			else dy = 1;
 
-			//			int length;
-			//			if (xx == 0) length = yy;
-			//			else if (yy == 0) length = xx;
-			//			else length = xx;
-			//			length++;
-
 			int length = this.rows[i].getLength();
 
 			this.rowPoints[i] = new Point[length];
@@ -224,7 +211,7 @@ public class RemoveState extends State {
 		}
 	}
 
-	private int[] activeInRows(int x, int y) { // return the row indices that it's in
+	public int[] activeInRows(int x, int y) { // return the row indices that it's in
 		boolean[] activeInRow = new boolean[rows.length];
 		int[] indices;
 		int[] tmp = new int[this.rowPoints.length];
@@ -244,5 +231,9 @@ public class RemoveState extends State {
 			indices[i] = tmp[i];
 		}
 		return indices;
+	}
+	
+	public Row[] getRows() {
+		return this.rows;
 	}
 }

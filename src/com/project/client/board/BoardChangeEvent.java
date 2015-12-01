@@ -1,5 +1,7 @@
 package com.project.client.board;
 
+import com.gipf.client.offline.logic.Board;
+
 public class BoardChangeEvent {
 
 	private Board board;
