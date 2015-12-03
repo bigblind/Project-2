@@ -22,7 +22,7 @@ public class AlphaBeta2 extends MiniMax {
 	}
 
 	
-	public Node maxValue(Node node, Node alpha, Node beta, int depth) {
+	private Node maxValue(Node node, Node alpha, Node beta, int depth) {
 		if (depth == 0 || tree.isExternal(node))
 			return node;
 		
@@ -51,7 +51,7 @@ public class AlphaBeta2 extends MiniMax {
 	}
 
 	
-	public Node minValue(Node node, Node alpha, Node beta, int depth) {
+	private Node minValue(Node node, Node alpha, Node beta, int depth) {
 		if (depth == 0 || tree.isExternal(node))
 			return node;
 		
