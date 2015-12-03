@@ -102,9 +102,13 @@ public class GameLogic {
 
 	public boolean handleRows() {
 		ArrayList<Row> rows = this.game.getBoard().checkForLines();
-		if (rows.size() == 1 && !containsGipfStone(rows.get(0).getFromPoint(), rows.get(0).getToPoint())) {
-			if (this.extCurrentPlayerContainGipf(rows.get(0).getWhiteExtensionStones(), rows.get(0).getBlackExtensionStones())) {
+		if (rows.size() == 0) return false;
+		else if (rows.size() == 1) {
+			Row row = rows.get(0);
+			if (this.containsGipfStone(row.getFromPoint(), row.getToPoint()) || this.extCurrentPlayerContainGipf(row.getWhiteExtensionStones(), row.getBlackExtensionStones())) {
+				// There are gipf stones in the row or in the extensions, and there is one row.
 				ArrayList<Row> activeRows = rowsForPlayer(this.currentPlayer.getStoneColor(), rows);
+				this.controller.sendGameUpdate();
 				if (activeRows.size() > 0) {
 					this.emitRowRemovalRequest(new RowRemovalRequestEvent(activeRows));
 					return true;
@@ -113,44 +117,78 @@ public class GameLogic {
 					return true;
 				}
 			} else {
-				Row row = rows.get(0);
+				// There are no gipf stones in the row or extensions, and there is one row.
 				int stones = row.getLength();
 				this.game.getBoard().removeRowAndExtensions(row);
 				this.handleExtensions(row);
 				row.getPlayer().setStoneAccount(row.getPlayer().getStoneAccount() + stones);
 			}
-		} else if (rows.size() > 0) {
-			this.controller.sendGameUpdate();
+		} else {
+			// there is more than 1 row.
 			ArrayList<Row> activeRows = rowsForPlayer(this.currentPlayer.getStoneColor(), rows);
-
-			if (activeRows.size() == 1) {
-				if (containsGipfStone(rows.get(0).getFromPoint(), rows.get(0).getToPoint())) {
-					if (activeRows.size() > 0) {
-						this.emitRowRemovalRequest(new RowRemovalRequestEvent(activeRows));
-						return true;
-					} else {
-						this.emitRowRemovalRequest(new RowRemovalRequestEvent(rowsForPlayer(this.getDisabledPlayer().getStoneColor(), rows)));
-						return true;
-					}
-				} else {
-					Row row = activeRows.get(0);
-					int stones = row.getLength();
-					this.game.getBoard().removeRowAndExtensions(row);
-					this.handleExtensions(row);
-					row.getPlayer().setStoneAccount(row.getPlayer().getStoneAccount() + stones);
-				}
+			this.controller.sendGameUpdate();
+			if (activeRows.size() > 0) {
+				this.emitRowRemovalRequest(new RowRemovalRequestEvent(activeRows));
+				return true;
 			} else {
-				if (activeRows.size() > 0) {
-					this.emitRowRemovalRequest(new RowRemovalRequestEvent(activeRows));
-					return true;
-				} else {
-					this.emitRowRemovalRequest(new RowRemovalRequestEvent(rowsForPlayer(this.getDisabledPlayer().getStoneColor(), rows)));
-					return true;
-				}
+				this.emitRowRemovalRequest(new RowRemovalRequestEvent(rowsForPlayer(this.getDisabledPlayer().getStoneColor(), rows)));
+				return true;
 			}
 		}
 		return false;
 	}
+
+//	public boolean handleRows() {
+//		ArrayList<Row> rows = this.game.getBoard().checkForLines();
+//		if (rows.size() == 1 && !containsGipfStone(rows.get(0).getFromPoint(), rows.get(0).getToPoint())) {
+//			if (this.extCurrentPlayerContainGipf(rows.get(0).getWhiteExtensionStones(), rows.get(0).getBlackExtensionStones())) {
+//				ArrayList<Row> activeRows = rowsForPlayer(this.currentPlayer.getStoneColor(), rows);
+//				if (activeRows.size() > 0) {
+//					this.emitRowRemovalRequest(new RowRemovalRequestEvent(activeRows));
+//					return true;
+//				} else {
+//					this.emitRowRemovalRequest(new RowRemovalRequestEvent(rowsForPlayer(this.getDisabledPlayer().getStoneColor(), rows)));
+//					return true;
+//				}
+//			} else {
+//				Row row = rows.get(0);
+//				int stones = row.getLength();
+//				this.game.getBoard().removeRowAndExtensions(row);
+//				this.handleExtensions(row);
+//				row.getPlayer().setStoneAccount(row.getPlayer().getStoneAccount() + stones);
+//			}
+//		} else if (rows.size() > 0) {
+//			this.controller.sendGameUpdate();
+//			ArrayList<Row> activeRows = rowsForPlayer(this.currentPlayer.getStoneColor(), rows);
+//
+//			if (activeRows.size() == 1) {
+//				if (containsGipfStone(rows.get(0).getFromPoint(), rows.get(0).getToPoint())) {
+//					if (activeRows.size() > 0) {
+//						this.emitRowRemovalRequest(new RowRemovalRequestEvent(activeRows));
+//						return true;
+//					} else {
+//						this.emitRowRemovalRequest(new RowRemovalRequestEvent(rowsForPlayer(this.getDisabledPlayer().getStoneColor(), rows)));
+//						return true;
+//					}
+//				} else {
+//					Row row = activeRows.get(0);
+//					int stones = row.getLength();
+//					this.game.getBoard().removeRowAndExtensions(row);
+//					this.handleExtensions(row);
+//					row.getPlayer().setStoneAccount(row.getPlayer().getStoneAccount() + stones);
+//				}
+//			} else {
+//				if (activeRows.size() > 0) {
+//					this.emitRowRemovalRequest(new RowRemovalRequestEvent(activeRows));
+//					return true;
+//				} else {
+//					this.emitRowRemovalRequest(new RowRemovalRequestEvent(rowsForPlayer(this.getDisabledPlayer().getStoneColor(), rows)));
+//					return true;
+//				}
+//			}
+//		}
+//		return false;
+//	}
 
 	public void removePoints(Point[] points, boolean checkRows) {
 		if (this.currentPlayer.getStoneColor() == Board.WHITE_VALUE) {
