@@ -13,4 +13,11 @@ public class Action {
 	public Point[] getPoints() {
 		return this.points;
 	}
+	
+	public String toString() {
+		String result = "[Action: ";
+		for (Point p : this.points) result += p + " ";
+		result += "]";
+		return result;
+	}
 }

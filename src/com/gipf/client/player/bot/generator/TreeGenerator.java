@@ -1,7 +1,5 @@
 package com.gipf.client.player.bot.generator;
 
-import java.util.ArrayList;
-
 import com.gipf.client.game.player.Player;
 import com.gipf.client.game.player.bot.BotLogic;
 import com.gipf.client.game.player.bot.action.Action;
@@ -113,7 +111,7 @@ public class TreeGenerator {
 		to1 = new Point(4, 1);
 		if (board.isValidMove(from, to1)) attachNode(node, node.getGame(), player, from, to1);
 	
-		this.checkForEndState(node, logic);
+		this.checkForEndState(node, player, logic);
 	}
 
 	private void attachNode(Node node, Game game, Player player, Point from, Point to) {
@@ -122,7 +120,7 @@ public class TreeGenerator {
 		node.addChild(new Node(node, tmp, new Action(from, to), false));
 	}
 	
-	private void checkForEndState(Node node, BotLogic logic) {
-		ArrayList<Node> children = node.getChildren();
+	private void checkForEndState(Node node, Player player, BotLogic logic) {
+		for (Node child : node.getChildren()) logic.performLogic(player, child);
 	}
 }

@@ -20,6 +20,7 @@ public class Node {
 		this.parent = parent;
 		this.action = action;
 		this.endState = endState;
+		this.children = new ArrayList<Node>();
 	}
 
 	public void addChild(Node node) {

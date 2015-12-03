@@ -17,8 +17,9 @@ import javax.swing.JLabel;
 
 import com.gipf.client.game.player.bot.Bot;
 import com.gipf.client.offline.logic.LocalServer;
-import com.gipf.client.player.bot.algorithm.QuickGreedyAlgorithm2;
+import com.gipf.client.player.bot.algorithm.QuickGreedyAlgorithm;
 import com.gipf.client.player.bot.evaluation.EvaluationFunctionA;
+import com.gipf.client.player.bot.evaluation.Evaluator;
 import com.project.client.base.Controller;
 
 public class GameModeMenuPageArena extends MenuPage {
@@ -68,12 +69,12 @@ public class GameModeMenuPageArena extends MenuPage {
 	
 		this.basic.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				controller.createArenaGame(new LocalServer(null, null, "basic"), new Bot(new QuickGreedyAlgorithm2(new EvaluationFunctionA(0.1, 0.1, 0.1, 0.1))), new Bot(new QuickGreedyAlgorithm2(new EvaluationFunctionA(0.5, 0.1, 0.6, 0.3))));
+				controller.createArenaGame(new LocalServer(null, null, "basic"), new Bot(new QuickGreedyAlgorithm(), new Evaluator(EvaluationFunctionA.EQUAL_WEIGHTS)), new Bot(new QuickGreedyAlgorithm(), new Evaluator(EvaluationFunctionA.EQUAL_WEIGHTS)));
 			}
 		});
 		this.standard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				controller.createArenaGame(new LocalServer(null, null, "standard"), new Bot(new QuickGreedyAlgorithm2(new EvaluationFunctionA(0.1, 0.1, 0.1, 0.1))), new Bot(new QuickGreedyAlgorithm2(new EvaluationFunctionA(0.5, 0.1, 0.6, 0.3))));
+				controller.createArenaGame(new LocalServer(null, null, "standard"), new Bot(new QuickGreedyAlgorithm(), new Evaluator(EvaluationFunctionA.EQUAL_WEIGHTS)), new Bot(new QuickGreedyAlgorithm(), new Evaluator(EvaluationFunctionA.EQUAL_WEIGHTS)));
 			}
 		});
 		this.back.addActionListener(new ActionListener() {
