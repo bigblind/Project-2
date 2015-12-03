@@ -12,6 +12,12 @@ public class Node {
 	private int value;
 
 	private ArrayList<Node> children;
+	
+	public Node(){
+		this.children = null;
+		this.parent = null;
+		this.value = 0;
+	}
 
 	public Node(int value){
 		this.children = null;

@@ -10,8 +10,8 @@ import com.gipf.client.game.Game;
 
 public class AlphaBeta2 extends MiniMax {
 
-	public AlphaBeta2(Game game, Tree tree) {
-		super(game, tree);
+	public AlphaBeta2(Game game){
+		super(game, new Tree(new Node()));	
 	}
 
 	
