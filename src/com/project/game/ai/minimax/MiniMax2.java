@@ -19,20 +19,26 @@ public class MiniMax2 {
 	}
 	
 	
-	public Node miniMax(ArrayList<Node> nodeList, int depth, boolean turnOfPlayer){
-		int bestValue;
-//		PlayerEvent bestMove;
-		Node bestNode;
-		
+	public Node miniMax(Node node, int depth, boolean turnOfPlayer){
+		return pMiniMax(tree.root(), depth, turnOfPlayer);
+	}
+	
+	
+	private Node pMiniMax(Node node, int depth, boolean turnOfPlayer){
 		if(depth == 0 || game.getGameLogic().checkForWin())
-			return null;
+			return node;
+		
+		ArrayList<Node> children = generateMove(node);
+		
+		int bestValue;
+		Node bestNode;
 		
 		if(turnOfPlayer == true){
 			bestValue = Integer.MIN_VALUE;
 //			bestMove = null;
 			bestNode = null;
-			for(Node node: nodeList){				
-				Node tmpNode = miniMax(node.getChildren(), depth-1, false);
+			for(Node child: children){				
+				Node tmpNode = miniMax(child, depth-1, false);
 //				Node tmpNode = miniMax(tree.bfSearch(node), depth-1, false);
 				if(node.element() > bestValue){
 					bestValue = node.element();
@@ -47,9 +53,9 @@ public class MiniMax2 {
 			bestValue = Integer.MAX_VALUE;
 //			bestMove = null;
 			bestNode = null;
-			for(Node node: nodeList){
+			for(Node child: children){
 //				PlayerEvent tmpEvent = miniMax(tree.bfSearch(node), depth-1, true);
-				Node tmpNode = miniMax(node.getChildren(), depth-1, true);
+				Node tmpNode = miniMax(child, depth-1, true);
 //				Node tmpNode = miniMax(tree.bfSearch(node), depth-1, true);
 				if(node.element() < bestValue){
 					bestValue = node.element();
