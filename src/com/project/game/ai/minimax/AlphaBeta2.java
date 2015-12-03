@@ -20,6 +20,14 @@ public class AlphaBeta2 extends MiniMax {
 		Node beta = new Node(Integer.MAX_VALUE);
 		return minValue(tree.root(), alpha, beta, depth);
 	}
+	
+	
+	public Node alphaBeta(Node node, int depth) {
+		Node alpha = new Node(Integer.MIN_VALUE);
+		Node beta = new Node(Integer.MAX_VALUE);
+		this.tree = new Tree(node);
+		return minValue(tree.root(), alpha, beta, depth);
+	}
 
 	
 	private Node maxValue(Node node, Node alpha, Node beta, int depth) {

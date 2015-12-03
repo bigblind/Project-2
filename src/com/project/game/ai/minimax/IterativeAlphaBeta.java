@@ -23,12 +23,6 @@ public class IterativeAlphaBeta extends AlphaBeta{
 		return result;
 	}
 	
-	
-	private Node alphaBeta(Node node, int depth){
-		Node alpha = new Node(Integer.MIN_VALUE);
-		Node beta = new Node(Integer.MAX_VALUE);
 
-		return minValue(node, alpha, beta, depth);
-	}
 	
 }
