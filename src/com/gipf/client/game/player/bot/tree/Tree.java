@@ -98,6 +98,19 @@ public class Tree {
 		return result;
 	}
 	
+	public ArrayList<Node> dfSearch(Node node, ArrayList<Node> result) {
+		result.add(node);
+		if (isInternal(node)) {
+			Iterator<Node> children = this.children(node);
+			while(children.hasNext()) {
+				Node child = children.next();
+				result.add(child);
+				dfSearch(child, result);
+			}
+		}
+		return result;
+	}
+	
 	private int count(Node root){
 		int n = 0;
 		if(isInternal(root)){
