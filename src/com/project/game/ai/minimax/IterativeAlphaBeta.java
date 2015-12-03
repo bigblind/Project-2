@@ -6,10 +6,10 @@ import com.gipf.client.game.Game;
 import com.project.game.ai.node.Node;
 import com.project.game.ai.tree.Tree;
 
-public class IterativeAlphaBeta extends AlphaBeta{
+public class IterativeAlphaBeta extends AlphaBeta2{
 
-	public IterativeAlphaBeta(Game game, Tree tree) {
-		super(game, tree);
+	public IterativeAlphaBeta(Game game) {
+		super(game);
 	}
 
 	
