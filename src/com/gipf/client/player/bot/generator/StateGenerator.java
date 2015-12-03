@@ -3,9 +3,9 @@ package com.gipf.client.player.bot.generator;
 import java.util.ArrayList;
 
 import com.gipf.client.game.player.Player;
+import com.gipf.client.game.player.bot.BotLogic;
 import com.gipf.client.offline.logic.Board;
 import com.gipf.client.offline.logic.Game;
-import com.gipf.client.offline.logic.GameLogic;
 import com.gipf.client.utils.Point;
 
 public class StateGenerator {
@@ -14,14 +14,14 @@ public class StateGenerator {
 
 	}
 
-	public ArrayList<GameState> generateStates(GameState gameState, Player player, GameLogic logic) { //TODO use to do the moves
+	public ArrayList<GameState> generateStates(GameState gameState, Player player, BotLogic logic) { //TODO use to do the moves
 		ArrayList<GameState> states = new ArrayList<GameState>();
 		Point from;
 		Point to1;
 		Point to2;
 
 		Board board = gameState.getGame().getBoard();
-		
+
 		//correct, bottom right
 		for (int i = 5; i < 8; i++) {
 			from = new Point(i, 8);
@@ -120,6 +120,24 @@ public class StateGenerator {
 		return states;
 	}
 
+//	public ArrayList<GameState> generateStates(GameState gameState, Player player, BotLogic logic, ArrayList<Row> rows) {
+//		ArrayList<GameState> states = new ArrayList<GameState>();
+//
+//		for (int i = 0; i < rows.size(); i++) {
+//			rows.get(i).
+//		}
+//
+//		return states;
+//	}
+	
+//	private void addState(GameState gameState, Player player, Point from, Point to, ArrayList<GameState> states, BotLogic logic) {
+//		Game tmp = gameState.getGame().copy();
+//		tmp.getBoard().place(player.getStoneColor(), from, to);
+//		logic.performLogic(player, new GameState(tmp, from, to));
+//		
+//		states.add();
+//	}
+	
 	private void addState(GameState gameState, Player player, Point from, Point to, ArrayList<GameState> states) {
 		Game tmp = gameState.getGame().copy();
 		tmp.getBoard().place(player.getStoneColor(), from, to);

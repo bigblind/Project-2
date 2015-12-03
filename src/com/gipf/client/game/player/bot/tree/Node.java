@@ -2,74 +2,63 @@ package com.gipf.client.game.player.bot.tree;
 
 import java.util.ArrayList;
 
-import com.gipf.client.offline.logic.Board;
+import com.gipf.client.game.player.bot.action.Action;
+import com.gipf.client.offline.logic.Game;
 
 public class Node {
 
-	private Board board;
-	private Node parent;
+	private Action action;
+	private Game game;
 	
-	private int value;
-
+	private Node parent;
 	private ArrayList<Node> children;
 
-	public Node(Board board, Node parent) {
-		this.children = new ArrayList<Node>();
+	private int value;
+	private boolean endState; // the state at the end of 1 turn
+
+	public Node(Node parent, Game game, Action action, boolean endState) {
 		this.parent = parent;
-		this.board = board;
+		this.action = action;
+		this.endState = endState;
 	}
-	
-	public Node(Board board, int value) {
-		this.children = new ArrayList<Node>();
-		this.value = value;
-		this.board = board;
+
+	public void addChild(Node node) {
+		this.children.add(node);
 	}
 
 	public Node getParent() {
 		return this.parent;
 	}
 
-	public void setParent(Node newNode) {
-		this.parent = newNode;
+	public void setParent(Node node) {
+		this.parent = node;
 	}
 
 	public ArrayList<Node> getChildren() {
 		return this.children;
 	}
 
-	public void addChildren(ArrayList<Node> children) {
-		this.children = children;
-		for (Node child : children)
-			child.setParent(this);
-	}
-
-	public void addChild(Node child) {
-		this.children.add(child);
-		child.setParent(this);
-	}
-
-	public boolean removeChild(Node remove) {
-		return children.remove(remove);
-	}
-
-	public void setBoard(Board board) {
-		this.board = board;
-	}
-
-	public Board getBoard() {
-		return this.board;
-	}
-
 	public int getValue() {
 		return this.value;
 	}
 
+	public Action getAction() {
+		return this.action;
+	}
+
+	public Game getGame() {
+		return this.game;
+	}
+
+	public boolean getEndState() {
+		return this.endState;
+	}
+	
 	public void setValue(int value) {
 		this.value = value;
 	}
 	
-	public boolean isRoot() {
-		if (this.parent == null) return true;
-		return false;
+	public void setEndState(boolean bool) {
+		this.endState = bool;
 	}
 }

@@ -17,7 +17,7 @@ import javax.swing.JLabel;
 
 import com.gipf.client.game.player.bot.Bot;
 import com.gipf.client.offline.logic.LocalServer;
-import com.gipf.client.player.bot.algorithm.QuickGreedyAlgorithm;
+import com.gipf.client.player.bot.algorithm.QuickGreedyAlgorithm2;
 import com.gipf.client.player.bot.evaluation.EvaluationFunctionA;
 import com.project.client.base.Controller;
 
@@ -68,14 +68,14 @@ public class GameModeMenuPageSingle extends MenuPage {
 		
 		this.basic.addActionListener(new ActionListener() { // TODO not just generate this algorithm
 			public void actionPerformed(ActionEvent e) {
-				controller.createLocalBotGame(new LocalServer(null, null, "basic"), new Bot(new QuickGreedyAlgorithm(new EvaluationFunctionA())));
+				controller.createLocalBotGame(new LocalServer(null, null, "basic"), new Bot(new QuickGreedyAlgorithm2(new EvaluationFunctionA())));
 				controller.showPanel(controller.getGamePanel());
 				controller.getFrame().pack();
 			}
 		});
 		this.standard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				controller.createLocalBotGame(new LocalServer(null, null, "standard"), new Bot(new QuickGreedyAlgorithm(new EvaluationFunctionA())));
+				controller.createLocalBotGame(new LocalServer(null, null, "standard"), new Bot(new QuickGreedyAlgorithm2(new EvaluationFunctionA())));
 				controller.showPanel(controller.getGamePanel());
 				controller.getFrame().pack();
 			}
