@@ -23,7 +23,7 @@ public class AlphaBeta2 extends MiniMax {
 
 	
 	private Node maxValue(Node node, Node alpha, Node beta, int depth) {
-		if (depth == 0 || tree.isExternal(node))
+		if (depth == 0 || (tree.isExternal(node) && !node.isRoot()))
 			return node;
 		
 		ArrayList<Node> newChildren = generateMove(node);
@@ -52,7 +52,7 @@ public class AlphaBeta2 extends MiniMax {
 
 	
 	private Node minValue(Node node, Node alpha, Node beta, int depth) {
-		if (depth == 0 || tree.isExternal(node))
+		if (depth == 0 || (tree.isExternal(node) && !node.isRoot()))
 			return node;
 		
 		ArrayList<Node> newChildren = generateMove(node);

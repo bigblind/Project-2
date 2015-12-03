@@ -35,35 +35,29 @@ public class MiniMax2 {
 		
 		if(turnOfPlayer == true){
 			bestValue = Integer.MIN_VALUE;
-//			bestMove = null;
 			bestNode = null;
+			
 			for(Node child: children){				
 				Node tmpNode = miniMax(child, depth-1, false);
-//				Node tmpNode = miniMax(tree.bfSearch(node), depth-1, false);
 				if(node.element() > bestValue){
 					bestValue = node.element();
 					bestNode = tmpNode;
 				}
 			}
-//			return bestMove;
 			return bestNode;
 		}
 		
 		if(turnOfPlayer == false){
 			bestValue = Integer.MAX_VALUE;
-//			bestMove = null;
 			bestNode = null;
+
 			for(Node child: children){
-//				PlayerEvent tmpEvent = miniMax(tree.bfSearch(node), depth-1, true);
 				Node tmpNode = miniMax(child, depth-1, true);
-//				Node tmpNode = miniMax(tree.bfSearch(node), depth-1, true);
 				if(node.element() < bestValue){
 					bestValue = node.element();
-//					bestMove = node.getPlayerEvent();
 					bestNode = tmpNode;
 				}
 			}
-//			return bestMove;
 			return bestNode;
 		};
 		return null;
