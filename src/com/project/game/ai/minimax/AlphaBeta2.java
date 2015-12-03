@@ -75,7 +75,6 @@ public class AlphaBeta2 extends MiniMax {
 			child = (Node) children.next();
 			// beta = Math.min(beta.element(), maxValue(child, alpha,
 			// currBeta, depth-1).element());
-
 			possibleBeta = maxValue(child, alpha, currBeta, depth - 1);
 
 			if (beta.element() > possibleBeta.element())
