@@ -244,7 +244,7 @@ public class Board {
 						lineEndY = j;
 
 						Point[][] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY));
-						lines.add(new Row(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY), logic.checkPlayer(prevValue), counter, extensionStones[0], extensionStones[1]));
+						lines.add(new Row(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY), this.logic.checkPlayer(prevValue), counter, extensionStones[0], extensionStones[1]));
 					}
 
 					prevValue = this.grid[i][j];

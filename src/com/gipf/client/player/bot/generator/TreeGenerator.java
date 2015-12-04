@@ -115,7 +115,7 @@ public class TreeGenerator {
 	}
 
 	private void attachNode(Node node, Game game, Player player, Point from, Point to) {
-		Game tmp = game;
+		Game tmp = game.copy();
 		tmp.getBoard().place(player.getStoneColor(), from, to);
 		node.addChild(new Node(node, tmp, new Action(from, to), false));
 	}

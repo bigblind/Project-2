@@ -105,7 +105,7 @@ public class Tree {
 			while(children.hasNext()) {
 				Node child = children.next();
 				result.add(child);
-				dfSearch(child, result);
+				if (this.isInternal(child)) dfSearch(child, result);
 			}
 		}
 		return result;

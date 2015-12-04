@@ -206,4 +206,8 @@ public class Controller {
 	public Game getGame() {
 		return this.game;
 	}
+	
+	public Controller getGhostController(){
+		return this.ghostController;
+	}
 }

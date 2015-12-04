@@ -17,6 +17,7 @@ public class Node {
 	private boolean endState; // the state at the end of 1 turn
 
 	public Node(Node parent, Game game, Action action, boolean endState) {
+		this.game = game;
 		this.parent = parent;
 		this.action = action;
 		this.endState = endState;
