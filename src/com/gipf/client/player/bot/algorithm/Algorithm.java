@@ -14,7 +14,6 @@ public abstract class Algorithm {
 	public ArrayList<Action> getActionsToNode(Tree tree, Node node) {
 		ArrayList<Action> result = new ArrayList<Action>();
 		while (!node.equals(tree.root())) {
-			System.out.println(node + " " + node.getAction() + " " + node.getEndState());
 			if (node.getEndState()) {
 				result.clear();
 				result.add(node.getAction());

@@ -12,7 +12,10 @@ import com.gipf.client.utils.Point;
 
 public class BotLogic {
 
-	public BotLogic() {
+	private Bot bot;
+	
+	public BotLogic(Bot bot) {
+		this.bot = bot;
 	}
 
 	public void performLogic(Player player, Node node) {
@@ -38,7 +41,10 @@ public class BotLogic {
 						gameCopy.getBoard().removeRowAndExtensions(rows.get(i));
 						Node newNode = new Node(node, gameCopy, new Action(pointsInRow[i][j]), false);
 						node.addChild(newNode);
-						if (!handleRows(player, newNode)) newNode.setEndState(true);
+						if (!handleRows(player, newNode)) {
+							newNode.setEndState(true);
+							newNode.setValue(this.bot.getEvaluator().evaluate(newNode.getGame()));
+						}
 					} else {
 						ArrayList<Point> toRemove = new ArrayList<Point>();
 						Point[] allRowPoints = this.returnAllPointFromRow(rows.get(i));
@@ -46,7 +52,12 @@ public class BotLogic {
 						for (Point p : basicStonesToRemove)
 							toRemove.add(p);
 
-						this.removePoints(player, tmpGame, (Point[]) (toRemove.toArray()));
+						Point[] points = new Point[toRemove.size()];
+						points = toRemove.toArray(points);
+						this.removePoints(player, tmpGame, points);
+						Node newNode = new Node(node, tmpGame, new Action(pointsInRow[i][j]), false);
+						node.addChild(newNode);
+						
 						int[] cntr = new int[gipfStonesInRow.length];
 						boolean[] values = new boolean[gipfStonesInRow.length];
 
@@ -64,12 +75,14 @@ public class BotLogic {
 								for (int z = 0; z < gipfStonesInRow.length; z++) {
 									if (values[z]) actionPoints.add(gipfStonesInRow[z]);
 								}
-								this.removePoints(player, node, (Point[]) (toRemove.toArray()), new Action((Point[]) (actionPoints.toArray())), true);
-								// REMOVE AND ADD Node
+								Point[] tmpPoints = new Point[toRemove.size()];
+								tmpPoints = toRemove.toArray(tmpPoints);
+								Point[] actionTmpPoints = new Point[actionPoints.size()];
+								actionTmpPoints = actionPoints.toArray(actionTmpPoints);
+								this.removePoints(player, newNode, tmpPoints, new Action(actionTmpPoints), true);
 								toRemove.clear();
 							}
 						}
-
 					}
 					break;
 				}
@@ -98,6 +111,7 @@ public class BotLogic {
 
 	public void removePoints(Player player, Node node, Point[] points, Action action, boolean checkRows) {
 		Game game = node.getGame().copy();
+		for (Point p : points) System.out.println(p);
 		if (player.getStoneColor() == Board.WHITE_VALUE) {
 			for (Point p : points) {
 				if (game.getBoard().getGrid()[p.getX()][p.getY()] == Board.WHITE_VALUE) {
@@ -118,13 +132,39 @@ public class BotLogic {
 			}
 		}
 		if (checkRows) {
-			if (handleRows(player, node)) {
-				node.addChild(new Node(node, game, action, false));
-			} else {
-				node.addChild(new Node(node, game, action, true));
+			Node newNode = new Node(node, game, action, false);
+			node.addChild(newNode);
+
+			if (!handleRows(player, newNode)) {
+				newNode.setValue(this.bot.getEvaluator().evaluate(newNode.getGame()));
+				newNode.setEndState(true);
 			}
 		} else {
-			node.addChild(new Node(node, game, action, true));
+			Node newNode = new Node(node, game, action, true);
+			newNode.setValue(this.bot.getEvaluator().evaluate(newNode.getGame()));
+			node.addChild(newNode);
+		}
+	}
+
+	public void removePoints(Player player, Game game, Point[] points) {
+		if (player.getStoneColor() == Board.WHITE_VALUE) {
+			for (Point p : points) {
+				if (game.getBoard().getGrid()[p.getX()][p.getY()] == Board.WHITE_VALUE) {
+					player.setStoneAccount(player.getStoneAccount() + 1);
+				} else if (game.getBoard().getGrid()[p.getX()][p.getY()] == Board.GIPF_WHITE_VALUE) {
+					player.setStoneAccount(player.getStoneAccount() + 2);
+				}
+				game.getBoard().getGrid()[p.getX()][p.getY()] = Board.EMPTY_TILE;
+			}
+		} else {
+			for (Point p : points) {
+				if (game.getBoard().getGrid()[p.getX()][p.getY()] == Board.BLACK_VALUE) {
+					player.setStoneAccount(player.getStoneAccount() + 1);
+				} else if (game.getBoard().getGrid()[p.getX()][p.getY()] == Board.GIPF_BLACK_VALUE) {
+					player.setStoneAccount(player.getStoneAccount() + 2);
+				}
+				game.getBoard().getGrid()[p.getX()][p.getY()] = Board.EMPTY_TILE;
+			}
 		}
 	}
 
@@ -263,29 +303,6 @@ public class BotLogic {
 		}
 
 		return result;
-	}
-
-	public void removePoints(Player player, Game game, Point[] points) {
-		if (player.getStoneColor() == Board.WHITE_VALUE) {
-			for (Point p : points) {
-				if (game.getBoard().getGrid()[p.getX()][p.getY()] == Board.WHITE_VALUE) {
-					player.setStoneAccount(player.getStoneAccount() + 1);
-				} else if (game.getBoard().getGrid()[p.getX()][p.getY()] == Board.GIPF_WHITE_VALUE) {
-					player.setStoneAccount(player.getStoneAccount() + 2);
-				}
-				game.getBoard().getGrid()[p.getX()][p.getY()] = Board.EMPTY_TILE;
-			}
-		} else {
-			for (Point p : points) {
-				if (game.getBoard().getGrid()[p.getX()][p.getY()] == Board.BLACK_VALUE) {
-					player.setStoneAccount(player.getStoneAccount() + 1);
-				} else if (game.getBoard().getGrid()[p.getX()][p.getY()] == Board.GIPF_BLACK_VALUE) {
-					player.setStoneAccount(player.getStoneAccount() + 2);
-				}
-				game.getBoard().getGrid()[p.getX()][p.getY()] = Board.EMPTY_TILE;
-			}
-		}
-
 	}
 
 	public ArrayList<Row> rowsForPlayer(int color, ArrayList<Row> possibleRows) {

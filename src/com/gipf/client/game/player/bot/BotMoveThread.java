@@ -11,6 +11,9 @@ import com.gipf.client.player.bot.evaluation.Evaluator;
 
 public class BotMoveThread extends Thread {
 
+	public static long runTime = 0;
+	public static int runs = 0;
+	
 	private GameController gameController;
 	private Evaluator evaluator;
 	private Algorithm algorithm;
@@ -24,7 +27,7 @@ public class BotMoveThread extends Thread {
 	}
 
 	public void run() {
-		long start = System.currentTimeMillis();
+		long start = System.nanoTime();
 
 		// computation for move
 		Node root = this.evaluator.evalToNode(this.gameController.getController().getGame());
@@ -37,16 +40,20 @@ public class BotMoveThread extends Thread {
 			this.bot.setUpcomingActions(upcomingActions);
 		}
 
-		long end = System.currentTimeMillis();
-
+		long end = System.nanoTime();
+		
+		runTime += end - start;
+		runs++;
+		System.out.println("average runtime: " + runTime / runs + " at " + runs + " runs, current run time: " + (end - start));
+		System.out.println(actions);
 		// used for making bots move visible
-		if (end - start < 500) {
-			try {
-				Thread.sleep(500 - (end - start));
-			} catch (InterruptedException e) {
-				Thread.currentThread().interrupt();
-			}
-		}
+//		if (end - start < 500000000) {
+//			try {
+//				Thread.sleep(500000000 - (end - start));
+//			} catch (InterruptedException e) {
+//				Thread.currentThread().interrupt();
+//			}
+//		}
 
 		// do move
 		this.gameController.getController().getGamePanel().getButtons()[actions.get(0).getPoints()[0].getX()][actions.get(0).getPoints()[0].getY()].doClick();

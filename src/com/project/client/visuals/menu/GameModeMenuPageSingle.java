@@ -69,7 +69,7 @@ public class GameModeMenuPageSingle extends MenuPage {
 		
 		this.basic.addActionListener(new ActionListener() { // TODO not just generate this algorithm
 			public void actionPerformed(ActionEvent e) {
-				controller.createLocalBotGame(new LocalServer(null, null, "basic"), new Bot(new QuickGreedyAlgorithm(), new Evaluator(EvaluationFunctionA.EQUAL_WEIGHTS)));
+				controller.createLocalBotGame(new LocalServer(null, null, "basic"), new Bot(new QuickGreedyAlgorithm(), new Evaluator(EvaluationFunctionA.GREEDY_WEIGHTS_STONECOUNT)));
 				controller.showPanel(controller.getGamePanel());
 				controller.getFrame().pack();
 			}

@@ -20,11 +20,11 @@ public class BotRemoveThread extends Thread {
 
 	public void run() {
 		// visualising move
-		try {
-			Thread.sleep(800);
-		} catch (InterruptedException e) {
-			Thread.currentThread().interrupt();
-		}
+//		try {
+//			Thread.sleep(800);
+//		} catch (InterruptedException e) {
+//			Thread.currentThread().interrupt();
+//		}
 
 		// remove
 		for (Action a : this.actions) {

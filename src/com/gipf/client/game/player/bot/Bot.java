@@ -23,7 +23,7 @@ public class Bot extends Player {
 		this.algorithm = algorithm;
 		this.evaluator = evaluator;
 		this.treeGenerator = new TreeGenerator();
-		this.botLogic = new BotLogic();
+		this.botLogic = new BotLogic(this);
 		this.upcomingActions = new ArrayList<Action>();
 	}
 	
@@ -59,5 +59,9 @@ public class Bot extends Player {
 	
 	public BotLogic getLogic() {
 		return this.botLogic;
+	}
+	
+	public Evaluator getEvaluator() {
+		return this.evaluator;
 	}
 }
