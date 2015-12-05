@@ -31,9 +31,10 @@ public class Bot extends Player {
 		if (state.equals("move")) {
 			BotMoveThread botThread = new BotMoveThread(this, this.gameController, this.algorithm, this.evaluator);
 			botThread.start();
-		} else if (state.equals("remove")) { //TODO 
-			BotRemoveThread botThread = new BotRemoveThread(this, this.gameController, this.upcomingActions);
+		} else if (state.equals("remove")) {
+			BotRemoveThread botThread = new BotRemoveThread(this, this.gameController, this.algorithm, this.evaluator, this.upcomingActions);
 			botThread.start();
+			this.upcomingActions.clear();
 		}
 	}
 

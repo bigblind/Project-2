@@ -41,19 +41,19 @@ public class BotMoveThread extends Thread {
 		}
 
 		long end = System.nanoTime();
+
+		//		runTime += end - start;
+//		runs++;
+//		System.out.println("average runtime: " + runTime / runs + " at " + runs + " runs, current run time: " + (end - start));
 		
-		runTime += end - start;
-		runs++;
-		System.out.println("average runtime: " + runTime / runs + " at " + runs + " runs, current run time: " + (end - start));
-		System.out.println(actions);
 		// used for making bots move visible
-//		if (end - start < 500000000) {
-//			try {
-//				Thread.sleep(500000000 - (end - start));
-//			} catch (InterruptedException e) {
-//				Thread.currentThread().interrupt();
-//			}
-//		}
+		if (end - start < 250000000) {
+			try {
+				Thread.sleep((250000000 - (end - start))/1000000);
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+			}
+		}
 
 		// do move
 		this.gameController.getController().getGamePanel().getButtons()[actions.get(0).getPoints()[0].getX()][actions.get(0).getPoints()[0].getY()].doClick();
