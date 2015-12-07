@@ -116,9 +116,7 @@ public class Board {
 			for (int j = 0; j < gridCopy[0].length; j++)
 				gridCopy[i][j] = this.grid[i][j];
 
-		Board board = new Board(gridCopy);
-		board.setLogic(this.logic);
-		return board;
+		return new Board(gridCopy);
 	}
 
 	public void print() {
@@ -246,7 +244,7 @@ public class Board {
 						lineEndY = j;
 
 						Point[][] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY));
-						lines.add(new Row(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY), this.logic.checkPlayer(prevValue), counter, extensionStones[0], extensionStones[1]));
+						lines.add(new Row(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY), logic.checkPlayer(prevValue), counter, extensionStones[0], extensionStones[1]));
 					}
 
 					prevValue = this.grid[i][j];
@@ -313,7 +311,7 @@ public class Board {
 		}
 		return lines;
 	}
-	
+
 	private Point[][] getExtensionStones(Point start, Point end) {
 		int deltaX = end.getX() - start.getX();
 		int deltaY = end.getY() - start.getY();
@@ -455,9 +453,5 @@ public class Board {
 			}
 		}
 		return result;
-	}
-	
-	public GameLogic getLogic() {
-		return this.logic;
 	}
 }

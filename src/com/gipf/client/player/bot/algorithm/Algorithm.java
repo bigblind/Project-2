@@ -1,37 +1,35 @@
 package com.gipf.client.player.bot.algorithm;
 
-import java.util.ArrayList;
-
 import com.gipf.client.game.player.Player;
-import com.gipf.client.game.player.bot.action.Action;
-import com.gipf.client.game.player.bot.tree.Node;
-import com.gipf.client.game.player.bot.tree.Tree;
+import com.gipf.client.offline.logic.Game;
+import com.gipf.client.player.bot.evaluation.EvaluationFunction;
+import com.gipf.client.player.bot.evaluation.Evaluator;
+import com.gipf.client.player.bot.generator.GameState;
+import com.gipf.client.player.bot.generator.StateGenerator;
+import com.gipf.client.utils.Point;
 
 public abstract class Algorithm {
 
-	public abstract ArrayList<Action> calculateBestActions(Tree tree, Player player);
-
-	public ArrayList<Action> getActionsToNode(Tree tree, Node node) {
-		ArrayList<Action> result = new ArrayList<Action>();
-		while (!node.equals(tree.root())) {
-			if (node.getEndState()) {
-				result.clear();
-				result.add(node.getAction());
-			} else {
-				result.add(node.getAction());
-			}
-			node = node.getParent();
-		}
-		ArrayList<Action> actualResult = new ArrayList<Action>();
-		for (int i = result.size() - 1; i >= 0; i--) {
-			actualResult.add(result.get(i));
-		}
-		return actualResult;
+	protected StateGenerator generator;
+	protected Evaluator evaluator;
+	protected Game game;
+	
+	public Algorithm(EvaluationFunction function) {
+		this.generator = new StateGenerator();
+		this.evaluator = new Evaluator(function);
 	}
 	
-	public int evaluate(GameState state){
-		return this.evaluator.evaluate(state.getGame().getBoard(),
-									   state.getGame().getPlayerOne().getStoneAccount(),
-									   state.getGame().getPlayerTwo().getStoneAccount());
+	public void setEvaluationFunction(EvaluationFunction function) {
+		this.evaluator.setEvaulationFunction(function);
+	}
+	
+	public abstract Point[] returnBestMove(GameState gameState, Player player);
+	
+	public void setGame(Game game) {
+		this.game = game;
+	}
+	
+	public Game getGame() {
+		return this.game;
 	}
 }

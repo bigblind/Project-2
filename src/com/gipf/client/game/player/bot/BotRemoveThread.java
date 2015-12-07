@@ -1,54 +1,47 @@
 package com.gipf.client.game.player.bot;
 
-import java.util.ArrayList;
-
 import com.gipf.client.game.GameController;
-import com.gipf.client.game.player.bot.action.Action;
-import com.gipf.client.game.player.bot.tree.Node;
-import com.gipf.client.game.player.bot.tree.Tree;
+import com.gipf.client.offline.logic.Row;
 import com.gipf.client.player.bot.algorithm.Algorithm;
-import com.gipf.client.player.bot.evaluation.Evaluator;
-import com.gipf.client.utils.Point;
+import com.project.client.visuals.state.RemoveState;
 
 public class BotRemoveThread extends Thread {
 
-	private ArrayList<Action> actions;
 	private GameController gameController;
-	private Bot bot;
 	private Algorithm algorithm;
-	private Evaluator evaluator;
+	private Bot bot;
 
-	public BotRemoveThread(Bot bot, GameController gameController, Algorithm algorithm, Evaluator evaluator,  ArrayList<Action> actions) {
+	public BotRemoveThread(Bot bot, GameController gameController, Algorithm algorithm) {
 		this.gameController = gameController;
-		this.actions = actions;
-		this.bot = bot;
-		this.evaluator = evaluator;
 		this.algorithm = algorithm;
+		this.bot = bot;
 	}
 
 	public void run() {
-		
-		if(this.actions.size() == 0){
-			Node root = this.evaluator.evalToNode(this.gameController.getController().getGame());
-			this.bot.getLogic().performLogic(this.bot, root);
+		long start = System.currentTimeMillis();
 
-			this.actions = algorithm.calculateBestActions(new Tree(root), this.bot);
+		// computation for remove
+		RemoveState state = null;
+		try {
+			state = (RemoveState) this.gameController.getController().getGamePanel().getState();
+		} catch(ClassCastException e) {
+			e.printStackTrace();
+			System.exit(0);
 		}
+		Row[] rows = state.getRows();
 		
-		// visualising move
-//		try {
-//			Thread.sleep(800);
-//		} catch (InterruptedException e) {
-//			Thread.currentThread().interrupt();
-//		}
+		long end = System.currentTimeMillis();
+
+		// used for making bots move visible
+		if (end - start < 800) {
+			try {
+				Thread.sleep(800 - (end - start));
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+			}
+		}
 
 		// remove
-		for (Action a : this.actions) {
-			for (Point p : a.getPoints()) {
-				this.gameController.getController().getGamePanel().getButtons()[p.getX()][p.getY()].doClick();
-			}
-			this.gameController.getController().getGamePanel().getCheckButton().doClick();
-		}
 
 		// ending thread
 		try {
@@ -57,9 +50,5 @@ public class BotRemoveThread extends Thread {
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 		}
-	}
-	
-	public Bot getBot() {
-		return this.bot;
 	}
 }

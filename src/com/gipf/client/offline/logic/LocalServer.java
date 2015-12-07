@@ -71,7 +71,7 @@ public class LocalServer {
 				PlayerEvent pe = new PlayerEvent(new Point(x1, y1), new Point(x2, y2), game.getPlayerTwo());
 				this.logic.playerEventPerformed(pe);
 			}
-		} else if (received.startsWith("/removerow")) { //THIS ONE 
+		} else if (received.startsWith("/removerow")) {
 			String[] subPartsX = received.split("Point: x = ");
 			String[] subPartsY = received.split("y = ");
 

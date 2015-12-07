@@ -16,7 +16,7 @@ public class GameLogic {
 	public RowRemovalRequestEvent rowRemovalEvent;
 
 	private boolean standard;
-
+	
 	public GameLogic(Game game, LocalServer controller, boolean standard) {
 		this.controller = controller;
 		this.game = game;
@@ -34,14 +34,12 @@ public class GameLogic {
 
 		if (this.handleRows()) return;
 
+		this.moveToNextPlayer();
 		if (this.checkForWin()) {
-			this.controller.sendGameUpdate();
 			this.controller.sendWinLoseUpdate(this.returnWinner());
-		} else {
-			this.moveToNextPlayer();
 		}
 	}
-
+	
 	public void setCurrentPlayer(Player player) {
 		this.currentPlayer = player;
 	}
@@ -63,7 +61,7 @@ public class GameLogic {
 		}
 	}
 
-	private boolean containsGipfStone(Player player, Point start, Point end) {
+	private boolean containsGipfStone(Point start, Point end) {
 		int xx = end.getX() - start.getX();
 		int yy = end.getY() - start.getY();
 
@@ -81,7 +79,7 @@ public class GameLogic {
 		for (int j = 0; j < length; j++) {
 			int x = start.getX() + (j * dx);
 			int y = start.getY() + (j * dy);
-			if (player.getStoneColor() == Board.BLACK_VALUE) {
+			if (this.currentPlayer.getStoneColor() == Board.BLACK_VALUE) {
 				if (this.game.getBoard().getGrid()[x][y] == Board.GIPF_BLACK_VALUE) return true;
 			} else {
 				if (this.game.getBoard().getGrid()[x][y] == Board.GIPF_WHITE_VALUE) return true;
@@ -90,8 +88,9 @@ public class GameLogic {
 		return false;
 	}
 
-	private boolean extPlayerContainGipf(Player player, Point[] whiteExt, Point[] blackExt) {
-		if (player.getStoneColor() == Board.BLACK_VALUE) {
+	private boolean extCurrentPlayerContainGipf(Point[] whiteExt, Point[] blackExt) {
+		this.game.getBoard().print();
+		if (this.currentPlayer.getStoneColor() == Board.BLACK_VALUE) {
 			for (Point p : blackExt)
 				if (this.game.getBoard().getGrid()[p.getX()][p.getY()] == Board.GIPF_BLACK_VALUE) return true;
 		} else {
@@ -102,70 +101,64 @@ public class GameLogic {
 	}
 
 	public boolean handleRows() {
-		System.out.println(this.currentPlayer);
 		ArrayList<Row> rows = this.game.getBoard().checkForLines();
-		if (rows.size() == 0) return false;
-		else if (rows.size() == 1) {
-			Row row = rows.get(0);
-			if (row.getPlayer().equals(this.currentPlayer)) {
-				if (this.containsGipfStone(this.currentPlayer, row.getFromPoint(), row.getToPoint()) || this.extPlayerContainGipf(this.currentPlayer, row.getWhiteExtensionStones(), row.getBlackExtensionStones())) {
-					// There are gipf stones in the row or in the extensions, and there is one row.
-					this.controller.sendGameUpdate();
-					this.emitRowRemovalRequest(new RowRemovalRequestEvent(rows));
+		if (rows.size() == 1 && !containsGipfStone(rows.get(0).getFromPoint(), rows.get(0).getToPoint())) {
+			if (this.extCurrentPlayerContainGipf(rows.get(0).getWhiteExtensionStones(), rows.get(0).getBlackExtensionStones())) {
+				this.controller.sendGameUpdate();
+				ArrayList<Row> activeRows = rowsForPlayer(this.currentPlayer.getStoneColor(), rows);
+				if (activeRows.size() > 0) {
+					this.emitRowRemovalRequest(new RowRemovalRequestEvent(activeRows));
 					return true;
 				} else {
-					// There are no gipf stones in the row or extensions, and there is one row.
-					int stones = row.getLength();
-					this.game.getBoard().removeRowAndExtensions(row);
-					this.handleExtensions(row);
-					row.getPlayer().setStoneAccount(row.getPlayer().getStoneAccount() + stones);
-				}
-			} else {
-				if (this.containsGipfStone(this.getDisabledPlayer(), row.getFromPoint(), row.getToPoint()) || this.extPlayerContainGipf(this.getDisabledPlayer(), row.getWhiteExtensionStones(), row.getBlackExtensionStones())) {
-					// There are gipf stones in the row or in the extensions, and there is one row.
-					this.controller.sendGameUpdate();
 					this.emitRowRemovalRequest(new RowRemovalRequestEvent(rowsForPlayer(this.getDisabledPlayer().getStoneColor(), rows)));
 					return true;
-				} else {
-					// There are no gipf stones in the row or extensions, and there is one row.
-					int stones = row.getLength();
-					this.game.getBoard().removeRowAndExtensions(row);
-					this.handleExtensions(row);
-					row.getPlayer().setStoneAccount(row.getPlayer().getStoneAccount() + stones);
 				}
-			}
-
-		} else {
-			// there is more than 1 row.
-			ArrayList<Row> activeRows = rowsForPlayer(this.currentPlayer.getStoneColor(), rows);
-			this.controller.sendGameUpdate();
-			if (activeRows.size() > 0) {
-				this.emitRowRemovalRequest(new RowRemovalRequestEvent(activeRows));
-				return true;
 			} else {
-				this.emitRowRemovalRequest(new RowRemovalRequestEvent(rowsForPlayer(this.getDisabledPlayer().getStoneColor(), rows)));
-				return true;
+				Row row = rows.get(0);
+				int stones = row.getLength();
+				this.game.getBoard().removeRowAndExtensions(row);
+				this.handleExtensions(row);
+				row.getPlayer().setStoneAccount(row.getPlayer().getStoneAccount() + stones);
+			}
+		} else if (rows.size() > 0) {
+			this.controller.sendGameUpdate();
+			ArrayList<Row> activeRows = rowsForPlayer(this.currentPlayer.getStoneColor(), rows);
+			
+			if (activeRows.size() == 1) {
+				Row row = activeRows.get(0);
+				int stones = row.getLength();
+				this.game.getBoard().removeRowAndExtensions(row);
+				this.handleExtensions(row);
+				row.getPlayer().setStoneAccount(row.getPlayer().getStoneAccount() + stones);
+			} else {
+				if (activeRows.size() > 0) {
+					this.emitRowRemovalRequest(new RowRemovalRequestEvent(activeRows));
+					return true;
+				} else {
+					this.emitRowRemovalRequest(new RowRemovalRequestEvent(rowsForPlayer(this.getDisabledPlayer().getStoneColor(), rows)));
+					return true;
+				}
 			}
 		}
 		return false;
 	}
 
-	public void removePoints(Point[] points, Player player, boolean checkRows) {
-		if (player.getStoneColor() == Board.WHITE_VALUE) {
+	public void removePoints(Point[] points, boolean checkRows) {
+		if (this.currentPlayer.getStoneColor() == Board.WHITE_VALUE) {
 			for (Point p : points) {
 				if (this.game.getBoard().getGrid()[p.getX()][p.getY()] == Board.WHITE_VALUE) {
-					player.setStoneAccount(player.getStoneAccount() + 1);
+					this.currentPlayer.setStoneAccount(this.currentPlayer.getStoneAccount() + 1);
 				} else if (this.game.getBoard().getGrid()[p.getX()][p.getY()] == Board.GIPF_WHITE_VALUE) {
-					player.setStoneAccount(player.getStoneAccount() + 2);
+					this.currentPlayer.setStoneAccount(this.currentPlayer.getStoneAccount() + 2);
 				}
 				this.game.getBoard().getGrid()[p.getX()][p.getY()] = Board.EMPTY_TILE;
 			}
 		} else {
 			for (Point p : points) {
 				if (this.game.getBoard().getGrid()[p.getX()][p.getY()] == Board.BLACK_VALUE) {
-					player.setStoneAccount(player.getStoneAccount() + 1);
+					this.currentPlayer.setStoneAccount(this.currentPlayer.getStoneAccount() + 1);
 				} else if (this.game.getBoard().getGrid()[p.getX()][p.getY()] == Board.GIPF_BLACK_VALUE) {
-					player.setStoneAccount(player.getStoneAccount() + 2);
+					this.currentPlayer.setStoneAccount(this.currentPlayer.getStoneAccount() + 2);
 				}
 				this.game.getBoard().getGrid()[p.getX()][p.getY()] = Board.EMPTY_TILE;
 			}
@@ -175,12 +168,6 @@ public class GameLogic {
 				moveToNextPlayer();
 			}
 		}
-	}
-
-	public boolean existsRowForPlayer(Player player, ArrayList<Row> rows) {
-		for (Row row : rows)
-			if (row.getPlayer().equals(player)) return true;
-		return false;
 	}
 
 	public ArrayList<Row> rowsForPlayer(int color, ArrayList<Row> possibleRows) {
@@ -209,7 +196,7 @@ public class GameLogic {
 	}
 
 	public Player checkPlayer(int stoneColor) {
-		if (stoneColor == Board.BLACK_VALUE || stoneColor == Board.GIPF_BLACK_VALUE) return game.getPlayerTwo();
+		if (stoneColor == Board.BLACK_VALUE) return game.getPlayerTwo();
 		return game.getPlayerOne();
 	}
 
@@ -230,14 +217,13 @@ public class GameLogic {
 
 		if (standard) {
 			boolean[] containGipfStones = this.game.getBoard().containGipfStones();
-
+			
 			if (!containGipfStones[0]) return this.game.getPlayerTwo();
 			else if (!containGipfStones[1]) return this.game.getPlayerOne();
 		}
 
 		return null;
 	}
-
 	public void emitRowRemovalRequest(RowRemovalRequestEvent e) {
 		this.rowRemovalEvent = e;
 		this.controller.rowRemoveRequestEventPerformed(e);

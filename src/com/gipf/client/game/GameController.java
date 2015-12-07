@@ -14,7 +14,6 @@ import com.project.client.visuals.state.WaitState;
 public class GameController {
 
 	private Controller controller;
-	
 
 	private Player thisPlayer;
 
@@ -101,16 +100,13 @@ public class GameController {
 	private void initCall(int stoneColor, int numberOfStones, int opponentStones, String boardString) {
 		this.thisPlayer.setStoneAccount(numberOfStones);
 		this.thisPlayer.setStoneColor(stoneColor);
-		Game tmp = this.controller.getGamePanel().getGame();
 		if (stoneColor == Board.BLACK_VALUE) {
 			this.controller.setGame(new Game(new Player(Board.WHITE_VALUE), this.thisPlayer));
-			this.controller.getGame().setGameLogic(tmp.getGameLogic());
 			this.controller.getGame().getPlayerOne().setStoneAccount(opponentStones);
 			this.controller.getGamePanel().setGame(this.controller.getGame());
 			this.controller.getGamePanel().setState(new WaitState(this.controller.getGamePanel(), this));
 		} else if (stoneColor == Board.WHITE_VALUE) {
 			this.controller.setGame(new Game(this.thisPlayer, new Player(Board.BLACK_VALUE)));
-			this.controller.getGame().setGameLogic(tmp.getGameLogic());
 			this.controller.getGame().getPlayerTwo().setStoneAccount(opponentStones);
 			this.controller.getGamePanel().setGame(this.controller.getGame());
 			this.controller.getGamePanel().setState(new MoveStateA(this.controller.getGamePanel(), this));
