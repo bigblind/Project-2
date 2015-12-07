@@ -44,7 +44,7 @@ public class RemoveState extends State {
 				if (activeInRow.length == 1) {
 					if (!containsGipfStone(rowPoints[activeInRow[0]][0], rowPoints[activeInRow[0]][rowPoints[activeInRow[0]].length - 1])) {
 						if (!extCurrentPlayerContainGipf(rows[activeInRow[0]].getWhiteExtensionStones(), rows[activeInRow[0]].getBlackExtensionStones())) {
-							controller.getConnector().send("/removerow " + rowPoints[activeInRow[0]][0].toString() + " " + rowPoints[activeInRow[0]][rowPoints[activeInRow[0]].length - 1].toString());
+							controller.getConnector().send("/removerow " + rowPoints[activeInRow[0]][0].toString() + " " + rowPoints[activeInRow[0]][rowPoints[activeInRow[0]].length - 1].toString() + " " + controller.getThisPlayer());
 							for (int i = 0; i < rowPoints[activeInRow[0]].length; i++) {
 								buttons[rowPoints[activeInRow[0]][i].getX()][rowPoints[activeInRow[0]][i].getY()].setDraw(false);
 							}
@@ -80,7 +80,7 @@ public class RemoveState extends State {
 				if (activeInRow.length == 1) {
 					if (!containsGipfStone(rowPoints[activeInRow[0]][0], rowPoints[activeInRow[0]][rowPoints[activeInRow[0]].length - 1])) {
 						if (!extCurrentPlayerContainGipf(rows[activeInRow[0]].getWhiteExtensionStones(), rows[activeInRow[0]].getBlackExtensionStones())) {
-							controller.getConnector().send("/removerow " + rowPoints[activeInRow[0]][0].toString() + " " + rowPoints[activeInRow[0]][rowPoints[activeInRow[0]].length - 1].toString());
+							controller.getConnector().send("/removerow " + rowPoints[activeInRow[0]][0].toString() + " " + rowPoints[activeInRow[0]][rowPoints[activeInRow[0]].length - 1].toString() + " " + controller.getThisPlayer());
 							for (int i = 0; i < rowPoints[activeInRow[0]].length; i++) {
 								buttons[rowPoints[activeInRow[0]][i].getX()][rowPoints[activeInRow[0]][i].getY()].setDraw(false);
 							}

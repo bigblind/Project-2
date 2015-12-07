@@ -35,7 +35,7 @@ public class BotMoveThread extends Thread {
 		ArrayList<Action> actions = this.algorithm.calculateBestActions(new Tree(root), this.bot);
 
 		ArrayList<Node> search = new Tree(root).bfSearch(root);
-		System.out.println(search.size() + " nodes");
+//		System.out.println(search.size() + " nodes");
 		
 		if (actions.size() > 1) {
 			ArrayList<Action> upcomingActions = new ArrayList<Action>();
@@ -46,14 +46,14 @@ public class BotMoveThread extends Thread {
 
 		long end = System.nanoTime();
 
-		runTime += end - start;
-		runs++;
-		System.out.println("average runtime: " + runTime / (runs * 1000000.0) + "ms at " + runs + " runs, current run time: " + (end - start) + " nanoseconds = " + ((end - start) / 1000000.0) + " ms.");
+//		runTime += end - start;
+//		runs++;
+//		System.out.println("average runtime: " + runTime / (runs * 1000000.0) + "ms at " + runs + " runs, current run time: " + (end - start) + " nanoseconds = " + ((end - start) / 1000000.0) + " ms.");
 
 		// used for making bots move visible
-		if (end - start < 250000000) {
+		if (end - start < 750000000) {
 			try {
-				Thread.sleep((250000000 - (end - start)) / 1000000);
+				Thread.sleep((750000000 - (end - start)) / 1000000);
 			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt();
 			}

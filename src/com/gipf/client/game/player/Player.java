@@ -2,7 +2,6 @@ package com.gipf.client.game.player;
 
 public class Player {
 
-	private String name;
 	private int stoneAccount;
 	private int stoneColor;
 
@@ -11,27 +10,17 @@ public class Player {
 	}
 
 	public Player(int stoneColor) {
-		this.name = "Player " + String.valueOf(stoneColor);
 		this.stoneAccount = 15;
 		this.stoneColor = stoneColor;
 	}
 
-	public Player(String name, int stones, int stoneColor) {
-		this.name = name;
+	public Player(int stones, int stoneColor) {
 		this.stoneAccount = stones;
 		this.stoneColor = stoneColor;
 	}
 	
 	public void update(String state) {
 		
-	}
-
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public int getStoneAccount() {
@@ -43,7 +32,6 @@ public class Player {
 	}
 
 	public void setStoneColor(int color) {
-		this.name = "Player " + String.valueOf(color);
 		this.stoneColor = color;
 	}
 
@@ -52,11 +40,11 @@ public class Player {
 	}
 
 	public Player copy() {
-		return new Player(this.name, this.stoneAccount, this.stoneColor);
+		return new Player(this.stoneAccount, this.stoneColor);
 	}
 
 	public String toString() {
-		return this.name;
+		return "[Player: stone color: " + this.stoneColor + " stone account: " + this.stoneAccount + "]";
 	}
 
 	public boolean equals(Object o) {

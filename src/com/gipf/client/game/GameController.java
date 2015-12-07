@@ -89,7 +89,6 @@ public class GameController {
 	
 	public void setPlayer(Player player, boolean copyData) {
 		if (copyData) {
-			player.setName(this.thisPlayer.getName());
 			player.setStoneAccount(this.thisPlayer.getStoneAccount());
 			player.setStoneColor(this.thisPlayer.getStoneColor());
 			this.thisPlayer = player;

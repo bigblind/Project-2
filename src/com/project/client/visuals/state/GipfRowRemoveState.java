@@ -40,7 +40,7 @@ public class GipfRowRemoveState extends State {
 						send += gipfStonePoints[i];
 					}
 				}
-				send += " checkrows";
+				send += controller.getThisPlayer() + " checkrows";
 				gamePanel.getGame().setBoard(originalBoard);
 				gamePanel.getCheckButton().setVisible(false);
 				gamePanel.getCheckButton().removeActionListener(this);
@@ -220,6 +220,7 @@ public class GipfRowRemoveState extends State {
 		for (int i = 0; i < tmp2.size(); i++) {
 			send += tmp2.get(i).toString() + " ";
 		}
+		send += " " + this.gameController.getThisPlayer();
 		this.gameController.getConnector().send(send);
 		this.boardCopy = this.originalBoard.copy();
 		this.gamePanel.getGame().setBoard(this.boardCopy);

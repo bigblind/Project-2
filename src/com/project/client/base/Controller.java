@@ -59,7 +59,7 @@ public class Controller {
 			System.exit(0);
 		}
 
-		this.gamePanel = new GamePanel(new Game(new Player("", 0, Board.WHITE_VALUE), new Player("", 0, Board.BLACK_VALUE)), this);
+		this.gamePanel = new GamePanel(new Game(new Player(0, Board.WHITE_VALUE), new Player(0, Board.BLACK_VALUE)), this);
 
 		this.menuPages = new ArrayList<MenuPage>();
 
@@ -72,7 +72,7 @@ public class Controller {
 
 	public void ghostInit() {
 		this.gameController = new GameController(this);
-		this.gamePanel = new GamePanel(new Game(new Player("", 0, Board.WHITE_VALUE), new Player("", 0, Board.BLACK_VALUE)), this);
+		this.gamePanel = new GamePanel(new Game(new Player(0, Board.WHITE_VALUE), new Player(0, Board.BLACK_VALUE)), this);
 	}
 
 	private void initMenuPages() {
