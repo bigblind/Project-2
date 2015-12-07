@@ -19,6 +19,7 @@ import com.gipf.client.game.player.bot.Bot;
 import com.gipf.client.offline.logic.LocalServer;
 import com.gipf.client.player.bot.algorithm.QuickGreedyAlgorithm;
 import com.gipf.client.player.bot.evaluation.EvaluationFunctionA;
+import com.gipf.client.player.bot.evaluation.EvaluationFunctionB;
 import com.gipf.client.player.bot.evaluation.Evaluator;
 import com.project.client.base.Controller;
 

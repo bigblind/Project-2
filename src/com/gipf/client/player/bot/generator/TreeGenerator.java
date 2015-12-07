@@ -1,16 +1,19 @@
 package com.gipf.client.player.bot.generator;
 
+import java.util.ArrayList;
+
 import com.gipf.client.game.player.Player;
 import com.gipf.client.game.player.bot.BotLogic;
 import com.gipf.client.game.player.bot.action.Action;
 import com.gipf.client.game.player.bot.tree.Node;
+import com.gipf.client.game.player.bot.tree.Tree;
 import com.gipf.client.offline.logic.Board;
 import com.gipf.client.offline.logic.Game;
 import com.gipf.client.utils.Point;
 
 public class TreeGenerator {
 
-	public void generateTreeLayer(Node node, Player player, BotLogic logic) {
+	public void generateTreeLayer(Node node, Player player, BotLogic logic, boolean initialRun) {
 		Board board = node.getGame().getBoard();
 
 		Point from;
@@ -112,12 +115,34 @@ public class TreeGenerator {
 		if (board.isValidMove(from, to1)) attachNode(node, node.getGame(), player, from, to1);
 	
 		this.checkForEndState(node, player, logic);
+		if (initialRun) generateEnemyLayer(node, player, logic);
 	}
 
 	private void attachNode(Node node, Game game, Player player, Point from, Point to) {
 		Game tmp = game.copy();
 		tmp.getBoard().place(player.getStoneColor(), from, to);
 		node.addChild(new Node(node, tmp, new Action(from, to), false));
+	}
+	
+	private void generateEnemyLayer(Node rootNode, Player player, BotLogic logic) {
+		Player opponent;
+		
+		if (player.equals(rootNode.getGame().getPlayerOne())) opponent = rootNode.getGame().getPlayerTwo();
+		else opponent = rootNode.getGame().getPlayerOne();
+			
+		for (Node child : rootNode.getChildren()) {
+			if (child.getChildren().size() != 0) {
+				Tree tree = new Tree(child);
+				ArrayList<Node> search = tree.bfSearch(child);
+				for (Node grandChild : search) {
+					if (grandChild.getEndState()) {
+						this.generateTreeLayer(grandChild, opponent, logic, false);
+					}
+				}
+			} else {
+				this.generateTreeLayer(child, opponent, logic, false);
+			}
+		}
 	}
 	
 	private void checkForEndState(Node node, Player player, BotLogic logic) {

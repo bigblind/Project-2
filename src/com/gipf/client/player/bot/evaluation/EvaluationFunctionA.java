@@ -61,8 +61,8 @@ public class EvaluationFunctionA implements EvaluationFunction {
 
 			if (board.getGrid()[x][y] == Board.WHITE_VALUE) centerValue += extBonus;
 			else if (board.getGrid()[x][y] == Board.BLACK_VALUE) centerValue -= extBonus;
-			else if (board.getGrid()[x][y] == Board.GIPF_WHITE_VALUE) centerValue += extGipfBonus;
-			else if (board.getGrid()[x][y] == Board.GIPF_BLACK_VALUE) centerValue -= extGipfBonus;
+			else if (board.getGrid()[x][y] == Board.GIPF_WHITE_VALUE) centerValue -= extGipfBonus;
+			else if (board.getGrid()[x][y] == Board.GIPF_BLACK_VALUE) centerValue += extGipfBonus;
 
 		}
 		for (int i = 0; i < 6; i++) {
@@ -70,14 +70,14 @@ public class EvaluationFunctionA implements EvaluationFunction {
 			int y = mediumCoor[i][1];
 			if (board.getGrid()[x][y] == Board.WHITE_VALUE) centerValue += mediumBonus;
 			else if (board.getGrid()[x][y] == Board.BLACK_VALUE) centerValue -= mediumBonus;
-			else if (board.getGrid()[x][y] == Board.GIPF_WHITE_VALUE) centerValue += mediumGipfBonus;
-			else if (board.getGrid()[x][y] == Board.GIPF_BLACK_VALUE) centerValue -= mediumGipfBonus;
+			else if (board.getGrid()[x][y] == Board.GIPF_WHITE_VALUE) centerValue -= mediumGipfBonus;
+			else if (board.getGrid()[x][y] == Board.GIPF_BLACK_VALUE) centerValue += mediumGipfBonus;
 
 		}
 		if (board.getGrid()[4][4] == Board.WHITE_VALUE) centerValue += centerBonus;
 		else if (board.getGrid()[4][4] == Board.BLACK_VALUE) centerValue -= centerBonus;
-		else if (board.getGrid()[4][4] == Board.GIPF_WHITE_VALUE) centerValue += centerGipfBonus;
-		else if (board.getGrid()[4][4] == Board.GIPF_BLACK_VALUE) centerValue -= centerGipfBonus;
+		else if (board.getGrid()[4][4] == Board.GIPF_WHITE_VALUE) centerValue -= centerGipfBonus;
+		else if (board.getGrid()[4][4] == Board.GIPF_BLACK_VALUE) centerValue += centerGipfBonus;
 
 		return centerValue;
 	}
@@ -91,20 +91,20 @@ public class EvaluationFunctionA implements EvaluationFunction {
 		for (int i = 2; i < 8; i++) {
 			if (board.getGrid()[i][4] == Board.WHITE_VALUE) diagonalValue += diagonalBonus;
 			else if (board.getGrid()[i][4] == Board.BLACK_VALUE) diagonalValue -= diagonalBonus;
-			else if (board.getGrid()[i][4] == Board.WHITE_VALUE) diagonalValue += diagonalGipfBonus;
-			else if (board.getGrid()[i][4] == Board.BLACK_VALUE) diagonalValue -= diagonalGipfBonus;
+			else if (board.getGrid()[i][4] == Board.WHITE_VALUE) diagonalValue -= diagonalGipfBonus;
+			else if (board.getGrid()[i][4] == Board.BLACK_VALUE) diagonalValue += diagonalGipfBonus;
 		}
 		for (int i = 2; i < 7; i++) {
 			if (board.getGrid()[4][i] == Board.WHITE_VALUE) diagonalValue += diagonalBonus;
 			else if (board.getGrid()[4][i] == Board.BLACK_VALUE) diagonalValue -= diagonalBonus;
-			else if (board.getGrid()[4][i] == Board.GIPF_WHITE_VALUE) diagonalValue += diagonalGipfBonus;
-			else if (board.getGrid()[4][i] == Board.GIPF_BLACK_VALUE) diagonalValue -= diagonalGipfBonus;
+			else if (board.getGrid()[4][i] == Board.GIPF_WHITE_VALUE) diagonalValue -= diagonalGipfBonus;
+			else if (board.getGrid()[4][i] == Board.GIPF_BLACK_VALUE) diagonalValue += diagonalGipfBonus;
 		}
 		for (int i = 2; i < 7; i++) {
 			if (board.getGrid()[i][cnt] == Board.WHITE_VALUE) diagonalValue += diagonalBonus;
 			else if (board.getGrid()[i][cnt] == Board.BLACK_VALUE) diagonalValue -= diagonalBonus;
-			else if (board.getGrid()[i][cnt] == Board.GIPF_WHITE_VALUE) diagonalValue += diagonalGipfBonus;
-			else if (board.getGrid()[i][cnt] == Board.GIPF_BLACK_VALUE) diagonalValue -= diagonalGipfBonus;
+			else if (board.getGrid()[i][cnt] == Board.GIPF_WHITE_VALUE) diagonalValue -= diagonalGipfBonus;
+			else if (board.getGrid()[i][cnt] == Board.GIPF_BLACK_VALUE) diagonalValue += diagonalGipfBonus;
 			cnt++;
 		}
 		return diagonalValue;
