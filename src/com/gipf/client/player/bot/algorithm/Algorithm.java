@@ -28,4 +28,10 @@ public abstract class Algorithm {
 		}
 		return actualResult;
 	}
+	
+	public int evaluate(GameState state){
+		return this.evaluator.evaluate(state.getGame().getBoard(),
+									   state.getGame().getPlayerOne().getStoneAccount(),
+									   state.getGame().getPlayerTwo().getStoneAccount());
+	}
 }

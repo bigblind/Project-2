@@ -9,7 +9,6 @@ public class EvaluationFunctionA implements EvaluationFunction {
 	public static final EvaluationFunctionA GREEDY_WEIGHTS_CENTER = new EvaluationFunctionA(1.0, 0.0, 0.0, 0.0);
 	public static final EvaluationFunctionA GREEDY_WEIGHTS_DIAGONAL = new EvaluationFunctionA(0.0, 0.0, 1.0, 0.0);
 	public static final EvaluationFunctionA GREEDY_WEIGHTS_LINEOFTHREE = new EvaluationFunctionA(0.0, 0.0, 0.0, 1.0);
-	
 	public double centerWeight = 0.5;
 	public double stoneCountWeight = 0.7;
 	public double diagonalWeight = 0.2;
