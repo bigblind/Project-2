@@ -11,6 +11,11 @@ import com.gipf.client.utils.Point;
 public class MCTS extends Algorithm{
 	private int iterations;
 	private int simulationDepth;
+	
+	public MCTS(EvaluationFunction function){
+		this(function, 1000, 100);
+	}
+	
 	public MCTS(EvaluationFunction function, int maxIterations, int maxSimulationDepth){
 		super(function);
 		this.iterations = maxIterations;
@@ -33,7 +38,7 @@ public class MCTS extends Algorithm{
 			}
 			
 			//Simulation phase, includes backpropagation
-			node.simulate();
+			node.simulate(player);
 		}
 		GameState best = root.getMostVisitedChild().state;
 		return new Point[]{best.getFromPoint(), best.getToPoint()};
@@ -103,7 +108,7 @@ public class MCTS extends Algorithm{
 			if(activePlayer == game.getPlayerTwo()){
 				score = -score;
 			}
-			//TODO: normalize the score to a double between -1 and 1.
+			//TODO: normalize the score to a double between 0 and 1.
 			this.backPropagate(score);
 		}
 		
