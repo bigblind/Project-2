@@ -58,8 +58,6 @@ public class LocalServer {
 	}
 
 	public void clientInput(String received, int id) {
-		System.out.println("in server: " + this.game.getPlayerOne() + " " + this.game.getPlayerTwo());
-
 		if (received.contains("PlayerEvent")) {
 			int x1 = Integer.parseInt("" + received.split("x = ")[1].charAt(0));
 			int y1 = Integer.parseInt("" + received.split("y = ")[1].charAt(0));
