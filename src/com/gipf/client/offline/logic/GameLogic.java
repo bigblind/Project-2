@@ -101,6 +101,7 @@ public class GameLogic {
 	}
 
 	public boolean handleRows() {
+		System.out.println(this.currentPlayer);
 		ArrayList<Row> rows = this.game.getBoard().checkForLines();
 		if (rows.size() == 1 && !containsGipfStone(rows.get(0).getFromPoint(), rows.get(0).getToPoint())) {
 			if (this.extCurrentPlayerContainGipf(rows.get(0).getWhiteExtensionStones(), rows.get(0).getBlackExtensionStones())) {
@@ -143,22 +144,22 @@ public class GameLogic {
 		return false;
 	}
 
-	public void removePoints(Point[] points, boolean checkRows) {
-		if (this.currentPlayer.getStoneColor() == Board.WHITE_VALUE) {
+	public void removePoints(Point[] points, Player player, boolean checkRows) {
+		if (player.getStoneColor() == Board.WHITE_VALUE) {
 			for (Point p : points) {
 				if (this.game.getBoard().getGrid()[p.getX()][p.getY()] == Board.WHITE_VALUE) {
-					this.currentPlayer.setStoneAccount(this.currentPlayer.getStoneAccount() + 1);
+					player.setStoneAccount(player.getStoneAccount() + 1);
 				} else if (this.game.getBoard().getGrid()[p.getX()][p.getY()] == Board.GIPF_WHITE_VALUE) {
-					this.currentPlayer.setStoneAccount(this.currentPlayer.getStoneAccount() + 2);
+					player.setStoneAccount(player.getStoneAccount() + 2);
 				}
 				this.game.getBoard().getGrid()[p.getX()][p.getY()] = Board.EMPTY_TILE;
 			}
 		} else {
 			for (Point p : points) {
 				if (this.game.getBoard().getGrid()[p.getX()][p.getY()] == Board.BLACK_VALUE) {
-					this.currentPlayer.setStoneAccount(this.currentPlayer.getStoneAccount() + 1);
+					player.setStoneAccount(player.getStoneAccount() + 1);
 				} else if (this.game.getBoard().getGrid()[p.getX()][p.getY()] == Board.GIPF_BLACK_VALUE) {
-					this.currentPlayer.setStoneAccount(this.currentPlayer.getStoneAccount() + 2);
+					player.setStoneAccount(player.getStoneAccount() + 2);
 				}
 				this.game.getBoard().getGrid()[p.getX()][p.getY()] = Board.EMPTY_TILE;
 			}
