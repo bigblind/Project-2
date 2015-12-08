@@ -195,7 +195,7 @@ public class GameModeMenuPageArena extends MenuPage {
 			Evaluator ev = new Evaluator(ef);
 			Algorithm algo;
 			try {
-				algo = (Algorithm)((Class<Algorithm>)this.algorithmInput.getSelectedItem()).getConstructors()[0].newInstance(ef);
+				algo = (Algorithm)((Class<Algorithm>)this.algorithmInput.getSelectedItem()).getConstructors()[0].newInstance();
 				return new Bot(algo, ev);
 			} catch (InstantiationException e) {
 				e.printStackTrace();

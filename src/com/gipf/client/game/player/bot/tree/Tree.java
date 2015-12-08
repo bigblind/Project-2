@@ -123,9 +123,10 @@ public class Tree {
 	
 	public ArrayList<Node> getEndChildren(Node node){
 		ArrayList<Node> toSearch = node.getChildren();
-		ArrayList<Node> toSearchNext = new ArrayList<Node>();
 		ArrayList<Node> result = new ArrayList<Node>();
+		
 		while(!toSearch.isEmpty()){
+			ArrayList<Node> toSearchNext = new ArrayList<Node>();
 			for(Node candidate: toSearch){
 				if(candidate.getEndState()){
 					result.add(candidate);
