@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.gipf.client.game.GameController;
 import com.gipf.client.game.player.Player;
 import com.gipf.client.game.player.bot.action.Action;
+import com.gipf.client.offline.logic.Board;
 import com.gipf.client.player.bot.algorithm.Algorithm;
 import com.gipf.client.player.bot.evaluation.Evaluator;
 import com.gipf.client.player.bot.generator.TreeGenerator;
@@ -28,7 +29,7 @@ public class Bot extends Player {
 	}
 	
 	public void update(String state) {
-		if (state.equals("move")) {
+			if (state.equals("move")) {
 			BotMoveThread botThread = new BotMoveThread(this, this.gameController, this.algorithm, this.evaluator);
 			botThread.start();
 		} else if (state.equals("remove")) {

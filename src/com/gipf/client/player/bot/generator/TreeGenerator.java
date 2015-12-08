@@ -121,14 +121,14 @@ public class TreeGenerator {
 	private void attachNode(Node node, Game game, Player player, Point from, Point to) {
 		Game tmp = game.copy();
 		tmp.getBoard().place(player.getStoneColor(), from, to);
+		if (player.equals(tmp.getPlayerOne())) tmp.getPlayerOne().addStones(-1);
+		else tmp.getPlayerTwo().addStones(-1);
 		node.addChild(new Node(node, tmp, new Action(from, to), false));
 	}
 	
 	private void generateEnemyLayer(Node rootNode, Player player, BotLogic logic) {
 		Player opponent;
 		
-		if (player.equals(rootNode.getGame().getPlayerOne())) opponent = rootNode.getGame().getPlayerTwo();
-		else opponent = rootNode.getGame().getPlayerOne();
 			
 		for (Node child : rootNode.getChildren()) {
 			if (child.getChildren().size() != 0) {
@@ -136,16 +136,23 @@ public class TreeGenerator {
 				ArrayList<Node> search = tree.bfSearch(child);
 				for (Node grandChild : search) {
 					if (grandChild.getEndState()) {
+						if (player.equals(rootNode.getGame().getPlayerOne())) opponent = grandChild.getGame().getPlayerTwo();
+						else opponent = grandChild.getGame().getPlayerOne();
 						this.generateTreeLayer(grandChild, opponent, logic, false);
 					}
 				}
 			} else {
+				if (player.equals(rootNode.getGame().getPlayerOne())) opponent = child.getGame().getPlayerTwo();
+				else opponent = child.getGame().getPlayerOne();
 				this.generateTreeLayer(child, opponent, logic, false);
 			}
 		}
 	}
 	
 	private void checkForEndState(Node node, Player player, BotLogic logic) {
-		for (Node child : node.getChildren()) logic.performLogic(player, child);
+		for (Node child : node.getChildren()) {
+			if (player.equals(child.getGame().getPlayerOne())) logic.performLogic(child.getGame().getPlayerOne(), child);
+			else logic.performLogic(child.getGame().getPlayerTwo(), child);
+		}
 	}
 }

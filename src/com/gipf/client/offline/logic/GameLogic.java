@@ -102,7 +102,6 @@ public class GameLogic {
 	}
 
 	public boolean handleRows() {
-		System.out.println(this.currentPlayer);
 		ArrayList<Row> rows = this.game.getBoard().checkForLines();
 		if (rows.size() == 0) return false;
 		else if (rows.size() == 1) {

@@ -39,6 +39,19 @@ public class BotLogic {
 					if (gipfStonesInRow.length == 0) {
 						Game gameCopy = tmpGame.copy();
 						gameCopy.getBoard().removeRowAndExtensions(rows.get(i));
+						
+						
+						
+						if (player.equals(gameCopy.getPlayerOne())) {
+							gameCopy.getPlayerOne().addStones(rows.get(i).getLength());
+							gameCopy.getPlayerOne().addStones(rows.get(i).getWhiteExtensionStones().length);
+						} else {
+							gameCopy.getPlayerTwo().addStones(rows.get(i).getLength());
+							gameCopy.getPlayerTwo().addStones(rows.get(i).getBlackExtensionStones().length);
+						}
+						
+						
+						
 						Node newNode = new Node(node, gameCopy, new Action(pointsInRow[i][j]), false);
 						node.addChild(newNode);
 						if (!handleRows(player, newNode)) {
@@ -95,38 +108,28 @@ public class BotLogic {
 		} else return true;
 	}
 
-	//	public boolean checkForWin(Game game) {
-	//		if (game.getPlayerOne().getStoneAccount() == 0 || game.getPlayerTwo().getStoneAccount() == 0)
-	//			return true;
-	//
-	//		if (this.standard) {
-	//			boolean[] containGipfStones = game.getBoard().containGipfStones();
-	//			if (!containGipfStones[0])
-	//				return true;
-	//			else if (!containGipfStones[1])
-	//				return true;
-	//		}
-	//		return false;
-	//	}
-
 	public void removePoints(Player player, Node node, Point[] points, Action action, boolean checkRows) {
 		Game game = node.getGame().copy();
+		Player tmp;
+		if (game.getPlayerOne().getStoneColor() == Board.WHITE_VALUE) tmp = game.getPlayerTwo();
+		else tmp = game.getPlayerOne();
+		
 		for (Point p : points) System.out.println(p);
 		if (player.getStoneColor() == Board.WHITE_VALUE) {
 			for (Point p : points) {
 				if (game.getBoard().getGrid()[p.getX()][p.getY()] == Board.WHITE_VALUE) {
-					player.setStoneAccount(player.getStoneAccount() + 1);
+					tmp.setStoneAccount(tmp.getStoneAccount() + 1);
 				} else if (game.getBoard().getGrid()[p.getX()][p.getY()] == Board.GIPF_WHITE_VALUE) {
-					player.setStoneAccount(player.getStoneAccount() + 2);
+					tmp.setStoneAccount(tmp.getStoneAccount() + 2);
 				}
 				game.getBoard().getGrid()[p.getX()][p.getY()] = Board.EMPTY_TILE;
 			}
 		} else {
 			for (Point p : points) {
 				if (game.getBoard().getGrid()[p.getX()][p.getY()] == Board.BLACK_VALUE) {
-					player.setStoneAccount(player.getStoneAccount() + 1);
+					tmp.setStoneAccount(tmp.getStoneAccount() + 1);
 				} else if (game.getBoard().getGrid()[p.getX()][p.getY()] == Board.GIPF_BLACK_VALUE) {
-					player.setStoneAccount(player.getStoneAccount() + 2);
+					tmp.setStoneAccount(tmp.getStoneAccount() + 2);
 				}
 				game.getBoard().getGrid()[p.getX()][p.getY()] = Board.EMPTY_TILE;
 			}
@@ -263,29 +266,6 @@ public class BotLogic {
 		return result;
 	}
 
-	//	public Player returnWinner(Game game) {
-	//		if (game.getPlayerOne().getStoneAccount() == 0)
-	//			return game.getPlayerTwo();
-	//		if (game.getPlayerTwo().getStoneAccount() == 0)
-	//			return game.getPlayerOne();
-	//
-	//		if (this.standard) {
-	//			boolean[] containGipfStones = game.getBoard().containGipfStones();
-	//
-	//			if (!containGipfStones[0])
-	//				return game.getPlayerTwo();
-	//			else if (!containGipfStones[1])
-	//				return game.getPlayerOne();
-	//		}
-	//
-	//		return null;
-	//	}
-
-	public void handleExtensions(Row row) {
-		if (row.getPlayer().getStoneColor() == Board.WHITE_VALUE) row.getPlayer().setStoneAccount(row.getPlayer().getStoneAccount() + row.getWhiteExtensionStones().length);
-		else row.getPlayer().setStoneAccount(row.getPlayer().getStoneAccount() + row.getBlackExtensionStones().length);
-	}
-
 	private Point[] gipfStonesOfRowExtension(Game game, Point[] extensions) {
 		int counter = 0;
 		Point[] tmp = new Point[extensions.length];
@@ -343,11 +323,7 @@ public class BotLogic {
 		return rowPoints;
 	}
 
-	public int[] activeInRows(Point[][] rowPoints, int x, int y) { // return the
-																	// row
-																	// indices
-																	// that it's
-																	// in
+	public int[] activeInRows(Point[][] rowPoints, int x, int y) { 
 		boolean[] activeInRow = new boolean[rowPoints.length];
 		int[] indices;
 		int[] tmp = new int[rowPoints.length];
@@ -368,9 +344,4 @@ public class BotLogic {
 		}
 		return indices;
 	}
-
-	// private Player getDisabledPlayer(Player player, Game gameState) {
-	// if (player.equals(game.getPlayerOne())) return game.getPlayerTwo();
-	// else return game.getPlayerOne();
-	// }
 }

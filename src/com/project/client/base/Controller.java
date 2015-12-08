@@ -41,7 +41,9 @@ public class Controller {
 	private boolean runningLocalGame = false;
 	private boolean runningBotGame = false;
 	
-	private Controller ghostController;
+	private Controller ghostController;		
+	private GhostController ghostController2;
+
 
 	public Controller() {
 
@@ -59,7 +61,7 @@ public class Controller {
 			System.exit(0);
 		}
 
-		this.gamePanel = new GamePanel(new Game(new Player(0, Board.WHITE_VALUE), new Player(0, Board.BLACK_VALUE)), this);
+		this.gamePanel = new GamePanel(new Game(new Player(0, Board.WHITE_VALUE), new Player(0, Board.BLACK_VALUE)), this, true);
 
 		this.menuPages = new ArrayList<MenuPage>();
 
@@ -72,7 +74,7 @@ public class Controller {
 
 	public void ghostInit() {
 		this.gameController = new GameController(this);
-		this.gamePanel = new GamePanel(new Game(new Player(0, Board.WHITE_VALUE), new Player(0, Board.BLACK_VALUE)), this);
+		this.gamePanel = new GamePanel(new Game(new Player(0, Board.WHITE_VALUE), new Player(0, Board.BLACK_VALUE)), this, false);
 	}
 
 	private void initMenuPages() {
@@ -122,9 +124,9 @@ public class Controller {
 	
 	public void createArenaGame(LocalServer server, Bot one, Bot two) {
 		this.ghostController = new Controller();
+		this.ghostController2 = new GhostController(this);
 		this.ghostController.ghostInit();
 		
-		Controller ghostController2 = new Controller();
 		ghostController2.ghostInit();
 		
 		LocalConnector ghostConnector1 = new LocalConnector(this.ghostController.getGameController(), server);
@@ -146,7 +148,6 @@ public class Controller {
 
 		server.start();
 		
-		this.runningBotGame = true;
 		this.runningBotGame = true;
 		
 		this.showPanel(ghostController.getGamePanel());
@@ -180,6 +181,9 @@ public class Controller {
 		if (this.runningLocalGame && !this.runningBotGame) {
 			if (state instanceof WaitState) this.showPanel(this.ghostController.getGamePanel());
 			else this.showPanel(this.gamePanel);
+		} else if (this.runningBotGame) {
+			if (state instanceof WaitState) this.showPanel(this.ghostController.getGamePanel());
+			else this.showPanel(this.ghostController2.getGamePanel());
 		}
 	}
 

@@ -18,7 +18,7 @@ public class BotRemoveThread extends Thread {
 	private Algorithm algorithm;
 	private Evaluator evaluator;
 
-	public BotRemoveThread(Bot bot, GameController gameController, Algorithm algorithm, Evaluator evaluator,  ArrayList<Action> actions) {
+	public BotRemoveThread(Bot bot, GameController gameController, Algorithm algorithm, Evaluator evaluator, ArrayList<Action> actions) {
 		this.gameController = gameController;
 		this.actions = actions;
 		this.bot = bot;
@@ -27,20 +27,20 @@ public class BotRemoveThread extends Thread {
 	}
 
 	public void run() {
-		
-		if(this.actions.size() == 0){
-			Node root = this.evaluator.evalToNode(this.gameController.getController().getGame());
+
+		if (this.actions.size() == 0) {
+			Node root = this.evaluator.evalToNode(this.gameController.getController().getGame().copy());
 			this.bot.getLogic().performLogic(this.bot, root);
 
 			this.actions = algorithm.calculateBestActions(new Tree(root), this.bot);
 		}
-		
+
 		// visualising move
-//		try {
-//			Thread.sleep(800);
-//		} catch (InterruptedException e) {
-//			Thread.currentThread().interrupt();
-//		}
+		//		try {
+		//			Thread.sleep(800);
+		//		} catch (InterruptedException e) {
+		//			Thread.currentThread().interrupt();
+		//		}
 
 		// remove
 		for (Action a : this.actions) {
@@ -58,7 +58,7 @@ public class BotRemoveThread extends Thread {
 			Thread.currentThread().interrupt();
 		}
 	}
-	
+
 	public Bot getBot() {
 		return this.bot;
 	}
