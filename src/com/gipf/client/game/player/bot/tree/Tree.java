@@ -111,6 +111,50 @@ public class Tree {
 		return result;
 	}
 	
+	public ArrayList<Node> getExternalNodes(Node node){
+		ArrayList<Node> result = new ArrayList<Node>();
+		for(Node resultNode: bfSearch(node)){
+			if(isExternal(resultNode)){
+				result.add(resultNode);
+			}
+		}
+		return result;
+	}
+	
+	public ArrayList<Node> getEndChildren(Node node){
+		ArrayList<Node> toSearch = node.getChildren();
+		ArrayList<Node> toSearchNext = new ArrayList<Node>();
+		ArrayList<Node> result = new ArrayList<Node>();
+		while(!toSearch.isEmpty()){
+			for(Node candidate: toSearch){
+				if(candidate.getEndState()){
+					result.add(candidate);
+				}else{
+					toSearchNext.addAll(candidate.getChildren());
+				}
+			}
+			toSearch = toSearchNext;
+		}
+		return result;
+	}
+	
+	public ArrayList<Node> getEndChildren(Node node, int turns){
+		// Get the end states n turns down.
+		// So passing in turns=1 will return the current player's possible moves,
+		// passing in turns=2 will return the enemy's moves.
+		ArrayList<Node> toSearch = new ArrayList<Node>();
+		toSearch.add(node);
+		while(turns > 0){
+			turns -= 1;
+			ArrayList<Node> toSearchNext = new ArrayList<Node>();
+			for(Node currentNode: toSearch){
+				toSearchNext.addAll(getEndChildren(currentNode));
+			}
+			toSearch = toSearchNext;
+		}
+		return toSearch;
+	}
+	
 	private int count(Node root){
 		int n = 0;
 		if(isInternal(root)){

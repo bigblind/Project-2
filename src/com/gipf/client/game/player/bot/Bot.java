@@ -65,4 +65,8 @@ public class Bot extends Player {
 	public Evaluator getEvaluator() {
 		return this.evaluator;
 	}
+	
+	public TreeGenerator getTreeGenerator(){
+		return treeGenerator; //MAGIC!!! https://media.giphy.com/media/Ykgb9SW3JTy5a/giphy.gif
+	}
 }
