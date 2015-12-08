@@ -35,7 +35,6 @@ public class GameController {
 			returnOpponent(this.thisPlayer).setStoneAccount(Integer.parseInt(subParts[2]));
 			String boardString = received.substring(subParts[0].length() + subParts[1].length() + 3 + subParts[2].length());
 			this.readBoard(boardString);
-			System.out.println("at client: " + this.controller.getGame().getPlayerOne() + " " + this.controller.getGame().getPlayerTwo());
 		} else if (received.startsWith("/s")) {
 			// for updating state
 			if (received.equals("/s move")) {

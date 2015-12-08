@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import com.gipf.client.game.GameController;
 import com.gipf.client.game.player.Player;
 import com.gipf.client.game.player.bot.action.Action;
-import com.gipf.client.offline.logic.Board;
 import com.gipf.client.player.bot.algorithm.Algorithm;
 import com.gipf.client.player.bot.evaluation.Evaluator;
 import com.gipf.client.player.bot.generator.TreeGenerator;

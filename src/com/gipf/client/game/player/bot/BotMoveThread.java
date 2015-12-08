@@ -31,14 +31,12 @@ public class BotMoveThread extends Thread {
 
 		// computation for move
 		Node root = this.evaluator.evalToNode(this.gameController.getController().getGame().copy());
-		System.out.println("---------in bot move before: " + this.gameController.getController().getGame().getPlayerOne() + " " + this.gameController.getController().getGame().getPlayerTwo());
 		this.bot.getGenerator().generateTreeLayer(root, this.bot, this.bot.getLogic(), true);
-		System.out.println("--------in bot move after: " + this.gameController.getController().getGame().getPlayerOne() + " " + this.gameController.getController().getGame().getPlayerTwo());
 		ArrayList<Action> actions = this.algorithm.calculateBestActions(new Tree(root), this.bot);
 
 		ArrayList<Node> search = new Tree(root).bfSearch(root);
-//		System.out.println(search.size() + " nodes");
-		
+		System.out.println(search.size() + " nodes");
+
 		if (actions.size() > 1) {
 			ArrayList<Action> upcomingActions = new ArrayList<Action>();
 			for (int i = 1; i < actions.size(); i++)
@@ -48,11 +46,10 @@ public class BotMoveThread extends Thread {
 
 		long end = System.nanoTime();
 
-//		runTime += end - start;
-//		runs++;
-//		System.out.println("average runtime: " + runTime / (runs * 1000000.0) + "ms at " + runs + " runs, current run time: " + (end - start) + " nanoseconds = " + ((end - start) / 1000000.0) + " ms.");
+		runTime += end - start;
+		runs++;
+		System.out.println("average runtime: " + runTime / (runs * 1000000.0) + "ms at " + runs + " runs, current run time: " + (end - start) + " nanoseconds = " + ((end - start) / 1000000.0) + " ms.");
 
-		
 		// used for making bots move visible
 		if (end - start < 166700000) {
 			try {
@@ -64,7 +61,7 @@ public class BotMoveThread extends Thread {
 
 		// do move
 		this.gameController.getController().getGamePanel().getButtons()[actions.get(0).getPoints()[0].getX()][actions.get(0).getPoints()[0].getY()].doClick();
-		
+
 		// visualise direction choice
 		if (end - start < 250000000) {
 			try {
