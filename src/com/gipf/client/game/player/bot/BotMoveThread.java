@@ -1,75 +1,42 @@
 package com.gipf.client.game.player.bot;
 
-import java.util.ArrayList;
-
 import com.gipf.client.game.GameController;
-import com.gipf.client.game.player.bot.action.Action;
-import com.gipf.client.game.player.bot.tree.Node;
-import com.gipf.client.game.player.bot.tree.Tree;
 import com.gipf.client.player.bot.algorithm.Algorithm;
-import com.gipf.client.player.bot.evaluation.Evaluator;
+import com.gipf.client.player.bot.generator.GameState;
+import com.gipf.client.utils.Point;
 
 public class BotMoveThread extends Thread {
 
-	public static long runTime = 0;
-	public static int runs = 0;
-
 	private GameController gameController;
-	private Evaluator evaluator;
 	private Algorithm algorithm;
 	private Bot bot;
 
-	public BotMoveThread(Bot bot, GameController gameController, Algorithm algorithm, Evaluator evaluator) {
+	public BotMoveThread(Bot bot, GameController gameController, Algorithm algorithm) {
 		this.gameController = gameController;
 		this.algorithm = algorithm;
-		this.evaluator = evaluator;
 		this.bot = bot;
 	}
 
 	public void run() {
-		long start = System.nanoTime();
+		long start = System.currentTimeMillis();
 
 		// computation for move
-		Node root = this.evaluator.evalToNode(this.gameController.getController().getGame().copy());
-		this.bot.getGenerator().generateTreeLayer(root, this.bot, this.bot.getLogic(), true);
-		ArrayList<Action> actions = this.algorithm.calculateBestActions(new Tree(root), this.bot);
+		Point[] move = this.algorithm.returnBestMove(new GameState(this.gameController.getController().getGame(), null, null), this.bot);
+		
+		long end = System.currentTimeMillis();
 
-		ArrayList<Node> search = new Tree(root).bfSearch(root);
-
-		if (actions.size() > 1) {
-			ArrayList<Action> upcomingActions = new ArrayList<Action>();
-			for (int i = 1; i < actions.size(); i++)
-				upcomingActions.add(actions.get(i));
-			this.bot.setUpcomingActions(upcomingActions);
-		}
-
-		long end = System.nanoTime();
-
-		runTime += end - start;
-		runs++;
-		System.out.println("average runtime: " + runTime / (runs * 1000000.0) + "ms at " + runs + " runs, current run time: " + (end - start) + " miliseconds = " + ((end - start) / 1000000.0) + " ms with " + search.size() + " nodes.");
-		System.out.println();
-		// used for making bots move visible
-		if (end - start < 166700000) {
-			try {
-				Thread.sleep((166700000 - (end - start)) / 1000000);
-			} catch (InterruptedException e) {
-				Thread.currentThread().interrupt();
-			}
-		}
+//		 used for making bots move visible
+//		if (end - start < 500) {
+//			try {
+//				Thread.sleep(500 - (end - start));
+//			} catch (InterruptedException e) {
+//				Thread.currentThread().interrupt();
+//			}
+//		}
 
 		// do move
-		this.gameController.getController().getGamePanel().getButtons()[actions.get(0).getPoints()[0].getX()][actions.get(0).getPoints()[0].getY()].doClick();
-
-		// visualise direction choice
-		if (end - start < 250000000) {
-			try {
-				Thread.sleep((250000000 - (end - start)) / 1000000);
-			} catch (InterruptedException e) {
-				Thread.currentThread().interrupt();
-			}
-		}
-		this.gameController.getController().getGamePanel().getButtons()[actions.get(0).getPoints()[1].getX()][actions.get(0).getPoints()[1].getY()].doClick();
+		this.gameController.getController().getGamePanel().getButtons()[move[0].getX()][move[0].getY()].doClick();
+		this.gameController.getController().getGamePanel().getButtons()[move[1].getX()][move[1].getY()].doClick();
 
 		// ending thread
 		try {

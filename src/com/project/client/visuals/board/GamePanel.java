@@ -44,14 +44,12 @@ public class GamePanel extends JPanel implements ComponentListener {
 	private int tileSize;
 
 	private boolean initialised;
-	
-	private boolean showCheckButton;
 
 	private Game game;
 
 	private Controller controller;
 
-	public GamePanel(Game game, Controller controller, boolean showCheckButton) {
+	public GamePanel(Game game, Controller controller) {
 		this.setLayout(null);
 		this.connectedLocations = new Point[9][9][];
 		this.buttons = new BoardButton[9][9];
@@ -63,7 +61,6 @@ public class GamePanel extends JPanel implements ComponentListener {
 		this.initButtons();
 		this.initConnections();
 		this.initialised = true;
-		this.showCheckButton = showCheckButton;
 		this.resize();
 	}
 
@@ -430,9 +427,5 @@ public class GamePanel extends JPanel implements ComponentListener {
 
 	public State getState() {
 		return this.state;
-	}
-	
-	public boolean showCheckButton() {
-		return this.showCheckButton;
 	}
 }

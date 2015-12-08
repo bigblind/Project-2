@@ -143,22 +143,22 @@ public class GameLogic {
 		return false;
 	}
 
-	public void removePoints(Point[] points, Player player, boolean checkRows) {
-		if (player.getStoneColor() == Board.WHITE_VALUE) {
+	public void removePoints(Point[] points, boolean checkRows) {
+		if (this.currentPlayer.getStoneColor() == Board.WHITE_VALUE) {
 			for (Point p : points) {
 				if (this.game.getBoard().getGrid()[p.getX()][p.getY()] == Board.WHITE_VALUE) {
-					player.setStoneAccount(player.getStoneAccount() + 1);
+					this.currentPlayer.setStoneAccount(this.currentPlayer.getStoneAccount() + 1);
 				} else if (this.game.getBoard().getGrid()[p.getX()][p.getY()] == Board.GIPF_WHITE_VALUE) {
-					player.setStoneAccount(player.getStoneAccount() + 2);
+					this.currentPlayer.setStoneAccount(this.currentPlayer.getStoneAccount() + 2);
 				}
 				this.game.getBoard().getGrid()[p.getX()][p.getY()] = Board.EMPTY_TILE;
 			}
 		} else {
 			for (Point p : points) {
 				if (this.game.getBoard().getGrid()[p.getX()][p.getY()] == Board.BLACK_VALUE) {
-					player.setStoneAccount(player.getStoneAccount() + 1);
+					this.currentPlayer.setStoneAccount(this.currentPlayer.getStoneAccount() + 1);
 				} else if (this.game.getBoard().getGrid()[p.getX()][p.getY()] == Board.GIPF_BLACK_VALUE) {
-					player.setStoneAccount(player.getStoneAccount() + 2);
+					this.currentPlayer.setStoneAccount(this.currentPlayer.getStoneAccount() + 2);
 				}
 				this.game.getBoard().getGrid()[p.getX()][p.getY()] = Board.EMPTY_TILE;
 			}

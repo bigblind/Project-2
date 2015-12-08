@@ -97,13 +97,8 @@ public class LocalServer {
 				points[i] = new Point(x, y);
 			}
 
-			Player tmp;
-			String player = received.split("stone color: ")[1].substring(0, 1);
-			if (player.equals("1")) tmp = this.game.getPlayerOne();
-			else tmp = this.game.getPlayerTwo();
-			
-			if (received.endsWith("checkrows")) this.logic.removePoints(points, tmp, true);
-			else this.logic.removePoints(points, tmp, false);
+			if (received.endsWith("checkrows")) this.logic.removePoints(points, true);
+			else this.logic.removePoints(points, false);
 			this.sendGameUpdate();
 		}
 	}
@@ -167,12 +162,12 @@ public class LocalServer {
 			this.sendToClient("/g lose", 0);
 		}
 	}
-
+	
 	public void receive(String string, LocalConnector connector) {
 		if (c1.equals(connector)) this.clientInput(string, 1);
 		else this.clientInput(string, 2);
 	}
-
+	
 	public GameLogic getGameLogic() {
 		return this.logic;
 	}

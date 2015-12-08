@@ -11,25 +11,14 @@ public class BotRemoveThread extends Thread {
 	private Algorithm algorithm;
 	private Bot bot;
 
-<<<<<<< HEAD
 	public BotRemoveThread(Bot bot, GameController gameController, Algorithm algorithm) {
-=======
-	public BotRemoveThread(Bot bot, GameController gameController, Algorithm algorithm, Evaluator evaluator, ArrayList<Action> actions) {
->>>>>>> BranchBranchBranches!!!
 		this.gameController = gameController;
 		this.algorithm = algorithm;
 		this.bot = bot;
 	}
 
 	public void run() {
-<<<<<<< HEAD
 		long start = System.currentTimeMillis();
-=======
-
-		if (this.actions.size() == 0) {
-			Node root = this.evaluator.evalToNode(this.gameController.getController().getGame().copy());
-			this.bot.getLogic().performLogic(this.bot, root);
->>>>>>> BranchBranchBranches!!!
 
 		// computation for remove
 		RemoveState state = null;
@@ -39,7 +28,6 @@ public class BotRemoveThread extends Thread {
 			e.printStackTrace();
 			System.exit(0);
 		}
-<<<<<<< HEAD
 		Row[] rows = state.getRows();
 		
 		long end = System.currentTimeMillis();
@@ -50,20 +38,6 @@ public class BotRemoveThread extends Thread {
 				Thread.sleep(800 - (end - start));
 			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt();
-=======
-
-		// visualising move
-		//		try {
-		//			Thread.sleep(800);
-		//		} catch (InterruptedException e) {
-		//			Thread.currentThread().interrupt();
-		//		}
-
-		// remove
-		for (Action a : this.actions) {
-			for (Point p : a.getPoints()) {
-				this.gameController.getController().getGamePanel().getButtons()[p.getX()][p.getY()].doClick();
->>>>>>> BranchBranchBranches!!!
 			}
 		}
 
@@ -77,11 +51,4 @@ public class BotRemoveThread extends Thread {
 			Thread.currentThread().interrupt();
 		}
 	}
-<<<<<<< HEAD
-=======
-
-	public Bot getBot() {
-		return this.bot;
-	}
->>>>>>> BranchBranchBranches!!!
 }
