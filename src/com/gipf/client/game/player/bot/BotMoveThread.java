@@ -62,13 +62,12 @@ public class BotMoveThread extends Thread {
 		this.gameController.getController().getGamePanel().getButtons()[actions.get(0).getPoints()[0].getX()][actions.get(0).getPoints()[0].getY()].doClick();
 
 		// visualise direction choice
-		if (end - start < 250000000) {
-			try {
-				Thread.sleep((250000000 - (end - start)) / 1000000);
-			} catch (InterruptedException e) {
-				Thread.currentThread().interrupt();
-			}
+		try {
+			Thread.sleep(250);
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
 		}
+
 		this.gameController.getController().getGamePanel().getButtons()[actions.get(0).getPoints()[1].getX()][actions.get(0).getPoints()[1].getY()].doClick();
 
 		// ending thread

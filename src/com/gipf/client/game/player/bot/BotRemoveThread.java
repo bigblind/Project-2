@@ -35,17 +35,23 @@ public class BotRemoveThread extends Thread {
 			this.actions = algorithm.calculateBestActions(new Tree(root), this.bot);
 		}
 
-		// visualising move
-		//		try {
-		//			Thread.sleep(800);
-		//		} catch (InterruptedException e) {
-		//			Thread.currentThread().interrupt();
-		//		}
+		// visualising removal
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+		}
 
 		// remove
 		for (Action a : this.actions) {
 			for (Point p : a.getPoints()) {
 				this.gameController.getController().getGamePanel().getButtons()[p.getX()][p.getY()].doClick();
+				try {
+					Thread.sleep(250);
+				} catch (InterruptedException e) {
+					Thread.currentThread().interrupt();
+				}
+
 			}
 			this.gameController.getController().getGamePanel().getCheckButton().doClick();
 		}
