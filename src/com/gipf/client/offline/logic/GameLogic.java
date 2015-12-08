@@ -101,7 +101,6 @@ public class GameLogic {
 	}
 
 	public boolean handleRows() {
-		System.out.println(this.currentPlayer);
 		ArrayList<Row> rows = this.game.getBoard().checkForLines();
 		if (rows.size() == 1 && !containsGipfStone(rows.get(0).getFromPoint(), rows.get(0).getToPoint())) {
 			if (this.extCurrentPlayerContainGipf(rows.get(0).getWhiteExtensionStones(), rows.get(0).getBlackExtensionStones())) {

@@ -30,13 +30,12 @@ public class BotMoveThread extends Thread {
 		long start = System.nanoTime();
 
 		// computation for move
-		Node root = this.evaluator.evalToNode(this.gameController.getController().getGame());
-		this.bot.getGenerator().generateTreeLayer(root, this.bot, this.bot.getLogic(), false);
+		Node root = this.evaluator.evalToNode(this.gameController.getController().getGame().copy());
+		this.bot.getGenerator().generateTreeLayer(root, this.bot, this.bot.getLogic(), true);
 		ArrayList<Action> actions = this.algorithm.calculateBestActions(new Tree(root), this.bot);
 
 		ArrayList<Node> search = new Tree(root).bfSearch(root);
-//		System.out.println(search.size() + " nodes");
-		
+
 		if (actions.size() > 1) {
 			ArrayList<Action> upcomingActions = new ArrayList<Action>();
 			for (int i = 1; i < actions.size(); i++)
@@ -46,14 +45,14 @@ public class BotMoveThread extends Thread {
 
 		long end = System.nanoTime();
 
-//		runTime += end - start;
-//		runs++;
-//		System.out.println("average runtime: " + runTime / (runs * 1000000.0) + "ms at " + runs + " runs, current run time: " + (end - start) + " nanoseconds = " + ((end - start) / 1000000.0) + " ms.");
-
+		runTime += end - start;
+		runs++;
+		System.out.println("average runtime: " + runTime / (runs * 1000000.0) + "ms at " + runs + " runs, current run time: " + (end - start) + " miliseconds = " + ((end - start) / 1000000.0) + " ms with " + search.size() + " nodes.");
+		System.out.println();
 		// used for making bots move visible
-		if (end - start < 750000000) {
+		if (end - start < 166700000) {
 			try {
-				Thread.sleep((750000000 - (end - start)) / 1000000);
+				Thread.sleep((166700000 - (end - start)) / 1000000);
 			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt();
 			}
@@ -61,6 +60,15 @@ public class BotMoveThread extends Thread {
 
 		// do move
 		this.gameController.getController().getGamePanel().getButtons()[actions.get(0).getPoints()[0].getX()][actions.get(0).getPoints()[0].getY()].doClick();
+
+		// visualise direction choice
+		if (end - start < 250000000) {
+			try {
+				Thread.sleep((250000000 - (end - start)) / 1000000);
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+			}
+		}
 		this.gameController.getController().getGamePanel().getButtons()[actions.get(0).getPoints()[1].getX()][actions.get(0).getPoints()[1].getY()].doClick();
 
 		// ending thread

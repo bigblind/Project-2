@@ -28,7 +28,7 @@ public class GipfRowRemoveState extends State {
 		super(gamePanel, controller);
 		this.row = row;
 
-		this.gamePanel.getCheckButton().setVisible(true);
+		if (gamePanel.showCheckButton()) this.gamePanel.getCheckButton().setVisible(true);
 		this.gamePanel.getCheckButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				gamePanel.getCheckButton().removeActionListener(this);

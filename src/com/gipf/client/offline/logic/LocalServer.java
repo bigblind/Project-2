@@ -97,8 +97,6 @@ public class LocalServer {
 				points[i] = new Point(x, y);
 			}
 
-			System.out.println(received);
-			
 			Player tmp;
 			String player = received.split("stone color: ")[1].substring(0, 1);
 			if (player.equals("1")) tmp = this.game.getPlayerOne();

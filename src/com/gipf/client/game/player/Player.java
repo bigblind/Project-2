@@ -34,6 +34,10 @@ public class Player {
 	public void setStoneColor(int color) {
 		this.stoneColor = color;
 	}
+	
+	public void addStones(int stones) {
+		this.stoneAccount += stones;
+	}
 
 	public int getStoneColor() {
 		return this.stoneColor;

@@ -25,7 +25,7 @@ public class GameController {
 	public void input(String received) {
 		if (received.startsWith("/i")) {
 			// "/i Board.BLACK_VALUE thisStonesAccount opponentStonesAccount boardString";
-			String info = received.split("/i ")[1]; 
+			String info = received.split("/i ")[1];
 			String boardString = received.substring(3 + info.split(" ")[0].length() + 1 + info.split(" ")[1].length() + 1 + info.split(" ")[2].length() + 1);
 			this.initCall(Integer.parseInt(info.split(" ")[0]), Integer.parseInt(info.split(" ")[1]), Integer.parseInt(info.split(" ")[2]), boardString);
 		} else if (received.startsWith("/u")) {
@@ -85,7 +85,7 @@ public class GameController {
 		if (player.equals(this.controller.getGame().getPlayerOne())) return this.controller.getGame().getPlayerTwo();
 		else return this.controller.getGame().getPlayerOne();
 	}
-	
+
 	public void setPlayer(Player player, boolean copyData) {
 		if (copyData) {
 			player.setStoneAccount(this.thisPlayer.getStoneAccount());
@@ -169,7 +169,7 @@ public class GameController {
 
 		return new Point(x, y);
 	}
-	
+
 	public Controller getController() {
 		return this.controller;
 	}
