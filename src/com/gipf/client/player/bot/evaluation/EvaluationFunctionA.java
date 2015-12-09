@@ -28,9 +28,16 @@ public class EvaluationFunctionA implements EvaluationFunction {
 		this.lineOfThreeWeight = lineOfThreeWeight;
 	}
 
-	public int evaluate(Board board, int blackStoneCnt, int whiteStoneCnt) {
+	public int evaluate(Board board, int whiteStoneCnt, int blackStoneCnt) {
 		this.board = board;
-
+		
+		if(whiteStoneCnt == 0){
+			return Integer.MAX_VALUE;
+		}
+		if(blackStoneCnt == 0){
+			return Integer.MIN_VALUE;
+		}
+		
 		int boardValue = 0;
 
 		int count = (int) (stoneCountWeight * (whiteStoneCnt - blackStoneCnt));
