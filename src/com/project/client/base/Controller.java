@@ -1,5 +1,7 @@
 package com.project.client.base;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -17,12 +19,14 @@ import com.gipf.client.offline.logic.LocalServer;
 import com.gipf.client.resource.ResourceLoader;
 import com.project.client.visuals.board.GamePanel;
 import com.project.client.visuals.frame.Frame;
+import com.project.client.visuals.menu.ArenaBotSelectionPage;
 import com.project.client.visuals.menu.GameModeMenuPageArena;
 import com.project.client.visuals.menu.GameModeMenuPageMulti;
 import com.project.client.visuals.menu.GameModeMenuPageSingle;
 import com.project.client.visuals.menu.MainMenuPage;
 import com.project.client.visuals.menu.MenuPage;
 import com.project.client.visuals.menu.MultiplayerMenuPage;
+import com.project.client.visuals.menu.SingleBotSelectionPage;
 import com.project.client.visuals.state.State;
 import com.project.client.visuals.state.WaitState;
 
@@ -67,8 +71,10 @@ public class Controller {
 
 		this.initMenuPages();
 		this.showMenuPage(0);
-
+		
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.frame.pack();
+		this.frame.setLocation((int) ((screenSize.getWidth() / 2) - (frame.getSize().getWidth() / 2)), (int) ((screenSize.getHeight() / 2) - (frame.getSize().getHeight() / 2)));
 		this.frame.setVisible(true);
 	}
 
@@ -83,6 +89,8 @@ public class Controller {
 		this.menuPages.add(new GameModeMenuPageSingle(this));
 		this.menuPages.add(new GameModeMenuPageMulti(this));
 		this.menuPages.add(new GameModeMenuPageArena(this));
+		this.menuPages.add(new ArenaBotSelectionPage(this));
+		this.menuPages.add(new SingleBotSelectionPage(this));
 	}
 
 	public void showMenuPage(int index) {
@@ -181,7 +189,7 @@ public class Controller {
 		if (this.runningLocalGame && !this.runningBotGame) {
 			if (state instanceof WaitState) this.showPanel(this.ghostController.getGamePanel());
 			else this.showPanel(this.gamePanel);
-		} else if (this.runningBotGame) {
+		} else if (!this.runningLocalGame && this.runningBotGame) {
 			if (state instanceof WaitState) this.showPanel(this.ghostController.getGamePanel());
 			else this.showPanel(this.ghostController2.getGamePanel());
 		}
@@ -213,5 +221,9 @@ public class Controller {
 	
 	public Controller getGhostController(){
 		return this.ghostController;
+	}
+	
+	public ArrayList<MenuPage> getMenuPages() {
+		return this.menuPages;
 	}
 }

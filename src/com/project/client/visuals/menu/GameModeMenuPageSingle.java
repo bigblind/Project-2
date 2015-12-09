@@ -15,11 +15,6 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
-import com.gipf.client.game.player.bot.Bot;
-import com.gipf.client.offline.logic.LocalServer;
-import com.gipf.client.player.bot.algorithm.QuickGreedyAlgorithm;
-import com.gipf.client.player.bot.evaluation.EvaluationFunctionA;
-import com.gipf.client.player.bot.evaluation.Evaluator;
 import com.project.client.base.Controller;
 
 public class GameModeMenuPageSingle extends MenuPage {
@@ -67,18 +62,18 @@ public class GameModeMenuPageSingle extends MenuPage {
 		this.back.setMinimumSize(buttonDimension);
 		this.back.setMaximumSize(buttonDimension);
 		
-		this.basic.addActionListener(new ActionListener() { // TODO not just generate this algorithm
+		this.basic.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				controller.createLocalBotGame(new LocalServer(null, null, "basic"), new Bot(new QuickGreedyAlgorithm(), new Evaluator(EvaluationFunctionA.GREEDY_WEIGHTS_STONECOUNT)));
-				controller.showPanel(controller.getGamePanel());
-				controller.getFrame().pack();
+				SingleBotSelectionPage page = (SingleBotSelectionPage) ((controller.getMenuPages().get(6)));
+				page.setMode("basic");
+				controller.showMenuPage(6);
 			}
 		});
 		this.standard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				controller.createLocalBotGame(new LocalServer(null, null, "standard"), new Bot(new QuickGreedyAlgorithm(), new Evaluator(EvaluationFunctionA.EQUAL_WEIGHTS)));
-				controller.showPanel(controller.getGamePanel());
-				controller.getFrame().pack();
+				SingleBotSelectionPage page = (SingleBotSelectionPage) ((controller.getMenuPages().get(6)));
+				page.setMode("standard");
+				controller.showMenuPage(6);
 			}
 		});
 		this.back.addActionListener(new ActionListener() {

@@ -10,6 +10,7 @@ import com.gipf.client.game.player.bot.tree.Node;
 import com.gipf.client.game.player.bot.tree.Tree;
 
 public class MCTS extends Algorithm{
+	
 	private int iterations;
 	private int simulationDepth;
 	

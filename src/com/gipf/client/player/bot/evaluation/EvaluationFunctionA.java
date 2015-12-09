@@ -4,11 +4,11 @@ import com.gipf.client.offline.logic.Board;
 
 public class EvaluationFunctionA implements EvaluationFunction {
 
-	public static final EvaluationFunctionA EQUAL_WEIGHTS = new EvaluationFunctionA(1.0, 1.0, 1.0, 1.0);
-	public static final EvaluationFunctionA GREEDY_WEIGHTS_STONECOUNT = new EvaluationFunctionA(0.0, 10.0, 0.0, 0.0);
-	public static final EvaluationFunctionA GREEDY_WEIGHTS_CENTER = new EvaluationFunctionA(1.0, 0.0, 0.0, 0.0);
-	public static final EvaluationFunctionA GREEDY_WEIGHTS_DIAGONAL = new EvaluationFunctionA(0.0, 0.0, 1.0, 0.0);
-	public static final EvaluationFunctionA GREEDY_WEIGHTS_LINEOFTHREE = new EvaluationFunctionA(0.0, 0.0, 0.0, 1.0);
+	public static final EvaluationFunctionA EQUAL_WEIGHTS = new EvaluationFunctionA("Equal Weights",1.0, 1.0, 1.0, 1.0);
+	public static final EvaluationFunctionA GREEDY_WEIGHTS_STONECOUNT = new EvaluationFunctionA("Stonecount", 0.0, 10.0, 0.0, 0.0);
+	public static final EvaluationFunctionA GREEDY_WEIGHTS_CENTER = new EvaluationFunctionA("Center Location", 1.0, 0.0, 0.0, 0.0);
+	public static final EvaluationFunctionA GREEDY_WEIGHTS_DIAGONAL = new EvaluationFunctionA("Diagonal Location", 0.0, 0.0, 1.0, 0.0);
+	public static final EvaluationFunctionA GREEDY_WEIGHTS_LINEOFTHREE = new EvaluationFunctionA("Line Of Three", 0.0, 0.0, 0.0, 1.0);
 	
 	public double centerWeight = 0.5;
 	public double stoneCountWeight = 0.7;
@@ -16,16 +16,19 @@ public class EvaluationFunctionA implements EvaluationFunction {
 	public double lineOfThreeWeight = 0.6;
 
 	private Board board;
+	
+	private String name;
 
-	public EvaluationFunctionA() {
-
+	public EvaluationFunctionA(String name) {
+		this.name = name;
 	}
 
-	public EvaluationFunctionA(double centerWeight, double stoneCountWeight, double diagonalWeight, double lineOfThreeWeight) {
+	public EvaluationFunctionA(String name, double centerWeight, double stoneCountWeight, double diagonalWeight, double lineOfThreeWeight) {
 		this.centerWeight = centerWeight;
 		this.stoneCountWeight = stoneCountWeight;
 		this.diagonalWeight = diagonalWeight;
 		this.lineOfThreeWeight = lineOfThreeWeight;
+		this.name = name;
 	}
 
 	public int evaluate(Board board, int whiteStoneCnt, int blackStoneCnt) {
@@ -218,5 +221,9 @@ public class EvaluationFunctionA implements EvaluationFunction {
 		}
 		return lineOf3Value;
 
+	}
+	
+	public String toString() {
+		return this.name;
 	}
 }
