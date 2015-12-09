@@ -147,11 +147,10 @@ public class GameModeMenuPageArena extends MenuPage {
 			this.diagonalLabel = new JLabel("Stones on diagonals weight:");
 			this.lineOfThreeLabel = new JLabel("Line of three weight:");
 			
-			SpinnerModel weightModel = new SpinnerNumberModel(1.0, Double.MIN_VALUE, Double.MAX_VALUE, 0.1);		
-			this.centerWeightInput = new JSpinner(weightModel);
-			this.stoneCountWeightInput = new JSpinner(weightModel);
-			this.diagonalWeightInput = new JSpinner(weightModel);
-			this.lineOfThreeWeightInput = new JSpinner(weightModel);
+			this.centerWeightInput = new JSpinner(new SpinnerNumberModel(1.0, Double.MIN_VALUE, Double.MAX_VALUE, 0.1));
+			this.stoneCountWeightInput = new JSpinner(new SpinnerNumberModel(1.0, Double.MIN_VALUE, Double.MAX_VALUE, 0.1));
+			this.diagonalWeightInput = new JSpinner(new SpinnerNumberModel(1.0, Double.MIN_VALUE, Double.MAX_VALUE, 0.1));
+			this.lineOfThreeWeightInput = new JSpinner(new SpinnerNumberModel(1.0, Double.MIN_VALUE, Double.MAX_VALUE, 0.1));
 			
 			this.centerWeightInput.setMaximumSize(inputSize);
 			this.centerWeightInput.setPreferredSize(inputSize);
