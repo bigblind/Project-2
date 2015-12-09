@@ -112,7 +112,6 @@ public class MCTS extends Algorithm{
 			Node simState = this.state.copy();
 			while(simState != null && !simState.getGame().isFinished() && depth < simulationDepth){
 				depth += 1;
-				System.out.println("  Simulation depth "+depth);
 				simState = player.getGenerator().getRandomMove(simState, player, player.getLogic(), true);
 			}
 			int score = 0;

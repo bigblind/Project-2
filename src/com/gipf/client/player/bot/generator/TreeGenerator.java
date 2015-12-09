@@ -166,7 +166,6 @@ public class TreeGenerator {
 				move = this.nodeFromPoints(node, player, pd.from, pd.to);
 				node.addChild(move);
 				this.checkForEndState(node, player, logic);
-				System.out.println("checked endstate.");
 				break;
 			}
 		}
