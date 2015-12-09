@@ -1,5 +1,7 @@
 package com.project.client.base;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -67,8 +69,10 @@ public class Controller {
 
 		this.initMenuPages();
 		this.showMenuPage(0);
-
+		
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.frame.pack();
+		this.frame.setLocation((int) ((screenSize.getWidth() / 2) - (frame.getSize().getWidth() / 2)), (int) ((screenSize.getHeight() / 2) - (frame.getSize().getHeight() / 2)));
 		this.frame.setVisible(true);
 	}
 
@@ -181,7 +185,7 @@ public class Controller {
 		if (this.runningLocalGame && !this.runningBotGame) {
 			if (state instanceof WaitState) this.showPanel(this.ghostController.getGamePanel());
 			else this.showPanel(this.gamePanel);
-		} else if (this.runningBotGame) {
+		} else if (!this.runningLocalGame && this.runningBotGame) {
 			if (state instanceof WaitState) this.showPanel(this.ghostController.getGamePanel());
 			else this.showPanel(this.ghostController2.getGamePanel());
 		}
