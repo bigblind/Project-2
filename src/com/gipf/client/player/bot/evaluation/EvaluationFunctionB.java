@@ -4,6 +4,12 @@ import com.gipf.client.offline.logic.Board;
 
 public class EvaluationFunctionB implements EvaluationFunction {
 
+	private String name;
+	
+	public EvaluationFunctionB(String name) {
+		this.name = name;
+	}
+	
 	public int evaluate(Board board, int whiteStoneCnt, int blackStoneCnt) {
 		int[] onBoard = this.stonesOnBoard(board);
 		return onBoard[0] + whiteStoneCnt - (onBoard[1] + blackStoneCnt);
@@ -23,5 +29,9 @@ public class EvaluationFunctionB implements EvaluationFunction {
 		}
 
 		return new int[] { whiteStones, blackStones };
+	}
+	
+	public String toString() {
+		return this.name;
 	}
 }

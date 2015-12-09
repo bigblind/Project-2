@@ -19,12 +19,14 @@ import com.gipf.client.offline.logic.LocalServer;
 import com.gipf.client.resource.ResourceLoader;
 import com.project.client.visuals.board.GamePanel;
 import com.project.client.visuals.frame.Frame;
+import com.project.client.visuals.menu.ArenaBotSelectionPage;
 import com.project.client.visuals.menu.GameModeMenuPageArena;
 import com.project.client.visuals.menu.GameModeMenuPageMulti;
 import com.project.client.visuals.menu.GameModeMenuPageSingle;
 import com.project.client.visuals.menu.MainMenuPage;
 import com.project.client.visuals.menu.MenuPage;
 import com.project.client.visuals.menu.MultiplayerMenuPage;
+import com.project.client.visuals.menu.SingleBotSelectionPage;
 import com.project.client.visuals.state.State;
 import com.project.client.visuals.state.WaitState;
 
@@ -87,6 +89,8 @@ public class Controller {
 		this.menuPages.add(new GameModeMenuPageSingle(this));
 		this.menuPages.add(new GameModeMenuPageMulti(this));
 		this.menuPages.add(new GameModeMenuPageArena(this));
+		this.menuPages.add(new ArenaBotSelectionPage(this));
+		this.menuPages.add(new SingleBotSelectionPage(this));
 	}
 
 	public void showMenuPage(int index) {
@@ -217,5 +221,9 @@ public class Controller {
 	
 	public Controller getGhostController(){
 		return this.ghostController;
+	}
+	
+	public ArrayList<MenuPage> getMenuPages() {
+		return this.menuPages;
 	}
 }

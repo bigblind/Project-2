@@ -23,7 +23,6 @@ public class LocalServer {
 	public LocalServer(LocalConnector c1, LocalConnector c2, String logic) {
 		this.c1 = c1;
 		this.c2 = c2;
-
 		this.game = new Game();
 		this.game.setPlayerOne(new Player(Board.WHITE_VALUE));
 		this.game.setPlayerTwo(new Player(Board.BLACK_VALUE));
