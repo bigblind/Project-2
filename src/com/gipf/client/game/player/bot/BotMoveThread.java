@@ -33,9 +33,7 @@ public class BotMoveThread extends Thread {
 		Node root = this.evaluator.evalToNode(this.gameController.getController().getGame().copy());
 		this.bot.getGenerator().generateTreeLayer(root, this.bot, this.bot.getLogic(), true);
 		ArrayList<Action> actions = this.algorithm.calculateBestActions(new Tree(root), this.bot);
-
 		ArrayList<Node> search = new Tree(root).bfSearch(root);
-
 		if (actions.size() > 1) {
 			ArrayList<Action> upcomingActions = new ArrayList<Action>();
 			for (int i = 1; i < actions.size(); i++)

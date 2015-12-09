@@ -24,6 +24,7 @@ public class MCTS extends Algorithm{
 	}
 	
 	public ArrayList<Action> calculateBestActions(Tree tree, Bot player) {
+		tree = new Tree(tree.root().copy(true));
 		MCTSNode root = new MCTSNode(tree.root(), player, tree);
 		
 		
@@ -46,9 +47,9 @@ public class MCTS extends Algorithm{
 			System.out.println("Simulation");
 			node.simulate(player);
 		}
-		
 		Node best = root.getMostVisitedChild().state;
-		return this.getActionsToNode(tree, best);
+		ArrayList<Action> res = this.getActionsToNode(tree, best);
+		return res;
 	}
 	
 	private class MCTSNode{
@@ -108,11 +109,10 @@ public class MCTS extends Algorithm{
 		
 		public void simulate(Player activePlayer){
 			int depth = 0;
-			Node simState = this.state;
+			Node simState = this.state.copy();
 			while(!simState.getGame().isFinished() && depth < simulationDepth){
 				depth += 1;
-				ArrayList<Node> moves = getNextLayers(simState, tree, player);
-				simState = moves.get(random.nextInt(moves.size()));
+				simState = player.getGenerator().getRandomMove(simState, player, player.getLogic(), true);
 			}
 			int score = simState.getValue();
 			//Make sure the score is always calculated as if the current player is player 1 (positive=good.)

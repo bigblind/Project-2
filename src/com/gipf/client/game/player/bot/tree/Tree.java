@@ -125,6 +125,7 @@ public class Tree {
 		ArrayList<Node> toSearch = node.getChildren();
 		ArrayList<Node> result = new ArrayList<Node>();
 		
+		toSearch.add(node);
 		while(!toSearch.isEmpty()){
 			ArrayList<Node> toSearchNext = new ArrayList<Node>();
 			for(Node candidate: toSearch){
