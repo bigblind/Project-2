@@ -15,7 +15,7 @@ public class MCTS extends Algorithm{
 	private int simulationDepth;
 	
 	public MCTS(){
-		this(1000, 100);
+		this(500, 50);
 	}
 	
 	public MCTS(int maxIterations, int maxSimulationDepth){
@@ -28,28 +28,25 @@ public class MCTS extends Algorithm{
 		tree = new Tree(tree.root().copy(true));
 		MCTSNode root = new MCTSNode(tree.root(), player, tree);
 		
-		
 		for(int i=0; i < this.iterations; i++){
-			System.out.println("Generation: "+(i+1));
 			
 			//Selection phase
-			System.out.println("Selection");
 			MCTSNode node = root;
 			while(node.untriedMoves.size() == 0 && node.children.size() != 0){
 				node = node.selectChild();
 			}
 			
-			System.out.println("expansion");
 			if(node.untriedMoves.size() != 0){
 				node = node.expand();
 			}
 			
 			//Simulation phase, includes backpropagation
-			System.out.println("Simulation");
 			node.simulate(player);
+			
 		}
 		Node best = root.getMostVisitedChild().state;
 		ArrayList<Action> res = this.getActionsToNode(tree, best);
+		System.out.println();
 		return res;
 	}
 	
