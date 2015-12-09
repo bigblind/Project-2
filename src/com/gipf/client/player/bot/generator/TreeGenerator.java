@@ -154,23 +154,31 @@ public class TreeGenerator {
 		Board board = node.getGame().getBoard();
 		//Keep getting random moves until we find one that's valid.
 		Node move = null;
+		ArrayList<PointDuo> pds = (ArrayList<PointDuo>)this.movePoints.clone();
+		
 		while(true){
-			PointDuo pd = this.movePoints.get(random.nextInt(this.movePoints.size()));
+			if(pds.isEmpty()){ // Tie.
+				return null;
+			}
+			PointDuo pd = pds.get(random.nextInt(pds.size()));
+			pds.remove(pd);
 			if(board.isValidMove(pd.from, pd.to)){
 				move = this.nodeFromPoints(node, player, pd.from, pd.to);
 				node.addChild(move);
 				this.checkForEndState(node, player, logic);
+				System.out.println("checked endstate.");
 				break;
 			}
 		}
+		
 		
 		if(!move.getEndState()){
 			//get a random endstate from this move.
 			Tree t = new Tree();
 			ArrayList<Node> endMoves = t.getEndChildren(node);
 			move = endMoves.get(random.nextInt(endMoves.size()));
-		}else{
 		}
+		
 		if(first){
 			return getRandomEnemyMove(move, player, logic);
 		}else{

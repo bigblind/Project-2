@@ -14,7 +14,7 @@ public class MCTS extends Algorithm{
 	private int simulationDepth;
 	
 	public MCTS(){
-		this(10, 10);
+		this(1000, 100);
 	}
 	
 	public MCTS(int maxIterations, int maxSimulationDepth){
@@ -110,15 +110,19 @@ public class MCTS extends Algorithm{
 		public void simulate(Player activePlayer){
 			int depth = 0;
 			Node simState = this.state.copy();
-			while(!simState.getGame().isFinished() && depth < simulationDepth){
+			while(simState != null && !simState.getGame().isFinished() && depth < simulationDepth){
 				depth += 1;
+				System.out.println("  Simulation depth "+depth);
 				simState = player.getGenerator().getRandomMove(simState, player, player.getLogic(), true);
 			}
-			int score = simState.getValue();
-			//Make sure the score is always calculated as if the current player is player 1 (positive=good.)
-			if(activePlayer == simState.getGame().getPlayerTwo()){
-				score = -score;
+			int score = 0;
+			if(simState != null){
+				score = simState.getValue();
+				if(activePlayer == simState.getGame().getPlayerTwo()){
+					score = -score;
+				}
 			}
+			//Make sure the score is always calculated as if the current player is player 1 (positive=good.)
 			this.backPropagate(score);
 		}
 		
