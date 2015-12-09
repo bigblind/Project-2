@@ -32,10 +32,10 @@ public class EvaluationFunctionA implements EvaluationFunction {
 		this.board = board;
 		
 		if(whiteStoneCnt == 0){
-			return Integer.MAX_VALUE;
+			return 100000;
 		}
 		if(blackStoneCnt == 0){
-			return Integer.MIN_VALUE;
+			return -100000;
 		}
 		
 		int boardValue = 0;
