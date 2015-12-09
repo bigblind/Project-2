@@ -15,7 +15,6 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
-import com.gipf.client.offline.logic.LocalServer;
 import com.project.client.base.Controller;
 
 public class GameModeMenuPageArena extends MenuPage {

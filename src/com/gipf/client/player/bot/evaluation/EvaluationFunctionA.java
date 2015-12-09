@@ -31,9 +31,16 @@ public class EvaluationFunctionA implements EvaluationFunction {
 		this.name = name;
 	}
 
-	public int evaluate(Board board, int blackStoneCnt, int whiteStoneCnt) {
+	public int evaluate(Board board, int whiteStoneCnt, int blackStoneCnt) {
 		this.board = board;
-
+		
+		if(whiteStoneCnt == 0){
+			return 100000;
+		}
+		if(blackStoneCnt == 0){
+			return -100000;
+		}
+		
 		int boardValue = 0;
 
 		int count = (int) (stoneCountWeight * (whiteStoneCnt - blackStoneCnt));
