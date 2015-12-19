@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import com.gipf.client.game.player.bot.Bot;
 import com.gipf.client.player.bot.algorithm.Algorithm;
 import com.gipf.client.player.bot.algorithm.MCTS;
+import com.gipf.client.player.bot.algorithm.MinMaxAlgorithm;
 import com.gipf.client.player.bot.algorithm.QuickGreedyAlgorithm;
 import com.gipf.client.player.bot.evaluation.EvaluationFunction;
 import com.gipf.client.player.bot.evaluation.EvaluationFunctionA;
@@ -57,6 +58,7 @@ public class BotSelectionPanel extends JPanel {
 		this.algorithmInput.setFont(buttonFont);
 		this.algorithmInput.addItem(QuickGreedyAlgorithm.class);
 		this.algorithmInput.addItem(MCTS.class);
+		this.algorithmInput.addItem(MinMaxAlgorithm.class);
 
 		this.functionInput = new JComboBox<EvaluationFunction>();
 		this.functionInput.setMaximumSize(new Dimension(1000, 75));

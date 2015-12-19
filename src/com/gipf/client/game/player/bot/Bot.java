@@ -16,9 +16,9 @@ public class Bot extends Player {
 	private Evaluator evaluator;
 	private TreeGenerator treeGenerator;
 	private BotLogic botLogic;
-	
+
 	private ArrayList<Action> upcomingActions;
-	
+
 	public Bot(Algorithm algorithm, Evaluator evaluator) {
 		this.algorithm = algorithm;
 		this.evaluator = evaluator;
@@ -26,9 +26,10 @@ public class Bot extends Player {
 		this.botLogic = new BotLogic(this);
 		this.upcomingActions = new ArrayList<Action>();
 	}
-	
+
 	public void update(String state) {
-			if (state.equals("move")) {
+		System.out.println(state + " " + this.getStoneColor());
+		if (state.equals("move")) {
 			BotMoveThread botThread = new BotMoveThread(this, this.gameController, this.algorithm, this.evaluator);
 			botThread.start();
 		} else if (state.equals("remove")) {
@@ -41,32 +42,32 @@ public class Bot extends Player {
 	public void setGameController(GameController gameController) {
 		this.gameController = gameController;
 	}
-	
+
 	public void setAlgorithm(Algorithm algorithm) {
 		this.algorithm = algorithm;
 	}
-	
+
 	public void setEvaluator(Evaluator evaluator) {
 		this.evaluator = evaluator;
 	}
-	
+
 	public TreeGenerator getGenerator() {
 		return this.treeGenerator;
 	}
-	
+
 	public void setUpcomingActions(ArrayList<Action> actions) {
 		this.upcomingActions = actions;
 	}
-	
+
 	public BotLogic getLogic() {
 		return this.botLogic;
 	}
-	
+
 	public Evaluator getEvaluator() {
 		return this.evaluator;
 	}
-	
-	public TreeGenerator getTreeGenerator(){
+
+	public TreeGenerator getTreeGenerator() {
 		return treeGenerator; //MAGIC!!! https://media.giphy.com/media/Ykgb9SW3JTy5a/giphy.gif
 	}
 }

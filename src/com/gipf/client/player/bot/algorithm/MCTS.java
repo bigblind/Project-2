@@ -3,7 +3,6 @@ package com.gipf.client.player.bot.algorithm;
 import java.util.ArrayList;
 import java.util.Random;
 
-import com.gipf.client.game.player.Player;
 import com.gipf.client.game.player.bot.Bot;
 import com.gipf.client.game.player.bot.action.Action;
 import com.gipf.client.game.player.bot.tree.Node;
@@ -15,7 +14,7 @@ public class MCTS extends Algorithm{
 	private int simulationDepth;
 	
 	public MCTS(){
-		this(500, 50);
+		this(10,10);
 	}
 	
 	public MCTS(int maxIterations, int maxSimulationDepth){
@@ -34,14 +33,14 @@ public class MCTS extends Algorithm{
 			MCTSNode node = root;
 			while(node.untriedMoves.size() == 0 && node.children.size() != 0){
 				node = node.selectChild();
-			}
+			}	
 			
 			if(node.untriedMoves.size() != 0){
 				node = node.expand();
 			}
 			
 			//Simulation phase, includes backpropagation
-			node.simulate(player);
+			node.simulate();
 			
 		}
 		Node best = root.getMostVisitedChild().state;
@@ -105,7 +104,7 @@ public class MCTS extends Algorithm{
 			return child;
 		}
 		
-		public void simulate(Player activePlayer){
+		public void simulate(){
 			int depth = 0;
 			Node simState = this.state.copy();
 			while(simState != null && !simState.getGame().isFinished() && depth < simulationDepth){
@@ -115,7 +114,7 @@ public class MCTS extends Algorithm{
 			int score = 0;
 			if(simState != null){
 				score = simState.getValue();
-				if(activePlayer == simState.getGame().getPlayerTwo()){
+				if(this.player == simState.getGame().getPlayerTwo()){
 					score = -score;
 				}
 			}

@@ -27,14 +27,12 @@ public class BotRemoveThread extends Thread {
 	}
 
 	public void run() {
-
 		if (this.actions.size() == 0) {
 			Node root = this.evaluator.evalToNode(this.gameController.getController().getGame().copy());
 			this.bot.getLogic().performLogic(this.bot, root);
 
 			this.actions = algorithm.calculateBestActions(new Tree(root), this.bot);
 		}
-
 		// visualising removal
 		try {
 			Thread.sleep(500);

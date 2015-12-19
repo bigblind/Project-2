@@ -158,6 +158,7 @@ public class LocalServer {
 	}
 
 	public void sendWinLoseUpdate(Player player) {
+		this.game.finish();
 		if (player.getStoneColor() == Board.WHITE_VALUE) {
 			this.sendToClient("/g win", 0);
 			this.sendToClient("/g lose", 1);

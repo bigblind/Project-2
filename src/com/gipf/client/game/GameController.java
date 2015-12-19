@@ -65,10 +65,15 @@ public class GameController {
 		} else if (received.startsWith("/g")) {
 			if (received.equals("/g win")) {
 				this.controller.getGamePanel().setState(new WaitState(this.controller.getGamePanel(), this));
+				this.controller.getGamePanel().showWinMessage("Player " + this.thisPlayer.getStoneColor() + " won!");
 				// this.soundManager.stopPlayBackground();
 				// this.soundManager.winPlay();
 			} else if (received.startsWith("/g lose")) {
 				this.controller.getGamePanel().setState(new WaitState(this.controller.getGamePanel(), this));
+				int value;
+				if (this.thisPlayer.getStoneColor() == Board.WHITE_VALUE) value = Board.BLACK_VALUE;
+				else value = Board.WHITE_VALUE;
+				this.controller.getGamePanel().showWinMessage("Player " + value + " won!");
 				// this.soundManager.stopPlayBackground();
 				// this.soundManager.losePlay();
 			} else {

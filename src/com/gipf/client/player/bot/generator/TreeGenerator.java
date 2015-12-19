@@ -13,27 +13,29 @@ import com.gipf.client.offline.logic.Game;
 import com.gipf.client.utils.Point;
 
 public class TreeGenerator {
+
 	private ArrayList<PointDuo> movePoints;
 	private Random random;
-	
-	public TreeGenerator(){
+
+	public TreeGenerator() {
 		this.movePoints = this.getMovePoints();
-		random = new Random();
+		this.random = new Random();
 	}
-	
-	private class PointDuo{
+
+	private class PointDuo {
+
 		public Point from;
 		public Point to;
-		
-		public PointDuo(Point from, Point to){
+
+		public PointDuo(Point from, Point to) {
 			this.from = from;
 			this.to = to;
 		}
 	}
-	
-	private ArrayList<PointDuo> getMovePoints(){
+
+	private ArrayList<PointDuo> getMovePoints() {
 		ArrayList<PointDuo> result = new ArrayList<PointDuo>();
-		
+
 		Point from;
 		Point to1, to2;
 
@@ -45,7 +47,7 @@ public class TreeGenerator {
 			result.add(new PointDuo(from, to1));
 			result.add(new PointDuo(from, to2));
 		}
-		
+
 		// correct, right
 		for (int j = 7; j >= 5; j--) {
 			from = new Point(8, j);
@@ -132,82 +134,70 @@ public class TreeGenerator {
 		from = new Point(4, 0);
 		to1 = new Point(4, 1);
 		result.add(new PointDuo(from, to1));
-		
+
 		return result;
 	}
-	
+
 	public void generateTreeLayer(Node node, Player player, BotLogic logic, boolean initialRun) {
 		Board board = node.getGame().getBoard();
-		
-		for(PointDuo pd: this.movePoints){
-			if(board.isValidMove(pd.from, pd.to)){
+
+		for (PointDuo pd : this.movePoints) {
+			if (board.isValidMove(pd.from, pd.to)) {
 				this.attachNode(node, player, pd.from, pd.to);
 			}
 		}
-		
-		this.checkForEndState(node, player, logic);
+
+		this.checkForEndState(node, player, logic, true);
 		if (initialRun) generateEnemyLayer(node, player, logic);
 	}
-	
-	public Node getRandomMove(Node node, Player player, BotLogic logic, boolean first){
+
+	public Node getRandomMove(Node node, Player player, BotLogic logic, boolean initialRun) {
 		node = node.copy();
 		Board board = node.getGame().getBoard();
-		//Keep getting random moves until we find one that's valid.
-		Node move = null;
-		ArrayList<PointDuo> pds = (ArrayList<PointDuo>)this.movePoints.clone();
-		
-		while(true){
-			if(pds.isEmpty()){ // Tie.
-				return null;
-			}
+
+		ArrayList<PointDuo> pds = (ArrayList<PointDuo>) this.movePoints.clone();
+
+		Node returnNode = null;
+		while (!pds.isEmpty()) {
 			PointDuo pd = pds.get(random.nextInt(pds.size()));
 			pds.remove(pd);
-			if(board.isValidMove(pd.from, pd.to)){
-				move = this.nodeFromPoints(node, player, pd.from, pd.to);
-				node.addChild(move);
-				this.checkForEndState(node, player, logic);
+			if (board.isValidMove(pd.from, pd.to)) {
+				Node newNode = this.attachNode(node, player, pd.from, pd.to);
+				returnNode = newNode;
+				this.checkForEndState(newNode, player, logic, false);
+				if (initialRun) {
+					returnNode = getRandomEnemyMove(newNode, player, logic);
+				}
 				break;
 			}
 		}
-		
-		
-		if(!move.getEndState()){
-			//get a random endstate from this move.
-			Tree t = new Tree();
-			ArrayList<Node> endMoves = t.getEndChildren(node);
-			move = endMoves.get(random.nextInt(endMoves.size()));
-		}
-		
-		if(first){
-			return getRandomEnemyMove(move, player, logic);
-		}else{
-			return move;
-		}
+		return returnNode;
 	}
-	
-	private Node getRandomEnemyMove(Node node, Player player, BotLogic logic){
+
+	private Node getRandomEnemyMove(Node node, Player player, BotLogic logic) {
 		Player opponent;
 		if (player.equals(node.getGame().getPlayerOne())) opponent = node.getGame().getPlayerTwo();
 		else opponent = node.getGame().getPlayerOne();
 		return getRandomMove(node, opponent, logic, false);
 	}
 
-	private void attachNode(Node node, Player player, Point from, Point to) {
-		node.addChild(nodeFromPoints(node, player, from, to));
+	private Node attachNode(Node node, Player player, Point from, Point to) {
+		Node newNode = nodeFromPoints(node, player, from, to);
+		node.addChild(newNode);
+		return newNode;
 	}
-	
-	private Node nodeFromPoints(Node node, Player player, Point from, Point to){
+
+	private Node nodeFromPoints(Node node, Player player, Point from, Point to) {
 		Game tmp = node.getGame().copy();
 		tmp.getBoard().place(player.getStoneColor(), from, to);
 		if (player.equals(tmp.getPlayerOne())) tmp.getPlayerOne().addStones(-1);
 		else tmp.getPlayerTwo().addStones(-1);
 		return new Node(node, tmp, new Action(from, to), false);
 	}
-	
+
 	private void generateEnemyLayer(Node rootNode, Player player, BotLogic logic) {
 		Player opponent;
-		
-			
+
 		for (Node child : rootNode.getChildren()) {
 			if (child.getChildren().size() != 0) {
 				Tree tree = new Tree(child);
@@ -226,11 +216,16 @@ public class TreeGenerator {
 			}
 		}
 	}
-	
-	private void checkForEndState(Node node, Player player, BotLogic logic) {
-        for (Node child : node.getChildren()) {
-                if (player.equals(child.getGame().getPlayerOne())) logic.performLogic(child.getGame().getPlayerOne(), child);
-                else logic.performLogic(child.getGame().getPlayerTwo(), child);
-        }
+
+	private void checkForEndState(Node node, Player player, BotLogic logic, boolean forChildren) {
+		if (forChildren) {
+			for (Node child : node.getChildren()) {
+				if (player.equals(child.getGame().getPlayerOne())) logic.performLogic(child.getGame().getPlayerOne(), child);
+				else logic.performLogic(child.getGame().getPlayerTwo(), child);
+			}
+		} else {
+			if (player.equals(node.getGame().getPlayerOne())) logic.performLogic(node.getGame().getPlayerOne(), node);
+			else logic.performLogic(node.getGame().getPlayerTwo(), node);
+		}
 	}
 }

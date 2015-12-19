@@ -50,6 +50,9 @@ public class GamePanel extends JPanel implements ComponentListener {
 	private Game game;
 
 	private Controller controller;
+	
+	private String winMessage;
+	private boolean showWinMessage;
 
 	public GamePanel(Game game, Controller controller, boolean showCheckButton) {
 		this.setLayout(null);
@@ -293,6 +296,12 @@ public class GamePanel extends JPanel implements ComponentListener {
 				g.drawLine(this.coordinates[originalLocation.getX()][originalLocation.getY()].getX() + this.tileSize / 2, this.coordinates[originalLocation.getX()][originalLocation.getY()].getY() + this.tileSize / 2, this.coordinates[locations[i].getX()][locations[i].getY()].getX() + this.tileSize / 2, this.coordinates[locations[i].getX()][locations[i].getY()].getY() + this.tileSize / 2);
 			}
 		}
+		
+		if (showWinMessage) {
+			g.setFont(new Font("Segoe UI", 1, 80));
+			g.setColor(Color.RED);
+			g.drawString(this.winMessage, this.getWidth()/2-(g.getFontMetrics().stringWidth(this.winMessage) / 2), this.getHeight()/2-(g.getFontMetrics().getHeight() / 2));
+		}
 	}
 
 	private void drawStones(Graphics2D g) {
@@ -434,5 +443,10 @@ public class GamePanel extends JPanel implements ComponentListener {
 	
 	public boolean showCheckButton() {
 		return this.showCheckButton;
+	}
+	
+	public void showWinMessage(String message) {
+		this.showWinMessage = true;
+		this.winMessage = message;
 	}
 }

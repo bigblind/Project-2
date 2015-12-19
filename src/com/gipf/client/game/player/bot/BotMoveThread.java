@@ -33,7 +33,7 @@ public class BotMoveThread extends Thread {
 		Node root = this.evaluator.evalToNode(this.gameController.getController().getGame().copy());
 		this.bot.getGenerator().generateTreeLayer(root, this.bot, this.bot.getLogic(), true);
 		ArrayList<Action> actions = this.algorithm.calculateBestActions(new Tree(root), this.bot);
-		ArrayList<Node> search = new Tree(root).bfSearch(root);
+
 		if (actions.size() > 1) {
 			ArrayList<Action> upcomingActions = new ArrayList<Action>();
 			for (int i = 1; i < actions.size(); i++)
@@ -45,7 +45,7 @@ public class BotMoveThread extends Thread {
 
 		runTime += end - start;
 		runs++;
-		System.out.println("average runtime: " + runTime / (runs * 1000000.0) + "ms at " + runs + " runs, current run time: " + (end - start) + " miliseconds = " + ((end - start) / 1000000.0) + " ms with " + search.size() + " nodes, algo: " + this.algorithm.getClass().getName() +".");
+		System.out.println("average runtime: " + runTime / (runs * 1000000.0) + "ms at " + runs + " runs, current run time: " + (end - start) + " miliseconds = " + ((end - start) / 1000000.0) + " ms with " + " algo: " + this.algorithm.getClass().getName() +".");
 		System.out.println();
 		// used for making bots move visible
 		if (end - start < 166700000) {
