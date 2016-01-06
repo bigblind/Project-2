@@ -2,6 +2,7 @@ package com.project.client.visuals.menu;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.Box;
