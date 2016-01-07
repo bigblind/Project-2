@@ -2,7 +2,6 @@ package com.project.client.visuals.menu;
 
 import java.awt.Dimension;
 import java.awt.Font;
-import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.Box;
@@ -14,7 +13,9 @@ import javax.swing.JPanel;
 import com.gipf.client.game.player.bot.Bot;
 import com.gipf.client.player.bot.algorithm.Algorithm;
 import com.gipf.client.player.bot.algorithm.MCTS;
+import com.gipf.client.player.bot.algorithm.MinMaxABPAlgorithm;
 import com.gipf.client.player.bot.algorithm.MinMaxAlgorithm;
+import com.gipf.client.player.bot.algorithm.NegaMaxAlgorithm;
 import com.gipf.client.player.bot.algorithm.QuickGreedyAlgorithm;
 import com.gipf.client.player.bot.evaluation.EvaluationFunction;
 import com.gipf.client.player.bot.evaluation.EvaluationFunctionA;
@@ -28,9 +29,11 @@ public class BotSelectionPanel extends JPanel {
 
 	private JLabel title;
 
+	@SuppressWarnings("rawtypes")
 	private JComboBox<Class> algorithmInput;
 	private JComboBox<EvaluationFunction> functionInput;
 
+	@SuppressWarnings("rawtypes")
 	public BotSelectionPanel(final Controller controller, String botName) {
 		this.setOpaque(false);
 
@@ -60,6 +63,8 @@ public class BotSelectionPanel extends JPanel {
 		this.algorithmInput.addItem(QuickGreedyAlgorithm.class);
 		this.algorithmInput.addItem(MCTS.class);
 		this.algorithmInput.addItem(MinMaxAlgorithm.class);
+		this.algorithmInput.addItem(NegaMaxAlgorithm.class);
+		this.algorithmInput.addItem(MinMaxABPAlgorithm.class);
 
 		this.functionInput = new JComboBox<EvaluationFunction>();
 		this.functionInput.setMaximumSize(new Dimension(1000, 75));
@@ -91,6 +96,7 @@ public class BotSelectionPanel extends JPanel {
 		this.add(box);
 	}
 
+	@SuppressWarnings("unchecked")
 	public Bot getBot() {
 		try {
 			Algorithm algorithm = (Algorithm) ((Class<Algorithm>) this.algorithmInput.getSelectedItem()).getConstructors()[0].newInstance();
