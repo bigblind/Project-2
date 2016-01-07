@@ -20,6 +20,11 @@ public class MinMaxAlgorithm extends Algorithm {
 		return super.getActionsToNode(tree, node);
 	}
 	
+	public ArrayList<Action> calculateBestActions(Node node, int depth, Bot player) {
+		this.generator.generateTree(depth, node, player, player.getLogic());
+		return this.calculateBestActions(new Tree(node), player);
+	}
+	
 	public Node calculateBestNode(Tree tree, Bot player) {
 		Node node = max(tree, tree.root(), player);
 		return node;

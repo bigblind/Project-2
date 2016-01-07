@@ -23,6 +23,11 @@ public class MinMaxABPAlgorithm extends Algorithm {
 		Node node = max(tree, tree.root(), player, alpha, beta);
 		return super.getActionsToNode(tree, node);
 	}
+	
+	public ArrayList<Action> calculateBestActions(Node node, int depth, Bot player) {
+		this.generator.generateTree(depth, node, player, player.getLogic());
+		return this.calculateBestActions(new Tree(node), player);
+	}
 
 	public Node calculateBestNode(Tree tree, Bot player) {
 		Node alpha = new Node(null, null, null, false);

@@ -49,6 +49,11 @@ public class MCTS extends Algorithm {
 		return res;
 	}
 	
+	public ArrayList<Action> calculateBestActions(Node node, int depth, Bot player) {
+		this.generator.generateTree(depth, node, player, player.getLogic());
+		return this.calculateBestActions(new Tree(node), player);
+	}
+	
 	public Node calculateBestNode(Tree tree, Bot player) {
 		tree = new Tree(tree.root().copy(true));
 		MCTSNode root = new MCTSNode(tree.root(), player, tree);

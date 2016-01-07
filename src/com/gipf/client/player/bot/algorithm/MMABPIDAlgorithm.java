@@ -8,22 +8,17 @@ import com.gipf.client.game.player.bot.BotLogic;
 import com.gipf.client.game.player.bot.action.Action;
 import com.gipf.client.game.player.bot.tree.Node;
 import com.gipf.client.game.player.bot.tree.Tree;
-import com.gipf.client.player.bot.generator.TreeGenerator;
 
 /**
  * MinMax with Alpha-Beta pruning and Iterative Deepening Algorithm
  */
 public class MMABPIDAlgorithm extends Algorithm {
 
-	private TreeGenerator generator;
-	private int terminationDepth;
 	private MinMaxABPAlgorithm mmabp;
 
 	public MMABPIDAlgorithm() {
 		this.name = "MinMax with Alpha-Beta pruning and Iterative Deepening Algorithm";
-		this.generator = new TreeGenerator();
 		this.mmabp = new MinMaxABPAlgorithm();
-		this.terminationDepth = 3;
 	}
 
 	/**
@@ -33,13 +28,13 @@ public class MMABPIDAlgorithm extends Algorithm {
 	 *            Player for whom the best action will be calculated.
 	 */
 	public ArrayList<Action> calculateBestActions(Tree tree, Bot player) {
-		BotLogic logic = new BotLogic(player);
+		BotLogic logic = player.getLogic();
 		int depth = 1;
 		
 		Node bestNode = null;
 		Tree currentTree = null;
 		
-		while (depth < this.terminationDepth + 1) {
+		while (depth < this.TREE_DEPTH + 1) {
 			Node root = tree.root().copy();
 			this.generator.generateTree(depth, root, player, logic);
 			currentTree = new Tree(root);
@@ -51,6 +46,11 @@ public class MMABPIDAlgorithm extends Algorithm {
 
 		return super.getActionsToNode(currentTree, bestNode);
 	}
+	
+	public ArrayList<Action> calculateBestActions(Node node, int depth, Bot player) {
+		this.generator.generateTree(depth, node, player, player.getLogic());
+		return this.calculateBestActions(new Tree(node), player);
+	}
 
 	/**
 	 * @param tree
@@ -59,13 +59,13 @@ public class MMABPIDAlgorithm extends Algorithm {
 	 *            Player for whom the best action will be calculated.
 	 */
 	public Node calculateBestNode(Tree tree, Bot player) {
-		BotLogic logic = new BotLogic(player);
+		BotLogic logic = player.getLogic();
 		int depth = 1;
 		
 		Node bestNode = null;
 		Tree currentTree = null;
 		
-		while (depth < this.terminationDepth + 1) {
+		while (depth < this.TREE_DEPTH + 1) {
 			Node root = tree.root().copy();
 			this.generator.generateTree(depth, root, player, logic);
 			currentTree = new Tree(root);

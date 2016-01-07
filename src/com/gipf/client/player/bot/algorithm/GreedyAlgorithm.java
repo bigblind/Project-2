@@ -51,6 +51,8 @@ public class GreedyAlgorithm extends Algorithm {
 	}
 	
 	public Node calculateBestNode(Tree tree, Bot player) {
+		
+		
 		ArrayList<Node> search = tree.dfSearch(tree.root(), new ArrayList<Node>());
 		int bestValue = -1;
 
@@ -86,4 +88,8 @@ public class GreedyAlgorithm extends Algorithm {
 		return bestNodes.get((int) (Math.random() * bestNodes.size()));
 	}
 
+	public ArrayList<Action> calculateBestActions(Node node, int depth, Bot player) {
+		this.generator.generateTree(depth, node, player, player.getLogic());
+		return this.calculateBestActions(new Tree(node), player);
+	}
 }
