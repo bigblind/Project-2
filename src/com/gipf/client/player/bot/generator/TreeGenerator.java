@@ -138,7 +138,6 @@ public class TreeGenerator {
 		return result;
 	}
 
-	// TODO take endstates into account
 	public void generateTree(int ply, Node root, Player player, BotLogic logic) {
 		if (ply == 0) return;
 		System.out.println(ply);
