@@ -11,7 +11,7 @@ import com.gipf.client.offline.logic.Board;
 public class GreedyAlgorithm extends Algorithm {
 
 	public GreedyAlgorithm() {
-		
+		this.name = "Greedy Algorithm";
 	}
 	
 	public ArrayList<Action> calculateBestActions(Tree tree, Bot player) {
@@ -49,4 +49,41 @@ public class GreedyAlgorithm extends Algorithm {
 
 		return super.getActionsToNode(tree, bestNodes.get((int) (Math.random() * bestNodes.size())));
 	}
+	
+	public Node calculateBestNode(Tree tree, Bot player) {
+		ArrayList<Node> search = tree.dfSearch(tree.root(), new ArrayList<Node>());
+		int bestValue = -1;
+
+		ArrayList<Node> bestNodes = new ArrayList<Node>();
+		bestNodes.add(tree.root().getChildren().get(0));
+
+		if (player.getStoneColor() == Board.WHITE_VALUE) {
+			for (Node node : search) {
+				if (tree.isExternal(node)) {
+					if (node.getValue() > bestValue) {
+						bestValue = node.getValue();
+						bestNodes.clear();
+						bestNodes.add(node);
+					} else if (node.getValue() == bestValue) {
+						bestNodes.add(node);
+					}
+				}
+			}
+		} else {
+			for (Node node : search) {
+				if (tree.isExternal(node)) {
+					if (-node.getValue() > bestValue) {
+						bestValue = -node.getValue();
+						bestNodes.clear();
+						bestNodes.add(node);
+					} else if (-node.getValue() == bestValue) {
+						bestNodes.add(node);
+					}
+				}
+			}
+		}
+
+		return bestNodes.get((int) (Math.random() * bestNodes.size()));
+	}
+
 }

@@ -140,7 +140,6 @@ public class TreeGenerator {
 
 	public void generateTree(int ply, Node root, Player player, BotLogic logic) {
 		if (ply == 0) return;
-		System.out.println(ply);
 		Player opponent;
 		if (player.equals(root.getGame().getPlayerOne())) opponent = root.getGame().getPlayerTwo();
 		else opponent = root.getGame().getPlayerOne();
@@ -193,6 +192,7 @@ public class TreeGenerator {
 		node = node.copy();
 		Board board = node.getGame().getBoard();
 
+		@SuppressWarnings("unchecked")
 		ArrayList<PointDuo> pds = (ArrayList<PointDuo>) this.movePoints.clone();
 
 		Node returnNode = null;

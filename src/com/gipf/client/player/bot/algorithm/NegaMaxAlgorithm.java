@@ -12,9 +12,18 @@ public class NegaMaxAlgorithm extends Algorithm {
 
 	private static Node bestNode;
 	
+	public NegaMaxAlgorithm() {
+		this.name = "NegaMax Algorithm";
+	}
+	
 	public ArrayList<Action> calculateBestActions(Tree tree, Bot player) {
 		negaMax(tree, tree.root(), true);
 		return super.getActionsToNode(tree, bestNode);
+	}
+	
+	public Node calculateBestNode(Tree tree, Bot player) {
+		negaMax(tree, tree.root(), true);
+		return bestNode;
 	}
 
 	private static final int negaMax(Tree tree, Node node, boolean maximizingPlayer) {

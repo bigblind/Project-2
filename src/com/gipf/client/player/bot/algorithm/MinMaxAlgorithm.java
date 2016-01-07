@@ -11,9 +11,18 @@ import com.gipf.client.offline.logic.Board;
 
 public class MinMaxAlgorithm extends Algorithm {
 
+	public MinMaxAlgorithm() {
+		this.name = "MinMax Algorithm";
+	}
+	
 	public ArrayList<Action> calculateBestActions(Tree tree, Bot player) {
 		Node node = max(tree, tree.root(), player);
 		return super.getActionsToNode(tree, node);
+	}
+	
+	public Node calculateBestNode(Tree tree, Bot player) {
+		Node node = max(tree, tree.root(), player);
+		return node;
 	}
 
 	public Node max(Tree tree, Node node, Player player) {

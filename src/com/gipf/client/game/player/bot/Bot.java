@@ -28,7 +28,6 @@ public class Bot extends Player {
 	}
 
 	public void update(String state) {
-		System.out.println(state + " " + this.getStoneColor());
 		if (state.equals("move")) {
 			BotMoveThread botThread = new BotMoveThread(this, this.gameController, this.algorithm, this.evaluator);
 			botThread.start();

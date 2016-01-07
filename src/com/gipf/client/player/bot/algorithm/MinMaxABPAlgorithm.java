@@ -11,6 +11,10 @@ import com.gipf.client.offline.logic.Board;
 
 public class MinMaxABPAlgorithm extends Algorithm {
 
+	public MinMaxABPAlgorithm() {
+		this.name = "MinMax with Alpha-Beta pruning Algorithm";
+	}
+
 	public ArrayList<Action> calculateBestActions(Tree tree, Bot player) {
 		Node alpha = new Node(null, null, null, false);
 		alpha.setValue(-10000000);
@@ -20,19 +24,27 @@ public class MinMaxABPAlgorithm extends Algorithm {
 		return super.getActionsToNode(tree, node);
 	}
 
+	public Node calculateBestNode(Tree tree, Bot player) {
+		Node alpha = new Node(null, null, null, false);
+		alpha.setValue(-10000000);
+		Node beta = new Node(null, null, null, false);
+		beta.setValue(10000000);
+		Node node = max(tree, tree.root(), player, alpha, beta);
+		return node;
+	}
+
 	public Node max(Tree tree, Node node, Player player, Node alpha, Node beta) {
 		if (tree.isExternal(node)) {
 			return node;
 		} else {
 			for (Node child : node.getChildren()) {
 				Node score = min(tree, child, this.opponent(player), alpha, beta);
-
 				if (player.getStoneColor() == Board.WHITE_VALUE) {
 					if (score.getValue() > alpha.getValue()) alpha = score;
-					if (alpha.getValue() >= beta.getValue()) break;
+					if (alpha.getValue() >= beta.getValue()) return alpha;
 				} else {
-					if (-score.getValue() > -alpha.getValue()) alpha = score;
-					if (-alpha.getValue() >= -beta.getValue()) break;
+					if (-score.getValue() > alpha.getValue()) alpha = score;
+					if (alpha.getValue() >= beta.getValue()) return alpha;
 				}
 			}
 			return alpha;
@@ -45,13 +57,12 @@ public class MinMaxABPAlgorithm extends Algorithm {
 		} else {
 			for (Node child : node.getChildren()) {
 				Node score = max(tree, child, this.opponent(player), alpha, beta);
-
 				if (player.getStoneColor() == Board.WHITE_VALUE) {
 					if (score.getValue() < beta.getValue()) beta = score;
-					if (alpha.getValue() >= beta.getValue()) break;
+					if (alpha.getValue() >= beta.getValue()) return beta;
 				} else {
-					if (-score.getValue() < -beta.getValue()) beta = score;
-					if (-alpha.getValue() >= -beta.getValue()) break;
+					if (-score.getValue() < beta.getValue()) beta = score;
+					if (alpha.getValue() >= beta.getValue()) return beta;
 				}
 			}
 			return beta;

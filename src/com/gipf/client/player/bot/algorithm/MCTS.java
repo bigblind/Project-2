@@ -21,6 +21,7 @@ public class MCTS extends Algorithm {
 		super();
 		this.iterations = maxIterations;
 		this.simulationDepth = maxSimulationDepth;
+		this.name = "Monte Carlo Tree Search";
 	}
 
 	public ArrayList<Action> calculateBestActions(Tree tree, Bot player) {
@@ -45,9 +46,33 @@ public class MCTS extends Algorithm {
 		}
 		Node best = root.getMostVisitedChild().state;
 		ArrayList<Action> res = this.getActionsToNode(tree, best);
-		System.out.println();
 		return res;
 	}
+	
+	public Node calculateBestNode(Tree tree, Bot player) {
+		tree = new Tree(tree.root().copy(true));
+		MCTSNode root = new MCTSNode(tree.root(), player, tree);
+
+		for (int i = 0; i < this.iterations; i++) {
+
+			//Selection phase
+			MCTSNode node = root;
+			while (node.untriedMoves.size() == 0 && node.children.size() != 0) {
+				node = node.selectChild();
+			}
+
+			if (node.untriedMoves.size() != 0) {
+				node = node.expand();
+			}
+
+			//Simulation phase, includes backpropagation
+			node.simulate();
+
+		}
+		Node best = root.getMostVisitedChild().state;
+		return best;
+	}
+
 
 	private class MCTSNode {
 		

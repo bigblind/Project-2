@@ -16,6 +16,10 @@ public abstract class Algorithm {
 	
 	public abstract ArrayList<Action> calculateBestActions(Tree tree, Bot player);
 
+	public abstract Node calculateBestNode(Tree tree, Bot player);
+	
+	protected String name;
+	
 	public ArrayList<Action> getActionsToNode(Tree tree, Node node) {
 		ArrayList<Action> result = new ArrayList<Action>();
 		while (!node.equals(tree.root())) {
@@ -37,5 +41,9 @@ public abstract class Algorithm {
 	protected Player opponent(Player player) {
 		if (player.getStoneColor() == Board.WHITE_VALUE) return this.BLACK_PLAYER;
 		else return this.WHITE_PLAYER;
+	}
+	
+	public String toString() {
+		return this.name;
 	}
 }
