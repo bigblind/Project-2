@@ -8,9 +8,9 @@ import com.gipf.client.game.player.bot.tree.Node;
 import com.gipf.client.game.player.bot.tree.Tree;
 import com.gipf.client.offline.logic.Board;
 
-public class QuickGreedyAlgorithm extends Algorithm {
+public class GreedyAlgorithm extends Algorithm {
 
-	public QuickGreedyAlgorithm() {
+	public GreedyAlgorithm() {
 		
 	}
 	
