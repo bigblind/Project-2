@@ -115,11 +115,12 @@ public class MCTS extends Algorithm {
 			int score = 0;
 			if (simState != null) {
 				score = simState.getValue();
-				if (this.player == simState.getGame().getPlayerTwo()) { //TODO .equals ?
+				//Make sure the score is always calculated as if the current player is player 1 (positive=good.)
+				if (this.player.equals(simState.getGame().getPlayerTwo())) {
 					score = -score;
 				}
 			}
-			//Make sure the score is always calculated as if the current player is player 1 (positive=good.)
+			
 			this.backPropagate(score);
 		}
 
