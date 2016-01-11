@@ -144,7 +144,7 @@ public class TreeGenerator {
 		if (player.equals(root.getGame().getPlayerOne())) opponent = root.getGame().getPlayerTwo();
 		else opponent = root.getGame().getPlayerOne();
 		
-		this.generateTreeLayer(root, player, logic, false, 10);
+		this.generateTreeLayer(root, player, logic, false);
 		Tree tree = new Tree(root);
 		
 		ArrayList<Node> search = tree.bfSearch(root);

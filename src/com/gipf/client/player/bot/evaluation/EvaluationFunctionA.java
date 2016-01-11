@@ -4,19 +4,19 @@ import com.gipf.client.offline.logic.Board;
 
 public class EvaluationFunctionA implements EvaluationFunction {
 
-	public static final EvaluationFunctionA EQUAL_WEIGHTS = new EvaluationFunctionA("Equal Weights",1.0, 1.0, 1.0, 1.0);
+	public static final EvaluationFunctionA EQUAL_WEIGHTS = new EvaluationFunctionA("Equal Weights", 1.0, 1.0, 1.0, 1.0);
 	public static final EvaluationFunctionA GREEDY_WEIGHTS_STONECOUNT = new EvaluationFunctionA("Stonecount", 0.0, 10.0, 0.0, 0.0);
 	public static final EvaluationFunctionA GREEDY_WEIGHTS_CENTER = new EvaluationFunctionA("Center Location", 1.0, 0.0, 0.0, 0.0);
 	public static final EvaluationFunctionA GREEDY_WEIGHTS_DIAGONAL = new EvaluationFunctionA("Diagonal Location", 0.0, 0.0, 1.0, 0.0);
 	public static final EvaluationFunctionA GREEDY_WEIGHTS_LINEOFTHREE = new EvaluationFunctionA("Line Of Three", 0.0, 0.0, 0.0, 1.0);
-	
+
 	public double centerWeight = 0.5;
 	public double stoneCountWeight = 0.7;
 	public double diagonalWeight = 0.2;
 	public double lineOfThreeWeight = 0.6;
 
 	private Board board;
-	
+
 	private String name;
 
 	public EvaluationFunctionA(String name) {
@@ -33,14 +33,14 @@ public class EvaluationFunctionA implements EvaluationFunction {
 
 	public int evaluate(Board board, int whiteStoneCnt, int blackStoneCnt) {
 		this.board = board;
-		
-		if(whiteStoneCnt == 0){
+
+		if (whiteStoneCnt == 0) {
 			return -100000;
 		}
-		if(blackStoneCnt == 0){
+		if (blackStoneCnt == 0) {
 			return 100000;
 		}
-		
+
 		int boardValue = 0;
 
 		int count = (int) (stoneCountWeight * (whiteStoneCnt - blackStoneCnt));
@@ -50,7 +50,6 @@ public class EvaluationFunctionA implements EvaluationFunction {
 
 		boardValue = count + center + diagonal + lineOf3;
 		return boardValue;
-
 	}
 
 	private int centerStones() {
@@ -222,7 +221,7 @@ public class EvaluationFunctionA implements EvaluationFunction {
 		return lineOf3Value;
 
 	}
-	
+
 	public String toString() {
 		return this.name;
 	}

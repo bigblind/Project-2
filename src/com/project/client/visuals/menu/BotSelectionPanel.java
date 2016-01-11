@@ -17,6 +17,7 @@ import com.gipf.client.player.bot.algorithm.MMABPIDAlgorithm;
 import com.gipf.client.player.bot.algorithm.MinMaxABPAlgorithm;
 import com.gipf.client.player.bot.algorithm.MinMaxAlgorithm;
 import com.gipf.client.player.bot.algorithm.NegaMaxAlgorithm;
+import com.gipf.client.player.bot.algorithm.ProperMinMax;
 import com.gipf.client.player.bot.evaluation.EvaluationFunction;
 import com.gipf.client.player.bot.evaluation.EvaluationFunctionA;
 import com.gipf.client.player.bot.evaluation.EvaluationFunctionB;
@@ -64,6 +65,7 @@ public class BotSelectionPanel extends JPanel {
 		this.algorithmInput.addItem(new MCTS());
 		this.algorithmInput.addItem(new MinMaxABPAlgorithm());
 		this.algorithmInput.addItem(new MMABPIDAlgorithm());
+		this.algorithmInput.addItem(new ProperMinMax());
 
 		this.functionInput = new JComboBox<EvaluationFunction>();
 		this.functionInput.setMaximumSize(new Dimension(1000, 75));

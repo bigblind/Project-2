@@ -14,7 +14,7 @@ public abstract class Algorithm {
 
 	protected final Player WHITE_PLAYER = new Player(0, Board.WHITE_VALUE);
 	protected final Player BLACK_PLAYER = new Player(0, Board.BLACK_VALUE);
-	protected final int TREE_DEPTH = 3;
+	protected final int TREE_DEPTH = 4;
 	protected final TreeGenerator generator = new TreeGenerator();
 	
 	public abstract ArrayList<Action> calculateBestActions(Tree tree, Bot player);
@@ -46,6 +46,11 @@ public abstract class Algorithm {
 	protected Player opponent(Player player) {
 		if (player.getStoneColor() == Board.WHITE_VALUE) return this.BLACK_PLAYER;
 		else return this.WHITE_PLAYER;
+	}
+	
+	protected int opponentStoneColor(int stoneColor) {
+		if (stoneColor == Board.WHITE_VALUE) return Board.BLACK_VALUE;
+		else return Board.WHITE_VALUE;
 	}
 	
 	public String toString() {

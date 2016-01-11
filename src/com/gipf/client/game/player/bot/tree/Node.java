@@ -12,6 +12,7 @@ public class Node implements Comparable<Node> {
 
 	private Node parent;
 	private ArrayList<Node> children;
+	private ArrayList<Action> possibleActions;
 
 	private int value;
 	private boolean endState; // the state at the end of 1 turn
@@ -22,15 +23,17 @@ public class Node implements Comparable<Node> {
 		this.action = action;
 		this.endState = endState;
 		this.children = new ArrayList<Node>();
+		this.possibleActions = new ArrayList<Action>();
 	}
 
 	public Node copy(boolean includeChildren) {
-		Node p = null;
-		if (this.parent != null) {
-			p = this.parent.copy(includeChildren);
-		}
+//		Node p = null;
+//		if (this.parent != null) {
+//			p = this.parent.copy(includeChildren);
+//		}
+		
 		//I'm reusing the same action object, since it will never be changed.
-		Node n = new Node(p, this.game.copy(), this.action, this.endState);
+		Node n = new Node(this.parent, this.game.copy(), this.action, this.endState); // this was 	Node n = new Node(p, this.game.copy(...
 		if (includeChildren) {
 			ArrayList<Node> copiedChildren = new ArrayList<Node>(this.children.size());
 			for (Node child : this.children) {
@@ -112,5 +115,17 @@ public class Node implements Comparable<Node> {
 		if (this.value > node.getValue()) return 1;
 		else if (this.value == node.getValue()) return 0;
 		else return -1;
+	}
+	
+	public ArrayList<Action> getPossibleActions() {
+		return this.possibleActions;
+	}
+	
+	public void setPossibleActions(ArrayList<Action> actions) {
+		this.possibleActions = actions;
+	}
+	
+	public void setAction(Action action) {
+		this.action = action;
 	}
 }
