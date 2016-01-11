@@ -144,12 +144,12 @@ public class TreeGenerator {
 		if (player.equals(root.getGame().getPlayerOne())) opponent = root.getGame().getPlayerTwo();
 		else opponent = root.getGame().getPlayerOne();
 		
-		this.generateTreeLayer(root, player, logic, false);
+		this.generateTreeLayer(root, player, logic, false, 10);
 		Tree tree = new Tree(root);
 		
 		ArrayList<Node> search = tree.bfSearch(root);
 		for (Node child : search) {
-			if (child.getEndState()) this.generateTree(ply - 1, child, opponent, logic);
+			if (child.getEndState() && tree.isExternal(child)) this.generateTree(ply - 1, child, opponent, logic);
 		}
 	}
 
@@ -165,10 +165,26 @@ public class TreeGenerator {
 		this.checkForEndState(node, player, logic, true);
 		if (initialRun) generateEnemyLayer(node, player, logic);
 	}
+	
+	public void generateTreeLayer(Node node, Player player, BotLogic logic, boolean initialRun, int nonodes) {
+		Board board = node.getGame().getBoard();
 
-	private void generateEnemyLayer(Node rootNode, Player player, BotLogic logic) {
+		int counter = 0;
+		while (node.getChildren().size() < nonodes && counter < (nonodes * 5)) {
+			counter++;
+			PointDuo pd = this.movePoints.get((int) (Math.random() * this.movePoints.size()));
+			if (board.isValidMove(pd.from, pd.to)) {
+				this.attachNode(node, player, pd.from, pd.to);
+			}
+		}
+
+		this.checkForEndState(node, player, logic, true);
+		if (initialRun) generateEnemyLayer(node, player, logic);
+	}
+
+	private void generateEnemyLayer(Node rootNode, Player player, BotLogic logic) { // DUMBNESS SEARCH 
 		Player opponent;
-
+		System.out.println("you are a cunt and we are using it simon you are stupid you should have listened to F");
 		for (Node child : rootNode.getChildren()) {
 			if (child.getChildren().size() != 0) {
 				Tree tree = new Tree(child);
