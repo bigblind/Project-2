@@ -176,4 +176,5 @@ public class LocalServer {
 	public GameLogic getGameLogic() {
 		return this.logic;
 	}
+	
 }

@@ -4,16 +4,19 @@ import com.gipf.client.offline.logic.Board;
 
 public class EvaluationFunctionA implements EvaluationFunction {
 
-	public static final EvaluationFunctionA EQUAL_WEIGHTS = new EvaluationFunctionA("Equal Weights",1.0, 1.0, 1.0, 1.0);
+	public static final EvaluationFunctionA EQUAL_WEIGHTS = new EvaluationFunctionA("Equal Weights",1, 1, 1, 1);
 	public static final EvaluationFunctionA GREEDY_WEIGHTS_STONECOUNT = new EvaluationFunctionA("Stonecount", 0.0, 10.0, 0.0, 0.0);
 	public static final EvaluationFunctionA GREEDY_WEIGHTS_CENTER = new EvaluationFunctionA("Center Location", 1.0, 0.0, 0.0, 0.0);
 	public static final EvaluationFunctionA GREEDY_WEIGHTS_DIAGONAL = new EvaluationFunctionA("Diagonal Location", 0.0, 0.0, 1.0, 0.0);
 	public static final EvaluationFunctionA GREEDY_WEIGHTS_LINEOFTHREE = new EvaluationFunctionA("Line Of Three", 0.0, 0.0, 0.0, 1.0);
 	
-	public double centerWeight = 0.5;
-	public double stoneCountWeight = 0.7;
-	public double diagonalWeight = 0.2;
-	public double lineOfThreeWeight = 0.6;
+	
+	public double centerWeight = 0.28093113378083556;
+	public double stoneCountWeight = 0.5360165855488239;
+	public double diagonalWeight = 0.6612279213601735;
+	public double lineOfThreeWeight = 0.5161235621909996;
+	
+	private double fitness;
 
 	private Board board;
 	
@@ -222,7 +225,13 @@ public class EvaluationFunctionA implements EvaluationFunction {
 		return lineOf3Value;
 
 	}
+	public double getFitness(){
+	    return this.fitness;
+	}
 	
+	public void setFitness(double fitness){
+	    this.fitness = fitness;
+	}
 	public String toString() {
 		return this.name;
 	}

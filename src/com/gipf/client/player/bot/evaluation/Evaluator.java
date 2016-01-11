@@ -17,6 +17,8 @@ public class Evaluator {
 
 	public Node evalToNode(Game game) {
 		Node node = new Node(null, game, null, true);
+		if(function == null)
+		    System.out.println("porco dio");
 		node.setValue(function.evaluate(game.getBoard(), game.getPlayerOne().getStoneAccount(), game.getPlayerTwo().getStoneAccount()));
 		return node;
 	}

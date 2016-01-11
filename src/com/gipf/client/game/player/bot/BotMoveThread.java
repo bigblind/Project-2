@@ -31,7 +31,7 @@ public class BotMoveThread extends Thread {
 
 		// computation for move
 		Node root = this.evaluator.evalToNode(this.gameController.getController().getGame().copy());
-//		this.bot.getGenerator().generateTree(2, root, this.bot, this.bot.getLogic());
+		this.bot.getGenerator().generateTree(2, root, this.bot, this.bot.getLogic());
 		ArrayList<Action> actions = this.algorithm.calculateBestActions(new Tree(root), this.bot);
 
 		if (actions.size() > 1) {
@@ -48,13 +48,13 @@ public class BotMoveThread extends Thread {
 //		System.out.println("average runtime: " + runTime / (runs * 1000000.0) + "ms at " + runs + " runs, current run time: " + (end - start) + " miliseconds = " + ((end - start) / 1000000.0) + " ms with " + " algo: " + this.algorithm.getClass().getName() +".");
 //		System.out.println();
 		// used for making bots move visible
-		if (end - start < 166700000) {
+		/*if (end - start < 166700000) {
 			try {
 				Thread.sleep((166700000 - (end - start)) / 1000000);
 			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt();
 			}
-		}
+		}*/
 
 		// do move
 		this.gameController.getController().getGamePanel().getButtons()[actions.get(0).getPoints()[0].getX()][actions.get(0).getPoints()[0].getY()].doClick();
