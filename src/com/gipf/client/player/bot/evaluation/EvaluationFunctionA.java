@@ -35,10 +35,10 @@ public class EvaluationFunctionA implements EvaluationFunction {
 		this.board = board;
 		
 		if(whiteStoneCnt == 0){
-			return 100000;
+			return -100000;
 		}
 		if(blackStoneCnt == 0){
-			return -100000;
+			return 100000;
 		}
 		
 		int boardValue = 0;
@@ -59,7 +59,7 @@ public class EvaluationFunctionA implements EvaluationFunction {
 		int centerBonus = 100;
 		int centerValue = 0;
 
-		int extGipfBonus = 60;
+		int extGipfBonus = 150;
 		int mediumGipfBonus = 100;
 		int centerGipfBonus = 200;
 
@@ -95,7 +95,7 @@ public class EvaluationFunctionA implements EvaluationFunction {
 	private int diagonal() {
 		int diagonalValue = 0;
 		int diagonalBonus = 30;
-		int diagonalGipfBonus = 60;
+		int diagonalGipfBonus = 150;
 		int cnt = 1;
 
 		for (int i = 2; i < 8; i++) {
@@ -124,7 +124,7 @@ public class EvaluationFunctionA implements EvaluationFunction {
 		int counter = 0;
 		int prevValue = -1;
 		int lineOf3Bonus = 50;
-		int lineOf3GipfBonus = 100;
+		int lineOf3GipfBonus = 250;
 		int lineOf3Value = 0;
 
 		for (int i = 1; i < grid.length - 1; i++) {
@@ -137,8 +137,8 @@ public class EvaluationFunctionA implements EvaluationFunction {
 					if (counter >= 3) {
 						if (prevValue == Board.WHITE_VALUE) lineOf3Value += lineOf3Bonus;
 						else if (prevValue == Board.BLACK_VALUE) lineOf3Value -= lineOf3Bonus;
-						else if (prevValue == Board.GIPF_WHITE_VALUE) lineOf3Value += lineOf3GipfBonus;
-						else if (prevValue == Board.GIPF_BLACK_VALUE) lineOf3Value -= lineOf3GipfBonus;
+						else if (prevValue == Board.GIPF_WHITE_VALUE) lineOf3Value -= lineOf3GipfBonus;
+						else if (prevValue == Board.GIPF_BLACK_VALUE) lineOf3Value += lineOf3GipfBonus;
 
 					}
 
@@ -161,8 +161,8 @@ public class EvaluationFunctionA implements EvaluationFunction {
 					if (counter >= 3) {
 						if (prevValue == Board.WHITE_VALUE) lineOf3Value += lineOf3Bonus;
 						else if (prevValue == Board.BLACK_VALUE) lineOf3Value -= lineOf3Bonus;
-						else if (prevValue == Board.GIPF_WHITE_VALUE) lineOf3Value += lineOf3GipfBonus;
-						else if (prevValue == Board.GIPF_BLACK_VALUE) lineOf3Value -= lineOf3GipfBonus;
+						else if (prevValue == Board.GIPF_WHITE_VALUE) lineOf3Value -= lineOf3GipfBonus;
+						else if (prevValue == Board.GIPF_BLACK_VALUE) lineOf3Value += lineOf3GipfBonus;
 					}
 
 					prevValue = grid[i][j];
@@ -184,8 +184,8 @@ public class EvaluationFunctionA implements EvaluationFunction {
 					if (counter >= 3) {
 						if (prevValue == Board.WHITE_VALUE) lineOf3Value += lineOf3Bonus;
 						else if (prevValue == Board.BLACK_VALUE) lineOf3Value -= lineOf3Bonus;
-						else if (prevValue == Board.GIPF_WHITE_VALUE) lineOf3Value += lineOf3GipfBonus;
-						else if (prevValue == Board.GIPF_BLACK_VALUE) lineOf3Value -= lineOf3GipfBonus;
+						else if (prevValue == Board.GIPF_WHITE_VALUE) lineOf3Value -= lineOf3GipfBonus;
+						else if (prevValue == Board.GIPF_BLACK_VALUE) lineOf3Value += lineOf3GipfBonus;
 					}
 
 					prevValue = grid[l + 1][4 - k + l];
@@ -207,8 +207,8 @@ public class EvaluationFunctionA implements EvaluationFunction {
 					if (counter >= 3) {
 						if (prevValue == Board.WHITE_VALUE) lineOf3Value += lineOf3Bonus;
 						else if (prevValue == Board.BLACK_VALUE) lineOf3Value -= lineOf3Bonus;
-						else if (prevValue == Board.GIPF_WHITE_VALUE) lineOf3Value += lineOf3GipfBonus;
-						else if (prevValue == Board.GIPF_BLACK_VALUE) lineOf3Value -= lineOf3GipfBonus;
+						else if (prevValue == Board.GIPF_WHITE_VALUE) lineOf3Value -= lineOf3GipfBonus;
+						else if (prevValue == Board.GIPF_BLACK_VALUE) lineOf3Value += lineOf3GipfBonus;
 					}
 
 					prevValue = grid[2 + k + l][1 + l];

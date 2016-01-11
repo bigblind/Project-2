@@ -2,8 +2,6 @@ package com.project.client.visuals.menu;
 
 import java.awt.Dimension;
 import java.awt.Font;
-import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -13,9 +11,12 @@ import javax.swing.JPanel;
 
 import com.gipf.client.game.player.bot.Bot;
 import com.gipf.client.player.bot.algorithm.Algorithm;
+import com.gipf.client.player.bot.algorithm.GreedyAlgorithm;
 import com.gipf.client.player.bot.algorithm.MCTS;
+import com.gipf.client.player.bot.algorithm.MMABPIDAlgorithm;
+import com.gipf.client.player.bot.algorithm.MinMaxABPAlgorithm;
 import com.gipf.client.player.bot.algorithm.MinMaxAlgorithm;
-import com.gipf.client.player.bot.algorithm.QuickGreedyAlgorithm;
+import com.gipf.client.player.bot.algorithm.NegaMaxAlgorithm;
 import com.gipf.client.player.bot.evaluation.EvaluationFunction;
 import com.gipf.client.player.bot.evaluation.EvaluationFunctionA;
 import com.gipf.client.player.bot.evaluation.EvaluationFunctionB;
@@ -28,7 +29,7 @@ public class BotSelectionPanel extends JPanel {
 
 	private JLabel title;
 
-	private JComboBox<Class> algorithmInput;
+	private JComboBox<Algorithm> algorithmInput;
 	private JComboBox<EvaluationFunction> functionInput;
 
 	public BotSelectionPanel(final Controller controller, String botName) {
@@ -54,12 +55,15 @@ public class BotSelectionPanel extends JPanel {
 		evalLabel.setFont(new Font("Segoe UI", 0, 25));
 		evalLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 
-		this.algorithmInput = new JComboBox<Class>();
+		this.algorithmInput = new JComboBox<Algorithm>();
 		this.algorithmInput.setMaximumSize(new Dimension(1000, 75));
 		this.algorithmInput.setFont(buttonFont);
-		this.algorithmInput.addItem(QuickGreedyAlgorithm.class);
-		this.algorithmInput.addItem(MCTS.class);
-		this.algorithmInput.addItem(MinMaxAlgorithm.class);
+		this.algorithmInput.addItem(new GreedyAlgorithm());
+		this.algorithmInput.addItem(new MinMaxAlgorithm());
+		this.algorithmInput.addItem(new NegaMaxAlgorithm());
+		this.algorithmInput.addItem(new MCTS());
+		this.algorithmInput.addItem(new MinMaxABPAlgorithm());
+		this.algorithmInput.addItem(new MMABPIDAlgorithm());
 
 		this.functionInput = new JComboBox<EvaluationFunction>();
 		this.functionInput.setMaximumSize(new Dimension(1000, 75));
@@ -92,21 +96,8 @@ public class BotSelectionPanel extends JPanel {
 	}
 
 	public Bot getBot() {
-		try {
-			Algorithm algorithm = (Algorithm) ((Class<Algorithm>) this.algorithmInput.getSelectedItem()).getConstructors()[0].newInstance();
-			EvaluationFunction function = (EvaluationFunction) (this.functionInput.getSelectedItem());
-			return new Bot(algorithm, new Evaluator(function));
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		}
-		return null;
+		Algorithm algorithm = (Algorithm) (this.algorithmInput.getSelectedItem());
+		EvaluationFunction function = (EvaluationFunction) (this.functionInput.getSelectedItem());
+		return new Bot(algorithm, new Evaluator(function));
 	}
 }

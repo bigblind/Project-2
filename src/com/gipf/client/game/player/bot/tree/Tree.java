@@ -125,7 +125,6 @@ public class Tree {
 
 		toSearch.add(node);
 		while (!toSearch.isEmpty()) {
-			System.out.println("in here");
 			ArrayList<Node> toSearchNext = new ArrayList<Node>();
 			for (Node candidate : toSearch) {
 				if (candidate.getEndState()) {
