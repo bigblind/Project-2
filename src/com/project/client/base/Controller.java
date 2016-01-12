@@ -160,7 +160,7 @@ public class Controller {
 		
 		this.showPanel(ghostController.getGamePanel());
 		this.frame.pack();
-		this.frame.setVisible(false);
+		this.frame.setVisible(true);
 		this.ghostController.getGameController().input("/s move");
 	}
 	

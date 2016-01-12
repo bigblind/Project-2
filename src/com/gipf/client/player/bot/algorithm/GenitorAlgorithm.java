@@ -48,9 +48,11 @@ public class GenitorAlgorithm {
 	while (gen < maxGenerations) {
 	    chooseParents();
 	    EvaluationFunctionA child = crossOver();
-	    if (evaluateFitness(child) > population[population.length - 1].getFitness()) {
+	    double childFitness = evaluateFitness(child);
+	    child.setFitness(childFitness);
+	    if (childFitness > population[population.length - 1].getFitness()) {
 		population[population.length - 1] = child;
-		child.setFitness(evaluateFitness(child));
+		
 		System.out.println(
 		        "center: " + child.centerWeight + " || " + "stonecount: " + child.stoneCountWeight + " || "
 		                + "diagonal: " + child.diagonalWeight + " || " + "lineOf3: " + child.lineOfThreeWeight);
@@ -100,7 +102,8 @@ public class GenitorAlgorithm {
 		}
 	    }
 	    double endTime = System.currentTimeMillis();
-	    System.out.println("runtime: " + (endTime-startTime)          );
+	    System.out.println("runtime: " + (endTime-startTime));
+	    controller.getFrame().dispose();
 	    if (logic.returnWinner().getStoneColor() == 1) {
 		gamesWon++;
 		time += endTime - startTime;

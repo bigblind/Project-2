@@ -55,12 +55,7 @@ public class BotRemoveThread extends Thread {
 		}
 
 		// ending thread
-		try {
-			this.join();
-			Thread.currentThread().interrupt();
-		} catch (InterruptedException e) {
-			Thread.currentThread().interrupt();
-		}
+		
 	}
 
 	public Bot getBot() {
