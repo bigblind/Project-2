@@ -10,7 +10,7 @@ public class EvaluationFunctionB implements EvaluationFunction {
 		this.name = name;
 	}
 	
-	public int evaluate(Board board, int whiteStoneCnt, int blackStoneCnt) {
+	public int evaluate(Board board, int whiteStoneCnt, int blackStoneCnt, boolean isStandard) {
 		int[] onBoard = this.stonesOnBoard(board);
 		return onBoard[0] + whiteStoneCnt - (onBoard[1] + blackStoneCnt);
 	}

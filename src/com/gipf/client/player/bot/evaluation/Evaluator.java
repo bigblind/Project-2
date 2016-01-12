@@ -17,11 +17,11 @@ public class Evaluator {
 
 	public Node evalToNode(Game game) {
 		Node node = new Node(null, game, null, true);
-		node.setValue(function.evaluate(game.getBoard(), game.getPlayerOne().getStoneAccount(), game.getPlayerTwo().getStoneAccount()));
+		node.setValue(function.evaluate(game.getBoard(), game.getPlayerOne().getStoneAccount(), game.getPlayerTwo().getStoneAccount(), false));
 		return node;
 	}
 
 	public int evaluate(Game game) {
-		return function.evaluate(game.getBoard(), game.getPlayerOne().getStoneAccount(), game.getPlayerTwo().getStoneAccount());
+		return function.evaluate(game.getBoard(), game.getPlayerOne().getStoneAccount(), game.getPlayerTwo().getStoneAccount(), false);
 	}
 }

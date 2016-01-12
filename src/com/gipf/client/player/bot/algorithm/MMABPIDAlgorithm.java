@@ -36,7 +36,7 @@ public class MMABPIDAlgorithm extends Algorithm {
 		
 		while (depth < this.TREE_DEPTH + 1) {
 			Node root = tree.root().copy();
-			this.generator.generateTree(depth, root, player, logic);
+			this.treeGenerator.generateTree(depth, root, player, logic);
 			currentTree = new Tree(root);
 			bestNode = this.mmabp.calculateBestNode(currentTree, player);
 			Player winner = bestNode.getGame().getGameLogic().returnWinner();
@@ -48,7 +48,7 @@ public class MMABPIDAlgorithm extends Algorithm {
 	}
 	
 	public ArrayList<Action> calculateBestActions(Node node, int depth, Bot player) {
-		this.generator.generateTree(depth, node, player, player.getLogic());
+		this.treeGenerator.generateTree(depth, node, player, player.getLogic());
 		return this.calculateBestActions(new Tree(node), player);
 	}
 
@@ -67,7 +67,7 @@ public class MMABPIDAlgorithm extends Algorithm {
 		
 		while (depth < this.TREE_DEPTH + 1) {
 			Node root = tree.root().copy();
-			this.generator.generateTree(depth, root, player, logic);
+			this.treeGenerator.generateTree(depth, root, player, logic);
 			currentTree = new Tree(root);
 			
 			bestNode = this.mmabp.calculateBestNode(currentTree, player);

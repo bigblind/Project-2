@@ -7,6 +7,7 @@ import com.gipf.client.game.player.bot.action.Action;
 import com.gipf.client.game.player.bot.tree.Node;
 import com.gipf.client.game.player.bot.tree.Tree;
 import com.gipf.client.player.bot.algorithm.Algorithm;
+import com.gipf.client.player.bot.algorithm.GreedyAlgorithm;
 import com.gipf.client.player.bot.evaluation.Evaluator;
 import com.gipf.client.utils.Point;
 
@@ -31,8 +32,8 @@ public class BotRemoveThread extends Thread {
 			Node root = this.evaluator.evalToNode(this.gameController.getController().getGame().copy());
 			this.bot.getLogic().performLogic(this.bot, root);
 
-			this.actions = this.algorithm.calculateBestActions(new Tree(root), this.bot);
-		}
+			this.actions = (new GreedyAlgorithm()).calculateBestActions(new Tree(root), this.bot);
+		}	
 		// visualising removal
 		try {
 			Thread.sleep(500);
@@ -52,14 +53,6 @@ public class BotRemoveThread extends Thread {
 
 			}
 			this.gameController.getController().getGamePanel().getCheckButton().doClick();
-		}
-
-		// ending thread
-		try {
-			this.join();
-			Thread.currentThread().interrupt();
-		} catch (InterruptedException e) {
-			Thread.currentThread().interrupt();
 		}
 	}
 

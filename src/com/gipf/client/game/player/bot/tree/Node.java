@@ -128,4 +128,8 @@ public class Node implements Comparable<Node> {
 	public void setAction(Action action) {
 		this.action = action;
 	}
+	
+	public void removeChild(Node child) {
+		this.children.remove(child);
+	}
 }

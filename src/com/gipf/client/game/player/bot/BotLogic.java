@@ -40,8 +40,6 @@ public class BotLogic {
 						Game gameCopy = tmpGame.copy();
 						gameCopy.getBoard().removeRowAndExtensions(rows.get(i));
 						
-						
-						
 						if (player.equals(gameCopy.getPlayerOne())) {
 							gameCopy.getPlayerOne().addStones(rows.get(i).getLength());
 							gameCopy.getPlayerOne().addStones(rows.get(i).getWhiteExtensionStones().length);
@@ -50,8 +48,6 @@ public class BotLogic {
 							gameCopy.getPlayerTwo().addStones(rows.get(i).getBlackExtensionStones().length);
 						}
 						
-						
-						
 						Node newNode = new Node(node, gameCopy, new Action(pointsInRow[i][j]), false);
 						node.addChild(newNode);
 						if (!handleRows(player, newNode)) {
@@ -59,6 +55,9 @@ public class BotLogic {
 							newNode.setValue(this.bot.getEvaluator().evaluate(newNode.getGame()));
 						}
 					} else {
+						Game gameCopy = tmpGame.copy();
+						gameCopy.getBoard().removeRowAndExtensions(rows.get(i));
+						
 						ArrayList<Point> toRemove = new ArrayList<Point>();
 						Point[] allRowPoints = this.returnAllPointFromRow(rows.get(i));
 						Point[] basicStonesToRemove = this.substract(allRowPoints, gipfStonesInRow);
@@ -67,8 +66,8 @@ public class BotLogic {
 
 						Point[] points = new Point[toRemove.size()];
 						points = toRemove.toArray(points);
-						this.removePoints(player, tmpGame, points);
-						Node newNode = new Node(node, tmpGame, new Action(pointsInRow[i][j]), false);
+						this.removePoints(player, gameCopy, points);
+						Node newNode = new Node(node, gameCopy, new Action(pointsInRow[i][j]), false);
 						node.addChild(newNode);
 						
 						int[] cntr = new int[gipfStonesInRow.length];
@@ -110,11 +109,10 @@ public class BotLogic {
 
 	public void removePoints(Player player, Node node, Point[] points, Action action, boolean checkRows) {
 		Game game = node.getGame().copy();
-		Player tmp;
-		if (game.getPlayerOne().getStoneColor() == Board.WHITE_VALUE) tmp = game.getPlayerTwo();
-		else tmp = game.getPlayerOne();
 		
-		for (Point p : points) System.out.println(p);
+		Player tmp = game.getPlayerOne();
+		if (game.getPlayerOne().getStoneColor() == Board.WHITE_VALUE) tmp = game.getPlayerTwo();
+		
 		if (player.getStoneColor() == Board.WHITE_VALUE) {
 			for (Point p : points) {
 				if (game.getBoard().getGrid()[p.getX()][p.getY()] == Board.WHITE_VALUE) {

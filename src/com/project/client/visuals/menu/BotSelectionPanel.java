@@ -18,9 +18,11 @@ import com.gipf.client.player.bot.algorithm.MinMaxABPAlgorithm;
 import com.gipf.client.player.bot.algorithm.MinMaxAlgorithm;
 import com.gipf.client.player.bot.algorithm.NegaMaxAlgorithm;
 import com.gipf.client.player.bot.algorithm.ProperMinMax;
+import com.gipf.client.player.bot.algorithm.withouttreegeneration.GreedyAlgorithmRevised;
 import com.gipf.client.player.bot.evaluation.EvaluationFunction;
 import com.gipf.client.player.bot.evaluation.EvaluationFunctionA;
 import com.gipf.client.player.bot.evaluation.EvaluationFunctionB;
+import com.gipf.client.player.bot.evaluation.EvaluationFunctionC;
 import com.gipf.client.player.bot.evaluation.Evaluator;
 import com.project.client.base.Controller;
 
@@ -66,6 +68,7 @@ public class BotSelectionPanel extends JPanel {
 		this.algorithmInput.addItem(new MinMaxABPAlgorithm());
 		this.algorithmInput.addItem(new MMABPIDAlgorithm());
 		this.algorithmInput.addItem(new ProperMinMax());
+		this.algorithmInput.addItem(new GreedyAlgorithmRevised());
 
 		this.functionInput = new JComboBox<EvaluationFunction>();
 		this.functionInput.setMaximumSize(new Dimension(1000, 75));
@@ -76,6 +79,7 @@ public class BotSelectionPanel extends JPanel {
 		this.functionInput.addItem(EvaluationFunctionA.GREEDY_WEIGHTS_LINEOFTHREE);
 		this.functionInput.addItem(EvaluationFunctionA.GREEDY_WEIGHTS_STONECOUNT);
 		this.functionInput.addItem(new EvaluationFunctionB("Difference"));
+		this.functionInput.addItem(new EvaluationFunctionC());
 
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 

@@ -4,5 +4,5 @@ import com.gipf.client.offline.logic.Board;
 
 public interface EvaluationFunction {
 
-	int evaluate(Board board, int whiteStoneCnt, int blackStoneCnt);
+	int evaluate(Board board, int whiteStoneCnt, int blackStoneCnt, boolean isStandard);
 }

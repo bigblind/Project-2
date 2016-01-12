@@ -16,7 +16,7 @@ public class Bot extends Player {
 	private Evaluator evaluator;
 	private TreeGenerator treeGenerator;
 	private BotLogic botLogic;
-
+	
 	private ArrayList<Action> upcomingActions;
 
 	public Bot(Algorithm algorithm, Evaluator evaluator) {
@@ -67,6 +67,6 @@ public class Bot extends Player {
 	}
 
 	public TreeGenerator getTreeGenerator() {
-		return treeGenerator; //MAGIC!!! https://media.giphy.com/media/Ykgb9SW3JTy5a/giphy.gif
+		return treeGenerator;
 	}
 }

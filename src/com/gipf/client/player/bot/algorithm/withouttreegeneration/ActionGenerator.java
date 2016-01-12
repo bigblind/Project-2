@@ -1,4 +1,4 @@
-package com.testing;
+package com.gipf.client.player.bot.algorithm.withouttreegeneration;
 
 import java.util.ArrayList;
 
@@ -122,6 +122,15 @@ public class ActionGenerator {
 	public ArrayList<Action> getPossibleActions(Node node) {
 		ArrayList<Action> result = new ArrayList<Action>();
 		for (PointDuo pd : this.movePoints) {
+			if (node.getGame().getBoard().isValidMove(pd.from, pd.to)) result.add(new Action(pd.from, pd.to));
+		}
+		return result;
+	}
+	
+	public ArrayList<Action> getPossibleActions(Node node, int number) {
+		ArrayList<Action> result = new ArrayList<Action>();
+		for (int i = 0; i < number; i++) {
+			PointDuo pd = this.movePoints.get((int) (Math.random() * this.movePoints.size()));
 			if (node.getGame().getBoard().isValidMove(pd.from, pd.to)) result.add(new Action(pd.from, pd.to));
 		}
 		return result;

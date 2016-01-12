@@ -8,6 +8,7 @@ import com.gipf.client.game.player.bot.action.Action;
 import com.gipf.client.game.player.bot.tree.Node;
 import com.gipf.client.game.player.bot.tree.Tree;
 import com.gipf.client.offline.logic.Board;
+import com.gipf.client.player.bot.algorithm.withouttreegeneration.ActionGenerator;
 import com.gipf.client.player.bot.generator.TreeGenerator;
 
 public abstract class Algorithm {
@@ -15,15 +16,21 @@ public abstract class Algorithm {
 	protected final Player WHITE_PLAYER = new Player(0, Board.WHITE_VALUE);
 	protected final Player BLACK_PLAYER = new Player(0, Board.BLACK_VALUE);
 	protected final int TREE_DEPTH = 4;
-	protected final TreeGenerator generator = new TreeGenerator();
+	protected final TreeGenerator treeGenerator = new TreeGenerator();
 	
 	public abstract ArrayList<Action> calculateBestActions(Tree tree, Bot player);
-
-	public abstract ArrayList<Action> calculateBestActions(Node node, int depth, Bot player);
-	
-	public abstract Node calculateBestNode(Tree tree, Bot player);
-	
+ 
 	protected String name;
+
+	protected ActionGenerator generator;
+	
+//	public abstract ArrayList<Action> calculateBestActions(Node node, int depth, Bot player);
+	
+//	public abstract Node calculateBestNode(Tree tree, Bot player);
+	
+	public Algorithm() {
+		this.generator = new ActionGenerator();
+	}
 	
 	public ArrayList<Action> getActionsToNode(Tree tree, Node node) {
 		ArrayList<Action> result = new ArrayList<Action>();

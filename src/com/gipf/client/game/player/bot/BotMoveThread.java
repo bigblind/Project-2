@@ -31,12 +31,12 @@ public class BotMoveThread extends Thread {
 
 		// computation for move
 		Node root = this.evaluator.evalToNode(this.gameController.getController().getGame().copy());
-		System.out.println("evaluated root");
-		this.bot.getGenerator().generateTree(4, root, this.bot, this.bot.getLogic());
-		System.out.println(new Tree(root).bfSearch(root).size());
+//		System.out.println("evaluated root");
+		this.bot.getGenerator().generateTree(2, root, this.bot, this.bot.getLogic());
+//		System.out.println(new Tree(root).bfSearch(root).size());
 		
 		ArrayList<Action> actions = this.algorithm.calculateBestActions(new Tree(root), this.bot);
-		System.out.println("calculated acions");
+//		System.out.println("calculated acions");
 		
 		// Complicated row? Bot remove thread gets information
 		if (actions.size() > 1) {
@@ -72,13 +72,5 @@ public class BotMoveThread extends Thread {
 		}
 
 		this.gameController.getController().getGamePanel().getButtons()[actions.get(0).getPoints()[1].getX()][actions.get(0).getPoints()[1].getY()].doClick();
-
-		// ending thread
-		try {
-			this.join();
-			Thread.currentThread().interrupt();
-		} catch (InterruptedException e) {
-			Thread.currentThread().interrupt();
-		}
 	}
 }

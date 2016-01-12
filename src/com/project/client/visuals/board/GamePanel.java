@@ -30,7 +30,7 @@ public class GamePanel extends JPanel implements ComponentListener {
 
 	private static final long serialVersionUID = 8555591759361318869L;
 
-	private static final boolean SHOW_NUMBERS = false;
+	private static final boolean SHOW_NUMBERS = true;
 
 	private Point[][][] connectedLocations;
 	private BoardButton[][] buttons;
@@ -207,7 +207,7 @@ public class GamePanel extends JPanel implements ComponentListener {
 			Point2D center = new Point2D.Float(this.getWidth() / 2, this.getHeight() / 2);
 			float radius = this.getHeight() * 2 / 3;
 			float[] dist = { 0.6f, 0.8f };
-			Color[] colors = { new Color(25, 207, 67), new Color(23, 178, 67) };
+			Color[] colors = { new Color(25, 207, 67), new Color(25, 178, 67) };
 			RadialGradientPaint gp = new RadialGradientPaint(center, radius, dist, colors);
 			g.setPaint(gp);
 			g.fillRect(0, 0, this.getWidth(), this.getHeight());

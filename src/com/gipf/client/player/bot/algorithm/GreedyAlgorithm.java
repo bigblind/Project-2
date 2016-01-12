@@ -89,7 +89,7 @@ public class GreedyAlgorithm extends Algorithm {
 	}
 
 	public ArrayList<Action> calculateBestActions(Node node, int depth, Bot player) {
-		this.generator.generateTree(depth, node, player, player.getLogic());
+		this.treeGenerator.generateTree(depth, node, player, player.getLogic());
 		return this.calculateBestActions(new Tree(node), player);
 	}
 }

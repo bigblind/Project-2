@@ -194,7 +194,11 @@ public class Board {
 	}
 
 	public void setGrid(int[][] grid) {
-		this.grid = grid;
+		for (int i = 0; i < grid.length; i++) {
+			for (int j = 0; j < grid[i].length; j++) {
+				this.grid[i][j] = grid[i][j];
+			}
+		}
 	}
 
 	public ArrayList<Row> checkForLines() {
@@ -244,7 +248,6 @@ public class Board {
 
 						lineStartY = j;
 						lineEndY = j;
-
 						Point[][] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY));
 						lines.add(new Row(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY), this.logic.checkPlayer(prevValue), counter, extensionStones[0], extensionStones[1]));
 					}
