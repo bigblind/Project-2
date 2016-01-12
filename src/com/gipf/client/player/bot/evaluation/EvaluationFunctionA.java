@@ -21,8 +21,8 @@ public class EvaluationFunctionA implements EvaluationFunction {
     public double			    lineOfThreeWeight	       = 0.5161235621909996;
 								       
     private double			    fitness;
-    private double			    whiteBoardPieces	       = 0;
-    private double			    blackBoardPieces	       = 0;
+    private int			    whiteBoardPieces	       = 0;
+    private int			    blackBoardPieces	       = 0;
     private Board			    board;
 					    
     private String			    name;
@@ -150,7 +150,7 @@ public class EvaluationFunctionA implements EvaluationFunction {
 	int diagonalGipfBonus = 150;
 	int cnt = 1;
 	
-	for (int i = 2; i < 8; i++) {
+	for (int i = 1; i < 8; i++) {
 	    if (board.getGrid()[i][4] == Board.WHITE_VALUE)
 		diagonalValue += diagonalBonus;
 	    else if (board.getGrid()[i][4] == Board.BLACK_VALUE)
@@ -160,7 +160,7 @@ public class EvaluationFunctionA implements EvaluationFunction {
 	    else if (board.getGrid()[i][4] == Board.BLACK_VALUE)
 		diagonalValue += diagonalGipfBonus;
 	}
-	for (int i = 2; i < 7; i++) {
+	for (int i = 1; i < 8; i++) {
 	    if (board.getGrid()[4][i] == Board.WHITE_VALUE)
 		diagonalValue += diagonalBonus;
 	    else if (board.getGrid()[4][i] == Board.BLACK_VALUE)
@@ -170,7 +170,7 @@ public class EvaluationFunctionA implements EvaluationFunction {
 	    else if (board.getGrid()[4][i] == Board.GIPF_BLACK_VALUE)
 		diagonalValue += diagonalGipfBonus;
 	}
-	for (int i = 2; i < 7; i++) {
+	for (int i = 1; i < 8; i++) {
 	    if (board.getGrid()[i][cnt] == Board.WHITE_VALUE)
 		diagonalValue += diagonalBonus;
 	    else if (board.getGrid()[i][cnt] == Board.BLACK_VALUE)
@@ -321,6 +321,14 @@ public class EvaluationFunctionA implements EvaluationFunction {
 	}
 	return lineOf3Value;
 	
+    }
+    
+    public int getWhiteBoardStones(){
+	return this.whiteBoardPieces;
+    }
+    
+    public int getBlackBoardStones(){
+	return this.blackBoardPieces;
     }
     
     public double getFitness() {

@@ -3,6 +3,8 @@ package com.gipf.client.player.bot.algorithm;
 import java.io.IOException;
 
 import com.gipf.client.game.player.bot.Bot;
+import com.gipf.client.offline.logic.Board;
+import com.gipf.client.offline.logic.Game;
 import com.gipf.client.offline.logic.GameLogic;
 import com.gipf.client.offline.logic.LocalServer;
 import com.gipf.client.player.bot.evaluation.EvaluationFunctionA;
@@ -22,6 +24,7 @@ public class GenitorAlgorithm {
     private double		  mutationOdds	     = 0.5;
     private double		  mutationDelta	     = 0.2;
     private int			  gamesForEvaluation = 3;
+    private int delay = 20000;
 						     
     public static double	  finalFitness;
 				  
@@ -30,6 +33,7 @@ public class GenitorAlgorithm {
 	    EvaluationFunctionA individual = new EvaluationFunctionA("individual", Math.random(), Math.random(),
 	            Math.random(), Math.random());
 	    population[i] = individual;
+	    
 	    
 	    System.out.println("individual: " + i + " " + individual.centerWeight);
 	}
@@ -74,6 +78,7 @@ public class GenitorAlgorithm {
 	GreedyAlgorithm greedy = new GreedyAlgorithm();
 	//MCTS montecarlo = new MCTS();
 	Bot bot1 = new Bot(greedy, new Evaluator(individual));
+	
 	//System.out.println("individual weight: " + individual.centerWeight);
 	/*LocalServer server = new LocalServer(null, null, "basic");
 	GameLogic logic = server.getGameLogic();
@@ -84,6 +89,7 @@ public class GenitorAlgorithm {
 	    
 	    LocalServer server = new LocalServer(null, null, "basic");
 	    GameLogic logic = server.getGameLogic();
+	    Game game = logic.game;
 	    Controller controller = new Controller();
 	    controller.init();
 	   
@@ -93,7 +99,7 @@ public class GenitorAlgorithm {
 	    double startTime = System.currentTimeMillis();
 	    controller.createArenaGame(server, bot1, opponent);
 	    System.out.println("game " + i + " entered");
-	    while (!logic.game.isFinished()) {
+	    while (System.currentTimeMillis() <= startTime + delay) {
 		try {
 		    Thread.sleep(1);
 		} catch (InterruptedException e) {
@@ -103,9 +109,23 @@ public class GenitorAlgorithm {
 	    }
 	    double endTime = System.currentTimeMillis();
 	    System.out.println("runtime: " + (endTime-startTime));
+	    
+	    Board board = game.getBoard();
+	    EvaluationFunctionA eval = new EvaluationFunctionA("individual");
+	    int whiteReserve = game.getPlayerOne().getStoneAccount();
+	    int blackReserve = game.getPlayerTwo().getStoneAccount();
+	    eval.evaluate(board, whiteReserve, blackReserve);
+	    int whiteStones = eval.getWhiteBoardStones()+ whiteReserve;
+	    int blackStones = eval.getBlackBoardStones() + blackReserve;
+	   
+	    //close frame and execution thread after game is done
+	    
 	    controller.getFrame().dispose();
-	    if (logic.returnWinner().getStoneColor() == 1) {
+	    
+	    
+	    if (whiteStones - blackStones > 0) {
 		gamesWon++;
+		
 		time += endTime - startTime;
 		System.out.println("White player won, games won = " + gamesWon);
 	    }
