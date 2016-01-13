@@ -5,9 +5,8 @@ import java.util.ArrayList;
 import com.gipf.client.game.GameController;
 import com.gipf.client.game.player.bot.action.Action;
 import com.gipf.client.game.player.bot.tree.Node;
-import com.gipf.client.game.player.bot.tree.Tree;
-import com.gipf.client.player.bot.algorithm.Algorithm;
-import com.gipf.client.player.bot.evaluation.Evaluator;
+import com.gipf.client.player.bot.algorithm.withouttreegeneration.Algorithm;
+import com.gipf.client.player.bot.evaluation.EvaluationFunction;
 
 public class BotMoveThread extends Thread {
 
@@ -15,11 +14,11 @@ public class BotMoveThread extends Thread {
 	public static int runs = 0;
 
 	private GameController gameController;
-	private Evaluator evaluator;
+	private EvaluationFunction evaluator;
 	private Algorithm algorithm;
 	private Bot bot;
 
-	public BotMoveThread(Bot bot, GameController gameController, Algorithm algorithm, Evaluator evaluator) {
+	public BotMoveThread(Bot bot, GameController gameController, Algorithm algorithm, EvaluationFunction evaluator) {
 		this.gameController = gameController;
 		this.algorithm = algorithm;
 		this.evaluator = evaluator;
@@ -30,12 +29,12 @@ public class BotMoveThread extends Thread {
 		long start = System.nanoTime();
 
 		// computation for move
-		Node root = this.evaluator.evalToNode(this.gameController.getController().getGame().copy());
+		Node root = new Node(null, this.gameController.getController().getGame().copy(), null, true);
 //		System.out.println("evaluated root");
 		this.bot.getGenerator().generateTree(2, root, this.bot, this.bot.getLogic());
 //		System.out.println(new Tree(root).bfSearch(root).size());
 		
-		ArrayList<Action> actions = this.algorithm.calculateBestActions(new Tree(root), this.bot);
+		ArrayList<Action> actions = this.algorithm.calculateBestActions(this.gameController.getController().getGame().copy(), this.bot, this.evaluator);
 //		System.out.println("calculated acions");
 		
 		// Complicated row? Bot remove thread gets information

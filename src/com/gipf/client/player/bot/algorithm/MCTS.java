@@ -7,44 +7,36 @@ import com.gipf.client.game.player.bot.Bot;
 import com.gipf.client.game.player.bot.action.Action;
 import com.gipf.client.game.player.bot.tree.Node;
 import com.gipf.client.game.player.bot.tree.Tree;
+import com.gipf.client.offline.logic.Game;
+import com.gipf.client.player.bot.algorithm.withouttreegeneration.Algorithm;
+import com.gipf.client.player.bot.evaluation.EvaluationFunction;
+import com.gipf.client.player.bot.generator.TreeGenerator;
 
 public class MCTS extends Algorithm {
 
-	private int iterations;
+	private long timeLimit;
 	private int simulationDepth;
+	private TreeGenerator generator;
 
 	public MCTS() {
-		this(10, 10);
+		this(5000, 10);
 	}
 
-	public MCTS(int maxIterations, int maxSimulationDepth) {
+	public MCTS(long timeLimit, int maxSimulationDepth) {
 		super();
-		this.iterations = maxIterations;
+		this.timeLimit = timeLimit;
 		this.simulationDepth = maxSimulationDepth;
 		this.name = "Monte Carlo Tree Search";
+		this.generator = new TreeGenerator();
+	}
+	
+	public ArrayList<Action> calculateBestActions(Game game, Bot player, EvaluationFunction evaluator) {
+		return null;
 	}
 
+
 	public ArrayList<Action> calculateBestActions(Tree tree, Bot player) {
-		tree = new Tree(tree.root().copy(true));
-		MCTSNode root = new MCTSNode(tree.root(), player, tree);
-
-		for (int i = 0; i < this.iterations; i++) {
-
-			//Selection phase
-			MCTSNode node = root;
-			while (node.untriedMoves.size() == 0 && node.children.size() != 0) {
-				node = node.selectChild();
-			}
-
-			if (node.untriedMoves.size() != 0) {
-				node = node.expand();
-			}
-
-			//Simulation phase, includes backpropagation
-			node.simulate();
-
-		}
-		Node best = root.getMostVisitedChild().state;
+		Node best = this.calculateBestNode(tree, player);
 		ArrayList<Action> res = this.getActionsToNode(tree, best);
 		return res;
 	}
@@ -55,11 +47,13 @@ public class MCTS extends Algorithm {
 	}
 	
 	public Node calculateBestNode(Tree tree, Bot player) {
-		tree = new Tree(tree.root().copy(true));
 		MCTSNode root = new MCTSNode(tree.root(), player, tree);
-
-		for (int i = 0; i < this.iterations; i++) {
-
+		long startTime = System.currentTimeMillis();
+		long endTime = startTime + timeLimit;
+		int i = 0;
+		while (System.currentTimeMillis() < endTime) {
+			i += 1;
+			
 			//Selection phase
 			MCTSNode node = root;
 			while (node.untriedMoves.size() == 0 && node.children.size() != 0) {
@@ -72,9 +66,13 @@ public class MCTS extends Algorithm {
 
 			//Simulation phase, includes backpropagation
 			node.simulate();
-
+			
+			System.out.println("Iteration "+i+" done with "+((endTime - System.currentTimeMillis())/1000.0) + "s left");
 		}
+		
 		Node best = root.getMostVisitedChild().state;
+		System.out.println("best node: "+best);
+		
 		return best;
 	}
 

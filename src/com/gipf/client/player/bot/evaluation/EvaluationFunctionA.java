@@ -1,6 +1,8 @@
 package com.gipf.client.player.bot.evaluation;
 
+import com.gipf.client.game.player.Player;
 import com.gipf.client.offline.logic.Board;
+import com.gipf.client.offline.logic.Game;
 
 public class EvaluationFunctionA implements EvaluationFunction {
 
@@ -34,25 +36,35 @@ public class EvaluationFunctionA implements EvaluationFunction {
 		this.name = name;
 	}
 
-	public int evaluate(Board board, int whiteStoneCnt, int blackStoneCnt, boolean isStandard) {
-		this.board = board;
+	public int evaluate(Game game, Player player) {
+		this.board = game.getBoard();
 
-		if (whiteStoneCnt == 0) {
-			return -100000;
-		}
-		if (blackStoneCnt == 0) {
-			return 100000;
+		if (player.getStoneColor() == Board.WHITE_VALUE) {
+			if (game.getPlayerOne().getStoneAccount() == 0) {
+				return -100000;
+			}
+			if (game.getPlayerTwo().getStoneAccount() == 0) {
+				return 100000;
+			}
+		} else {
+			if (game.getPlayerOne().getStoneAccount() == 0) {
+				return 100000;
+			}
+			if (game.getPlayerTwo().getStoneAccount() == 0) {
+				return -100000;
+			}
 		}
 
 		int boardValue = 0;
 
 		int center = (int) (centerWeight * centerStones());
-		int count = (int) (stoneCountWeight * ((whiteBoardPieces + whiteStoneCnt) - (blackBoardPieces + blackStoneCnt)));
+		int count = (int) (stoneCountWeight * ((whiteBoardPieces + game.getPlayerOne().getStoneAccount()) - (blackBoardPieces + game.getPlayerTwo().getStoneAccount())));
 		int diagonal = (int) (diagonalWeight * diagonal());
 		int lineOf3 = (int) (lineOfThreeWeight * lineOf3(board.getGrid()));
 
 		boardValue = count + center + diagonal + lineOf3;
-		return boardValue;
+		if (player.getStoneColor() == Board.WHITE_VALUE) return boardValue;
+		else return -boardValue;
 
 	}
 

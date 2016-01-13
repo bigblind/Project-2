@@ -52,7 +52,7 @@ public class BotLogic {
 						node.addChild(newNode);
 						if (!handleRows(player, newNode)) {
 							newNode.setEndState(true);
-							newNode.setValue(this.bot.getEvaluator().evaluate(newNode.getGame()));
+							newNode.setValue(this.bot.getEvaluator().evaluate(newNode.getGame(), player));
 						}
 					} else {
 						Game gameCopy = tmpGame.copy();
@@ -137,12 +137,12 @@ public class BotLogic {
 			node.addChild(newNode);
 
 			if (!handleRows(player, newNode)) {
-				newNode.setValue(this.bot.getEvaluator().evaluate(newNode.getGame()));
+				newNode.setValue(this.bot.getEvaluator().evaluate(newNode.getGame(), player));
 				newNode.setEndState(true);
 			}
 		} else {
 			Node newNode = new Node(node, game, action, true);
-			newNode.setValue(this.bot.getEvaluator().evaluate(newNode.getGame()));
+			newNode.setValue(this.bot.getEvaluator().evaluate(newNode.getGame(), player));
 			node.addChild(newNode);
 		}
 	}

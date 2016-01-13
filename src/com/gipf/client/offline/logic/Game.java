@@ -9,19 +9,21 @@ public class Game {
 	private Board board;
 	
 	private boolean finished;
+	private boolean isStandard;
 
-	public Game() {
+	public Game(boolean standard) {
 		this.board = new Board();
 		this.board.basicInit();
+		this.isStandard = false;
 	}
 	
-	public Game(Board board, Player playerOne, Player playerTwo) {
+	public Game(Board board, Player playerOne, Player playerTwo, boolean standard) {
 		this.board = board;
 		this.playerOne = playerOne;
 		this.playerTwo = playerTwo;
 	}
 	
-	public Game(Player playerOne, Player playerTwo) {
+	public Game(Player playerOne, Player playerTwo, boolean standard) {
 		this.playerOne = playerOne;
 		this.playerTwo = playerTwo;
 		this.board = new Board();
@@ -57,7 +59,7 @@ public class Game {
 	}
 	
 	public Game copy() {
-		Game game = new Game(this.board.copy(), this.playerOne.copy(), this.playerTwo.copy());
+		Game game = new Game(this.board.copy(), this.playerOne.copy(), this.playerTwo.copy(), this.isStandard);
 		game.setGameLogic(this.logic);
 		return game;
 	}
@@ -72,5 +74,13 @@ public class Game {
 	
 	public boolean isFinished() {
 		return this.finished;
+	}
+	
+	public void setIsStandard(boolean bool) {
+		this.isStandard = bool;
+	}
+	
+	public boolean isStandard() {
+		return this.isStandard;
 	}
 }

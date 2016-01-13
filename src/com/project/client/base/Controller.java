@@ -65,7 +65,7 @@ public class Controller {
 			System.exit(0);
 		}
 
-		this.gamePanel = new GamePanel(new Game(new Player(0, Board.WHITE_VALUE), new Player(0, Board.BLACK_VALUE)), this, true);
+		this.gamePanel = new GamePanel(new Game(new Player(0, Board.WHITE_VALUE), new Player(0, Board.BLACK_VALUE), false), this, true);
 
 		this.menuPages = new ArrayList<MenuPage>();
 
@@ -80,7 +80,7 @@ public class Controller {
 
 	public void ghostInit() {
 		this.gameController = new GameController(this);
-		this.gamePanel = new GamePanel(new Game(new Player(0, Board.WHITE_VALUE), new Player(0, Board.BLACK_VALUE)), this, false);
+		this.gamePanel = new GamePanel(new Game(new Player(0, Board.WHITE_VALUE), new Player(0, Board.BLACK_VALUE), false), this, false);
 	}
 
 	private void initMenuPages() {
@@ -126,7 +126,7 @@ public class Controller {
 
 		server.setConnectors(this.connector, ghostConnector);
 		server.start();
-
+		
 		this.runningLocalGame = true;
 	}
 	
@@ -150,7 +150,10 @@ public class Controller {
 		server.start();
 		
 		ghostController.getGame().setGameLogic(server.getGameLogic());
+		ghostController.getGame().setIsStandard(server.getGameLogic().isStandard());
 		ghostController2.getGame().setGameLogic(server.getGameLogic());
+		ghostController2.getGame().setIsStandard(server.getGameLogic().isStandard());
+		
 		one.setGameController(this.ghostController.getGameController());
 		two.setGameController(ghostController2.getGameController());
 

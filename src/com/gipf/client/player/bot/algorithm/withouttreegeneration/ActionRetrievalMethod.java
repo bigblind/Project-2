@@ -1,4 +1,4 @@
-package com.gipf.client.player.bot.algorithm;
+package com.gipf.client.player.bot.algorithm.withouttreegeneration;
 
 import java.util.ArrayList;
 
@@ -8,10 +8,10 @@ import com.gipf.client.game.player.bot.tree.Node;
 import com.gipf.client.game.player.bot.tree.Tree;
 import com.gipf.client.offline.logic.Board;
 
-public class GreedyAlgorithm extends Algorithm {
+public class ActionRetrievalMethod {
 
-	public GreedyAlgorithm() {
-		this.name = "Greedy Algorithm";
+	public ActionRetrievalMethod() {
+
 	}
 	
 	public ArrayList<Action> calculateBestActions(Tree tree, Bot player) {
@@ -47,7 +47,25 @@ public class GreedyAlgorithm extends Algorithm {
 			}
 		}
 
-		return super.getActionsToNode(tree, bestNodes.get((int) (Math.random() * bestNodes.size())));
+		return this.getActionsToNode(tree, bestNodes.get((int) (Math.random() * bestNodes.size())));
+	}
+	
+	public ArrayList<Action> getActionsToNode(Tree tree, Node node) {
+		ArrayList<Action> result = new ArrayList<Action>();
+		while (!node.equals(tree.root())) {
+			if (node.getEndState()) {
+				result.clear();
+				result.add(node.getAction());
+			} else {
+				result.add(node.getAction());
+			}
+			node = node.getParent();
+		}
+		ArrayList<Action> actualResult = new ArrayList<Action>();
+		for (int i = result.size() - 1; i >= 0; i--) {
+			actualResult.add(result.get(i));
+		}
+		return actualResult;
 	}
 	
 	public Node calculateBestNode(Tree tree, Bot player) {
@@ -86,10 +104,5 @@ public class GreedyAlgorithm extends Algorithm {
 		}
 
 		return bestNodes.get((int) (Math.random() * bestNodes.size()));
-	}
-
-	public ArrayList<Action> calculateBestActions(Node node, int depth, Bot player) {
-		this.treeGenerator.generateTree(depth, node, player, player.getLogic());
-		return this.calculateBestActions(new Tree(node), player);
 	}
 }

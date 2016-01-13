@@ -1,18 +1,21 @@
 package com.gipf.client.player.bot.evaluation;
 
+import com.gipf.client.game.player.Player;
 import com.gipf.client.offline.logic.Board;
+import com.gipf.client.offline.logic.Game;
 
 public class EvaluationFunctionB implements EvaluationFunction {
 
 	private String name;
-	
+
 	public EvaluationFunctionB(String name) {
 		this.name = name;
 	}
-	
-	public int evaluate(Board board, int whiteStoneCnt, int blackStoneCnt, boolean isStandard) {
-		int[] onBoard = this.stonesOnBoard(board);
-		return onBoard[0] + whiteStoneCnt - (onBoard[1] + blackStoneCnt);
+
+	public int evaluate(Game game, Player player) {
+		int[] onBoard = this.stonesOnBoard(game.getBoard());
+		if (player.getStoneColor() == Board.WHITE_VALUE) return onBoard[0] + game.getPlayerOne().getStoneAccount() - (onBoard[1] + game.getPlayerTwo().getStoneAccount());
+		else return -(onBoard[0] + game.getPlayerOne().getStoneAccount() - (onBoard[1] + game.getPlayerTwo().getStoneAccount()));
 	}
 
 	public int[] stonesOnBoard(Board board) {
@@ -30,7 +33,7 @@ public class EvaluationFunctionB implements EvaluationFunction {
 
 		return new int[] { whiteStones, blackStones };
 	}
-	
+
 	public String toString() {
 		return this.name;
 	}

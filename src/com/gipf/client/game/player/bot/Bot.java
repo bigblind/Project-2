@@ -5,21 +5,21 @@ import java.util.ArrayList;
 import com.gipf.client.game.GameController;
 import com.gipf.client.game.player.Player;
 import com.gipf.client.game.player.bot.action.Action;
-import com.gipf.client.player.bot.algorithm.Algorithm;
-import com.gipf.client.player.bot.evaluation.Evaluator;
+import com.gipf.client.player.bot.algorithm.withouttreegeneration.Algorithm;
+import com.gipf.client.player.bot.evaluation.EvaluationFunction;
 import com.gipf.client.player.bot.generator.TreeGenerator;
 
 public class Bot extends Player {
 
 	private GameController gameController;
 	private Algorithm algorithm;
-	private Evaluator evaluator;
 	private TreeGenerator treeGenerator;
 	private BotLogic botLogic;
+	private EvaluationFunction evaluator;
 	
 	private ArrayList<Action> upcomingActions;
 
-	public Bot(Algorithm algorithm, Evaluator evaluator) {
+	public Bot(Algorithm algorithm, EvaluationFunction evaluator) {
 		this.algorithm = algorithm;
 		this.evaluator = evaluator;
 		this.treeGenerator = new TreeGenerator();
@@ -32,7 +32,7 @@ public class Bot extends Player {
 			BotMoveThread botThread = new BotMoveThread(this, this.gameController, this.algorithm, this.evaluator);
 			botThread.start();
 		} else if (state.equals("remove")) {
-			BotRemoveThread botThread = new BotRemoveThread(this, this.gameController, this.algorithm, this.evaluator, this.upcomingActions);
+			BotRemoveThread botThread = new BotRemoveThread(this, this.gameController, this.upcomingActions);
 			botThread.start();
 			this.upcomingActions.clear();
 		}
@@ -46,7 +46,7 @@ public class Bot extends Player {
 		this.algorithm = algorithm;
 	}
 
-	public void setEvaluator(Evaluator evaluator) {
+	public void setEvaluator(EvaluationFunction evaluator) {
 		this.evaluator = evaluator;
 	}
 
@@ -62,7 +62,7 @@ public class Bot extends Player {
 		return this.botLogic;
 	}
 
-	public Evaluator getEvaluator() {
+	public EvaluationFunction getEvaluator() {
 		return this.evaluator;
 	}
 

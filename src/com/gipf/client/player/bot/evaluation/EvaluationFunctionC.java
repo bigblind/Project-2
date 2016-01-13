@@ -1,6 +1,8 @@
 package com.gipf.client.player.bot.evaluation;
 
+import com.gipf.client.game.player.Player;
 import com.gipf.client.offline.logic.Board;
+import com.gipf.client.offline.logic.Game;
 
 /**
  * @author Simon, Franziska
@@ -11,9 +13,16 @@ import com.gipf.client.offline.logic.Board;
  */
 public class EvaluationFunctionC implements EvaluationFunction {
 
-	public int evaluate(Board board, int whiteStoneCnt, int blackStoneCnt, boolean isStandard) {
-		if (whiteStoneCnt == 0) return -1000000;
-		else if (blackStoneCnt == 0) return 1000000;
+	public int evaluate(Game game, Player player) {
+		Board board = game.getBoard();
+		
+		if (player.getStoneColor() == Board.WHITE_VALUE) {
+			if (game.getPlayerOne().getStoneAccount() == 0) return -1000000;
+			else if (game.getPlayerTwo().getStoneAccount() == 0) return 1000000;
+		} else {
+			if (game.getPlayerOne().getStoneAccount() == 0) return 1000000;
+			else if (game.getPlayerTwo().getStoneAccount() == 0) return -1000000;
+		}
 
 		int whiteGipfStones = 0;
 		int whiteStones = 0;
@@ -29,12 +38,18 @@ public class EvaluationFunctionC implements EvaluationFunction {
 			}
 		}
 
-		if (isStandard) {
-			if (whiteGipfStones == 0) return -1000000;
-			else if (blackGipfStones == 0) return 1000000;
+		if (game.isStandard()) {
+			if (player.getStoneColor() == Board.WHITE_VALUE) {
+				if (whiteGipfStones == 0) return -1000000;
+				else if (blackGipfStones == 0) return 1000000;
+			} else {
+				if (whiteGipfStones == 0) return 1000000;
+				else if (blackGipfStones == 0) return -1000000;
+			}
 		}
 
-		return 10 * (whiteGipfStones - blackGipfStones) + 1 * (whiteStones - blackStones);
+		if (player.getStoneColor() == Board.WHITE_VALUE) return 10 * (whiteGipfStones - blackGipfStones) + 1 * ((whiteStones + game.getPlayerOne().getStoneAccount()) - (blackStones + game.getPlayerTwo().getStoneAccount()));
+		else return -(10 * (whiteGipfStones - blackGipfStones) + 1 * ((whiteStones + game.getPlayerOne().getStoneAccount()) - (blackStones + game.getPlayerTwo().getStoneAccount())));
 	}
 
 	public String toString() {

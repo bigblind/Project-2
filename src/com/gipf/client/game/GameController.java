@@ -24,10 +24,10 @@ public class GameController {
 
 	public void input(String received) {
 		if (received.startsWith("/i")) {
-			// "/i Board.BLACK_VALUE thisStonesAccount opponentStonesAccount boardString";
+			// "/i Board.BLACK_VALUE thisStonesAccount opponentStonesAccount boardString [boolean(for standard)]";
 			String info = received.split("/i ")[1];
-			String boardString = received.substring(3 + info.split(" ")[0].length() + 1 + info.split(" ")[1].length() + 1 + info.split(" ")[2].length() + 1);
-			this.initCall(Integer.parseInt(info.split(" ")[0]), Integer.parseInt(info.split(" ")[1]), Integer.parseInt(info.split(" ")[2]), boardString);
+			String boardString = received.substring(3 + info.split(" ")[0].length() + 1 + info.split(" ")[1].length() + 1 + info.split(" ")[2].length() + 1, received.indexOf("[") - 1);
+			this.initCall(Integer.parseInt(info.split(" ")[0]), Integer.parseInt(info.split(" ")[1]), Integer.parseInt(info.split(" ")[2]), boardString, Boolean.parseBoolean(received.substring(received.indexOf("[") + 1, received.length() - 1)));
 		} else if (received.startsWith("/u")) {
 			// "/u 18 18 boardString";
 			String[] subParts = received.split(" ");
@@ -101,18 +101,18 @@ public class GameController {
 		}
 	}
 
-	private void initCall(int stoneColor, int numberOfStones, int opponentStones, String boardString) {
+	private void initCall(int stoneColor, int numberOfStones, int opponentStones, String boardString, boolean standard) {
 		this.thisPlayer.setStoneAccount(numberOfStones);
 		this.thisPlayer.setStoneColor(stoneColor);
 		Game tmp = this.controller.getGamePanel().getGame();
 		if (stoneColor == Board.BLACK_VALUE) {
-			this.controller.setGame(new Game(new Player(Board.WHITE_VALUE), this.thisPlayer));
+			this.controller.setGame(new Game(new Player(Board.WHITE_VALUE), this.thisPlayer, standard));
 			this.controller.getGame().setGameLogic(tmp.getGameLogic());
 			this.controller.getGame().getPlayerOne().setStoneAccount(opponentStones);
 			this.controller.getGamePanel().setGame(this.controller.getGame());
 			this.controller.getGamePanel().setState(new WaitState(this.controller.getGamePanel(), this));
 		} else if (stoneColor == Board.WHITE_VALUE) {
-			this.controller.setGame(new Game(this.thisPlayer, new Player(Board.BLACK_VALUE)));
+			this.controller.setGame(new Game(this.thisPlayer, new Player(Board.BLACK_VALUE), standard));
 			this.controller.getGame().setGameLogic(tmp.getGameLogic());
 			this.controller.getGame().getPlayerTwo().setStoneAccount(opponentStones);
 			this.controller.getGamePanel().setGame(this.controller.getGame());

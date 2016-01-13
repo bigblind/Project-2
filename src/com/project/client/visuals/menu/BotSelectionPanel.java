@@ -10,21 +10,19 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.gipf.client.game.player.bot.Bot;
-import com.gipf.client.player.bot.algorithm.Algorithm;
-import com.gipf.client.player.bot.algorithm.GreedyAlgorithm;
 import com.gipf.client.player.bot.algorithm.MCTS;
 import com.gipf.client.player.bot.algorithm.MMABPIDAlgorithm;
 import com.gipf.client.player.bot.algorithm.MinMaxABPAlgorithm;
 import com.gipf.client.player.bot.algorithm.MinMaxAlgorithm;
 import com.gipf.client.player.bot.algorithm.NegaMaxAlgorithm;
 import com.gipf.client.player.bot.algorithm.ProperMinMax;
+import com.gipf.client.player.bot.algorithm.withouttreegeneration.Algorithm;
 import com.gipf.client.player.bot.algorithm.withouttreegeneration.GreedyAlgorithmRevised;
 import com.gipf.client.player.bot.algorithm.withouttreegeneration.GreedyAlgorithmRevised2;
 import com.gipf.client.player.bot.evaluation.EvaluationFunction;
 import com.gipf.client.player.bot.evaluation.EvaluationFunctionA;
 import com.gipf.client.player.bot.evaluation.EvaluationFunctionB;
 import com.gipf.client.player.bot.evaluation.EvaluationFunctionC;
-import com.gipf.client.player.bot.evaluation.Evaluator;
 import com.project.client.base.Controller;
 
 public class BotSelectionPanel extends JPanel {
@@ -62,15 +60,14 @@ public class BotSelectionPanel extends JPanel {
 		this.algorithmInput = new JComboBox<Algorithm>();
 		this.algorithmInput.setMaximumSize(new Dimension(1000, 75));
 		this.algorithmInput.setFont(buttonFont);
-		this.algorithmInput.addItem(new GreedyAlgorithm());
+		this.algorithmInput.addItem(new GreedyAlgorithmRevised());
+		this.algorithmInput.addItem(new GreedyAlgorithmRevised2());
 		this.algorithmInput.addItem(new MinMaxAlgorithm());
 		this.algorithmInput.addItem(new NegaMaxAlgorithm());
 		this.algorithmInput.addItem(new MCTS());
 		this.algorithmInput.addItem(new MinMaxABPAlgorithm());
 		this.algorithmInput.addItem(new MMABPIDAlgorithm());
 		this.algorithmInput.addItem(new ProperMinMax());
-		this.algorithmInput.addItem(new GreedyAlgorithmRevised());
-		this.algorithmInput.addItem(new GreedyAlgorithmRevised2());
 
 		this.functionInput = new JComboBox<EvaluationFunction>();
 		this.functionInput.setMaximumSize(new Dimension(1000, 75));
@@ -106,6 +103,6 @@ public class BotSelectionPanel extends JPanel {
 	public Bot getBot() {
 		Algorithm algorithm = (Algorithm) (this.algorithmInput.getSelectedItem());
 		EvaluationFunction function = (EvaluationFunction) (this.functionInput.getSelectedItem());
-		return new Bot(algorithm, new Evaluator(function));
+		return new Bot(algorithm, function);
 	}
 }

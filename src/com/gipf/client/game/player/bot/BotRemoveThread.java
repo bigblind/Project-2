@@ -6,9 +6,7 @@ import com.gipf.client.game.GameController;
 import com.gipf.client.game.player.bot.action.Action;
 import com.gipf.client.game.player.bot.tree.Node;
 import com.gipf.client.game.player.bot.tree.Tree;
-import com.gipf.client.player.bot.algorithm.Algorithm;
-import com.gipf.client.player.bot.algorithm.GreedyAlgorithm;
-import com.gipf.client.player.bot.evaluation.Evaluator;
+import com.gipf.client.player.bot.algorithm.withouttreegeneration.ActionRetrievalMethod;
 import com.gipf.client.utils.Point;
 
 public class BotRemoveThread extends Thread {
@@ -16,23 +14,21 @@ public class BotRemoveThread extends Thread {
 	private ArrayList<Action> actions;
 	private GameController gameController;
 	private Bot bot;
-	private Algorithm algorithm;
-	private Evaluator evaluator;
+	private ActionRetrievalMethod method;
 
-	public BotRemoveThread(Bot bot, GameController gameController, Algorithm algorithm, Evaluator evaluator, ArrayList<Action> actions) {
+	public BotRemoveThread(Bot bot, GameController gameController, ArrayList<Action> actions) {
 		this.gameController = gameController;
 		this.actions = actions;
 		this.bot = bot;
-		this.evaluator = evaluator;
-		this.algorithm = algorithm;
+		this.method = new ActionRetrievalMethod();
 	}
 
 	public void run() {
 		if (this.actions.size() == 0) {
-			Node root = this.evaluator.evalToNode(this.gameController.getController().getGame().copy());
+			Node root = new Node(null, this.gameController.getController().getGame().copy(), null, true);
 			this.bot.getLogic().performLogic(this.bot, root);
 
-			this.actions = (new GreedyAlgorithm()).calculateBestActions(new Tree(root), this.bot);
+			this.actions = this.method.calculateBestActions(new Tree(root), this.bot);
 		}	
 		// visualising removal
 		try {

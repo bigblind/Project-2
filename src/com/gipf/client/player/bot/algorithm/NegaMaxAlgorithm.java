@@ -7,6 +7,7 @@ import com.gipf.client.game.player.bot.Bot;
 import com.gipf.client.game.player.bot.action.Action;
 import com.gipf.client.game.player.bot.tree.Node;
 import com.gipf.client.game.player.bot.tree.Tree;
+import com.gipf.client.player.bot.algorithm.withouttreegeneration.Algorithm;
 
 public class NegaMaxAlgorithm extends Algorithm {
 

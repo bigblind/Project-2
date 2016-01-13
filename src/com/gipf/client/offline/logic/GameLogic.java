@@ -251,7 +251,11 @@ public class GameLogic {
 		else return this.game.getPlayerOne();
 	}
 
-	public void setGame(Game game) {
-		this.game = game;
+//	public void setGame(Game game) {
+//		this.game = game;
+//	}
+	
+	public boolean isStandard() {
+		return this.standard;
 	}
 }

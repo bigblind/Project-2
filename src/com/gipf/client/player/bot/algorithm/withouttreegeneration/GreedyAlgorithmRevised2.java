@@ -8,7 +8,6 @@ import com.gipf.client.game.player.bot.tree.Node;
 import com.gipf.client.game.player.bot.tree.Tree;
 import com.gipf.client.offline.logic.Board;
 import com.gipf.client.offline.logic.Game;
-import com.gipf.client.player.bot.algorithm.Algorithm;
 import com.gipf.client.player.bot.evaluation.EvaluationFunction;
 import com.gipf.client.player.bot.evaluation.EvaluationFunctionC;
 
@@ -36,7 +35,7 @@ public class GreedyAlgorithmRevised2 extends Algorithm {
 			if (player.getStoneColor() == Board.WHITE_VALUE) child.getGame().getPlayerOne().addStones(-1);
 			else child.getGame().getPlayerTwo().addStones(-1);
 			player.getLogic().performLogic(player, child);
-			child.setValue(evaluator.evaluate(child.getGame().getBoard(), child.getGame().getPlayerOne().getStoneAccount(), child.getGame().getPlayerTwo().getStoneAccount(), true)); //TODO this boolean is for if it is standard
+			child.setValue(evaluator.evaluate(child.getGame(), player));
 
 			if (currentOptimal == null) {
 				currentOptimal = child;
