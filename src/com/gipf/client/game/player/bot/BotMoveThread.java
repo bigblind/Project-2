@@ -29,9 +29,9 @@ public class BotMoveThread extends Thread {
 		long start = System.nanoTime();
 
 		// computation for move
-		Node root = new Node(null, this.gameController.getController().getGame().copy(), null, true);
+//		Node root = new Node(null, this.gameController.getController().getGame().copy(), null, true);
 //		System.out.println("evaluated root");
-		this.bot.getGenerator().generateTree(2, root, this.bot, this.bot.getLogic());
+//		this.bot.getGenerator().generateTree(2, root, this.bot, this.bot.getLogic());
 //		System.out.println(new Tree(root).bfSearch(root).size());
 		
 		ArrayList<Action> actions = this.algorithm.calculateBestActions(this.gameController.getController().getGame().copy(), this.bot, this.evaluator);

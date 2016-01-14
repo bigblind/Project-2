@@ -6,7 +6,6 @@ import com.gipf.client.game.player.bot.Bot;
 import com.gipf.client.game.player.bot.action.Action;
 import com.gipf.client.game.player.bot.tree.Node;
 import com.gipf.client.game.player.bot.tree.Tree;
-import com.gipf.client.offline.logic.Board;
 import com.gipf.client.offline.logic.Game;
 import com.gipf.client.player.bot.evaluation.EvaluationFunction;
 import com.gipf.client.player.bot.evaluation.EvaluationFunctionC;
@@ -25,27 +24,30 @@ public class GreedyAlgorithmRevised2 extends Algorithm {
 		Node root = new Node(null, game, null, true);
 		root.setPossibleActions(generator.getPossibleActions(root));
 
-		Node currentOptimal = null;
 		boolean care = false;
+		ArrayList<Node> optimal = new ArrayList<Node>();
+//		boolean print = false;
+//		if (untouched.getPlayerOne().getStoneAccount() == 1 || untouched.getPlayerTwo().getStoneAccount() == 1) print = true;
+		
 		for (Action action : root.getPossibleActions()) {
-			Node child = new Node(root, use, action, false);
-			child.setAction(action);
+			
+			Node child = super.performAction(action, use, player, evaluator);
 			root.addChild(child);
-			child.getGame().getBoard().place(player.getStoneColor(), action.getPoints()[0], action.getPoints()[1]);
-			if (player.getStoneColor() == Board.WHITE_VALUE) child.getGame().getPlayerOne().addStones(-1);
-			else child.getGame().getPlayerTwo().addStones(-1);
-			player.getLogic().performLogic(player, child);
-			child.setValue(evaluator.evaluate(child.getGame(), player));
-
-			if (currentOptimal == null) {
-				currentOptimal = child;
-				care = true;
-			} else if (player.getStoneColor() == Board.WHITE_VALUE && child.getValue() > currentOptimal.getValue()) {
-				currentOptimal = child;
-				care = true;
-			} else if (player.getStoneColor() == Board.BLACK_VALUE && -child.getValue() > -currentOptimal.getValue()) {
-				currentOptimal = child;
-				care = true;
+			child.setParent(root);
+			
+			for (Node node : child.bottomChildren()) {
+//				if (print) System.out.println(node.getGame().getPlayerOne().getStoneAccount() + " " + node.getGame().getPlayerTwo().getStoneAccount());
+				if (optimal.size() == 0) {
+					optimal.add(node);
+					care = true;
+				} else if (node.getValue() > optimal.get(0).getValue()) {
+					optimal.clear();
+					optimal.add(node);
+					care = true;
+				} else if (node.getValue() == optimal.get(0).getValue()) {
+					optimal.add(node);
+					care = true;
+				}
 			}
 
 			if (!care) {
@@ -57,7 +59,8 @@ public class GreedyAlgorithmRevised2 extends Algorithm {
 			use.getPlayerOne().setStoneAccount(untouched.getPlayerOne().getStoneAccount());
 			use.getPlayerTwo().setStoneAccount(untouched.getPlayerTwo().getStoneAccount());
 		}
-		return super.getActionsToNode(new Tree(root), currentOptimal);
+//		if (print) System.out.println();
+		return super.getActionsToNode(new Tree(root), optimal.get((int) (Math.random() * optimal.size())));
 	}
 
 	public ArrayList<Action> calculateBestActions(Tree tree, Bot player) {

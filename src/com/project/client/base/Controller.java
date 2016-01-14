@@ -44,10 +44,9 @@ public class Controller {
 
 	private boolean runningLocalGame = false;
 	private boolean runningBotGame = false;
-	
-	private Controller ghostController;		
-	private GhostController ghostController2;
 
+	private Controller ghostController;
+	private GhostController ghostController2;
 
 	public Controller() {
 
@@ -71,16 +70,17 @@ public class Controller {
 
 		this.initMenuPages();
 		this.showMenuPage(0);
-		
+
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.frame.pack();
 		this.frame.setLocation((int) ((screenSize.getWidth() / 2) - (frame.getSize().getWidth() / 2)), (int) ((screenSize.getHeight() / 2) - (frame.getSize().getHeight() / 2)));
 		this.frame.setVisible(true);
 	}
 
-	public void ghostInit() {
+	public void ghostInit(boolean showCheckedButton) {
 		this.gameController = new GameController(this);
-		this.gamePanel = new GamePanel(new Game(new Player(0, Board.WHITE_VALUE), new Player(0, Board.BLACK_VALUE), false), this, false);
+		if (showCheckedButton) this.gamePanel = new GamePanel(new Game(new Player(0, Board.WHITE_VALUE), new Player(0, Board.BLACK_VALUE), false), this, true);
+		else this.gamePanel = new GamePanel(new Game(new Player(0, Board.WHITE_VALUE), new Player(0, Board.BLACK_VALUE), false), this, false);
 	}
 
 	private void initMenuPages() {
@@ -117,7 +117,7 @@ public class Controller {
 	 */
 	public void createLocalGame(LocalServer server) {
 		this.ghostController = new Controller();
-		this.ghostController.ghostInit();
+		this.ghostController.ghostInit(true);
 
 		LocalConnector ghostConnector = new LocalConnector(this.ghostController.getGameController(), server);
 
@@ -126,64 +126,64 @@ public class Controller {
 
 		server.setConnectors(this.connector, ghostConnector);
 		server.start();
-		
+
 		this.runningLocalGame = true;
 	}
-	
+
 	public void createArenaGame(LocalServer server, Bot one, Bot two) {
 		this.ghostController = new Controller();
 		this.ghostController2 = new GhostController(this);
-		this.ghostController.ghostInit();
-		
-		ghostController2.ghostInit();
-		
+		this.ghostController.ghostInit(false);
+
+		ghostController2.ghostInit(false);
+
 		LocalConnector ghostConnector1 = new LocalConnector(this.ghostController.getGameController(), server);
 		LocalConnector ghostConnector2 = new LocalConnector(ghostController2.getGameController(), server);
-		
+
 		this.ghostController.setConnector(ghostConnector1);
 		ghostController2.setConnector(ghostConnector2);
-		
+
 		this.ghostController.getGameController().setPlayer(one, true);
 		ghostController2.getGameController().setPlayer(two, true);
-		
+
 		server.setConnectors(ghostConnector1, ghostConnector2);
 		server.start();
-		
+
 		ghostController.getGame().setGameLogic(server.getGameLogic());
 		ghostController.getGame().setIsStandard(server.getGameLogic().isStandard());
 		ghostController2.getGame().setGameLogic(server.getGameLogic());
 		ghostController2.getGame().setIsStandard(server.getGameLogic().isStandard());
-		
+
 		one.setGameController(this.ghostController.getGameController());
 		two.setGameController(ghostController2.getGameController());
 
 		server.start();
-		
+
 		this.runningBotGame = true;
-		
+
 		this.showPanel(ghostController.getGamePanel());
 		this.frame.pack();
-		
+
 		this.ghostController.getGameController().input("/s move");
 	}
-	
+
 	public void createLocalBotGame(LocalServer server, Bot opponent) {
 		this.ghostController = new Controller();
-		this.ghostController.ghostInit();
-		
+		this.ghostController.ghostInit(false);
+
 		LocalConnector ghostConnector = new LocalConnector(this.ghostController.getGameController(), server);
-		
+
 		this.setConnector(new LocalConnector(this.gameController, server));
 		this.ghostController.setConnector(ghostConnector);
 
 		this.ghostController.getGameController().setPlayer(opponent, true);
-		
+
 		server.setConnectors(this.connector, ghostConnector);
 		server.start();
 
 		ghostController.getGame().setGameLogic(server.getGameLogic());
 		opponent.setGameController(this.ghostController.getGameController());
-		
+
 		this.runningLocalGame = true;
 		this.runningBotGame = true;
 	}
@@ -221,11 +221,11 @@ public class Controller {
 	public Game getGame() {
 		return this.game;
 	}
-	
-	public Controller getGhostController(){
+
+	public Controller getGhostController() {
 		return this.ghostController;
 	}
-	
+
 	public ArrayList<MenuPage> getMenuPages() {
 		return this.menuPages;
 	}

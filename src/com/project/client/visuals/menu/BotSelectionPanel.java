@@ -19,6 +19,7 @@ import com.gipf.client.player.bot.algorithm.ProperMinMax;
 import com.gipf.client.player.bot.algorithm.withouttreegeneration.Algorithm;
 import com.gipf.client.player.bot.algorithm.withouttreegeneration.GreedyAlgorithmRevised;
 import com.gipf.client.player.bot.algorithm.withouttreegeneration.GreedyAlgorithmRevised2;
+import com.gipf.client.player.bot.algorithm.withouttreegeneration.MinMaxRevised;
 import com.gipf.client.player.bot.evaluation.EvaluationFunction;
 import com.gipf.client.player.bot.evaluation.EvaluationFunctionA;
 import com.gipf.client.player.bot.evaluation.EvaluationFunctionB;
@@ -62,12 +63,13 @@ public class BotSelectionPanel extends JPanel {
 		this.algorithmInput.setFont(buttonFont);
 		this.algorithmInput.addItem(new GreedyAlgorithmRevised());
 		this.algorithmInput.addItem(new GreedyAlgorithmRevised2());
-		this.algorithmInput.addItem(new MinMaxAlgorithm());
-		this.algorithmInput.addItem(new NegaMaxAlgorithm());
-		this.algorithmInput.addItem(new MCTS());
-		this.algorithmInput.addItem(new MinMaxABPAlgorithm());
-		this.algorithmInput.addItem(new MMABPIDAlgorithm());
-		this.algorithmInput.addItem(new ProperMinMax());
+		this.algorithmInput.addItem(new MinMaxRevised());
+//		this.algorithmInput.addItem(new MinMaxAlgorithm());
+//		this.algorithmInput.addItem(new NegaMaxAlgorithm());
+//		this.algorithmInput.addItem(new MCTS());
+//		this.algorithmInput.addItem(new MinMaxABPAlgorithm());
+//		this.algorithmInput.addItem(new MMABPIDAlgorithm());
+//		this.algorithmInput.addItem(new ProperMinMax());
 
 		this.functionInput = new JComboBox<EvaluationFunction>();
 		this.functionInput.setMaximumSize(new Dimension(1000, 75));

@@ -1,6 +1,7 @@
 package com.gipf.client.game.player.bot.tree;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import com.gipf.client.game.player.bot.action.Action;
 import com.gipf.client.offline.logic.Game;
@@ -109,6 +110,30 @@ public class Node implements Comparable<Node> {
 			if (!children.get(children.size() - 1).print(prefix + (isTail ? "    " : "│   "), true, d + 1)) return false;
 		}
 		return true;
+	}
+	
+	public ArrayList<Node> bfSearch(Node node) {
+		ArrayList<Node> result = new ArrayList<Node>();
+		result.add(node);
+		if (!this.children.isEmpty()) {
+			Iterator<Node> children = node.getChildren().iterator();
+			while (children.hasNext())
+				result.addAll(bfSearch(children.next()));
+		}
+		return result;
+	}
+	
+	public ArrayList<Node> bottomChildren() {
+		ArrayList<Node> result = new ArrayList<Node>();
+		if (this.children.isEmpty()) {
+			result.add(this);
+			return result;
+		}
+		ArrayList<Node> search = this.bfSearch(this);
+		for (Node node : search) {
+			if (node.getEndState() == true) result.add(node);
+		}
+		return result;
 	}
 
 	public int compareTo(Node node) {

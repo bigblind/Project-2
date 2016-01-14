@@ -24,7 +24,6 @@ public abstract class Algorithm extends Thread {
 	protected Game game;
 	
 	protected ActionGenerator generator;
-	protected EvaluationFunction evaluator;
 
 	protected ArrayList<Action> result;
 	
@@ -52,7 +51,7 @@ public abstract class Algorithm extends Thread {
 		return actualResult;
 	}
 	
-	protected Node performAction(Action action, Game game, Bot player) {
+	protected Node performAction(Action action, Game game, Bot player, EvaluationFunction evaluator) {
 		Node child = new Node(null, game, action, false);
 		child.setAction(action);
 		child.getGame().getBoard().place(player.getStoneColor(), action.getPoints()[0], action.getPoints()[1]);
