@@ -7,13 +7,11 @@ import com.gipf.client.game.player.Player;
 import com.gipf.client.game.player.bot.action.Action;
 import com.gipf.client.player.bot.algorithm.withouttreegeneration.Algorithm;
 import com.gipf.client.player.bot.evaluation.EvaluationFunction;
-import com.gipf.client.player.bot.generator.TreeGenerator;
 
 public class Bot extends Player {
 
 	private GameController gameController;
 	private Algorithm algorithm;
-	private TreeGenerator treeGenerator;
 	private BotLogic botLogic;
 	private EvaluationFunction evaluator;
 	
@@ -22,7 +20,6 @@ public class Bot extends Player {
 	public Bot(Algorithm algorithm, EvaluationFunction evaluator) {
 		this.algorithm = algorithm;
 		this.evaluator = evaluator;
-		this.treeGenerator = new TreeGenerator();
 		this.botLogic = new BotLogic(this);
 		this.upcomingActions = new ArrayList<Action>();
 	}
@@ -50,10 +47,6 @@ public class Bot extends Player {
 		this.evaluator = evaluator;
 	}
 
-	public TreeGenerator getGenerator() {
-		return this.treeGenerator;
-	}
-
 	public void setUpcomingActions(ArrayList<Action> actions) {
 		this.upcomingActions = actions;
 	}
@@ -64,9 +57,5 @@ public class Bot extends Player {
 
 	public EvaluationFunction getEvaluator() {
 		return this.evaluator;
-	}
-
-	public TreeGenerator getTreeGenerator() {
-		return treeGenerator;
 	}
 }

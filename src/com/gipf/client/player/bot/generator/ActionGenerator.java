@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.gipf.client.game.player.bot.action.Action;
 import com.gipf.client.game.player.bot.tree.Node;
+import com.gipf.client.offline.logic.Game;
 import com.gipf.client.utils.Point;
 
 public class ActionGenerator {
@@ -134,6 +135,27 @@ public class ActionGenerator {
 			if (node.getGame().getBoard().isValidMove(pd.from, pd.to)) result.add(new Action(pd.from, pd.to));
 		}
 		return result;
+	}
+	
+	public ArrayList<Action> getPossibleActions(Game game) {
+		ArrayList<Action> result = new ArrayList<Action>();
+		for (PointDuo pd : this.movePoints) {
+			if (game.getBoard().isValidMove(pd.from, pd.to)) result.add(new Action(pd.from, pd.to));
+		}
+		return result;
+	}
+	
+	public ArrayList<Action> getPossibleActions(Game game, int number) {
+		ArrayList<Action> result = new ArrayList<Action>();
+		for (int i = 0; i < number; i++) {
+			PointDuo pd = this.movePoints.get((int) (Math.random() * this.movePoints.size()));
+			if (game.getBoard().isValidMove(pd.from, pd.to)) result.add(new Action(pd.from, pd.to));
+		}
+		return result;
+	}
+	
+	public Action getRandomAction(Game game) {
+		return getPossibleActions(game, 1).get(0);
 	}
 	
 	private class PointDuo {

@@ -10,6 +10,7 @@ import com.gipf.client.game.player.bot.tree.Tree;
 import com.gipf.client.offline.logic.Board;
 import com.gipf.client.offline.logic.Game;
 import com.gipf.client.player.bot.evaluation.EvaluationFunction;
+import com.gipf.client.player.bot.generator.ActionGenerator;
 
 public abstract class Algorithm extends Thread {
 
@@ -20,13 +21,8 @@ public abstract class Algorithm extends Thread {
 
 	protected String name;
 	
-	protected Player player;
-	protected Game game;
-	
 	protected ActionGenerator generator;
 
-	protected ArrayList<Action> result;
-	
 	public abstract ArrayList<Action> calculateBestActions(Game game, Bot player, EvaluationFunction evaluator);
 
 	public Algorithm() {
@@ -65,6 +61,13 @@ public abstract class Algorithm extends Thread {
 	protected int opponentStoneColor(int stoneColor) {
 		if (stoneColor == Board.WHITE_VALUE) return Board.BLACK_VALUE;
 		else return Board.WHITE_VALUE;
+	}
+	
+	protected Player getOpponent(Player player, Game game) {
+		if (player.getStoneColor() == Board.WHITE_VALUE) {
+			return game.getPlayerTwo();
+		}
+		return game.getPlayerOne();
 	}
 	
 	public String toString() {

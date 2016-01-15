@@ -10,16 +10,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.gipf.client.game.player.bot.Bot;
-import com.gipf.client.player.bot.algorithm.MCTS;
-import com.gipf.client.player.bot.algorithm.MMABPIDAlgorithm;
-import com.gipf.client.player.bot.algorithm.MinMaxABPAlgorithm;
-import com.gipf.client.player.bot.algorithm.MinMaxAlgorithm;
-import com.gipf.client.player.bot.algorithm.NegaMaxAlgorithm;
-import com.gipf.client.player.bot.algorithm.ProperMinMax;
 import com.gipf.client.player.bot.algorithm.withouttreegeneration.Algorithm;
-import com.gipf.client.player.bot.algorithm.withouttreegeneration.GreedyAlgorithmRevised;
-import com.gipf.client.player.bot.algorithm.withouttreegeneration.GreedyAlgorithmRevised2;
-import com.gipf.client.player.bot.algorithm.withouttreegeneration.MinMaxRevised;
+import com.gipf.client.player.bot.algorithm.withouttreegeneration.GreedyAlgorithmP;
+import com.gipf.client.player.bot.algorithm.withouttreegeneration.GreedyAlgorithmPO;
+import com.gipf.client.player.bot.algorithm.withouttreegeneration.IterativeDeepening;
+import com.gipf.client.player.bot.algorithm.withouttreegeneration.MCTS;
+import com.gipf.client.player.bot.algorithm.withouttreegeneration.MinMax;
+import com.gipf.client.player.bot.algorithm.withouttreegeneration.MinMaxAlphaBeta;
 import com.gipf.client.player.bot.evaluation.EvaluationFunction;
 import com.gipf.client.player.bot.evaluation.EvaluationFunctionA;
 import com.gipf.client.player.bot.evaluation.EvaluationFunctionB;
@@ -61,26 +58,24 @@ public class BotSelectionPanel extends JPanel {
 		this.algorithmInput = new JComboBox<Algorithm>();
 		this.algorithmInput.setMaximumSize(new Dimension(1000, 75));
 		this.algorithmInput.setFont(buttonFont);
-		this.algorithmInput.addItem(new GreedyAlgorithmRevised());
-		this.algorithmInput.addItem(new GreedyAlgorithmRevised2());
-		this.algorithmInput.addItem(new MinMaxRevised());
-//		this.algorithmInput.addItem(new MinMaxAlgorithm());
-//		this.algorithmInput.addItem(new NegaMaxAlgorithm());
-//		this.algorithmInput.addItem(new MCTS());
-//		this.algorithmInput.addItem(new MinMaxABPAlgorithm());
-//		this.algorithmInput.addItem(new MMABPIDAlgorithm());
-//		this.algorithmInput.addItem(new ProperMinMax());
+		this.algorithmInput.addItem(new MCTS());
+		this.algorithmInput.addItem(new MinMax());
+		this.algorithmInput.addItem(new MinMaxAlphaBeta());
+		this.algorithmInput.addItem(new IterativeDeepening(new MinMax(), "Iterative Deepening Min Max Algorithm"));
+		this.algorithmInput.addItem(new IterativeDeepening(new MinMaxAlphaBeta(), "Iterative Deepening Min Max Alpha Beta pruning Algorithm"));
+		this.algorithmInput.addItem(new GreedyAlgorithmP());
+		this.algorithmInput.addItem(new GreedyAlgorithmPO());
 
 		this.functionInput = new JComboBox<EvaluationFunction>();
 		this.functionInput.setMaximumSize(new Dimension(1000, 75));
 		this.functionInput.setFont(buttonFont);
+		this.functionInput.addItem(new EvaluationFunctionC());
 		this.functionInput.addItem(EvaluationFunctionA.EQUAL_WEIGHTS);
 		this.functionInput.addItem(EvaluationFunctionA.GREEDY_WEIGHTS_CENTER);
 		this.functionInput.addItem(EvaluationFunctionA.GREEDY_WEIGHTS_DIAGONAL);
 		this.functionInput.addItem(EvaluationFunctionA.GREEDY_WEIGHTS_LINEOFTHREE);
 		this.functionInput.addItem(EvaluationFunctionA.GREEDY_WEIGHTS_STONECOUNT);
 		this.functionInput.addItem(new EvaluationFunctionB("Difference"));
-		this.functionInput.addItem(new EvaluationFunctionC());
 
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 

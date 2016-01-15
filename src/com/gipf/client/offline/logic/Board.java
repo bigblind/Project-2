@@ -302,8 +302,14 @@ public class Board {
 						lineStartY = 1 + l - counter;
 						lineEndY = l;
 
-						Point[][] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY));
-						lines.add(new Row(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY), logic.checkPlayer(prevValue), counter, extensionStones[0], extensionStones[1]));
+						try {
+							Point[][] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY));
+							lines.add(new Row(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY), logic.checkPlayer(prevValue), counter, extensionStones[0], extensionStones[1]));
+						} catch (ArrayIndexOutOfBoundsException e) {
+							e.printStackTrace();
+							this.print();
+							System.exit(0);
+						}
 					}
 
 					prevValue = this.grid[2 + k + l][1 + l];

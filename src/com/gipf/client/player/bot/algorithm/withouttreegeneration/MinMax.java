@@ -10,9 +10,9 @@ import com.gipf.client.game.player.bot.tree.Tree;
 import com.gipf.client.offline.logic.Game;
 import com.gipf.client.player.bot.evaluation.EvaluationFunction;
 
-public class MinMaxRevised extends Algorithm {
+public class MinMax extends Algorithm {
 
-	public MinMaxRevised() {
+	public MinMax() {
 		this.name = "Min Max Revised";
 	}
 	
