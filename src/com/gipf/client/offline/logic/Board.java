@@ -124,7 +124,7 @@ public class Board {
 	public void print() {
 		for (int j = 0; j < this.grid[0].length; j++) {
 			for (int i = 0; i < this.grid.length; i++) {
-				if (this.grid[i][j] > -1) System.out.print(" ");
+				if (this.grid[i][j] > -1 && this.grid[i][j] < 10) System.out.print(" ");
 				System.out.print(this.grid[i][j] + " ");
 			}
 			System.out.println();
@@ -133,7 +133,7 @@ public class Board {
 	}
 
 	public boolean isValidMove(Point from, Point to) {
-		if (grid[to.getX()][to.getY()] == BOARD_EDGE) return false;
+		if (this.grid[to.getX()][to.getY()] == BOARD_EDGE) return false;
 
 		int x1 = from.getX();
 		int x2 = to.getX();
@@ -143,7 +143,7 @@ public class Board {
 		int yy = (int) (y2 - y1);
 
 		if (!isEmpty(to)) return isValidMove(to, new Point(x2 + xx, y2 + yy));
-		return true;
+		else return true;
 	}
 
 	public void place(int stone, Point from, Point to) {
@@ -302,14 +302,8 @@ public class Board {
 						lineStartY = 1 + l - counter;
 						lineEndY = l;
 
-						try {
-							Point[][] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY));
-							lines.add(new Row(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY), logic.checkPlayer(prevValue), counter, extensionStones[0], extensionStones[1]));
-						} catch (ArrayIndexOutOfBoundsException e) {
-							e.printStackTrace();
-							this.print();
-							System.exit(0);
-						}
+						Point[][] extensionStones = getExtensionStones(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY));
+						lines.add(new Row(new Point(lineStartX, lineStartY), new Point(lineEndX, lineEndY), logic.checkPlayer(prevValue), counter, extensionStones[0], extensionStones[1]));
 					}
 
 					prevValue = this.grid[2 + k + l][1 + l];
@@ -321,8 +315,9 @@ public class Board {
 			prevValue = -1;
 		}
 		return lines;
+
 	}
-	
+
 	private Point[][] getExtensionStones(Point start, Point end) {
 		int deltaX = end.getX() - start.getX();
 		int deltaY = end.getY() - start.getY();
@@ -465,7 +460,7 @@ public class Board {
 		}
 		return result;
 	}
-	
+
 	public GameLogic getLogic() {
 		return this.logic;
 	}

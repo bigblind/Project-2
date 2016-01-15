@@ -14,7 +14,7 @@ public class Bot extends Player {
 	private Algorithm algorithm;
 	private BotLogic botLogic;
 	private EvaluationFunction evaluator;
-	
+
 	private ArrayList<Action> upcomingActions;
 
 	public Bot(Algorithm algorithm, EvaluationFunction evaluator) {
@@ -26,11 +26,11 @@ public class Bot extends Player {
 
 	public void update(String state) {
 		if (state.equals("move")) {
-			BotMoveThread botThread = new BotMoveThread(this, this.gameController, this.algorithm, this.evaluator);
-			botThread.start();
+			BotMoveThread moveThread = new BotMoveThread(this, this.gameController, this.algorithm, this.evaluator);
+			moveThread.start();
 		} else if (state.equals("remove")) {
-			BotRemoveThread botThread = new BotRemoveThread(this, this.gameController, this.upcomingActions);
-			botThread.start();
+			BotRemoveThread removeThread = new BotRemoveThread(this, this.gameController, this.upcomingActions);
+			removeThread.start();
 			this.upcomingActions.clear();
 		}
 	}

@@ -27,8 +27,8 @@ public class MCTS extends Algorithm {
 	}
 
 	public ArrayList<Action> calculateBestActions(Game game, Bot player, EvaluationFunction evaluator) {
-		MCTSNode root = new MCTSNode(game, player, evaluator);
 		Node rootNode = new Node(null, game, null, true);
+		MCTSNode root = new MCTSNode(game, player, evaluator, rootNode);
 		long startTime = System.currentTimeMillis();
 		long endTime = startTime + timeLimit;
 		int i = 0;
@@ -58,8 +58,48 @@ public class MCTS extends Algorithm {
 		}
 
 		MCTSNode best = root.getMostVisitedChild();
-		Node bestNode = new Node(rootNode, best.state, best.action, false);
-		return getActionsToNode(new Tree(rootNode), bestNode);
+
+		System.out.println("Algorithm done, finding actions");
+
+		return getActionsToNode(new Tree(rootNode), best.node);
+	}
+	
+	public Node calculateBestNode(Game game, Bot player, EvaluationFunction evaluator) {
+		Node rootNode = new Node(null, game, null, true);
+		MCTSNode root = new MCTSNode(game, player, evaluator, rootNode);
+		long startTime = System.currentTimeMillis();
+		long endTime = startTime + timeLimit;
+		int i = 0;
+		while (System.currentTimeMillis() < endTime) {
+			i += 1;
+
+			//Selection phase
+			MCTSNode node = root;
+			while (node.untriedMoves.size() == 0 && node.children.size() != 0) {
+				node = node.selectChild();
+			}
+
+			ArrayList<MCTSNode> nodes;
+			if (node.untriedMoves.size() != 0) {
+				nodes = node.expand();
+			} else {
+				nodes = new ArrayList<MCTSNode>();
+				nodes.add(node);
+			}
+
+			//Simulation phase, includes backpropagation
+			for (MCTSNode nodeToSimulate : nodes) {
+				nodeToSimulate.simulate();
+			}
+
+			System.out.println("Iteration " + i + " done with " + ((endTime - System.currentTimeMillis()) / 1000.0) + "s left");
+		}
+
+		MCTSNode best = root.getMostVisitedChild();
+
+		System.out.println("Algorithm done, finding actions");
+
+		return best.node;
 	}
 
 	private class MCTSNode {
@@ -71,16 +111,18 @@ public class MCTS extends Algorithm {
 		protected ArrayList<Action> untriedMoves;
 		protected Bot player;
 		protected ArrayList<MCTSNode> children;
+		protected Node node;
 		protected int score;
 		protected int visits;
 		private Random random;
 
-		public MCTSNode(Game state, Action action, MCTSNode parent, Bot player, EvaluationFunction evaluator) {
+		public MCTSNode(Game state, Action action, MCTSNode parent, Bot player, EvaluationFunction evaluator, Node normalNode) {
 			this.state = state;
 			this.parent = parent;
 			this.player = player;
 			this.action = action;
 			this.evaluator = evaluator;
+			this.node = normalNode;
 
 			this.untriedMoves = generator.getPossibleActions(state);
 			this.children = new ArrayList<MCTSNode>();
@@ -90,8 +132,8 @@ public class MCTS extends Algorithm {
 			visits = 0;
 		}
 
-		public MCTSNode(Game state, Bot player, EvaluationFunction evaluation) {
-			this(state, null, null, player, evaluation);
+		public MCTSNode(Game state, Bot player, EvaluationFunction evaluation, Node node) {
+			this(state, null, null, player, evaluation, node);
 		}
 
 		public MCTSNode selectChild() {
@@ -112,11 +154,13 @@ public class MCTS extends Algorithm {
 		public ArrayList<MCTSNode> expand() {
 			Action action = this.untriedMoves.get(this.random.nextInt(this.untriedMoves.size()));
 			Node newState = performAction(action, state.copy(), player, evaluator);
+			this.node.addChild(newState);
+			newState.setParent(this.node);
 			ArrayList<Node> bottomNodes = newState.bottomChildren();
 			ArrayList<MCTSNode> result = new ArrayList<MCTSNode>();
 
 			for (Node bottomNode : bottomNodes) {
-				MCTSNode child = new MCTSNode(bottomNode.getGame(), bottomNode.getAction(), this, player, evaluator);
+				MCTSNode child = new MCTSNode(bottomNode.getGame(), bottomNode.getAction(), this, player, evaluator, bottomNode);
 				this.children.add(child);
 				result.add(child);
 			}

@@ -28,13 +28,8 @@ public class Node implements Comparable<Node> {
 	}
 
 	public Node copy(boolean includeChildren) {
-//		Node p = null;
-//		if (this.parent != null) {
-//			p = this.parent.copy(includeChildren);
-//		}
-		
 		//I'm reusing the same action object, since it will never be changed.
-		Node n = new Node(this.parent, this.game.copy(), this.action, this.endState); // this was 	Node n = new Node(p, this.game.copy(...
+		Node n = new Node(this.parent, this.game.copy(), this.action, this.endState);
 		if (includeChildren) {
 			ArrayList<Node> copiedChildren = new ArrayList<Node>(this.children.size());
 			for (Node child : this.children) {

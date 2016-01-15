@@ -15,15 +15,15 @@ public class EvaluationFunctionC implements EvaluationFunction {
 
 	public int evaluate(Game game, Player player) {
 		Board board = game.getBoard();
-		
+
 		int score = 0;
-		
+
 		if (player.getStoneColor() == Board.WHITE_VALUE) {
-			if (game.getPlayerOne().getStoneAccount() == 0) return -EvaluationFunction.WIN_VALUE;
-			else if (game.getPlayerTwo().getStoneAccount() == 0) return EvaluationFunction.WIN_VALUE;
+			if (game.getPlayerOne().getStoneAccount() <= 0) return -EvaluationFunction.WIN_VALUE;
+			else if (game.getPlayerTwo().getStoneAccount() <= 0) return EvaluationFunction.WIN_VALUE;
 		} else {
-			if (game.getPlayerOne().getStoneAccount() == 0) return EvaluationFunction.WIN_VALUE;
-			else if (game.getPlayerTwo().getStoneAccount() == 0) return -EvaluationFunction.WIN_VALUE;
+			if (game.getPlayerOne().getStoneAccount() <= 0) return EvaluationFunction.WIN_VALUE;
+			else if (game.getPlayerTwo().getStoneAccount() <= 0) return -EvaluationFunction.WIN_VALUE;
 		}
 
 		int whiteGipfStones = 0;
@@ -42,16 +42,20 @@ public class EvaluationFunctionC implements EvaluationFunction {
 
 		if (game.isStandard()) {
 			if (player.getStoneColor() == Board.WHITE_VALUE) {
-				if (whiteGipfStones == 0) return -EvaluationFunction.WIN_VALUE;
-				else if (blackGipfStones == 0) return EvaluationFunction.WIN_VALUE;
+				if (whiteGipfStones <= 0) return -EvaluationFunction.WIN_VALUE;
+				else if (blackGipfStones <= 0) return EvaluationFunction.WIN_VALUE;
 			} else {
-				if (whiteGipfStones == 0) return EvaluationFunction.WIN_VALUE;
-				else if (blackGipfStones == 0) return -EvaluationFunction.WIN_VALUE;
+				if (whiteGipfStones <= 0) return EvaluationFunction.WIN_VALUE;
+				else if (blackGipfStones <= 0) return -EvaluationFunction.WIN_VALUE;
 			}
 		}
-		
+
 		score = 10 * (whiteGipfStones - blackGipfStones) + 1 * ((whiteStones + game.getPlayerOne().getStoneAccount()) - (blackStones + game.getPlayerTwo().getStoneAccount()));
-		
+
+//		System.out.println("calculating for player: " + player.getStoneColor());
+//		System.out.println("white : " + game.getPlayerOne().getStoneAccount() + " black: " + game.getPlayerTwo().getStoneAccount());
+//		System.out.println();
+
 		if (player.getStoneColor() == Board.WHITE_VALUE) {
 			if (game.getPlayerOne().getStoneAccount() < 7) {
 				score += 10 * game.getPlayerOne().getStoneAccount();
@@ -65,9 +69,9 @@ public class EvaluationFunctionC implements EvaluationFunction {
 				score -= 5 * whiteStones;
 			}
 		}
-		
-//		System.out.println("white stack: " + game.getPlayerOne().getStoneAccount() + " black stack: " + game.getPlayerTwo().getStoneAccount() + " white on board: " + whiteStones + " black on board: " + blackStones);
-		
+
+		//		System.out.println("white stack: " + game.getPlayerOne().getStoneAccount() + " black stack: " + game.getPlayerTwo().getStoneAccount() + " white on board: " + whiteStones + " black on board: " + blackStones);
+
 		if (player.getStoneColor() == Board.WHITE_VALUE) return score;
 		else return -score;
 	}

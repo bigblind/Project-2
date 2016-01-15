@@ -10,19 +10,29 @@ import com.gipf.client.game.player.bot.tree.Tree;
 import com.gipf.client.offline.logic.Game;
 import com.gipf.client.player.bot.evaluation.EvaluationFunction;
 
-public class MinMax extends Algorithm {
+public class MinMax extends Algorithm implements IterativeDeepeningAddition {
 
 	public MinMax() {
-		this.name = "Min Max Revised";
+		this.name = "Min Max";
 	}
 	
 	public ArrayList<Action> calculateBestActions(Game game, Bot player, EvaluationFunction evaluator) {
 		Node root = new Node(null, game, null, true);
-		return super.getActionsToNode(new Tree(root), max(root, player, evaluator, 1));
+		return super.getActionsToNode(new Tree(root), max(root, player, evaluator, 1, super.TREE_DEPTH));
 	}
 	
-	public Node max(Node node, Bot player, EvaluationFunction evaluator, int depth) {
-		if (depth > super.TREE_DEPTH) return node;
+	public Node calculateBestNode(Game game, Bot player, EvaluationFunction evaluator, int ply) {
+		Node root = new Node(null, game, null, true);
+		return max(root, player, evaluator, 1, ply);
+	}
+	
+	public Node max(Node node, Bot player, EvaluationFunction evaluator, int depth, int maxDepth) {
+		if (depth > maxDepth) {
+			if (node.getValue() == EvaluationFunction.WIN_VALUE) {
+				System.out.println("a win node has been found");
+			}
+			return node;
+		}
 		
 		Game untouched = node.getGame().copy();
 		Game use = node.getGame().copy();
@@ -35,7 +45,7 @@ public class MinMax extends Algorithm {
 			child.setParent(node);
 			
 			for (Node bottom : child.bottomChildren()) {
-				minResults.add(min(bottom, player, evaluator, depth + 1));
+				minResults.add(min(bottom, player, evaluator, depth + 1, maxDepth));
 			}
 			
 			use.getBoard().setGrid(untouched.getBoard().getGrid());
@@ -53,8 +63,8 @@ public class MinMax extends Algorithm {
 		return minResults.get(0); // TODO return a random move ( last indices of the list )
 	}
 	
-	public Node min(Node node, Bot player, EvaluationFunction evaluator, int depth) {
-		if (depth > super.TREE_DEPTH) return node;
+	public Node min(Node node, Bot player, EvaluationFunction evaluator, int depth, int maxDepth) {
+		if (depth > maxDepth) return node;
 		
 		Game untouched = node.getGame().copy();
 		Game use = node.getGame().copy();
@@ -67,7 +77,7 @@ public class MinMax extends Algorithm {
 			child.setParent(node);
 			
 			for (Node bottom : child.bottomChildren()) {
-				maxResults.add(max(bottom, player, evaluator, depth + 1));
+				maxResults.add(max(bottom, player, evaluator, depth + 1, maxDepth));
 			}
 			
 			use.getBoard().setGrid(untouched.getBoard().getGrid());
@@ -83,5 +93,11 @@ public class MinMax extends Algorithm {
 			n = null;
 		}
 		return maxResults.get(0); // TODO return a random move ( last indices of the list )
+	}
+
+	@Override
+	public Node calculateBestNode(Game game, Bot player, EvaluationFunction evaluator) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
