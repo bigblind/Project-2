@@ -19,11 +19,11 @@ public class EvaluationFunctionC implements EvaluationFunction {
 		int score = 0;
 		
 		if (player.getStoneColor() == Board.WHITE_VALUE) {
-			if (game.getPlayerOne().getStoneAccount() == 0) return -1000000;
-			else if (game.getPlayerTwo().getStoneAccount() == 0) return 1000000;
+			if (game.getPlayerOne().getStoneAccount() == 0) return -EvaluationFunction.WIN_VALUE;
+			else if (game.getPlayerTwo().getStoneAccount() == 0) return EvaluationFunction.WIN_VALUE;
 		} else {
-			if (game.getPlayerOne().getStoneAccount() == 0) return 1000000;
-			else if (game.getPlayerTwo().getStoneAccount() == 0) return -1000000;
+			if (game.getPlayerOne().getStoneAccount() == 0) return EvaluationFunction.WIN_VALUE;
+			else if (game.getPlayerTwo().getStoneAccount() == 0) return -EvaluationFunction.WIN_VALUE;
 		}
 
 		int whiteGipfStones = 0;
@@ -42,11 +42,11 @@ public class EvaluationFunctionC implements EvaluationFunction {
 
 		if (game.isStandard()) {
 			if (player.getStoneColor() == Board.WHITE_VALUE) {
-				if (whiteGipfStones == 0) return -1000000;
-				else if (blackGipfStones == 0) return 1000000;
+				if (whiteGipfStones == 0) return -EvaluationFunction.WIN_VALUE;
+				else if (blackGipfStones == 0) return EvaluationFunction.WIN_VALUE;
 			} else {
-				if (whiteGipfStones == 0) return 1000000;
-				else if (blackGipfStones == 0) return -1000000;
+				if (whiteGipfStones == 0) return EvaluationFunction.WIN_VALUE;
+				else if (blackGipfStones == 0) return -EvaluationFunction.WIN_VALUE;
 			}
 		}
 		
