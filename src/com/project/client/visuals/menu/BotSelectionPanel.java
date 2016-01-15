@@ -58,6 +58,7 @@ public class BotSelectionPanel extends JPanel {
 		this.algorithmInput = new JComboBox<Algorithm>();
 		this.algorithmInput.setMaximumSize(new Dimension(1000, 75));
 		this.algorithmInput.setFont(buttonFont);
+
 		this.algorithmInput.addItem(new MCTS());
 		this.algorithmInput.addItem(new MinMax());
 		this.algorithmInput.addItem(new MinMaxAlphaBeta());
