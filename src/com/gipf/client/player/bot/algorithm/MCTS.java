@@ -1,4 +1,4 @@
-package com.gipf.client.player.bot.algorithm.withouttreegeneration;
+package com.gipf.client.player.bot.algorithm;
 
 import java.util.ArrayList;
 import java.util.Random;

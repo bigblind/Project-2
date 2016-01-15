@@ -6,7 +6,7 @@ import com.gipf.client.game.GameController;
 import com.gipf.client.game.player.bot.action.Action;
 import com.gipf.client.game.player.bot.tree.Node;
 import com.gipf.client.game.player.bot.tree.Tree;
-import com.gipf.client.player.bot.algorithm.withouttreegeneration.ActionRetrievalMethod;
+import com.gipf.client.player.bot.algorithm.ActionRetrievalMethod;
 import com.gipf.client.utils.Point;
 
 public class BotRemoveThread extends Thread {

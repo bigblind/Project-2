@@ -1,4 +1,4 @@
-package com.gipf.client.player.bot.algorithm.withouttreegeneration;
+package com.gipf.client.player.bot.algorithm;
 
 import java.util.ArrayList;
 
@@ -10,11 +10,11 @@ import com.gipf.client.offline.logic.Game;
 import com.gipf.client.player.bot.evaluation.EvaluationFunction;
 import com.gipf.client.player.bot.evaluation.EvaluationFunctionC;
 
-public class GreedyAlgorithmP extends Algorithm {
+public class GreedyAlgorithmPO extends Algorithm {
 
-	public GreedyAlgorithmP() {
+	public GreedyAlgorithmPO() {
 		super();
-		this.name = "Greedy Algorithm Revised P";
+		this.name = "Greedy Algorithm Revised P+O";
 	}
 
 	public ArrayList<Action> calculateBestActions(Game game, Bot player, EvaluationFunction evaluator) {
@@ -22,29 +22,43 @@ public class GreedyAlgorithmP extends Algorithm {
 		Game use = game.copy();
 
 		Node root = new Node(null, game, null, true);
-		root.setPossibleActions(generator.getPossibleActions(root));
 
-		boolean care = false;
 		ArrayList<Node> optimal = new ArrayList<Node>();
-		
-		for (Action action : root.getPossibleActions()) {
-			
+
+		for (Action action : generator.getPossibleActions(root)) {
+			Game untouchedChild = use.copy();
+			Game useChild = use.copy();
+
 			Node child = super.performAction(action, use, player, evaluator);
 			root.addChild(child);
 			child.setParent(root);
-			
-			for (Node node : child.bottomChildren()) {
-				if (optimal.size() == 0) {
-					optimal.add(node);
-					care = true;
-				} else if (node.getValue() > optimal.get(0).getValue()) {
-					optimal.clear();
-					optimal.add(node);
-					care = true;
-				} else if (node.getValue() == optimal.get(0).getValue()) {
-					optimal.add(node);
-					care = true;
+
+			boolean care = false;
+			for (Node bottom1 : child.bottomChildren()) {
+				for (Action childAction : this.generator.getPossibleActions(bottom1)) {
+					System.out.println(childAction);
+					Node grandChild = super.performAction(childAction, useChild, player, evaluator);
+					bottom1.addChild(grandChild);
+					grandChild.setParent(bottom1);
+
+					for (Node bottom2 : child.bottomChildren()) {
+						if (optimal.size() == 0) {
+							optimal.add(bottom2);
+							care = true;
+						} else if (bottom2.getValue() > optimal.get(0).getValue()) {
+							optimal.clear();
+							optimal.add(bottom2);
+							care = true;
+						} else if (bottom2.getValue() == optimal.get(0).getValue()) {
+							optimal.add(bottom2);
+							care = true;
+						}
+					}
+					useChild.getBoard().setGrid(untouchedChild.getBoard().getGrid());
+					useChild.getPlayerOne().setStoneAccount(untouchedChild.getPlayerOne().getStoneAccount());
+					useChild.getPlayerTwo().setStoneAccount(untouchedChild.getPlayerTwo().getStoneAccount());
 				}
+
 			}
 
 			if (!care) {
@@ -56,7 +70,6 @@ public class GreedyAlgorithmP extends Algorithm {
 			use.getPlayerOne().setStoneAccount(untouched.getPlayerOne().getStoneAccount());
 			use.getPlayerTwo().setStoneAccount(untouched.getPlayerTwo().getStoneAccount());
 		}
-
 		return super.getActionsToNode(new Tree(root), optimal.get((int) (Math.random() * optimal.size())));
 	}
 

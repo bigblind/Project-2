@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.gipf.client.game.GameController;
 import com.gipf.client.game.player.Player;
 import com.gipf.client.game.player.bot.action.Action;
-import com.gipf.client.player.bot.algorithm.withouttreegeneration.Algorithm;
+import com.gipf.client.player.bot.algorithm.Algorithm;
 import com.gipf.client.player.bot.evaluation.EvaluationFunction;
 
 public class Bot extends Player {
