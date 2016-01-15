@@ -41,17 +41,17 @@ public class EvaluationFunctionA implements EvaluationFunction {
 
 		if (player.getStoneColor() == Board.WHITE_VALUE) {
 			if (game.getPlayerOne().getStoneAccount() == 0) {
-				return -100000;
+				return -EvaluationFunction.WIN_VALUE;
 			}
 			if (game.getPlayerTwo().getStoneAccount() == 0) {
-				return 100000;
+				return EvaluationFunction.WIN_VALUE;
 			}
 		} else {
 			if (game.getPlayerOne().getStoneAccount() == 0) {
-				return 100000;
+				return EvaluationFunction.WIN_VALUE;
 			}
 			if (game.getPlayerTwo().getStoneAccount() == 0) {
-				return -100000;
+				return -EvaluationFunction.WIN_VALUE;
 			}
 		}
 
