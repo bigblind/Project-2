@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import com.gipf.client.game.player.bot.Bot;
 import com.gipf.client.game.player.bot.action.Action;
 import com.gipf.client.game.player.bot.tree.Node;
-import com.gipf.client.game.player.bot.tree.Tree;
 import com.gipf.client.offline.logic.Game;
 import com.gipf.client.player.bot.evaluation.EvaluationFunction;
 
@@ -21,7 +20,7 @@ public class MinMaxAlphaBeta extends Algorithm implements IterativeDeepeningAddi
 		this.currentOptimal = null;
 		Node root = new Node(null, game, null, true);
 		max(root, player, evaluator, 1, super.TREE_DEPTH, Integer.MIN_VALUE, Integer.MAX_VALUE);
-		return super.getActionsToNode(new Tree(root), currentOptimal);
+		return super.getActionsToNode(currentOptimal);
 	}
 	
 	public Node calculateBestNode(Game game, Bot player, EvaluationFunction evaluator, int ply) {

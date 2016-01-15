@@ -6,7 +6,6 @@ import java.util.Random;
 import com.gipf.client.game.player.bot.Bot;
 import com.gipf.client.game.player.bot.action.Action;
 import com.gipf.client.game.player.bot.tree.Node;
-import com.gipf.client.game.player.bot.tree.Tree;
 import com.gipf.client.offline.logic.Game;
 import com.gipf.client.player.bot.evaluation.EvaluationFunction;
 
@@ -61,7 +60,7 @@ public class MCTS extends Algorithm {
 
 		System.out.println("Algorithm done, finding actions");
 
-		return getActionsToNode(new Tree(rootNode), best.node);
+		return getActionsToNode(best.node);
 	}
 	
 	public Node calculateBestNode(Game game, Bot player, EvaluationFunction evaluator) {

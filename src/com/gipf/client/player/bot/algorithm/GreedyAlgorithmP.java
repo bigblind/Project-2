@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import com.gipf.client.game.player.bot.Bot;
 import com.gipf.client.game.player.bot.action.Action;
 import com.gipf.client.game.player.bot.tree.Node;
-import com.gipf.client.game.player.bot.tree.Tree;
 import com.gipf.client.offline.logic.Game;
 import com.gipf.client.player.bot.evaluation.EvaluationFunction;
 
@@ -56,7 +55,7 @@ public class GreedyAlgorithmP extends Algorithm {
 			use.getPlayerTwo().setStoneAccount(untouched.getPlayerTwo().getStoneAccount());
 		}
 
-		return super.getActionsToNode(new Tree(root), optimal.get((int) (Math.random() * optimal.size())));
+		return super.getActionsToNode(optimal.get((int) (Math.random() * optimal.size())));
 	}
 	
 	public Node calculateBestNode(Game game, Bot player, EvaluationFunction evaluator) {

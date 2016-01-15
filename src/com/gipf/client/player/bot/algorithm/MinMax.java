@@ -6,7 +6,6 @@ import java.util.Collections;
 import com.gipf.client.game.player.bot.Bot;
 import com.gipf.client.game.player.bot.action.Action;
 import com.gipf.client.game.player.bot.tree.Node;
-import com.gipf.client.game.player.bot.tree.Tree;
 import com.gipf.client.offline.logic.Game;
 import com.gipf.client.player.bot.evaluation.EvaluationFunction;
 
@@ -18,7 +17,7 @@ public class MinMax extends Algorithm implements IterativeDeepeningAddition {
 	
 	public ArrayList<Action> calculateBestActions(Game game, Bot player, EvaluationFunction evaluator) {
 		Node root = new Node(null, game, null, true);
-		return super.getActionsToNode(new Tree(root), max(root, player, evaluator, 1, super.TREE_DEPTH));
+		return super.getActionsToNode(max(root, player, evaluator, 1, super.TREE_DEPTH));
 	}
 	
 	public Node calculateBestNode(Game game, Bot player, EvaluationFunction evaluator, int ply) {

@@ -6,7 +6,6 @@ import com.gipf.client.game.player.Player;
 import com.gipf.client.game.player.bot.Bot;
 import com.gipf.client.game.player.bot.action.Action;
 import com.gipf.client.game.player.bot.tree.Node;
-import com.gipf.client.game.player.bot.tree.Tree;
 import com.gipf.client.offline.logic.Board;
 import com.gipf.client.offline.logic.Game;
 import com.gipf.client.player.bot.evaluation.EvaluationFunction;
@@ -31,9 +30,9 @@ public abstract class Algorithm extends Thread {
 		this.generator = new ActionGenerator();
 	}
 
-	public ArrayList<Action> getActionsToNode(Tree tree, Node node) {
+	public ArrayList<Action> getActionsToNode(Node node) {
 		ArrayList<Action> result = new ArrayList<Action>();
-		while (!node.equals(tree.root())) {
+		while (node.getParent() != null) {
 			if (node.getEndState()) {
 				result.clear();
 				result.add(node.getAction());

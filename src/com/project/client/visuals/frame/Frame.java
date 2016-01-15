@@ -25,6 +25,7 @@ public class Frame extends JFrame implements ComponentListener {
 		this.addComponentListener(this);
 		
 		Object fullscreenKey = new Object();
+
 		this.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("F11"), fullscreenKey);
 		this.getRootPane().getActionMap().put(fullscreenKey, new AbstractAction() {
 			private static final long serialVersionUID = -8738826952161833281L;

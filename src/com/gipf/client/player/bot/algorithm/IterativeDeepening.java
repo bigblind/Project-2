@@ -10,9 +10,9 @@ import com.gipf.client.player.bot.evaluation.EvaluationFunction;
 
 public class IterativeDeepening extends Algorithm { //without sorting
 
-	private Algorithm algorithm;
+	private IterativeDeepeningAddition algorithm;
 	
-	public IterativeDeepening(Algorithm algorithm, String name) {
+	public IterativeDeepening(IterativeDeepeningAddition algorithm, String name) {
 		super();
 		super.name = name;
 		this.algorithm = algorithm;
@@ -20,10 +20,16 @@ public class IterativeDeepening extends Algorithm { //without sorting
 	
 	public ArrayList<Action> calculateBestActions(Game game, Bot player, EvaluationFunction evaluator) {
 		Node currentOptimum = null;
-		for(int i = 0; i < super.TREE_DEPTH; i++){
-			Node result = this.algorithm.calculateBestNode(game, player, evaluator);
+		for(int i = 1; i <= super.TREE_DEPTH; i++){
+			Node result = this.algorithm.calculateBestNode(game, player, evaluator, i);
+			if (currentOptimum == null) currentOptimum = result;
+			else {
+				if (currentOptimum.getValue() < result.getValue()) currentOptimum = result;
+				
+				if (currentOptimum.getValue() == EvaluationFunction.WIN_VALUE) break;
+			}
 		}
-		return null;
+		return super.getActionsToNode(currentOptimum);
 	}
 
 	public Node calculateBestNode(Game game, Bot player, EvaluationFunction evaluator) {
