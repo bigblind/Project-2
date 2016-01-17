@@ -422,7 +422,7 @@ public class Board {
 		removeLine(connectedStart, connectedEnd);
 	}
 
-	private Point findConnectionEnd(Point from, int deltaX, int deltaY) {
+	public Point findConnectionEnd(Point from, int deltaX, int deltaY) {
 		Point p = from;
 		while (!isEmpty(p)) {
 			int x = p.getX() + deltaX;

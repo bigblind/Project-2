@@ -8,7 +8,7 @@ import com.gipf.client.utils.Point;
 
 public class GameLogic {
 
-	public LocalServer controller;
+	public LocalServer server;
 
 	public Game game;
 	public Player currentPlayer;
@@ -18,25 +18,25 @@ public class GameLogic {
 	private boolean standard;
 
 	public GameLogic(Game game, LocalServer controller, boolean standard) {
-		this.controller = controller;
+		this.server = controller;
 		this.game = game;
 		this.standard = standard;
 	}
 
 	public void playerEventPerformed(PlayerEvent e) {
 		if (!this.game.getBoard().isValidMove(e.getFromPoint(), e.getToPoint())) {
-			this.controller.sendMoveValidity(false);
+			this.server.sendMoveValidity(false);
 			return;
 		}
-		this.controller.sendMoveValidity(true);
+		this.server.sendMoveValidity(true);
 		this.game.getBoard().place(e.getPlayer().getStoneColor(), e.getFromPoint(), e.getToPoint());
 		this.getCurrentPlayer().setStoneAccount(this.getCurrentPlayer().getStoneAccount() - 1);
 
 		if (this.handleRows()) return;
 
 		if (this.checkForWin()) {
-			this.controller.sendGameUpdate();
-			this.controller.sendWinLoseUpdate(this.returnWinner());
+			this.server.sendGameUpdate();
+			this.server.sendWinLoseUpdate(this.returnWinner());
 		} else {
 			this.moveToNextPlayer();
 		}
@@ -57,7 +57,7 @@ public class GameLogic {
 			}
 		}
 		this.rowRemovalEvent = null;
-		this.controller.sendGameUpdate();
+		this.server.sendGameUpdate();
 		if (!this.handleRows()) {
 			moveToNextPlayer();
 		}
@@ -109,7 +109,7 @@ public class GameLogic {
 			if (row.getPlayer().equals(this.currentPlayer)) {
 				if (this.containsGipfStone(this.currentPlayer, row.getFromPoint(), row.getToPoint()) || this.extPlayerContainGipf(this.currentPlayer, row.getWhiteExtensionStones(), row.getBlackExtensionStones())) {
 					// There are gipf stones in the row or in the extensions, and there is one row.
-					this.controller.sendGameUpdate();
+					this.server.sendGameUpdate();
 					this.emitRowRemovalRequest(new RowRemovalRequestEvent(rows));
 					return true;
 				} else {
@@ -122,7 +122,7 @@ public class GameLogic {
 			} else {
 				if (this.containsGipfStone(this.getDisabledPlayer(), row.getFromPoint(), row.getToPoint()) || this.extPlayerContainGipf(this.getDisabledPlayer(), row.getWhiteExtensionStones(), row.getBlackExtensionStones())) {
 					// There are gipf stones in the row or in the extensions, and there is one row.
-					this.controller.sendGameUpdate();
+					this.server.sendGameUpdate();
 					this.emitRowRemovalRequest(new RowRemovalRequestEvent(rowsForPlayer(this.getDisabledPlayer().getStoneColor(), rows)));
 					return true;
 				} else {
@@ -137,7 +137,7 @@ public class GameLogic {
 		} else {
 			// there is more than 1 row.
 			ArrayList<Row> activeRows = rowsForPlayer(this.currentPlayer.getStoneColor(), rows);
-			this.controller.sendGameUpdate();
+			this.server.sendGameUpdate();
 			if (activeRows.size() > 0) {
 				this.emitRowRemovalRequest(new RowRemovalRequestEvent(activeRows));
 				return true;
@@ -195,10 +195,10 @@ public class GameLogic {
 	public void moveToNextPlayer() {
 		if (this.currentPlayer == game.getPlayerOne()) {
 			this.currentPlayer = game.getPlayerTwo();
-			this.controller.changeEventPerformed(new PlayerChangeEvent(game.getPlayerOne(), game.getPlayerTwo()));
+			this.server.changeEventPerformed(new PlayerChangeEvent(game.getPlayerOne(), game.getPlayerTwo()));
 		} else {
 			this.currentPlayer = game.getPlayerOne();
-			this.controller.changeEventPerformed(new PlayerChangeEvent(game.getPlayerTwo(), game.getPlayerOne()));
+			this.server.changeEventPerformed(new PlayerChangeEvent(game.getPlayerTwo(), game.getPlayerOne()));
 		}
 	}
 
@@ -239,7 +239,7 @@ public class GameLogic {
 
 	public void emitRowRemovalRequest(RowRemovalRequestEvent e) {
 		this.rowRemovalEvent = e;
-		this.controller.rowRemoveRequestEventPerformed(e);
+		this.server.rowRemoveRequestEventPerformed(e);
 	}
 
 	public Player getCurrentPlayer() {
