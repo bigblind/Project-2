@@ -30,6 +30,9 @@ public class BotRemoveThread extends Thread {
 
 			this.actions = this.method.calculateBestActions(new Tree(root), this.bot);
 		}	
+		System.out.println("actions size in removal thread: " + actions.size());
+		for (Action action : this.actions) System.out.println(action);
+		System.out.println();
 		// visualising removal
 		try {
 			Thread.sleep(500);

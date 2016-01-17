@@ -8,7 +8,6 @@ import com.gipf.client.game.player.bot.tree.Node;
 import com.gipf.client.offline.logic.Board;
 import com.gipf.client.offline.logic.Game;
 import com.gipf.client.offline.logic.Row;
-import com.gipf.client.offline.logic.RowRemovalRequestEvent;
 import com.gipf.client.utils.Point;
 
 public class BotLogic {
@@ -23,138 +22,177 @@ public class BotLogic {
 		handleRows(player, node);
 	}
 
-	//	public boolean handleRows(Player player, Node node) {
-	//		ArrayList<Row> rows = node.getGame().getBoard().checkForLines();
-	//		Game tmpGame = node.getGame().copy();
-	//		rows = this.rowsForPlayer(player.getStoneColor(), rows);
-	//		Point[][] pointsInRow = new Point[rows.size()][];
-	//		for (int i = 0; i < rows.size(); i++) {
-	//			pointsInRow[i] = this.pointsInRow(rows.get(i));
-	//		}
-	//
-	//		for (int i = 0; i < pointsInRow.length; i++) {
-	//			for (int j = 0; j < pointsInRow[i].length; j++) {
-	//				if (activeInRows(pointsInRow, pointsInRow[i][j].getX(), pointsInRow[i][j].getY()).length == 1) {
-	//					Point[] gipfStonesInRow = this.returnAllGipfPointsInRow(rows.get(i), player, tmpGame);
-	//
-	//					if (gipfStonesInRow.length == 0) {
-	//						Game gameCopy = tmpGame.copy();
-	//						gameCopy.getBoard().removeRowAndExtensions(rows.get(i));
-	//						
-	//						if (player.equals(gameCopy.getPlayerOne())) {
-	//							gameCopy.getPlayerOne().addStones(rows.get(i).getLength());
-	//							gameCopy.getPlayerOne().addStones(rows.get(i).getWhiteExtensionStones().length);
-	//						} else {
-	//							gameCopy.getPlayerTwo().addStones(rows.get(i).getLength());
-	//							gameCopy.getPlayerTwo().addStones(rows.get(i).getBlackExtensionStones().length);
-	//						}
-	//						
-	//						Node newNode = new Node(node, gameCopy, new Action(pointsInRow[i][j]), false);
-	//						node.addChild(newNode);
-	//						if (!handleRows(player, newNode)) {
-	//							newNode.setEndState(true);
-	//							newNode.setValue(this.bot.getEvaluator().evaluate(newNode.getGame(), player));
-	//						}
-	//					} else {
-	//						Game gameCopy = tmpGame.copy();
-	//						gameCopy.getBoard().removeRowAndExtensions(rows.get(i));
-	//						
-	//						ArrayList<Point> toRemove = new ArrayList<Point>();
-	//						Point[] allRowPoints = this.returnAllPointFromRow(rows.get(i));
-	//						Point[] basicStonesToRemove = this.substract(allRowPoints, gipfStonesInRow);
-	//						for (Point p : basicStonesToRemove)
-	//							toRemove.add(p);
-	//
-	//						Point[] points = new Point[toRemove.size()];
-	//						points = toRemove.toArray(points);
-	//						this.removePoints(player, gameCopy, points);
-	//						Node newNode = new Node(node, gameCopy, new Action(pointsInRow[i][j]), false);
-	//						node.addChild(newNode);
-	//						
-	//						int[] cntr = new int[gipfStonesInRow.length];
-	//						boolean[] values = new boolean[gipfStonesInRow.length];
-	//
-	//						for (int k = 0; k < Math.pow(2, gipfStonesInRow.length); k++) {
-	//							for (int l = 0; l < cntr.length; l++) {
-	//								if (cntr[l] == Math.pow(2, l)) {
-	//									values[l] = !values[l];
-	//									cntr[l] = 0;
-	//								}
-	//							}
-	//							toRemove = new ArrayList<Point>();
-	//							for (int m = 0; m < gipfStonesInRow.length; m++) {
-	//								if (values[m]) toRemove.add(gipfStonesInRow[m]);
-	//								ArrayList<Point> actionPoints = new ArrayList<Point>();
-	//								for (int z = 0; z < gipfStonesInRow.length; z++) {
-	//									if (values[z]) actionPoints.add(gipfStonesInRow[z]);
-	//								}
-	//								Point[] tmpPoints = new Point[toRemove.size()];
-	//								tmpPoints = toRemove.toArray(tmpPoints);
-	//								Point[] actionTmpPoints = new Point[actionPoints.size()];
-	//								actionTmpPoints = actionPoints.toArray(actionTmpPoints);
-	//								this.removePoints(player, newNode, tmpPoints, new Action(actionTmpPoints), true);
-	//								toRemove.clear();
-	//							}
-	//						}
-	//					}
-	//					break;
-	//				}
-	//			}
-	//		}
-	//
-	//		if (rows.size() == 0) {
-	//			node.setEndState(true);
-	//			return false;
-	//		} else return true;
-	//	}
-
-	public boolean handleRows(Player player, Node node) {
-		ArrayList<Row> rows = node.getGame().getBoard().checkForLines();
-		if (rows.size() == 0) return false;
-		else if (rows.size() == 1) {
-			Row row = rows.get(0);
-			if (row.getPlayer().equals(player)) {
-				if (this.containsGipfStone(player, node.getGame(), row.getFromPoint(), row.getToPoint()) || this.extPlayerContainGipf(player, node.getGame(), row.getWhiteExtensionStones(), row.getBlackExtensionStones())) {
-					// There are gipf stones in the row or in the extensions, and there is one row.
-					boolean[] keep = new boolean[];
-					this.emitRowRemovalRequest(new RowRemovalRequestEvent(rows));
-					return true;
-				} else {
-					// There are no gipf stones in the row or extensions, and there is one row.
-					int stones = row.getLength();
-					this.game.getBoard().removeRowAndExtensions(row);
-					this.handleExtensions(row);
-					row.getPlayer().setStoneAccount(row.getPlayer().getStoneAccount() + stones);
-				}
-			} else {
-				if (this.containsGipfStone(this.getDisabledPlayer(), row.getFromPoint(), row.getToPoint()) || this.extPlayerContainGipf(this.getDisabledPlayer(), row.getWhiteExtensionStones(), row.getBlackExtensionStones())) {
-					// There are gipf stones in the row or in the extensions, and there is one row.
-					this.emitRowRemovalRequest(new RowRemovalRequestEvent(rowsForPlayer(this.getDisabledPlayer().getStoneColor(), rows)));
-					return true;
-				} else {
-					// There are no gipf stones in the row or extensions, and there is one row.
-					int stones = row.getLength();
-					this.game.getBoard().removeRowAndExtensions(row);
-					this.handleExtensions(row);
-					row.getPlayer().setStoneAccount(row.getPlayer().getStoneAccount() + stones);
+		public boolean handleRows(Player player, Node node) {
+			ArrayList<Row> rows = node.getGame().getBoard().checkForLines();
+			Game tmpGame = node.getGame().copy();
+			rows = this.rowsForPlayer(player.getStoneColor(), rows);
+			Point[][] pointsInRow = new Point[rows.size()][];
+			for (int i = 0; i < rows.size(); i++) {
+				pointsInRow[i] = this.pointsInRow(rows.get(i));
+			}
+	
+			for (int i = 0; i < pointsInRow.length; i++) {
+				for (int j = 0; j < pointsInRow[i].length; j++) {
+					if (activeInRows(pointsInRow, pointsInRow[i][j].getX(), pointsInRow[i][j].getY()).length == 1) {
+						Point[] gipfStonesInRow = this.returnAllGipfPointsInRow(rows.get(i), player, tmpGame);
+	
+						if (gipfStonesInRow.length == 0) {
+							Game gameCopy = tmpGame.copy();
+							gameCopy.getBoard().removeRowAndExtensions(rows.get(i));
+	
+							if (player.equals(gameCopy.getPlayerOne())) {
+								gameCopy.getPlayerOne().addStones(rows.get(i).getLength());
+								gameCopy.getPlayerOne().addStones(rows.get(i).getWhiteExtensionStones().length);
+							} else {
+								gameCopy.getPlayerTwo().addStones(rows.get(i).getLength());
+								gameCopy.getPlayerTwo().addStones(rows.get(i).getBlackExtensionStones().length);
+							}
+	
+							Node newNode = new Node(node, gameCopy, new Action(pointsInRow[i][j]), false);
+							node.addChild(newNode);
+							if (!handleRows(player, newNode)) {
+								newNode.setEndState(true);
+								newNode.setValue(this.bot.getEvaluator().evaluate(newNode.getGame(), player));
+							}
+						} else {
+							Game gameCopy = tmpGame.copy();
+							gameCopy.getBoard().removeRowAndExtensions(rows.get(i));
+	
+							ArrayList<Point> toRemove = new ArrayList<Point>();
+							Point[] allRowPoints = this.returnAllPointFromRow(rows.get(i));
+							Point[] basicStonesToRemove = this.substract(allRowPoints, gipfStonesInRow);
+							for (Point p : basicStonesToRemove)
+								toRemove.add(p);
+	
+							Point[] points = new Point[toRemove.size()];
+							points = toRemove.toArray(points);
+							this.removePoints(player, gameCopy, points);
+							Node newNode = new Node(node, gameCopy, new Action(pointsInRow[i][j]), false);
+							node.addChild(newNode);
+	
+							int[] cntr = new int[gipfStonesInRow.length];
+							boolean[] values = new boolean[gipfStonesInRow.length];
+	
+							for (int k = 0; k < Math.pow(2, gipfStonesInRow.length); k++) {
+								for (int l = 0; l < cntr.length; l++) {
+									if (cntr[l] == Math.pow(2, l)) {
+										values[l] = !values[l];
+										cntr[l] = 0;
+									}
+								}
+								toRemove = new ArrayList<Point>();
+								for (int m = 0; m < gipfStonesInRow.length; m++) {
+									if (values[m]) toRemove.add(gipfStonesInRow[m]);
+									ArrayList<Point> actionPoints = new ArrayList<Point>();
+									for (int z = 0; z < gipfStonesInRow.length; z++) {
+										if (values[z]) actionPoints.add(gipfStonesInRow[z]);
+									}
+									Point[] tmpPoints = new Point[toRemove.size()];
+									tmpPoints = toRemove.toArray(tmpPoints);
+									Point[] actionTmpPoints = new Point[actionPoints.size()];
+									actionTmpPoints = actionPoints.toArray(actionTmpPoints);
+									this.removePoints(player, newNode, tmpPoints, new Action(actionTmpPoints), true);
+									toRemove.clear();
+								}
+							}
+						}
+						break;
+					}
 				}
 			}
-
-		} else {
-			// there is more than 1 row.
-			ArrayList<Row> activeRows = rowsForPlayer(player.getStoneColor(), rows);
-			if (activeRows.size() > 0) {
-				this.emitRowRemovalRequest(new RowRemovalRequestEvent(activeRows));
-				return true;
-			} else {
-				this.emitRowRemovalRequest(new RowRemovalRequestEvent(rowsForPlayer(this.getDisabledPlayer().getStoneColor(), rows)));
-				return true;
-			}
+	
+			if (rows.size() == 0) {
+				node.setEndState(true);
+				return false;
+			} else return true;
 		}
-		return false;
-	}
 
-	public int[] allRowPointsWithExtensions(Game game, Row row) { // 1st spot: white stones; 2nd: black stones; 3rd: gipf white stones; 4th: gipf black stones
+//	public boolean handleRows(Player player, Node node) {
+//		Game game = node.getGame().copy();
+//		ArrayList<Row> rows = game.getBoard().checkForLines();
+//		rows = this.rowsForPlayer(player.getStoneColor(), rows);
+//
+//		if (rows.size() == 0) {
+//			node.setEndState(true);
+//			return false;
+//		}
+//		//		if (rows.size() == 1 && !this.containsGipfStone(player, game, rows.get(0).getFromPoint(), rows.get(0).getToPoint()) && !this.extPlayerContainGipf(player, game, rows.get(0).getWhiteExtensionStones(), rows.get(0).getBlackExtensionStones())) {
+//		//			// it's simple
+//		//			
+//		//		} else {
+//		// ... it's not you it's me, it's complicated
+//		for (Row row : rows) {
+////			System.out.println(row);
+//			Point[] allStones = this.stonesInRowWithExtensions(game, row);
+////			System.out.print("Points in selected row: ") ;
+////			for (Point p : allStones)
+////				System.out.print(p + " ");
+////			System.out.println();
+//			ArrayList<Point> toRemove = new ArrayList<Point>();
+//			ArrayList<Point> gipfStones = new ArrayList<Point>();
+//			for (Point p : allStones) {
+//				if (game.getBoard().getGrid()[p.getX()][p.getY()] == Board.WHITE_VALUE) toRemove.add(p);
+//				else if (game.getBoard().getGrid()[p.getX()][p.getY()] == Board.BLACK_VALUE) toRemove.add(p);
+//
+//				if (player.getStoneColor() == Board.WHITE_VALUE) {
+//					if (game.getBoard().getGrid()[p.getX()][p.getY()] == Board.GIPF_WHITE_VALUE) gipfStones.add(p);
+//					else if (game.getBoard().getGrid()[p.getX()][p.getY()] == Board.GIPF_BLACK_VALUE) toRemove.add(p);
+//				} else {
+//					if (game.getBoard().getGrid()[p.getX()][p.getY()] == Board.GIPF_WHITE_VALUE) toRemove.add(p);
+//					else if (game.getBoard().getGrid()[p.getX()][p.getY()] == Board.GIPF_BLACK_VALUE) gipfStones.add(p);
+//				}
+//			}
+//
+//			int n = gipfStones.size();
+//
+//			if (n == 0) {
+//				Point[] pointToRemove = new Point[toRemove.size()];
+//				toRemove.toArray(pointToRemove);
+//				this.removePoints(player, node, pointToRemove, new Action(), true);
+//				continue;
+//			}
+//			boolean[] stoneStays = new boolean[n];
+//			for (int i = 0; i < Math.pow(2, n); i++) {
+//				for (int j = n - 1; j >= 0; j--) {
+//					if ((i / (int) Math.pow(2, j)) % 2 == 1) stoneStays[j] = true;
+//					else stoneStays[j] = false;
+//				}
+//
+//				int falses = 0;
+//				for (int k = 0; k < stoneStays.length; k++) {
+//					if (!stoneStays[k]) {
+//						toRemove.add(gipfStones.get(k));
+//						falses++;
+//					}
+//				}
+//
+//				Point[] actionPoints = new Point[falses + 1];
+//				actionPoints[0] = allStones[0];
+//				int lastIndex = 1;
+//				for (int k = 0; k < stoneStays.length; k++) {
+//					if (!stoneStays[k]) {
+//						actionPoints[lastIndex] = gipfStones.get(k);
+//						lastIndex++;
+//					}
+//				}
+//
+//				Point[] pointToRemove = new Point[toRemove.size()];
+//				toRemove.toArray(pointToRemove);
+//				this.removePoints(player, node, pointToRemove, new Action(actionPoints), true);
+//
+//				int toRemoveSize = toRemove.size();
+//				for (int k = toRemoveSize - 1; k > toRemoveSize - 1 - falses; k--) {
+//					toRemove.remove(k);
+//				}
+//			}
+//			//			}
+//		}
+////		System.out.println();
+//		if (rows.size() != 0) return true;
+//		else return false;
+//	}
+
+	public int[] allRowPointsWithExtensions(Game game, Row row) { // 1st spot: white stones; 2nd: black stones; 3rd: gipf white stones; 4th: gipf black	stones 
 		Point start = row.getFromPoint();
 		Point end = row.getToPoint();
 		int deltaX = end.getX() - start.getX();
@@ -198,6 +236,8 @@ public class BotLogic {
 	}
 
 	public Point[] stonesInRowWithExtensions(Game game, Row row) {
+		Point[] allPoints = new Point[row.getWhiteExtensionStones().length + row.getBlackExtensionStones().length + row.getLength()];
+
 		Point start = row.getFromPoint();
 		Point end = row.getToPoint();
 		int deltaX = end.getX() - start.getX();
@@ -210,29 +250,17 @@ public class BotLogic {
 		else if (deltaY < 0) deltaY = -1;
 		else deltaY = 0;
 
-		Point connectedStart = game.getBoard().findConnectionEnd(start, -deltaX, -deltaY);
-		Point connectedEnd = game.getBoard().findConnectionEnd(end, deltaX, deltaY);
+		ArrayList<Point> rowPoints = new ArrayList<Point>();
+		for (int i = 0; i < row.getLength(); i++)
+			rowPoints.add(new Point(start.getX() + (i * deltaX), start.getY() + (i * deltaY)));
 
-		int xx = connectedEnd.getX() - connectedStart.getX();
-		int yy = connectedEnd.getY() - connectedStart.getY();
+		for (Point p : row.getBlackExtensionStones())
+			rowPoints.add(p);
+		for (Point p : row.getWhiteExtensionStones())
+			rowPoints.add(p);
 
-		int dx, dy;
-		if (xx == 0) dx = 0;
-		else dx = 1;
-		if (yy == 0) dy = 0;
-		else dy = 1;
-
-		int length;
-		if (xx == 0) length = yy;
-		else if (yy == 0) length = xx;
-		else length = xx;
-
-		Point[] result = new Point[length + 1];
-
-		for (int i = 0; i <= length; i++)
-			result[i] = new Point(start.getX() + (i * dx), start.getY() + (i * dy));
-
-		return result;
+		rowPoints.toArray(allPoints);
+		return allPoints;
 	}
 
 	private boolean containsGipfStone(Player player, Game game, Point start, Point end) {
@@ -275,7 +303,6 @@ public class BotLogic {
 
 	public void removePoints(Player player, Node node, Point[] points, Action action, boolean checkRows) {
 		Game game = node.getGame().copy();
-
 		Player tmp = game.getPlayerOne();
 		if (game.getPlayerOne().getStoneColor() == Board.WHITE_VALUE) tmp = game.getPlayerTwo();
 
