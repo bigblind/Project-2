@@ -24,6 +24,11 @@ public class MinMax extends Algorithm implements IterativeDeepeningAddition {
 		Node root = new Node(null, game, null, true);
 		return max(root, player, evaluator, 1, ply);
 	}
+	
+	public Node calculateBestNode(Game game, Bot player, EvaluationFunction evaluator) {
+		Node root = new Node(null, game, null, true);
+		return max(root, player, evaluator, 1, super.TREE_DEPTH);
+	}
 
 	public Node max(Node node, Bot player, EvaluationFunction evaluator, int depth, int maxDepth) {
 		if (depth > maxDepth) {
@@ -96,11 +101,5 @@ public class MinMax extends Algorithm implements IterativeDeepeningAddition {
 			n = null;
 		}
 		return maxResults.get(0); // TODO return a random move ( last indices of the list )
-	}
-
-	@Override
-	public Node calculateBestNode(Game game, Bot player, EvaluationFunction evaluator) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

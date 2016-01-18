@@ -22,11 +22,18 @@ public class MinMaxAlphaBeta extends Algorithm implements IterativeDeepeningAddi
 		max(root, player, evaluator, 1, super.TREE_DEPTH, Integer.MIN_VALUE, Integer.MAX_VALUE);
 		return super.getActionsToNode(currentOptimal);
 	}
-	
+
 	public Node calculateBestNode(Game game, Bot player, EvaluationFunction evaluator, int ply) {
 		this.currentOptimal = null;
 		Node root = new Node(null, game, null, true);
 		max(root, player, evaluator, 1, ply, Integer.MIN_VALUE, Integer.MAX_VALUE);
+		return this.currentOptimal;
+	}
+
+	public Node calculateBestNode(Game game, Bot player, EvaluationFunction evaluator) {
+		this.currentOptimal = null;
+		Node root = new Node(null, game, null, true);
+		max(root, player, evaluator, 1, super.TREE_DEPTH, Integer.MIN_VALUE, Integer.MAX_VALUE);
 		return this.currentOptimal;
 	}
 
@@ -56,9 +63,9 @@ public class MinMaxAlphaBeta extends Algorithm implements IterativeDeepeningAddi
 				use.getPlayerOne().setStoneAccount(untouched.getPlayerOne().getStoneAccount());
 				use.getPlayerTwo().setStoneAccount(untouched.getPlayerTwo().getStoneAccount());
 			}
-			
+
 			node.getChildren().clear();
-			
+
 			return alpha;
 		}
 	}
@@ -86,17 +93,10 @@ public class MinMaxAlphaBeta extends Algorithm implements IterativeDeepeningAddi
 				use.getPlayerOne().setStoneAccount(untouched.getPlayerOne().getStoneAccount());
 				use.getPlayerTwo().setStoneAccount(untouched.getPlayerTwo().getStoneAccount());
 			}
-			
+
 			node.getChildren().clear();
-			
+
 			return beta;
 		}
 	}
-
-	@Override
-	public Node calculateBestNode(Game game, Bot player, EvaluationFunction evaluator) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
