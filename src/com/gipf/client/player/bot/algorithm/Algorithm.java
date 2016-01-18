@@ -16,7 +16,7 @@ public abstract class Algorithm extends Thread {
 	protected final Player WHITE_PLAYER = new Player(0, Board.WHITE_VALUE);
 	protected final Player BLACK_PLAYER = new Player(0, Board.BLACK_VALUE);
 
-	protected final int TREE_DEPTH = 6;
+	protected final int TREE_DEPTH = 8;
 
 	protected String name;
 

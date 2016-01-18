@@ -43,9 +43,15 @@ public class Node implements Comparable<Node> {
 		}
 		return n;
 	}
-
+	
 	public Node copy() {
 		return this.copy(false);
+	}
+	
+	public Node copyWithParentPath() {
+		Node result = new Node(null, this.game.copy(), this.action, this.endState);
+		if (this.getParent() != null) result.setParent(this.getParent().copyWithParentPath());
+		return result;
 	}
 
 	public void addChild(Node node) {

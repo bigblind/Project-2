@@ -26,7 +26,7 @@ public class MCTS extends Algorithm {
 	}
 
 	public ArrayList<Action> calculateBestActions(Game game, Bot player, EvaluationFunction evaluator) {
-		Node rootNode = new Node(null, game, null, true);
+		Node rootNode = new Node(null, game, null, false);
 		MCTSNode root = new MCTSNode(game, player, evaluator, rootNode);
 		long startTime = System.currentTimeMillis();
 		long endTime = startTime + timeLimit;

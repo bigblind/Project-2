@@ -32,7 +32,7 @@ public class MinMaxAlphaBeta extends Algorithm implements IterativeDeepeningAddi
 
 	public int max(Node node, Bot player, EvaluationFunction evaluator, int depth, int maxDepth, int alpha, int beta) {
 		if (depth > maxDepth) {
-			if (currentOptimal == null || currentOptimal.getValue() < node.getValue()) this.currentOptimal = node;
+			if (currentOptimal == null || currentOptimal.getValue() < node.getValue()) this.currentOptimal = node.copyWithParentPath();
 			if (node.getValue() == EvaluationFunction.WIN_VALUE) {
 				System.out.println("a win node has been found");
 			}
@@ -56,13 +56,16 @@ public class MinMaxAlphaBeta extends Algorithm implements IterativeDeepeningAddi
 				use.getPlayerOne().setStoneAccount(untouched.getPlayerOne().getStoneAccount());
 				use.getPlayerTwo().setStoneAccount(untouched.getPlayerTwo().getStoneAccount());
 			}
+			
+			node.getChildren().clear();
+			
 			return alpha;
 		}
 	}
 
 	public int min(Node node, Bot player, EvaluationFunction evaluator, int depth, int maxDepth, int alpha, int beta) {
 		if (depth > maxDepth) {
-			if (currentOptimal == null || currentOptimal.getValue() < node.getValue()) currentOptimal = node;
+			if (currentOptimal == null || currentOptimal.getValue() < node.getValue()) currentOptimal = node.copyWithParentPath();
 			return node.getValue();
 		} else {
 			Game untouched = node.getGame().copy();
@@ -83,6 +86,9 @@ public class MinMaxAlphaBeta extends Algorithm implements IterativeDeepeningAddi
 				use.getPlayerOne().setStoneAccount(untouched.getPlayerOne().getStoneAccount());
 				use.getPlayerTwo().setStoneAccount(untouched.getPlayerTwo().getStoneAccount());
 			}
+			
+			node.getChildren().clear();
+			
 			return beta;
 		}
 	}
