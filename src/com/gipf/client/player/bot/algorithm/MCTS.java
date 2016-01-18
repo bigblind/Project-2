@@ -104,6 +104,7 @@ public class MCTS extends Algorithm {
 	private class MCTSNode {
 
 		protected Game state;
+		@SuppressWarnings("unused")
 		protected Action action;
 		protected EvaluationFunction evaluator;
 		protected MCTSNode parent;

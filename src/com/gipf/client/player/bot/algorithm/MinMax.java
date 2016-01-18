@@ -27,6 +27,7 @@ public class MinMax extends Algorithm implements IterativeDeepeningAddition {
 
 	public Node max(Node node, Bot player, EvaluationFunction evaluator, int depth, int maxDepth) {
 		if (depth > maxDepth) {
+			System.out.println(node.getValue());
 			if (node.getValue() == EvaluationFunction.WIN_VALUE) {
 				System.out.println("a win node has been found");
 			}

@@ -263,6 +263,7 @@ public class BotLogic {
 		return allPoints;
 	}
 
+	@SuppressWarnings("unused")
 	private boolean containsGipfStone(Player player, Game game, Point start, Point end) {
 		int xx = end.getX() - start.getX();
 		int yy = end.getY() - start.getY();
@@ -290,6 +291,7 @@ public class BotLogic {
 		return false;
 	}
 
+	@SuppressWarnings("unused")
 	private boolean extPlayerContainGipf(Player player, Game game, Point[] whiteExt, Point[] blackExt) {
 		if (player.getStoneColor() == Board.BLACK_VALUE) {
 			for (Point p : blackExt)

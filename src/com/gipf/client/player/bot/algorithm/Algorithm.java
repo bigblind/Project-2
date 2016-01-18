@@ -16,7 +16,7 @@ public abstract class Algorithm extends Thread {
 	protected final Player WHITE_PLAYER = new Player(0, Board.WHITE_VALUE);
 	protected final Player BLACK_PLAYER = new Player(0, Board.BLACK_VALUE);
 
-	protected final int TREE_DEPTH = 8;
+	protected final int TREE_DEPTH = 4;
 
 	protected String name;
 
@@ -55,14 +55,8 @@ public abstract class Algorithm extends Thread {
 		if (player.getStoneColor() == Board.WHITE_VALUE) child.getGame().getPlayerOne().addStones(-1);
 		else child.getGame().getPlayerTwo().addStones(-1);
 		player.getLogic().performLogic(player, child);
-		for (Node bareBottom : child.bottomChildren()) {
-//			if (child.bottomChildren().size() > 1) {
-//				child.getGame().getBoard().print();
-//				System.out.println();
-//			}
+		for (Node bareBottom : child.bottomChildren())
 			bareBottom.setValue(evaluator.evaluate(bareBottom.getGame(), player));
-//			System.out.println("in performAction: " + bareBottom.getGame().getPlayerOne().getStoneAccount() + " " + bareBottom.getGame().getPlayerTwo().getStoneAccount());
-		}
 		return child;
 	}
 

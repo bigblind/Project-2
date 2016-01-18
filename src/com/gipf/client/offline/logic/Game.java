@@ -14,19 +14,21 @@ public class Game {
 	public Game(boolean standard) {
 		this.board = new Board();
 		this.board.basicInit();
-		this.isStandard = false;
+		this.isStandard = standard;
 	}
 	
 	public Game(Board board, Player playerOne, Player playerTwo, boolean standard) {
 		this.board = board;
 		this.playerOne = playerOne;
 		this.playerTwo = playerTwo;
+		this.isStandard = standard;
 	}
 	
 	public Game(Player playerOne, Player playerTwo, boolean standard) {
 		this.playerOne = playerOne;
 		this.playerTwo = playerTwo;
 		this.board = new Board();
+		this.isStandard = standard;
 	}
 	
 	public void setPlayerOne(Player player) {
